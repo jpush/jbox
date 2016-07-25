@@ -1,0 +1,62 @@
+{% extends "base_logged_in.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span8">
+			<h2>
+				集成自己的应用
+			</h2>
+			 <button class="btn btn-info btn-large" type="button">新建自定义集成</button>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							应用名
+						</th>
+						<th>
+							Tag
+						</th>
+						<th>
+							Token
+						</th>
+                        <th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="success">
+						<td>
+							github
+						</td>
+						<td>
+							issue
+						</td>
+						<td>
+							dskf938d9fd90fd9
+						</td>
+                        <td>
+                            <button class="btn btn-info btn-middle" type="button">编辑</button>
+                        </td>
+					</tr>
+					<tr class="error">
+						<td>
+							slack
+						</td>
+						<td>
+							staff
+						</td>
+						<td>
+							hhsi298djk3d83do
+						</td>
+                        <td>
+                            <button class="btn btn-info btn-middle" type="button">编辑</button>
+                        </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="span4">
+		</div>
+	</div>
+</div>
