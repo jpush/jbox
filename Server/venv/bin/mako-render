@@ -1,11 +1,10 @@
-#!/Users/admin/Desktop/WorkSpace/PythonProject/flaskproject/venv/bin/python
-
-# -*- coding: utf-8 -*-
-import re
+#!/Users/HuminiOS/Desktop/workproject/jbox/Server/venv/bin/python3.5
+# EASY-INSTALL-ENTRY-SCRIPT: 'Mako==1.0.4','console_scripts','mako-render'
+__requires__ = 'Mako==1.0.4'
 import sys
-
-from mako.cmd import cmdline
+from pkg_resources import load_entry_point
 
 if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    sys.exit(cmdline())
+    sys.exit(
+        load_entry_point('Mako==1.0.4', 'console_scripts', 'mako-render')()
+    )

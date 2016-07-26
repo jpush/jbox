@@ -1,0 +1,17 @@
+../markupsafe/__init__.py
+../markupsafe/_compat.py
+../markupsafe/_constants.py
+../markupsafe/_native.py
+../markupsafe/tests.py
+../markupsafe/_speedups.c
+../markupsafe/__pycache__/__init__.cpython-35.pyc
+../markupsafe/__pycache__/_compat.cpython-35.pyc
+../markupsafe/__pycache__/_constants.cpython-35.pyc
+../markupsafe/__pycache__/_native.cpython-35.pyc
+../markupsafe/__pycache__/tests.cpython-35.pyc
+../markupsafe/_speedups.cpython-35m-darwin.so
+dependency_links.txt
+not-zip-safe
+PKG-INFO
+SOURCES.txt
+top_level.txt
