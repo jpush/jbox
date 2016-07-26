@@ -9,3 +9,9 @@ class UserForm(Form):
     username = StringField('Input your username', validators=[DataRequired()])
     channel = StringField('Input channel name')
     submit = SubmitField('Submit')
+
+
+class FakeUserForm(Form):
+    username = StringField('input username')
+    password = StringField('input password')
+    submit = SubmitField('submit')

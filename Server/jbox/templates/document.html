@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}API 文档{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span8 col-lg-8">
+                <h2>incoming webhook</h2><br>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            API:
+                        </th>
+                        <th>
+                            用法:
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="success">
+                        <td>
+                            Create Channel
+                        </td>
+                        <td>
+                            /token/create
+                        </td>
+                    </tr>
+                    <tr class="alert-warning">
+                        <td>
+                            Send Notification
+                        </td>
+                        <td>
+                            staff
+                        </td>
+                    </tr>
+                    <tr class="alert-info">
+                        <td>
+                            Unsubscribe
+                        </td>
+                        <td>
+                            /token/unsubscribe
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="span4">
+            </div>
+        </div>
+    </div>
+{% endblock %}
