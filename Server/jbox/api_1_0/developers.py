@@ -1,8 +1,9 @@
-from flask import abort, Flask, jsonify, request, make_response
+from flask import abort, Flask, json, jsonify, request, make_response
 from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key
 
 
+# 通过 body 中的 platform, platform_id, username 来创建一个 Developer
 @api.route('/developers', methods=['POST'])
 def create_developer():
     if not request.json or not 'platform_id' in request.json:
@@ -16,6 +17,7 @@ def create_developer():
     return jsonify({'dev_key': developer.dev_key}), 201
 
 
+# 通过 platform 和 platform_id 来获取用户信息
 @api.route('/developers/<string:platform>/<string:platform_id>', methods=['GET'])
 def get_developer(platform, platform_id):
     developer = Developer.query.filter_by(platform_id=platform_id).first()
@@ -47,6 +49,7 @@ def get_developer_info(dev_key):
                     'platform': developer.platform}), 200
 
 
+# 在dev_key 下创建一个 channel
 @api.route('/developers/<string:dev_key>/channels', methods=['POST'])
 def create_channel(dev_key):
     if not request.json or not 'channel' in request.json:
@@ -68,6 +71,7 @@ def create_channel(dev_key):
     return jsonify({'created': True}), 201
 
 
+# 删除 dev_key 下的某个 channel
 @api.route('/developers/<string:dev_key>/channels/<string:channel>', methods=['DELETE'])
 def delete_channel(dev_key, channel):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
@@ -86,10 +90,17 @@ def delete_channel(dev_key, channel):
     abort(404)
 
 
-# @api.route('/developers/<string:dev_key>/channels', methods=['GET'])
-# def get_channels(dev_key):
-#     developer = Developer.query.filter_by(dev_key=dev_key).first()
-#     if developer is None:
-#         abort(404)
-#     channels = developer.channels;
-#     return jsonify({channels.to})
+# 获得 dev_key 下的所有 channel
+@api.route('/developers/<string:dev_key>/channels', methods=['GET'])
+def get_channels(dev_key):
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is None:
+        abort(404)
+    channels = developer.channels
+    if channels is not None:
+        list = []
+        for channel in channels:
+            list.append(channel.channel)
+        return jsonify({'channels': list}), 200
+    return jsonify({'none': True}), 200
+
