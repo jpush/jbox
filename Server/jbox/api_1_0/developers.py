@@ -26,9 +26,6 @@ def get_developer(platform, platform_id):
                     'platform': developer.platform}), 200
 
 
-<<<<<<< HEAD
-=======
-
 # @api.route('/developers/<dev_key>/integrations', methods=['POST'])
 # def get_integrations_info(dev_key):
 #     developer = Developer.query.filter_by(dev_key=dev_key).first()
@@ -40,7 +37,6 @@ def get_developer(platform, platform_id):
 #     return jsonify
 
 
->>>>>>> adjust
 @api.route('/developers/<dev_key>',methods=['GET'])
 def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
