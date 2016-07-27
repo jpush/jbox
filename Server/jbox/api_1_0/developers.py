@@ -1,6 +1,6 @@
 from flask import abort, Flask, jsonify, request, make_response
 from . import api
-from ..models import db, Developer, Channel, generate_dev_key
+from ..models import Developer, db, Channel, Integration, generate_dev_key
 
 
 @api.route('/developers', methods=['POST'])
@@ -26,6 +26,21 @@ def get_developer(platform, platform_id):
                     'platform': developer.platform}), 200
 
 
+<<<<<<< HEAD
+=======
+
+# @api.route('/developers/<dev_key>/integrations', methods=['POST'])
+# def get_integrations_info(dev_key):
+#     developer = Developer.query.filter_by(dev_key=dev_key).first()
+#     if developer is None:
+#         abort(404)
+#     integrations = Integration.query.filter_by(developer_id=developer.id)
+#     if integrations is None:
+#         abort(404)
+#     return jsonify
+
+
+>>>>>>> adjust
 @api.route('/developers/<dev_key>',methods=['GET'])
 def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
