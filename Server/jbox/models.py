@@ -15,9 +15,9 @@ class Developer(UserMixin, db.Model):
     platform = db.Column(db.String(50))
     platform_id = db.Column(db.String(40), unique=True)
     username = db.Column(db.String(150), index=True)
-    channel = db.Column(db.String(150))
     confirmed = db.Column(db.Boolean, default=False)
     integrations = db.relationship('Integration', backref='developer')
+    channels = db.relationship('Channel', backref='developer')
 
     def __repr__(self):
         return '<Developer %r>' % self.dev_key
@@ -120,6 +120,16 @@ class Integration(db.Model):
                 else:
                     flag = True
         return True
+
+
+class Channel(db.Model):
+    __tablename__ = 'channels'
+    id = db.Column(db.Integer, primary_key=True)
+    developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
+    channel = db.Column(db.String(150))
+
+    def __repr__(self):
+        return '<Channel %r>' % self.channel
 
 
 @login_manager.user_loader
