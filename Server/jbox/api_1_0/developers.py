@@ -26,3 +26,14 @@ def get_developer(platform, platform_id):
                     'dev_name': developer.username,
                     'platform': developer.platform}), 200
 
+
+
+
+@api.route('/developers/<dev_key>',methods=['GET'])
+def get_developer_info(dev_key):
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is None:
+        abort(404)
+    return jsonify({'dev_key':developer.dev_key,
+                    'dev_name': developer.username,
+                    'platform': developer.platform}), 200
