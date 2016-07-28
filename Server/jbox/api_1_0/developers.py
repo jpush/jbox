@@ -104,3 +104,20 @@ def get_channels(dev_key):
         return jsonify({'channels': list}), 200
     return jsonify({'none': True}), 200
 
+# 获取 dev_key 下的所有自定义集成的信息
+@api.route('/developers/<dev_key>/integrations', methods=['GET'])
+def get_integrations(dev_key):
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is None:
+        abort(404)
+    integration_list = Integration.query.filter_by(developer_id=developer.id).all()
+    if integration_list is None:
+        abort(404)
+    data_json = []
+    for integration in integration_list:
+        data_json.append({'name': integration.name,
+                          'integration_id': integration.integration_id,
+                          'description': integration.description,
+                          'icon': integration.icon,
+                          'channel': integration.channel})
+    return jsonify(data_json), 200
