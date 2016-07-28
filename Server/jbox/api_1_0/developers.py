@@ -183,7 +183,7 @@ def modificate_integration(dev_key, integration_id):
     if not request.json or not 'channel' in request.json:
         abort(400)
     developer = get_developer_with_devkey(dev_key)
-    integration = Integration.query.filter_by(developer_id=developer.id,integration_id=integration_id).frist()
+    integration = Integration.query.filter_by(developer_id=developer.id,integration_id=integration_id).first()
     if integration is None:
         abort(400)
     integration.channel = request.json['channel']
@@ -199,6 +199,7 @@ def modificate_integration(dev_key, integration_id):
     except:
         db.session.rollback()
         abort(500)
+    return jsonify({'modification': True}), 200
 
 
 def get_developer_with_devkey(dev_key):
