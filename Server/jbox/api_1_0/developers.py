@@ -127,19 +127,19 @@ def get_integrations(dev_key):
 def create_integrations(dev_key):
     if not request.json or not 'channel' in request.json:
         abort(400)
-    develoer = Developer.query.filter_by(dev_key=dev_key).first()
-    if develoer is None:
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is None:
         abort(400)
-    channel_list = Channel.query.filter_by(develoer_id=develoer.id).all()
+    channel_list = Channel.query.filter_by(developer_id=developer.id).all()
     is_include_channel = False
     for channel in channel_list:
         if request.json['channel'] == channel.channel:
             is_include_channel = True
     if is_include_channel:
         new_integration_id = generate_integration_id()
-        new_integration = Integration(develoer=developer,
+        new_integration = Integration(developer=developer,
                                       integration_id=new_integration_id,
-                                      develoer_id=develoer.id,
+                                      developer_id=developer.id,
                                       name=request.json['name'],
                                       description=request.json['description'],
                                       icon=request.json['icon'],
@@ -147,11 +147,11 @@ def create_integrations(dev_key):
         db.session.add(new_integration)
         try:
             db.session.commit()
-            # TODO: add token
-            return jsonify({'integration_id': new_integration_id})
         except:
             db.session.rollback()
             abort(500)
+        # TODO: add token
+        return jsonify({'integration_id': new_integration_id})
     else:
         new_channel = Channel(developer=developer, channel=request.json['channel'])
         db.session.add(new_channel)
@@ -161,9 +161,9 @@ def create_integrations(dev_key):
             db.session.rollback()
             abort(500)
             new_integration_id = generate_integration_id()
-            new_integration = Integration(develoer=developer,
+            new_integration = Integration(developer=developer,
                                           integration_id=new_integration_id,
-                                          develoer_id=develoer.id,
+                                          developer_id=developer.id,
                                           name=request.json['name'],
                                           description=request.json['description'],
                                           icon=request.json['icon'],
@@ -171,11 +171,11 @@ def create_integrations(dev_key):
             db.session.add(new_integration)
             try:
                 db.session.commit()
-                # TODO: add token
-                return jsonify({'integration_id': new_integration_id})
             except:
                 db.session.rollback()
                 abort(500)
+            # TODO: add token
+            return jsonify({'integration_id': new_integration_id})
 
 # PUT 修改 dev_key 下 所绑定的 integration
 @api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
@@ -202,7 +202,7 @@ def modificate_integration(dev_key, integration_id):
 
 
 def get_developer_with_devkey(dev_key):
-    develoer = Developer.query.filter_by(dev_key=dev_key).first()
-    if develoer is None:
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is None:
         abort(400)
-    return develoer
+    return developer
