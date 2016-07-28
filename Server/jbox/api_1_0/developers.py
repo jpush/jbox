@@ -1,6 +1,6 @@
 from flask import abort, Flask, json, jsonify, request, make_response
 from . import api
-from ..models import Developer, db, Channel, Integration, generate_dev_key
+from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
 
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
@@ -121,3 +121,79 @@ def get_integrations(dev_key):
                           'icon': integration.icon,
                           'channel': integration.channel})
     return jsonify(data_json), 200
+
+# 在dev_key 下创建一个 channel
+# @api.route('/developers/<string:dev_key>/channels', methods=['POST'])
+# def create_channel(dev_key):
+#     if not request.json or not 'channel' in request.json:
+#         abort(400)
+#     developer = Developer.query.filter_by(dev_key=dev_key).first()
+#     if developer is None:
+#         abort(404)
+#     channel = Channel.query.filter_by(developer_id=developer.id).first()
+#     if channel is None or channel.channel != request.json['channel']:
+#         new_channel = Channel(developer=developer, channel=request.json['channel'])
+#         db.session.add(new_channel)
+#         try:
+#             db.session.commit()
+#         except:
+#             db.session.rollback()
+#             abort(500)
+#     else:
+#         return jsonify({'created': False}), 304
+#     return jsonify({'created': True}), 201
+
+# 添加一个集成，并返回 integration_id ，如果 channel 已存在，直接绑定该 channel， 否则新建一个 channel
+@api.route('/developers/<dev_key>/integrations', methods=['POST'])
+def create_integrations(dev_key):
+    if not request.json or not 'channel' in request.json:
+        abort(400)
+    develoer = Developer.query.filter_by(dev_key=dev_key).first()
+    if develoer is None:
+        abort(400)
+    channel_list = Channel.query.filter_by(develoer_id=develoer.id).all()
+    is_include_channel = False
+    for channel in channel_list:
+        if request.json['channel'] == channel.channel:
+            is_include_channel = True
+    if is_include_channel:
+        new_integration_id = generate_integration_id()
+        new_integration = Integration(develoer=developer,
+                                      integration_id=new_integration_id,
+                                      develoer_id=develoer.id,
+                                      name=request.json['name'],
+                                      description=request.json['description'],
+                                      icon=request.json['icon'],
+                                      channel=request.json['channel'])
+        db.session.add(new_integration)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            abort(500)
+    else:
+        new_channel = Channel(developer=developer, channel=request.json['channel'])
+        db.session.add(new_channel)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            abort(500)
+            new_integration_id = generate_integration_id()
+            new_integration = Integration(develoer=developer,
+                                          integration_id=new_integration_id,
+                                          develoer_id=develoer.id,
+                                          name=request.json['name'],
+                                          description=request.json['description'],
+                                          icon=request.json['icon'],
+                                          channel=request.json['channel'])
+            db.session.add(new_integration)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                abort(500)
+
+# PUT 修改 dev_key 下 所绑定的 integration
+# @api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
+# def
