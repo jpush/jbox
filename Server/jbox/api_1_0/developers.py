@@ -122,27 +122,6 @@ def get_integrations(dev_key):
                           'channel': integration.channel})
     return jsonify(data_json), 200
 
-# 在dev_key 下创建一个 channel
-# @api.route('/developers/<string:dev_key>/channels', methods=['POST'])
-# def create_channel(dev_key):
-#     if not request.json or not 'channel' in request.json:
-#         abort(400)
-#     developer = Developer.query.filter_by(dev_key=dev_key).first()
-#     if developer is None:
-#         abort(404)
-#     channel = Channel.query.filter_by(developer_id=developer.id).first()
-#     if channel is None or channel.channel != request.json['channel']:
-#         new_channel = Channel(developer=developer, channel=request.json['channel'])
-#         db.session.add(new_channel)
-#         try:
-#             db.session.commit()
-#         except:
-#             db.session.rollback()
-#             abort(500)
-#     else:
-#         return jsonify({'created': False}), 304
-#     return jsonify({'created': True}), 201
-
 # 添加一个集成，并返回 integration_id ，如果 channel 已存在，直接绑定该 channel， 否则新建一个 channel
 @api.route('/developers/<dev_key>/integrations', methods=['POST'])
 def create_integrations(dev_key):
@@ -168,6 +147,8 @@ def create_integrations(dev_key):
         db.session.add(new_integration)
         try:
             db.session.commit()
+            # TODO: add token
+            return jsonify({'integration_id': new_integration_id})
         except:
             db.session.rollback()
             abort(500)
@@ -190,10 +171,38 @@ def create_integrations(dev_key):
             db.session.add(new_integration)
             try:
                 db.session.commit()
+                # TODO: add token
+                return jsonify({'integration_id': new_integration_id})
             except:
                 db.session.rollback()
                 abort(500)
 
 # PUT 修改 dev_key 下 所绑定的 integration
-# @api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
-# def
+@api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
+def modificate_integration(dev_key, integration_id):
+    if not request.json or not 'channel' in request.json:
+        abort(400)
+    developer = get_developer_with_devkey(dev_key)
+    integration = Integration.query.filter_by(developer_id=developer.id,integration_id=integration_id).frist()
+    if integration is None:
+        abort(400)
+    integration.channel = request.json['channel']
+    if 'name' in request.json:
+        integration.name = request.json['name']
+    if 'description' in request.json:
+        integration.description = request.json['description']
+    if 'icon' in request.json:
+        integration.icon = request.json['icon']
+    db.session.add(integration)
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
+        abort(500)
+
+
+def get_developer_with_devkey(dev_key):
+    develoer = Developer.query.filter_by(dev_key=dev_key).first()
+    if develoer is None:
+        abort(400)
+    return develoer
