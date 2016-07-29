@@ -1,6 +1,7 @@
 from flask import abort, Flask, json, jsonify, request, make_response
 from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
+from authentication import auth
 
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
@@ -207,3 +208,5 @@ def get_developer_with_devkey(dev_key):
     if developer is None:
         abort(400)
     return developer
+
+@u
