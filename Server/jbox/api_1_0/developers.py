@@ -1,8 +1,7 @@
 from flask import abort, Flask, json, jsonify, request, make_response
 from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
-from authentication import auth
-
+from .authentication import auth
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
 @api.route('/developers', methods=['POST'])
@@ -41,6 +40,7 @@ def get_developer(platform, platform_id):
 
 # 获取 developer 的信息, 通过 dev_key 查询
 @api.route('/developers/<dev_key>',methods=['GET'])
+@auth.login_required
 def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
@@ -107,6 +107,7 @@ def get_channels(dev_key):
 
 # 获取 dev_key 下的所有自定义集成的信息
 @api.route('/developers/<dev_key>/integrations', methods=['GET'])
+@auth.login_required
 def get_integrations(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
@@ -209,4 +210,3 @@ def get_developer_with_devkey(dev_key):
         abort(400)
     return developer
 
-@u
