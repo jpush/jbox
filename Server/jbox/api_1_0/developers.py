@@ -124,6 +124,7 @@ def get_integrations(dev_key):
                           'channel': integration.channel})
     return jsonify(data_json), 200
 
+# FIX: TOKEN
 # 添加一个集成，并返回 integration_id ，如果 channel 已存在，直接绑定该 channel， 否则新建一个 channel
 @api.route('/developers/<dev_key>/integrations', methods=['POST'])
 def create_integrations(dev_key):
@@ -152,8 +153,12 @@ def create_integrations(dev_key):
         except:
             db.session.rollback()
             abort(500)
-        # TODO: add token
-        return jsonify({'integration_id': new_integration_id})
+        try:
+            token = new_integration.generate_auth_token(3600)
+        except:
+            abort(500)
+        return jsonify({'integration_id': new_integration_id,
+                        'token': token})
     else:
         new_channel = Channel(developer=developer, channel=request.json['channel'])
         db.session.add(new_channel)
@@ -176,8 +181,12 @@ def create_integrations(dev_key):
             except:
                 db.session.rollback()
                 abort(500)
-            # TODO: add token
-            return jsonify({'integration_id': new_integration_id})
+            try:
+                token = new_integration.generate_auth_token(3600)
+            except:
+                abort(500)
+            return jsonify({'integration_id': new_integration_id,
+                            'token': token})
 
 # PUT 修改 dev_key 下 所绑定的 integration
 @api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
@@ -210,3 +219,12 @@ def get_developer_with_devkey(dev_key):
         abort(400)
     return developer
 
+# FIX: TOKEN
+# 重新生成 integration token   这个接口没有测试
+@api.route('/developer/<integration_id>/token', methods=['PUT'])
+def regenerate_integration_token(integration_id):
+    integration = Integration.query.filter_by(integration_id=integration_id)
+    if integration is None:
+        abort(400)
+    token = integration.generate_auth_token(3600)
+    return jsonify({'token': token})

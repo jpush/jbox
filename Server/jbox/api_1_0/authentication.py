@@ -15,9 +15,8 @@ def get_token():
 
 @auth.verify_password
 def get_auth3(platform, platform_id):
-    if email == '':
+    if platform == '':
         g.current_user = AnonymousUser()
-        return True
     developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
     if developer is None:
         return False

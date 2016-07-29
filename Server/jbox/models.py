@@ -38,19 +38,6 @@ class Developer(UserMixin, db.Model):
         db.session.add(self)
         return True
 
-    def generate_auth_token(self, expiration):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
-        return s.dumps({'id': self.id})
-
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(current_app.config['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except:
-            return None
-        return Developer.query.get(data['id'])
-
     def insert_to_db(self):
         db.session.add(self)
         try:
@@ -120,7 +107,19 @@ class Integration(db.Model):
                 else:
                     flag = True
         return True
+    def generate_auth_token(self, expiration):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
+        print(s.dumps({'id': self.id}),'huangmin123')
+        return s.dumps({'id': self.id})
 
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return Integration.query.get(data['id'])
 
 class Channel(db.Model):
     __tablename__ = 'channels'
