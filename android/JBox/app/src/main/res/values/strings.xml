@@ -1,8 +1,20 @@
 <resources>
     <string name="app_name">极光宝盒</string>
+
+    <!-- main start -->
     <string name="message">消 息</string>
     <string name="account">账 户</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
+    <!-- main end -->
+
     <string name="back">返 回</string>
+
+    <!-- channel start -->
+    <string name="channel_remove">删除</string>
+    <string name="channel_subscribe">订阅</string>
+    <!-- channel end -->
+
+    <!-- account start -->
+    <string name="account_account">账 户</string>
+    <string name="account_remove">删除</string>
+    <!-- account end -->
 </resources>
