@@ -58,7 +58,8 @@ def create_channel(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(404)
-    channel = Channel.query.filter_by(developer_id=developer.id).first()
+    # channel = Channel.query.filter_by(developer_id=developer.id).first()
+    channel = developer.channels.first()
     if channel is None or channel.channel != request.json['channel']:
         new_channel = Channel(developer=developer, channel=request.json['channel'])
         db.session.add(new_channel)
@@ -78,7 +79,8 @@ def delete_channel(dev_key, channel):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(404)
-    channels = Channel.query.filter_by(developer_id=developer.id).all()
+    # channels = Channel.query.filter_by(developer_id=developer.id).all()
+    channels = developer.channels
     for item in channels:
         if item.channel == channel:
             db.session.delete(item)
@@ -112,7 +114,8 @@ def get_integrations(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(404)
-    integration_list = Integration.query.filter_by(developer_id=developer.id).all()
+    # integration_list = Integration.query.filter_by(developer_id=developer.id).all()
+    integration_list = developer.integrations
     if integration_list is None:
         abort(404)
     data_json = []
@@ -133,7 +136,8 @@ def create_integrations(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(400)
-    channel_list = Channel.query.filter_by(developer_id=developer.id).all()
+    # channel_list = Channel.query.filter_by(developer_id=developer.id).all()
+    channel_list = developer.channels.all()
     is_include_channel = False
     for channel in channel_list:
         if request.json['channel'] == channel.channel:
@@ -158,7 +162,7 @@ def create_integrations(dev_key):
         except:
             abort(500)
         return jsonify({'integration_id': new_integration_id,
-                        'token': token})
+                        'token': token.decode('utf-8')})
     else:
         new_channel = Channel(developer=developer, channel=request.json['channel'])
         db.session.add(new_channel)
@@ -182,7 +186,7 @@ def create_integrations(dev_key):
         except:
             abort(500)
         return jsonify({'integration_id': new_integration_id,
-                        'token': token})
+                        'token': token.decode('utf-8')})
 
 # PUT 修改 dev_key 下 所绑定的 integration
 @api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
