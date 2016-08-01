@@ -164,9 +164,6 @@ def create_integrations(dev_key):
         db.session.add(new_channel)
         try:
             db.session.commit()
-        except:
-            db.session.rollback()
-            abort(500)
             new_integration_id = generate_integration_id()
             new_integration = Integration(developer=developer,
                                           integration_id=new_integration_id,
@@ -176,17 +173,16 @@ def create_integrations(dev_key):
                                           icon=request.json['icon'],
                                           channel=request.json['channel'])
             db.session.add(new_integration)
-            try:
-                db.session.commit()
-            except:
-                db.session.rollback()
-                abort(500)
-            try:
-                token = new_integration.generate_auth_token(3600)
-            except:
-                abort(500)
-            return jsonify({'integration_id': new_integration_id,
-                            'token': token})
+            db.session.commit()
+        except:
+            db.session.rollback()
+            abort(500)
+        try:
+            token = new_integration.generate_auth_token(3600)
+        except:
+            abort(500)
+        return jsonify({'integration_id': new_integration_id,
+                        'token': token})
 
 # PUT 修改 dev_key 下 所绑定的 integration
 @api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
