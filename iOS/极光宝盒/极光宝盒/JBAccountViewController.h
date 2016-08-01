@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface JBAccountViewController : UIViewController
-
+@property (nonatomic, retain)NSString *scanString;
+@property (nonatomic, retain)NSString *scanCodeType;
 @end

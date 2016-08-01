@@ -12,6 +12,18 @@
 		0D013E0D1D3E196900D34C1F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D013E0B1D3E196900D34C1F /* Main.storyboard */; };
 		0D013E0F1D3E196900D34C1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D013E0E1D3E196900D34C1F /* Assets.xcassets */; };
 		0D013E121D3E196900D34C1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D013E101D3E196900D34C1F /* LaunchScreen.storyboard */; };
+		0D187B6C1D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D187B621D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h */; };
+		0D187B6D1D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D187B631D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m */; };
+		0D187B6E1D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D187B641D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h */; };
+		0D187B6F1D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D187B651D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.m */; };
+		0D187B701D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D187B661D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.h */; };
+		0D187B711D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D187B671D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.m */; };
+		0D187B721D4F12D60041C9B7 /* LBXAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D187B681D4F12D60041C9B7 /* LBXAlertAction.h */; };
+		0D187B731D4F12D60041C9B7 /* LBXAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D187B691D4F12D60041C9B7 /* LBXAlertAction.m */; };
+		0D187B741D4F12D60041C9B7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0D187B6A1D4F12D60041C9B7 /* LICENSE */; };
+		0D187B751D4F12D60041C9B7 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0D187B6B1D4F12D60041C9B7 /* README.md */; };
+		0D187B791D4F19730041C9B7 /* JBNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D187B771D4F19730041C9B7 /* JBNetwork.h */; };
+		0D187B7A1D4F19730041C9B7 /* JBNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D187B781D4F19730041C9B7 /* JBNetwork.m */; };
 		0D286C571D3E27BB00BCE395 /* JBMainTabBarController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D286C551D3E27BB00BCE395 /* JBMainTabBarController.h */; };
 		0D286C581D3E27BB00BCE395 /* JBMainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D286C561D3E27BB00BCE395 /* JBMainTabBarController.m */; };
 		0D286C5C1D3E28F300BCE395 /* UIColor+Hex.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D286C5A1D3E28F300BCE395 /* UIColor+Hex.h */; };
@@ -513,19 +525,6 @@
 		0D7107BF1D49E10B00EACCCE /* JBScanViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7107BD1D49E10B00EACCCE /* JBScanViewController.h */; };
 		0D7107C01D49E10B00EACCCE /* JBScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7107BE1D49E10B00EACCCE /* JBScanViewController.m */; };
 		0D7107C21D49E60400EACCCE /* CodeScan.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0D7107C11D49E60400EACCCE /* CodeScan.bundle */; };
-		0D7107C61D49E86300EACCCE /* JBScanResultViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7107C31D49E86300EACCCE /* JBScanResultViewController.h */; };
-		0D7107CA1D49E8F400EACCCE /* JBScanResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D7107C91D49E8F400EACCCE /* JBScanResultViewController.xib */; };
-		0D7107CC1D49E97100EACCCE /* JBScanResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7107CB1D49E97100EACCCE /* JBScanResultViewController.m */; };
-		0D7107DA1D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7107D01D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.h */; };
-		0D7107DB1D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7107D11D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.m */; };
-		0D7107DC1D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7107D21D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.h */; };
-		0D7107DD1D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7107D31D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.m */; };
-		0D7107DE1D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7107D41D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.h */; };
-		0D7107DF1D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7107D51D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.m */; };
-		0D7107E01D49E9CD00EACCCE /* LBXAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7107D61D49E9CD00EACCCE /* LBXAlertAction.h */; };
-		0D7107E11D49E9CD00EACCCE /* LBXAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7107D71D49E9CD00EACCCE /* LBXAlertAction.m */; };
-		0D7107E21D49E9CD00EACCCE /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 0D7107D81D49E9CD00EACCCE /* LICENSE */; };
-		0D7107E31D49E9CD00EACCCE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0D7107D91D49E9CD00EACCCE /* README.md */; };
 		0D71FFEB1D49DC6B00EACCCE /* JBMessageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D71FFE81D49DC6B00EACCCE /* JBMessageViewController.h */; };
 		0D71FFEC1D49DC6B00EACCCE /* JBMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D71FFE91D49DC6B00EACCCE /* JBMessageViewController.m */; };
 		0D71FFED1D49DC6B00EACCCE /* JBMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D71FFEA1D49DC6B00EACCCE /* JBMessageViewController.xib */; };
@@ -533,6 +532,7 @@
 		0DBC81BF1D47064A0059336F /* JBAppsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC81BC1D47064A0059336F /* JBAppsTableViewController.m */; };
 		0DBC81C01D47064A0059336F /* JBAppsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0DBC81BD1D47064A0059336F /* JBAppsTableViewController.xib */; };
 		19898A144FD95EA2782FD1E6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD3B7A94457A42AC7FDE88A /* CoreTelephony.framework */; };
+		1D04E10DC26FA9AF6918AFD3 /* libPods-极光宝盒.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90AFD51AB3CEA1E6F4BBEDC1 /* libPods-极光宝盒.a */; };
 		20612847E9E4A5FF403986FF /* JPUSHService.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A8FDD5B3C7EABF85582603F /* JPUSHService.h */; };
 		313362328359DFB2B83BEA4A /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F27A0380E655FBB035984091 /* AdSupport.framework */; };
 		57DF43A87E5D1B872292EFED /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82303B807F504FE323121C67 /* CoreGraphics.framework */; };
@@ -547,6 +547,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		076A22A2E46DB68A079EE8E3 /* Pods-极光宝盒.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-极光宝盒.debug.xcconfig"; path = "Pods/Target Support Files/Pods-极光宝盒/Pods-极光宝盒.debug.xcconfig"; sourceTree = "<group>"; };
 		0A8FDD5B3C7EABF85582603F /* JPUSHService.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JPUSHService.h; path = "极光宝盒/jpush_sdk/JPUSHService.h"; sourceTree = "<group>"; };
 		0CD3B7A94457A42AC7FDE88A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
 		0D013DFF1D3E196800D34C1F /* 极光宝盒.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "极光宝盒.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -557,6 +558,18 @@
 		0D013E0E1D3E196900D34C1F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0D013E111D3E196900D34C1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0D013E131D3E196900D34C1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0D187B621D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+LBXAlertAction.h"; sourceTree = "<group>"; };
+		0D187B631D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+LBXAlertAction.m"; sourceTree = "<group>"; };
+		0D187B641D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+supportedInterfaceOrientations.h"; sourceTree = "<group>"; };
+		0D187B651D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+supportedInterfaceOrientations.m"; sourceTree = "<group>"; };
+		0D187B661D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+LBXAlertAction.h"; sourceTree = "<group>"; };
+		0D187B671D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+LBXAlertAction.m"; sourceTree = "<group>"; };
+		0D187B681D4F12D60041C9B7 /* LBXAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBXAlertAction.h; sourceTree = "<group>"; };
+		0D187B691D4F12D60041C9B7 /* LBXAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBXAlertAction.m; sourceTree = "<group>"; };
+		0D187B6A1D4F12D60041C9B7 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		0D187B6B1D4F12D60041C9B7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0D187B771D4F19730041C9B7 /* JBNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBNetwork.h; path = JBNetworks/JBNetwork.h; sourceTree = "<group>"; };
+		0D187B781D4F19730041C9B7 /* JBNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBNetwork.m; path = JBNetworks/JBNetwork.m; sourceTree = "<group>"; };
 		0D286C551D3E27BB00BCE395 /* JBMainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBMainTabBarController.h; sourceTree = "<group>"; };
 		0D286C561D3E27BB00BCE395 /* JBMainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBMainTabBarController.m; sourceTree = "<group>"; };
 		0D286C5A1D3E28F300BCE395 /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
@@ -1058,19 +1071,6 @@
 		0D7107BD1D49E10B00EACCCE /* JBScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBScanViewController.h; sourceTree = "<group>"; };
 		0D7107BE1D49E10B00EACCCE /* JBScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBScanViewController.m; sourceTree = "<group>"; };
 		0D7107C11D49E60400EACCCE /* CodeScan.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CodeScan.bundle; sourceTree = "<group>"; };
-		0D7107C31D49E86300EACCCE /* JBScanResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBScanResultViewController.h; sourceTree = "<group>"; };
-		0D7107C91D49E8F400EACCCE /* JBScanResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JBScanResultViewController.xib; sourceTree = "<group>"; };
-		0D7107CB1D49E97100EACCCE /* JBScanResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBScanResultViewController.m; sourceTree = "<group>"; };
-		0D7107D01D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+LBXAlertAction.h"; sourceTree = "<group>"; };
-		0D7107D11D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+LBXAlertAction.m"; sourceTree = "<group>"; };
-		0D7107D21D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+supportedInterfaceOrientations.h"; sourceTree = "<group>"; };
-		0D7107D31D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+supportedInterfaceOrientations.m"; sourceTree = "<group>"; };
-		0D7107D41D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+LBXAlertAction.h"; sourceTree = "<group>"; };
-		0D7107D51D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+LBXAlertAction.m"; sourceTree = "<group>"; };
-		0D7107D61D49E9CD00EACCCE /* LBXAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBXAlertAction.h; sourceTree = "<group>"; };
-		0D7107D71D49E9CD00EACCCE /* LBXAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBXAlertAction.m; sourceTree = "<group>"; };
-		0D7107D81D49E9CD00EACCCE /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		0D7107D91D49E9CD00EACCCE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0D71FFE81D49DC6B00EACCCE /* JBMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBMessageViewController.h; sourceTree = "<group>"; };
 		0D71FFE91D49DC6B00EACCCE /* JBMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBMessageViewController.m; sourceTree = "<group>"; };
 		0D71FFEA1D49DC6B00EACCCE /* JBMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JBMessageViewController.xib; sourceTree = "<group>"; };
@@ -1083,6 +1083,8 @@
 		510C57E3FE508437E95F2697 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		5157A168770EB9DB976F8833 /* jpush-ios-2.1.8.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = "jpush-ios-2.1.8.a"; path = "极光宝盒/jpush_sdk/jpush-ios-2.1.8.a"; sourceTree = "<group>"; };
 		82303B807F504FE323121C67 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		90AFD51AB3CEA1E6F4BBEDC1 /* libPods-极光宝盒.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-极光宝盒.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		940FE2803CA927CD28E065C5 /* Pods-极光宝盒.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-极光宝盒.release.xcconfig"; path = "Pods/Target Support Files/Pods-极光宝盒/Pods-极光宝盒.release.xcconfig"; sourceTree = "<group>"; };
 		99C0A6600DBC9B2CC5CA689C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A54A7DBD7E23ECC316CDB23A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		AFDD3955C537814ADD8C3253 /* libz.tbd */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -1105,6 +1107,7 @@
 				86BE36CD5C202F53AD52A323 /* SystemConfiguration.framework in Frameworks */,
 				AB391DCF2D746B58BD8BDABA /* libz.tbd in Frameworks */,
 				313362328359DFB2B83BEA4A /* AdSupport.framework in Frameworks */,
+				1D04E10DC26FA9AF6918AFD3 /* libPods-极光宝盒.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1119,6 +1122,7 @@
 				352CE5328C25058DA6F79761 /* jpush_sdk */,
 				761471EB52A331EA7E53925F /* Frameworks */,
 				0D013E001D3E196800D34C1F /* Products */,
+				BEC7F95DF6EF865BA54DD492 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1138,6 +1142,7 @@
 				0D013E0B1D3E196900D34C1F /* Main.storyboard */,
 				0D013E1C1D3E227700D34C1F /* JBMessage */,
 				0D013E1D1D3E228400D34C1F /* JBAccount */,
+				0D187B761D4F192D0041C9B7 /* JBNetworks */,
 				0D286C591D3E28C700BCE395 /* Category */,
 				0D013E1B1D3E223000D34C1F /* Resources */,
 				0D013E021D3E196800D34C1F /* Supporting Files */,
@@ -1220,9 +1225,6 @@
 				0DBC81BD1D47064A0059336F /* JBAppsTableViewController.xib */,
 				0D7107BD1D49E10B00EACCCE /* JBScanViewController.h */,
 				0D7107BE1D49E10B00EACCCE /* JBScanViewController.m */,
-				0D7107C31D49E86300EACCCE /* JBScanResultViewController.h */,
-				0D7107CB1D49E97100EACCCE /* JBScanResultViewController.m */,
-				0D7107C91D49E8F400EACCCE /* JBScanResultViewController.xib */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1280,6 +1282,49 @@
 			children = (
 			);
 			name = C;
+			sourceTree = "<group>";
+		};
+		0D187B5F1D4F12D60041C9B7 /* LBXAlertAction */ = {
+			isa = PBXGroup;
+			children = (
+				0D187B601D4F12D60041C9B7 /* LBXAlertAction */,
+				0D187B6A1D4F12D60041C9B7 /* LICENSE */,
+				0D187B6B1D4F12D60041C9B7 /* README.md */,
+			);
+			name = LBXAlertAction;
+			path = "极光宝盒/LBXAlertAction";
+			sourceTree = "<group>";
+		};
+		0D187B601D4F12D60041C9B7 /* LBXAlertAction */ = {
+			isa = PBXGroup;
+			children = (
+				0D187B611D4F12D60041C9B7 /* Class */,
+				0D187B681D4F12D60041C9B7 /* LBXAlertAction.h */,
+				0D187B691D4F12D60041C9B7 /* LBXAlertAction.m */,
+			);
+			path = LBXAlertAction;
+			sourceTree = "<group>";
+		};
+		0D187B611D4F12D60041C9B7 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				0D187B621D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h */,
+				0D187B631D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m */,
+				0D187B641D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h */,
+				0D187B651D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.m */,
+				0D187B661D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.h */,
+				0D187B671D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.m */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		0D187B761D4F192D0041C9B7 /* JBNetworks */ = {
+			isa = PBXGroup;
+			children = (
+				0D187B771D4F19730041C9B7 /* JBNetwork.h */,
+				0D187B781D4F19730041C9B7 /* JBNetwork.m */,
+			);
+			name = JBNetworks;
 			sourceTree = "<group>";
 		};
 		0D286C591D3E28C700BCE395 /* Category */ = {
@@ -2054,43 +2099,10 @@
 			path = detector;
 			sourceTree = "<group>";
 		};
-		0D7107CD1D49E9CD00EACCCE /* LBXAlertAction */ = {
-			isa = PBXGroup;
-			children = (
-				0D7107CE1D49E9CD00EACCCE /* LBXAlertAction */,
-				0D7107D81D49E9CD00EACCCE /* LICENSE */,
-				0D7107D91D49E9CD00EACCCE /* README.md */,
-			);
-			path = LBXAlertAction;
-			sourceTree = "<group>";
-		};
-		0D7107CE1D49E9CD00EACCCE /* LBXAlertAction */ = {
-			isa = PBXGroup;
-			children = (
-				0D7107CF1D49E9CD00EACCCE /* Class */,
-				0D7107D61D49E9CD00EACCCE /* LBXAlertAction.h */,
-				0D7107D71D49E9CD00EACCCE /* LBXAlertAction.m */,
-			);
-			path = LBXAlertAction;
-			sourceTree = "<group>";
-		};
-		0D7107CF1D49E9CD00EACCCE /* Class */ = {
-			isa = PBXGroup;
-			children = (
-				0D7107D01D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.h */,
-				0D7107D11D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.m */,
-				0D7107D21D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.h */,
-				0D7107D31D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.m */,
-				0D7107D41D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.h */,
-				0D7107D51D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.m */,
-			);
-			path = Class;
-			sourceTree = "<group>";
-		};
 		0D71FFEE1D49DE0300EACCCE /* Thirds */ = {
 			isa = PBXGroup;
 			children = (
-				0D7107CD1D49E9CD00EACCCE /* LBXAlertAction */,
+				0D187B5F1D4F12D60041C9B7 /* LBXAlertAction */,
 				0D7103D61D49E03900EACCCE /* LBXScan */,
 				0D7103EE1D49E03900EACCCE /* ZXingObjC */,
 			);
@@ -2127,8 +2139,18 @@
 			children = (
 				621C0DE0452C015E420DE194 /* iOS */,
 				AFDD3955C537814ADD8C3253 /* libz.tbd */,
+				90AFD51AB3CEA1E6F4BBEDC1 /* libPods-极光宝盒.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BEC7F95DF6EF865BA54DD492 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				076A22A2E46DB68A079EE8E3 /* Pods-极光宝盒.debug.xcconfig */,
+				940FE2803CA927CD28E065C5 /* Pods-极光宝盒.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2147,12 +2169,11 @@
 				0D71073C1D49E03A00EACCCE /* ZXOneDimensionalCodeWriter.h in Headers */,
 				0D7106271D49E03A00EACCCE /* ZXGeoResultParser.h in Headers */,
 				0D71062D1D49E03A00EACCCE /* ZXParsedResult.h in Headers */,
-				0D7107C61D49E86300EACCCE /* JBScanResultViewController.h in Headers */,
 				0D7106291D49E03A00EACCCE /* ZXISBNParsedResult.h in Headers */,
 				0D71074E1D49E03A00EACCCE /* ZXUPCEReader.h in Headers */,
 				0D7106711D49E03A00EACCCE /* ZXBoolArray.h in Headers */,
 				0D71060F1D49E03A00EACCCE /* ZXAddressBookAUResultParser.h in Headers */,
-				0D7107DC1D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.h in Headers */,
+				0D187B6E1D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h in Headers */,
 				0D71075E1D49E03A00EACCCE /* ZXPDF417CodewordDecoder.h in Headers */,
 				0D7107291D49E03A00EACCCE /* ZXEAN13Reader.h in Headers */,
 				0D7106581D49E03A00EACCCE /* ZXCaptureDelegate.h in Headers */,
@@ -2249,10 +2270,11 @@
 				0D7107701D49E03A00EACCCE /* ZXPDF417BarcodeMatrix.h in Headers */,
 				0D71069D1D49E03A00EACCCE /* ZXPlanarYUVLuminanceSource.h in Headers */,
 				0D7106E31D49E03A00EACCCE /* ZXAI013103decoder.h in Headers */,
-				0D7107DA1D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.h in Headers */,
+				0D187B6C1D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h in Headers */,
 				0D7106921D49E03A00EACCCE /* ZXDimension.h in Headers */,
 				0D7106751D49E03A00EACCCE /* ZXCharacterSetECI.h in Headers */,
 				0D71062B1D49E03A00EACCCE /* ZXISBNResultParser.h in Headers */,
+				0D187B791D4F19730041C9B7 /* JBNetwork.h in Headers */,
 				0D71076A1D49E03A00EACCCE /* ZXPDF417Detector.h in Headers */,
 				0D7106941D49E03A00EACCCE /* ZXEncodeHints.h in Headers */,
 				0D71067F1D49E03A00EACCCE /* ZXGridSampler.h in Headers */,
@@ -2296,7 +2318,7 @@
 				0D7106961D49E03A00EACCCE /* ZXErrors.h in Headers */,
 				0D7106E91D49E03A00EACCCE /* ZXAI01393xDecoder.h in Headers */,
 				0D7106691D49E03A00EACCCE /* ZXReedSolomonEncoder.h in Headers */,
-				0D7107E01D49E9CD00EACCCE /* LBXAlertAction.h in Headers */,
+				0D187B721D4F12D60041C9B7 /* LBXAlertAction.h in Headers */,
 				0D7107911D49E03A00EACCCE /* ZXQRCodeFormatInformation.h in Headers */,
 				0D7107A71D49E03A00EACCCE /* ZXQRCodeEncoder.h in Headers */,
 				0D7105EB1D49E03A00EACCCE /* LBXScanWrapper.h in Headers */,
@@ -2333,7 +2355,7 @@
 				0D7105EF1D49E03A00EACCCE /* LBXZXCaptureDelegate.h in Headers */,
 				0D71078D1D49E03A00EACCCE /* ZXQRCodeDecoderMetaData.h in Headers */,
 				0D7106771D49E03A00EACCCE /* ZXDecoderResult.h in Headers */,
-				0D7107DE1D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.h in Headers */,
+				0D187B701D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.h in Headers */,
 				0D7106A01D49E03A00EACCCE /* ZXResult.h in Headers */,
 				0D7107011D49E03A00EACCCE /* ZXRSSExpandedDecodedObject.h in Headers */,
 				0D71067B1D49E03A00EACCCE /* ZXDetectorResult.h in Headers */,
@@ -2413,10 +2435,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0D013E161D3E196900D34C1F /* Build configuration list for PBXNativeTarget "极光宝盒" */;
 			buildPhases = (
+				D9DDC4945C6D91A444018AE4 /* [CP] Check Pods Manifest.lock */,
 				0D013DFB1D3E196800D34C1F /* Sources */,
 				0D013DFC1D3E196800D34C1F /* Frameworks */,
 				0D013DFD1D3E196800D34C1F /* Resources */,
 				BE116C622E89AE01E95CFA0D /* Headers */,
+				FEA11ABEE2C6EBA0F1DCCCDA /* [CP] Embed Pods Frameworks */,
+				65E5D88C3F9E1F5AA3A2C20F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2475,9 +2500,8 @@
 				0D013E0F1D3E196900D34C1F /* Assets.xcassets in Resources */,
 				0D71FFED1D49DC6B00EACCCE /* JBMessageViewController.xib in Resources */,
 				0D7107C21D49E60400EACCCE /* CodeScan.bundle in Resources */,
-				0D7107E21D49E9CD00EACCCE /* LICENSE in Resources */,
+				0D187B741D4F12D60041C9B7 /* LICENSE in Resources */,
 				0D013E0D1D3E196900D34C1F /* Main.storyboard in Resources */,
-				0D7107CA1D49E8F400EACCCE /* JBScanResultViewController.xib in Resources */,
 				0DBC81C01D47064A0059336F /* JBAppsTableViewController.xib in Resources */,
 				0D560AB41D3F19AA0030D836 /* JBChannelTableViewCell.xib in Resources */,
 				0D560AC51D3F53910030D836 /* JBAccountViewController.xib in Resources */,
@@ -2485,6 +2509,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		65E5D88C3F9E1F5AA3A2C20F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-极光宝盒/Pods-极光宝盒-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D9DDC4945C6D91A444018AE4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FEA11ABEE2C6EBA0F1DCCCDA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-极光宝盒/Pods-极光宝盒-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0D013DFB1D3E196800D34C1F /* Sources */ = {
@@ -2499,7 +2571,7 @@
 				0D7106391D49E03A00EACCCE /* ZXSMSParsedResult.m in Sources */,
 				0D7107A61D49E03A00EACCCE /* ZXQRCodeBlockPair.m in Sources */,
 				0D7107921D49E03A00EACCCE /* ZXQRCodeFormatInformation.m in Sources */,
-				0D7107DF1D49E9CD00EACCCE /* UIAlertView+LBXAlertAction.m in Sources */,
+				0D187B711D4F12D60041C9B7 /* UIAlertView+LBXAlertAction.m in Sources */,
 				0D7107B71D49E03A00EACCCE /* ZXQRCodeWriter.m in Sources */,
 				0D71063B1D49E03A00EACCCE /* ZXSMSTOMMSTOResultParser.m in Sources */,
 				0D71074F1D49E03A00EACCCE /* ZXUPCEReader.m in Sources */,
@@ -2564,7 +2636,6 @@
 				0D7106C91D49E03A00EACCCE /* ZXDataMatrixSymbolInfo144.m in Sources */,
 				0D7107261D49E03A00EACCCE /* ZXCode39Writer.m in Sources */,
 				0D7107021D49E03A00EACCCE /* ZXRSSExpandedDecodedObject.m in Sources */,
-				0D7107CC1D49E97100EACCCE /* JBScanResultViewController.m in Sources */,
 				0D7106551D49E03A00EACCCE /* ZXWifiResultParser.m in Sources */,
 				0D013E071D3E196900D34C1F /* AppDelegate.m in Sources */,
 				0D7107751D49E03A00EACCCE /* ZXPDF417Dimensions.m in Sources */,
@@ -2584,7 +2655,7 @@
 				0D71072C1D49E03A00EACCCE /* ZXEAN13Writer.m in Sources */,
 				0D7106681D49E03A00EACCCE /* ZXReedSolomonDecoder.m in Sources */,
 				0D7107A41D49E03A00EACCCE /* ZXQRCode.m in Sources */,
-				0D7107DD1D49E9CD00EACCCE /* UIAlertController+supportedInterfaceOrientations.m in Sources */,
+				0D187B6F1D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.m in Sources */,
 				0D560AB91D3F20F70030D836 /* JBChannelTableViewController.m in Sources */,
 				0D71075D1D49E03A00EACCCE /* ZXPDF417Codeword.m in Sources */,
 				0D7105F51D49E03A00EACCCE /* ZXAztecDecoder.m in Sources */,
@@ -2599,13 +2670,14 @@
 				0D7107511D49E03A00EACCCE /* ZXModulusGF.m in Sources */,
 				0D7106841D49E03A00EACCCE /* ZXIntArray.m in Sources */,
 				0D71065C1D49E03A00EACCCE /* ZXImage.m in Sources */,
-				0D7107DB1D49E9CD00EACCCE /* UIActionSheet+LBXAlertAction.m in Sources */,
+				0D187B6D1D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m in Sources */,
 				0D7107651D49E03A00EACCCE /* ZXPDF417DetectionResultColumn.m in Sources */,
 				0D71069E1D49E03A00EACCCE /* ZXPlanarYUVLuminanceSource.m in Sources */,
 				0D7106101D49E03A00EACCCE /* ZXAddressBookAUResultParser.m in Sources */,
 				0D7106AC1D49E03A00EACCCE /* ZXDataMatrixDataBlock.m in Sources */,
 				0D7106601D49E03A00EACCCE /* ZXMonochromeRectangleDetector.m in Sources */,
 				0D7107B21D49E03A00EACCCE /* ZXQRCodeMultiReader.m in Sources */,
+				0D187B7A1D4F19730041C9B7 /* JBNetwork.m in Sources */,
 				0D71067A1D49E03A00EACCCE /* ZXDefaultGridSampler.m in Sources */,
 				0D7106DB1D49E03A00EACCCE /* ZXMaxiCodeReader.m in Sources */,
 				0D7106281D49E03A00EACCCE /* ZXGeoResultParser.m in Sources */,
@@ -2674,7 +2746,7 @@
 				0D7106911D49E03A00EACCCE /* ZXDecodeHints.m in Sources */,
 				0DBC81BF1D47064A0059336F /* JBAppsTableViewController.m in Sources */,
 				0D71073D1D49E03A00EACCCE /* ZXOneDimensionalCodeWriter.m in Sources */,
-				0D7107E11D49E9CD00EACCCE /* LBXAlertAction.m in Sources */,
+				0D187B731D4F12D60041C9B7 /* LBXAlertAction.m in Sources */,
 				0D71067E1D49E03A00EACCCE /* ZXGlobalHistogramBinarizer.m in Sources */,
 				0D7105F11D49E03A00EACCCE /* ZXingWrapper.m in Sources */,
 				0D7106451D49E03A00EACCCE /* ZXURIParsedResult.m in Sources */,
@@ -2710,7 +2782,7 @@
 				0D7106F81D49E03A00EACCCE /* ZXRSSExpandedBlockParsedResult.m in Sources */,
 				0D7106141D49E03A00EACCCE /* ZXAddressBookParsedResult.m in Sources */,
 				0D560AD01D3F5DA50030D836 /* JBMessageTableViewCell.m in Sources */,
-				0D7107E31D49E9CD00EACCCE /* README.md in Sources */,
+				0D187B751D4F12D60041C9B7 /* README.md in Sources */,
 				0D7106CB1D49E03A00EACCCE /* ZXDataMatrixTextEncoder.m in Sources */,
 				0D7106761D49E03A00EACCCE /* ZXCharacterSetECI.m in Sources */,
 				0D7106471D49E03A00EACCCE /* ZXURIResultParser.m in Sources */,
@@ -2849,6 +2921,7 @@
 		};
 		0D013E171D3E196900D34C1F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 076A22A2E46DB68A079EE8E3 /* Pods-极光宝盒.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2863,6 +2936,7 @@
 		};
 		0D013E181D3E196900D34C1F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 940FE2803CA927CD28E065C5 /* Pods-极光宝盒.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

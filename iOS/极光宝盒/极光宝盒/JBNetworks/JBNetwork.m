@@ -1,0 +1,125 @@
+//
+//  JBNetwork.m
+//  极光宝盒
+//
+//  Created by wuxingchen on 16/8/1.
+//  Copyright © 2016年 57380422@qq.com. All rights reserved.
+//
+
+#import "JBNetwork.h"
+#import <AFNetworking.h>
+
+NSString *const base_url = @"base_url/v1/developers/";
+
+#define IsReachable [AFNetworkReachabilityManager sharedManager].isReachable
+#define SumStr(a,b) [NSString stringWithFormat:@"%@%@", a, b]
+
+@implementation JBNetwork
+
+typedef NS_ENUM(NSInteger, RequestHttpType){
+    RequestHttpTypePOST = 1,
+    RequestHttpTypeGET,
+};
+
+#pragma mark - public
+
+//获取 developer 信息
+// { "devname" : "testuser" }
++(void)getDevInfo:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
+    [JBNetwork GET:devkey paramtes:devkey complete:^(id responseObject) {
+        complete(responseObject);
+    }];
+}
+
+//获取 devkey 下的 channel 列表
+/*
+ { 
+    "channels" : 
+                [
+                    "github",
+                    "slack"
+                ]
+}
+ */
++(void)getChannels:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
+    [JBNetwork GET:SumStr(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
+        complete(responseObject);
+    }];
+}
+
+
+#pragma mark - private
+
++(void)POST:(NSString *)urlStr
+   paramtes:(id)param
+       body:(NSData*)body
+   complete:(void (^)(id responseObject))complete{
+    [self requestWithUrl:urlStr paramtes:param type:RequestHttpTypePOST body:body complete:^(id responseObject) {
+        complete(responseObject);
+    }];
+}
+
++(void)GET:(NSString *)urlStr
+   paramtes:(id)param
+   complete:(void (^)(id responseObject))complete{
+    [self requestWithUrl:urlStr paramtes:param type:RequestHttpTypeGET body:nil complete:^(id responseObject) {
+        complete(responseObject);
+    }];
+}
+
++(NSURLSessionDataTask *)requestWithUrl:(NSString *)urlStr
+                               paramtes:(id)param
+                                   type:(RequestHttpType)type
+                                   body:(NSData*)body
+                               complete:(void (^)(id responseObject))complete{
+
+    if (IsReachable){
+        NSLog(@"网断，再试");
+        if (complete){
+            complete(nil);
+        }
+        return nil;
+    }
+
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+    NSString *requestType = (type == RequestHttpTypeGET ? @"GET" : @"POST");
+    AFHTTPRequestSerializer *requestSerializer = [AFHTTPRequestSerializer serializer];
+    [requestSerializer setValue:@"Basic (base64 auth string)" forHTTPHeaderField:@"Authorization"];
+    [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
+    NSString *requestUrlStr = [NSString stringWithFormat:@"%@%@",base_url,urlStr];
+    NSMutableURLRequest *request = [requestSerializer requestWithMethod:requestType URLString:requestUrlStr parameters:param error:nil];
+
+    request.HTTPBody = body;
+
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+
+    AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"charset=utf-8", nil];
+    responseSerializer.acceptableStatusCodes = [NSIndexSet indexSetWithIndex:200];
+
+    manager.responseSerializer = responseSerializer;
+
+    NSURLSessionDataTask *dataTask = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+        if (!error){
+            complete(responseObject);
+        }
+
+    }];
+
+    // 开始请求
+    [dataTask resume];
+    //    [dataTask cancel];
+    
+    return dataTask;
+
+}
+
+
+@end

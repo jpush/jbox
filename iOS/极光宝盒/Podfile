@@ -1,0 +1,3 @@
+target '极光宝盒' do
+pod 'AFNetworking'
+end

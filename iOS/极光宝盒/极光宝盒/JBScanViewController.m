@@ -7,7 +7,7 @@
 //
 
 #import "JBScanViewController.h"
-#import "JBScanResultViewController.h"
+#import "JBAccountViewController.h"
 #import "LBXScanView.h"
 #import "LBXScanResult.h"
 #import "LBXScanWrapper.h"
@@ -112,10 +112,10 @@
 }
 
 - (void)showScanResultViewController:(LBXScanResult*)strResult{
-    JBScanResultViewController *controller = [JBScanResultViewController new];
-    controller.strScan = strResult.strScanned;
-    controller.strCodeType = strResult.strBarCodeType;
-    [self.navigationController pushViewController:controller animated:YES];
+    JBAccountViewController *controller = self.navigationController.viewControllers[1];
+    controller.scanString   = strResult.strScanned;
+    controller.scanCodeType = strResult.strBarCodeType;
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end
