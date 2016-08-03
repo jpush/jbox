@@ -6,6 +6,7 @@ from jpush import common
 
 @api.route('/message/<integration_id>/<token>', methods=['POST'])
 def send_message(integration_id, token):
+    print("haungmin1234")
     if not request.json or not 'message' in request.json or not 'title' in request.json:
         abort(400)
     integration = Integration.verify_auth_token(token)
