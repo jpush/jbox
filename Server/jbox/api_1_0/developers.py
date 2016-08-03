@@ -127,7 +127,6 @@ def get_integrations(dev_key):
                           'channel': integration.channel})
     return jsonify(data_json), 200
 
-# FIX: TOKEN
 # 添加一个集成，并返回 integration_id ，如果 channel 已存在，直接绑定该 channel， 否则新建一个 channel
 @api.route('/developers/<dev_key>/integrations', methods=['POST'])
 def create_integrations(dev_key):
@@ -137,7 +136,7 @@ def create_integrations(dev_key):
     if developer is None:
         abort(400)
     # channel_list = Channel.query.filter_by(developer_id=developer.id).all()
-    channel_list = developer.channels.all()
+    channel_list = developer.channels
     is_include_channel = False
     for channel in channel_list:
         if request.json['channel'] == channel.channel:
@@ -227,4 +226,4 @@ def regenerate_integration_token(integration_id):
     if integration is None:
         abort(400)
     token = integration.generate_auth_token(3600)
-    return jsonify({'token': token})
+    return jsonify({'token': token.decode('utf-8')})
