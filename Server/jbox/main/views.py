@@ -9,11 +9,7 @@ from ..models import Developer, Integration
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    name = session.get('username')
-    if name is None:
-        return render_template('index.html')
-    else:
-        return render_template('index_logged_in.html', username=name)
+    return render_template('index.html')
 
 
 @main.route('/document', methods=['GET'])

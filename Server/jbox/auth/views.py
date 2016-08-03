@@ -33,3 +33,8 @@ def logout():
 @auth.route('/manage', methods=['GET'])
 def manage():
     return render_template('auth/manage.html')
+
+
+@auth.route('/manage/create_integration', methods=['GET', 'POST'])
+def create_integration():
+    return render_template('auth/create_integration.html')
