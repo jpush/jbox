@@ -12,6 +12,8 @@
 		0D013E0D1D3E196900D34C1F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D013E0B1D3E196900D34C1F /* Main.storyboard */; };
 		0D013E0F1D3E196900D34C1F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D013E0E1D3E196900D34C1F /* Assets.xcassets */; };
 		0D013E121D3E196900D34C1F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D013E101D3E196900D34C1F /* LaunchScreen.storyboard */; };
+		0D10E0E51D530AAF00DE58D2 /* UILabel+ContentSize.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D10E0E31D530AAF00DE58D2 /* UILabel+ContentSize.h */; };
+		0D10E0E61D530AAF00DE58D2 /* UILabel+ContentSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D10E0E41D530AAF00DE58D2 /* UILabel+ContentSize.m */; };
 		0D187B6C1D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D187B621D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h */; };
 		0D187B6D1D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D187B631D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m */; };
 		0D187B6E1D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D187B641D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h */; };
@@ -558,6 +560,8 @@
 		0D013E0E1D3E196900D34C1F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0D013E111D3E196900D34C1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0D013E131D3E196900D34C1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0D10E0E31D530AAF00DE58D2 /* UILabel+ContentSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+ContentSize.h"; sourceTree = "<group>"; };
+		0D10E0E41D530AAF00DE58D2 /* UILabel+ContentSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ContentSize.m"; sourceTree = "<group>"; };
 		0D187B621D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+LBXAlertAction.h"; sourceTree = "<group>"; };
 		0D187B631D4F12D60041C9B7 /* UIActionSheet+LBXAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+LBXAlertAction.m"; sourceTree = "<group>"; };
 		0D187B641D4F12D60041C9B7 /* UIAlertController+supportedInterfaceOrientations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+supportedInterfaceOrientations.h"; sourceTree = "<group>"; };
@@ -1332,6 +1336,8 @@
 			children = (
 				0D286C5A1D3E28F300BCE395 /* UIColor+Hex.h */,
 				0D286C5B1D3E28F300BCE395 /* UIColor+Hex.m */,
+				0D10E0E31D530AAF00DE58D2 /* UILabel+ContentSize.h */,
+				0D10E0E41D530AAF00DE58D2 /* UILabel+ContentSize.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -2418,6 +2424,7 @@
 				0D7106D21D49E03A00EACCCE /* ZXingObjCDataMatrix.h in Headers */,
 				0D7106D51D49E03A00EACCCE /* ZXMaxiCodeDecodedBitStreamParser.h in Headers */,
 				0D71065F1D49E03A00EACCCE /* ZXMonochromeRectangleDetector.h in Headers */,
+				0D10E0E51D530AAF00DE58D2 /* UILabel+ContentSize.h in Headers */,
 				0D7106081D49E03A00EACCCE /* ZXAztecReader.h in Headers */,
 				0D71060D1D49E03A00EACCCE /* ZXAbstractDoCoMoResultParser.h in Headers */,
 				0D7107031D49E03A00EACCCE /* ZXRSSExpandedFieldParser.h in Headers */,
@@ -2754,6 +2761,7 @@
 				0D7107941D49E03A00EACCCE /* ZXQRCodeMode.m in Sources */,
 				0D71070C1D49E03A00EACCCE /* ZXRSSExpandedReader.m in Sources */,
 				0D7107841D49E03A00EACCCE /* ZXQRCodeBitMatrixParser.m in Sources */,
+				0D10E0E61D530AAF00DE58D2 /* UILabel+ContentSize.m in Sources */,
 				0D7105F91D49E03A00EACCCE /* ZXAztecBinaryShiftToken.m in Sources */,
 				0D7105E61D49E03A00EACCCE /* LBXScanView.m in Sources */,
 				0D7107671D49E03A00EACCCE /* ZXPDF417DetectionResultRowIndicatorColumn.m in Sources */,

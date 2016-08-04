@@ -12,7 +12,7 @@
 NSString *const base_url = @"base_url/v1/developers/";
 
 #define IsReachable [AFNetworkReachabilityManager sharedManager].isReachable
-#define SumStr(a,b) [NSString stringWithFormat:@"%@%@", a, b]
+#define StrBy(a,b) [NSString stringWithFormat:@"%@%@", a, b]
 
 @implementation JBNetwork
 
@@ -21,10 +21,11 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
     RequestHttpTypeGET,
 };
 
+//--------------------------------------- public ---------------------------------------//
+
 #pragma mark - public
 
 //获取 developer 信息
-// { "devname" : "testuser" }
 +(void)getDevInfo:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
     [JBNetwork GET:devkey paramtes:devkey complete:^(id responseObject) {
         complete(responseObject);
@@ -32,21 +33,21 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 }
 
 //获取 devkey 下的 channel 列表
-/*
- { 
-    "channels" : 
-                [
-                    "github",
-                    "slack"
-                ]
-}
- */
 +(void)getChannels:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
-    [JBNetwork GET:SumStr(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
+    [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
         complete(responseObject);
     }];
 }
 
+//获取 devkey 下的所有自定义应用的 appid（Web 、 App）
++(void)getAppidUnderDevkey:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
+    [JBNetwork GET:StrBy(devkey, @"/app_ids") paramtes:nil complete:^(id responseObject) {
+        complete(responseObject);
+    }];
+}
+
+
+//--------------------------------------- private ---------------------------------------//
 
 #pragma mark - private
 
@@ -72,7 +73,6 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
                                    type:(RequestHttpType)type
                                    body:(NSData*)body
                                complete:(void (^)(id responseObject))complete{
-
     if (IsReachable){
         NSLog(@"网断，再试");
         if (complete){
@@ -118,8 +118,6 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
     //    [dataTask cancel];
     
     return dataTask;
-
 }
-
 
 @end
