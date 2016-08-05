@@ -58,18 +58,14 @@ def create_channel(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(404)
-    # channel = Channel.query.filter_by(developer_id=developer.id).first()
-    channel = developer.channels.first()
-    if channel is None or channel.channel != request.json['channel']:
-        new_channel = Channel(developer=developer, channel=request.json['channel'])
-        db.session.add(new_channel)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
-            abort(500)
+    channels = developer.channels
+    if channels is None:
+        create_channel_and_insert2db(developer, request.json['channel'])
     else:
-        return jsonify({'created': False}), 304
+        for channel in channels:
+            if channel.channel == request.json['channel']:
+                return jsonify({'existed': True}), 304
+        create_channel_and_insert2db(developer, request.json['channel'])
     return jsonify({'created': True}), 201
 
 
@@ -210,6 +206,16 @@ def modificate_integration(dev_key, integration_id):
         db.session.rollback()
         abort(500)
     return jsonify({'modification': True}), 200
+
+
+def create_channel_and_insert2db(developer, channel):
+    new_channel = Channel(developer=developer, channel=channel)
+    db.session.add(new_channel)
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
+        abort(500)
 
 
 def get_developer_with_devkey(dev_key):
