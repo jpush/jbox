@@ -131,8 +131,8 @@ class Channel(db.Model):
 
 
 @login_manager.user_loader
-def load_user(user_id):
-    return Developer.query.get(int(user_id))
+def load_user(developer_id):
+    return Developer.query.get(int(developer_id))
 
 
 def generate_dev_key():

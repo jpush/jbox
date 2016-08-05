@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% block title %}极光宝盒-创建集成{% endblock %}
+
 {% block content %}
-    <p>创建新集成</p>
-    <div class="col-md-4">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-4">
         <div>
-            <label>应用名</label>
-            <input title="应用名" class="input-lg" type="text" name="integration_name"/>
+            <h3><span class="label label-info">应用名</span></h3>
+            <input title="应用名" class="input-lg" type="text" style="margin-left: 10px" name="integration_name"/>
         </div>
         <div>
             <span>应用描述</span>
