@@ -39,3 +39,7 @@ def document():
 @main.route('/guide', methods=['GET'])
 def guide():
     return render_template('guide.html')
+
+@main.route('/qrcode', methods=['GET'])
+def qrcode():
+    return render_template('qrcode.html')
