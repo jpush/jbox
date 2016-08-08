@@ -22,3 +22,11 @@ def manage():
 @auth.route('/manage/create_integration', methods=['GET', 'POST'])
 def create_integration():
     return render_template('auth/create.html')
+
+@auth.route('new/postTochannels', methods = ['GET'])
+def post_to_channel():
+    return render_template('auth/new/postToChannels.html')
+
+@auth.route('new/channel', methods= ['GET'])
+def new_channel():
+    return render_template('auth/new/channel.html')

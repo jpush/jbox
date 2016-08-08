@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_manage.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
@@ -8,7 +8,7 @@
 			<h2>
 				集成自己的应用
 			</h2>
-			 <button class="btn btn-info btn-large" type="button" onclick=window.location.href="{{ url_for('auth.create_integration') }}";>新建自定义集成</button>
+			 <button class="btn btn-info btn-large" type="button" onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>新建自定义集成</button>
 
 			<table class="table">
 				<thead>

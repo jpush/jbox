@@ -1,0 +1,20 @@
+{% extends "base_manage.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}极光宝盒-创建集成{% endblock %}
+
+{% block content %}
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-4">
+        <div>
+            <span>应用描述</span>
+            <input title="应用描述" class="input-lg" type="text" name="integration_desc"/>
+        </div>
+        <div>
+            <button title="取消" class="btn-lg btn-info" type="button">取消</button>
+            <button title="新建Channel" class="btn-lg btn-info" type="button">新建channel</button>
+        </div>
+    </div>
+{% endblock %}

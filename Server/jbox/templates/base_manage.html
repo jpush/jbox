@@ -15,16 +15,8 @@
              </div>
              <div class="navbar-collapse collapse">
                  <ul class="nav navbar-nav">
-                     <li><a href="{{ url_for('main.document') }}">API文档</a></li>
-                 </ul>
-                 <ul class="nav navbar-nav">
-                     <li><a href="{{ url_for('main.guide') }}">guide</a></li>
-                 </ul>
-                {% if current_user.is_authenticated %}
-                 <ul class="nav navbar-nav">
                      <li><a href="{{ url_for('auth.manage') }}">管理</a> </li>
                  </ul>
-                {% endif %}
                  <ul class="nav navbar-nav navbar-right">
                      {% if current_user.is_authenticated %}
                      <li><a href="{{ url_for('auth.logout') }}">登出</a></li>

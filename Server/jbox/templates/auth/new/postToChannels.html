@@ -1,0 +1,23 @@
+{% extends "base_manage.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}极光宝盒-创建集成{% endblock %}
+
+{% block content %}
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-4">
+        <div>
+            <select title="选择一个channel">
+                <option value="channel1">Channel1</option>
+                <option value="channel2">Channel2</option>
+                <option value="channel3">Channel3</option>
+            </select>
+        </div>
+        <div>
+            <button title="新建Channel" class="btn-lg btn-info" type="button" onclick=window.location.href="{{ url_for('auth.new_channel') }}";>新建channel</button>
+        </div>
+        <button class="btn-lg bg-success" onclick="">添加自定义集成</button>
+    </div>
+{% endblock %}
