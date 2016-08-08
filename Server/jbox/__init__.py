@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from config import config
+
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()

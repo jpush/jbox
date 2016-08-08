@@ -7,7 +7,6 @@ from jbox import db
 from flask_login import UserMixin
 from . import login_manager
 
-
 class Developer(UserMixin, db.Model):
     __tablename__ = 'developers'
     id = db.Column(db.Integer, primary_key=True)
@@ -69,9 +68,17 @@ class Developer(UserMixin, db.Model):
                         b = False
         return True
 
+@login_manager.user_loader
+def developer_loader(platform, platform_id):
+    developer = Developer.query.filter_by(platform=platform,platform_id=platform_id)
+    return developer
 
-
-
+@login_manager.request_loader
+def request_loader(request):
+    platform = request.form.get("platform")
+    platform_id = request.form.get("platform")
+    developer = Developer.query.filter_by(platform=platform, platform_id=platform_id)
+    return developer
 
 class Integration(db.Model):
     __tablename__ = 'integrations'
