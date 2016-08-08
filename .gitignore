@@ -21,6 +21,8 @@ DerivedData
 *.ipa
 *.py[cod]
 *.pyc
+*.*.pyc
+*
 *.xcuserstate
 project.xcworkspace
 

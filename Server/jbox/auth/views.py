@@ -25,6 +25,7 @@ def manage():
 def create_integration():
     return render_template('auth/create.html')
 
+
 @auth.route('new/postTochannels', methods = ['GET'])
 @login_required
 def post_to_channel():
