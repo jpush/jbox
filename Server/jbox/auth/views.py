@@ -15,18 +15,22 @@ def logout():
 
 
 @auth.route('/manage', methods=['GET'])
+@login_required
 def manage():
     return render_template('auth/manage.html')
 
 
 @auth.route('/manage/create_integration', methods=['GET', 'POST'])
+@login_required
 def create_integration():
     return render_template('auth/create.html')
 
 @auth.route('new/postTochannels', methods = ['GET'])
+@login_required
 def post_to_channel():
     return render_template('auth/new/postToChannels.html')
 
 @auth.route('new/channel', methods= ['GET'])
+@login_required
 def new_channel():
     return render_template('auth/new/channel.html')

@@ -19,6 +19,7 @@ xcuserdata
 DerivedData
 *.hmap
 *.ipa
+*.py[cod]
 *.pyc
 *.xcuserstate
 project.xcworkspace
