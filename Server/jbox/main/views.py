@@ -22,7 +22,7 @@ def login():
         flash('Should input username and password')
     else:
         if form.validate_on_submit():
-            developer = Developer.query.filter_by(id=1).first()
+            developer = Developer.query.filter_by(platform=form.platform.data, platform_id=form.platform_id.data).first()
             if developer is not None:
                 login_user(developer, remember=True)
                 return redirect(url_for('main.index'))
@@ -39,10 +39,6 @@ def document():
 @main.route('/guide', methods=['GET'])
 def guide():
     return render_template('guide.html')
-
-@main.route('/qrcode', methods=['GET'])
-def qrcode():
-    return render_template('qrcode.html')
 
 @main.route('/application', methods=['GET'])
 def application():

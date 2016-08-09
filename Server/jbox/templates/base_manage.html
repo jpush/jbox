@@ -19,6 +19,7 @@
                  </ul>
                  <ul class="nav navbar-nav navbar-right">
                      {% if current_user.is_authenticated %}
+                     <li><a href="{{ url_for('auth.qrcode') }}">二维码</a></li>
                      <li><a href="{{ url_for('auth.logout') }}">登出</a></li>
                      {% else %}
                      <li><a href="{{ url_for('main.login') }}">登录</a> </li>

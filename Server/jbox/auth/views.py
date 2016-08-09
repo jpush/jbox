@@ -35,5 +35,10 @@ def post_to_channel():
 @auth.route('/new/channel', methods= ['GET'])
 @login_required
 def new_channel():
-    print(current_user.dev_key,"huangmin5565")
     return render_template('auth/new/channel.html', dev_key=current_user.dev_key)
+
+@auth.route('/qrcode', methods=['GET'])
+@login_required
+def qrcode():
+    print(current_user.dev_key,"huangmin999")
+    return render_template('auth/qrcode.html', dev_key=current_user.dev_key)

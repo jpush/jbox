@@ -12,6 +12,6 @@ class UserForm(Form):
 
 
 class FakeUserForm(Form):
-    username = StringField('input username')
-    password = StringField('input password')
+    platform = StringField('input username')
+    platform_id = StringField('input password')
     submit = SubmitField('submit')
