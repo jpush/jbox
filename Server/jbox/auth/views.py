@@ -9,7 +9,7 @@ from ..main.forms import FakeUserForm
 @auth.route('/logout')
 @login_required
 def logout():
-    flask_login.logout_user()
+    logout_user()
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
 
@@ -18,7 +18,6 @@ def logout():
 @login_required
 def manage():
     return render_template('auth/manage.html')
-
 
 
 @auth.route('/manage/create_integration', methods=['GET', 'POST'])
@@ -32,8 +31,9 @@ def create_integration():
 def post_to_channel():
     return render_template('auth/new/postToChannels.html')
 
+
 @auth.route('/new/channel', methods= ['GET'])
 @login_required
 def new_channel():
     print(current_user.dev_key,"huangmin5565")
-    return render_template('auth/new/channel.html')
+    return render_template('auth/new/channel.html', dev_key=current_user.dev_key)

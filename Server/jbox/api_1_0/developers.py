@@ -45,7 +45,7 @@ def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(404)
-    return jsonify({'dev_key':developer.dev_key,
+    return jsonify({'dev_key': developer.dev_key,
                     'dev_name': developer.username,
                     'platform': developer.platform}), 200
 
@@ -53,6 +53,7 @@ def get_developer_info(dev_key):
 # 在dev_key 下创建一个 channel
 @api.route('/developers/<string:dev_key>/channels', methods=['POST'])
 def create_channel(dev_key):
+    print("creating channel")
     if not request.json or not 'channel' in request.json:
         abort(400)
     developer = Developer.query.filter_by(dev_key=dev_key).first()
@@ -64,9 +65,10 @@ def create_channel(dev_key):
     else:
         for channel in channels:
             if channel.channel == request.json['channel']:
-                return jsonify({'existed': True}), 304
+                print("existed")
+                return jsonify({'created': False, 'existed': True}), 304
         create_channel_and_insert2db(developer, request.json['channel'])
-    return jsonify({'created': True}), 201
+    return jsonify({'created': True, 'existed': False}), 201
 
 
 # 删除 dev_key 下的某个 channel

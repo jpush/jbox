@@ -4,20 +4,37 @@
 {% block title %}极光宝盒-创建集成{% endblock %}
 
 {% block content %}
-    <div class="col-lg-2">
+    <div class="col-lg-8 col-lg-offset-2"
+         style="padding: 10px; border-radius: 6px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .08); border: 1px solid #d8d8d8;"
+         xmlns="http://www.w3.org/1999/html">
+        <h4>推送到 Channel</h4>
+        <div class="row">
+            <div class="col-lg-2">
+                从选择一个 channel 开始, 接下来集成的应用的消息将会推送到这个 channel。
+            </div>
+            <div class="col-lg-6 col-lg-offset-1">
+                <div class="input-group">
+                    <input type="text" class="form-control" aria-label="..." placeholder="选择一个 channel">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="margin-top: 10px; position: absolute; right: 15px;">
+                    <a class="btn-link" href="{{ url_for('auth.new_channel') }}" style="color: #2ab27b">创建 channel</a>
+                </div>
+                <div style="margin-top: 40px;">
+                    <button class="btn-lg btn-info" type="button">添加自定义集成</button>
+                </div>
 
-    </div>
-    <div class="col-lg-4">
-        <div>
-            <select title="选择一个channel">
-                <option value="channel1">Channel1</option>
-                <option value="channel2">Channel2</option>
-                <option value="channel3">Channel3</option>
-            </select>
+            </div>
         </div>
-        <div>
-            <button title="新建Channel" class="btn-lg btn-info" type="button" onclick=window.location.href="{{ url_for('auth.new_channel') }}";>新建channel</button>
-        </div>
-        <button class="btn-lg bg-success" onclick="">添加自定义集成</button>
     </div>
 {% endblock %}
