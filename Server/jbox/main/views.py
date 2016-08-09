@@ -25,7 +25,7 @@ def login():
             developer = Developer.query.filter_by(platform=form.platform.data, platform_id=form.platform_id.data).first()
             if developer is not None:
                 login_user(developer, remember=True)
-                return redirect(url_for('main.index'))
+                return redirect(url_for('auth.manage'))
             else:
                 flash('Can find user by user_id=1')
     return render_template('login.html', form=form)
