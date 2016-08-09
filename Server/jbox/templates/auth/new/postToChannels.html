@@ -2,6 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}极光宝盒-创建集成{% endblock %}
+<body onload="showChannels()"></body>
 
 {% block content %}
     <div class="col-lg-8 col-lg-offset-2"
@@ -14,16 +15,13 @@
             </div>
             <div class="col-lg-6 col-lg-offset-1">
                 <div class="input-group">
-                    <input type="text" class="form-control" aria-label="..." placeholder="选择一个 channel">
+                    <input id="selected_channel" type="text" class="form-control" aria-label="..." placeholder="选择一个 channel">
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                        <ul id="content" class="dropdown-menu dropdown-menu-right">
+                            <li id="channel_list"><a href="#">Action</a></li>
                         </ul>
                     </div>
                 </div>
@@ -31,10 +29,56 @@
                     <a class="btn-link" href="{{ url_for('auth.new_channel') }}" style="color: #2ab27b">创建 channel</a>
                 </div>
                 <div style="margin-top: 40px;">
-                    <button class="btn-lg btn-info" type="button">添加自定义集成</button>
+                    <button id="create_integration_btn" class="btn-lg btn-info" type="button">添加自定义集成</button>
                 </div>
 
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="../../../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../static/js/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="../../../static/js/toastr.js"></script>
+    <script type="text/javascript">
+    var channels;
+        function showChannels() {
+            $.ajax()({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: '../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels',
+                success: function (data) {
+                    console.log(data);
+                    channels = data.channels;
+                    if (channels != undefined) {
+                        for (var i = 0; i < channels.length; i++) {
+                            $('#content').append(
+                                    $('<li>').append(
+                                            $('<a>').attr('href', i).append(
+                                                    $('<span>').attr('class', 'tab').append(channels[i])
+                                            )
+                                    )
+                            );
+                        }
+                    }
+                }
+            });
+        }
+
+        $('#selected_channel').autocomplete({
+            maxHeight: 400,
+            lookup: channels,
+            serviceUrl: '../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels',
+            dataType: 'json',
+            onSelect: function (suggestion) {
+                $(this).val(suggestion);
+            }
+        });
+
+        $('li').on('click', function () {
+            console.log($(this).text());
+            $('#selected_channel').val($(this).text());
+        });
+        $('#create_integration_btn').on('click', function () {
+
+        });
+    </script>
 {% endblock %}

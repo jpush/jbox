@@ -53,16 +53,17 @@
                 url: "../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels",
                 data: JSON.stringify({channel: new_channel}),
                 success: function (data) {
-                    console.log(data);
-                    if (data["created"]) {
-                        toastr.success("创建成功");
-                    }
-                    if (data.existed) {
+                    if (data != undefined) {
+                        if (data["created"]) {
+                            toastr.success("创建成功");
+                        }
+                    } else {
                         toastr.success("已存在 channel");
                     }
                 },
                 error: function (error) {
                     console.log(error);
+                    toastr.error("创建失败");
                 },
                 dataType: "json"
             });

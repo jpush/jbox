@@ -26,13 +26,13 @@ def create_integration():
     return render_template('auth/create.html')
 
 
-@auth.route('/new/postTochannels', methods = ['GET'])
+@auth.route('/new/postTochannels', methods=['GET'])
 @login_required
 def post_to_channel():
-    return render_template('auth/new/postToChannels.html')
+    return render_template('auth/new/postToChannels.html', dev_key=current_user.dev_key)
 
 
-@auth.route('/new/channel', methods= ['GET'])
+@auth.route('/new/channel', methods=['GET'])
 @login_required
 def new_channel():
     return render_template('auth/new/channel.html', dev_key=current_user.dev_key)
