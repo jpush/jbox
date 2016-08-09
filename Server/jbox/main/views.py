@@ -43,3 +43,7 @@ def guide():
 @main.route('/qrcode', methods=['GET'])
 def qrcode():
     return render_template('qrcode.html')
+
+@main.route('/application', methods=['GET'])
+def application():
+    return render_template('application.html')
