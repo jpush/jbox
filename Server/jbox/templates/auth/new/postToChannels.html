@@ -1,8 +1,9 @@
 {% extends "base_manage.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+<body onload="showChannels();"></body>
+
 {% block title %}极光宝盒-创建集成{% endblock %}
-<body onload="showChannels()"></body>
 
 {% block content %}
     <div class="col-lg-8 col-lg-offset-2"
@@ -15,13 +16,16 @@
             </div>
             <div class="col-lg-6 col-lg-offset-1">
                 <div class="input-group">
-                    <input id="selected_channel" type="text" class="form-control" aria-label="..." placeholder="选择一个 channel">
+                    <input id="selected_channel" type="text" class="form-control" aria-label="..."
+                           placeholder="选择一个 channel">
                     <div class="input-group-btn">
                         <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
                                 data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
                         <ul id="content" class="dropdown-menu dropdown-menu-right">
-                            <li id="channel_list"><a href="#">Action</a></li>
+                            {% for channel in channels %}
+                            <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -39,33 +43,9 @@
     <script type="text/javascript" src="../../../static/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="../../../static/js/toastr.js"></script>
     <script type="text/javascript">
-    var channels;
-        function showChannels() {
-            $.ajax()({
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                url: '../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels',
-                success: function (data) {
-                    console.log(data);
-                    channels = data.channels;
-                    if (channels != undefined) {
-                        for (var i = 0; i < channels.length; i++) {
-                            $('#content').append(
-                                    $('<li>').append(
-                                            $('<a>').attr('href', i).append(
-                                                    $('<span>').attr('class', 'tab').append(channels[i])
-                                            )
-                                    )
-                            );
-                        }
-                    }
-                }
-            });
-        }
-
         $('#selected_channel').autocomplete({
             maxHeight: 400,
-            lookup: channels,
+            lookup: {{ channels }},
             serviceUrl: '../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels',
             dataType: 'json',
             onSelect: function (suggestion) {
@@ -73,7 +53,8 @@
             }
         });
 
-        $('li').on('click', function () {
+        $('#slack').on('click', function () {
+            console.log('sdfjldslkfkds');
             console.log($(this).text());
             $('#selected_channel').val($(this).text());
         });
