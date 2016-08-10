@@ -22,10 +22,10 @@ def manage():
     return render_template('auth/manage.html')
 
 
-@auth.route('/manage/create_integration', methods=['GET', 'POST'])
+@auth.route('/manage/create_integration/<string:token>/<string:channel>', methods=['GET'])
 @login_required
-def create_integration():
-    return render_template('auth/create.html')
+def create_integration(token, channel):
+    return render_template('auth/create.html', token=token, channel=channel)
 
 
 @auth.route('/new/postTochannels', methods=['GET'])

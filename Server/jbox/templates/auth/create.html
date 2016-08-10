@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
 
-{% block title %}极光宝盒-创建集成{% endblock %}
+{% block title %}极光宝盒-编辑集成{% endblock %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row-fluid">
             <form class="col-lg-8 col-lg-offset-2" style="padding: 10px;">
+                <h3>webhook:api.jobx.com/ {{ token }}</h3>
                 <h3><span class="label label-info">应用名</span></h3>
                 <input title="应用名" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
                        type="text" name="integration_name"/>
@@ -23,17 +31,101 @@
                         <li><a href="#">Github</a></li>
                         <li><a href="#">Slack</a></li>
                     </ul>
-                    <a class="btn btn-link" style="color: #2ab27b;" role="button" data-toggle="collapse" href="#channel_collapse"
+                    <a class="btn btn-link" style="color: #2ab27b;" role="button" data-toggle="collapse"
+                       href="#channel_collapse"
                        aria-expanded="false" aria-controls="channel_collapse">新建 Channel</a>
                 </div>
                 <div class="collapse" id="channel_collapse" style="margin-top: 10px">
-                    <input class="input-lg" type="text" style="width: 60%; height: 46px; font-size: large" placeholder="输入 channel" name="channel_name"/>
+                    <input class="input-lg" type="text" style="width: 60%; height: 46px; font-size: large"
+                           placeholder="输入 channel" name="channel_name"/>
                     <button title="新建Channel" class="btn-lg btn-info" type="button">新建 Channel</button>
                 </div>
+                <div>
+                    <input type="file" id="picpath" name="icon_image">
+                    <a href="javascript:void(0);" class="button">上传集成标志</a>
+                    <input type="text" name="path" readonly>
+                    <img id="icon" src="#" title="icon">
+                </div>
                 <div style="margin-top: 10px">
-                    <button class="btn-lg" style="background-color: #2ab27b; color: #ffffff;" onclick="">添加自定义集成</button>
+                    <button class="btn-lg" style="background-color: #2ab27b; color: #ffffff;" onclick="">保存集成设置</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#icon').imgAreaSelect({
+                handles: true,
+                aspectRatio: '1:1',
+                show: true,
+                resizable: true,
+                autoHide: false,
+                onSelectChange: preview
+            });
+        });
+
+        $('<div><img id="view" src=' + atvatarUrl + ' style="position: relative;"/></div>')
+                .css({
+                    float: 'left',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    width: '100px',
+                    height: '100px'
+                }).insertAfter('#biuuu');
+
+        function preview(img, selection) {
+            var scaleX = 100 / (selection.width || 1);
+            var scaleY = 100 / (selection.height || 1);
+
+            //动态小头像 获取当前选中框的宽度，高度，左边框，右边框
+            $('#view').css({                          //view是预览图像的id
+                width: Math.round(scaleX * 300) + 'px',
+                height: Math.round(scaleY * 220) + 'px',
+                marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+                marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+            });
+        }
+
+        function previewImage(file) {
+            var porImg = $('#icon'),//首先获取大图片jquery对象
+                    viewImg = $('#view');//小图片jquery对象
+//判断该浏览器是否为w3c标准，既非IE浏览器
+            if (file["files"] && file["files"][0]) {
+//使用JavaScript的FileReader对象来读取本地数据，并且将数据结果赋值给image的src，具体该对象如何实现的还未深入研究
+                var reader = newFileReader();
+                reader.onload = function (evt) {
+                    porImg.attr({src: evt.target.result});
+                    viewImg.attr({src: evt.target.result});
+                };
+                reader.readAsDataURL(file.files[0]);
+            }
+//如果是IE浏览器，采用滤镜效果，进行显示，但特别注意的是该滤镜效果使用的对象是div对象，并非img对象，因此我们需要将原有的img对象remove同时生成新的div对象，并且赋值相应的class和id
+            else {
+//创建需要滤镜显示的div的dom对象
+                var ieImageDom = document.createElement("div");
+                var proIeImageDom = document.createElement("div");
+//设置对象的css属性和原有的img对象属性相同，添加相应的id属性值
+                $(ieImageDom).css({
+                    float: 'left',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    width: '100px',
+                    height: '100px'
+                }).attr({"id": "view"});
+                $(proIeImageDom).attr({"id": "biuuu"});
+//删除原有img对象，append创建div的dom对象
+                porImg.parent().prepend(proIeImageDom);
+                porImg.remove();
+                viewImg.parent().append(ieImageDom);
+                viewImg.remove();
+//采用滤镜效果生成图片预览
+                file.select();
+                path = document.selection.createRange().text;
+                $(ieImageDom).css({"filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")"});
+                $(proIeImageDom).css({"filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")"});
+// .style.filter ="progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\""+ path + "\")";//使用滤镜效果
+            }
+        }
+    </script>
 {% endblock %}

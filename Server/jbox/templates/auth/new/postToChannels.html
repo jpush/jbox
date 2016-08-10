@@ -24,7 +24,7 @@
                                 aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
                         <ul id="content" class="dropdown-menu dropdown-menu-right">
                             {% for channel in channels %}
-                            <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                                <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -33,33 +33,77 @@
                     <a class="btn-link" href="{{ url_for('auth.new_channel') }}" style="color: #2ab27b">创建 channel</a>
                 </div>
                 <div style="margin-top: 40px;">
-                    <button id="create_integration_btn" class="btn-lg btn-info" type="button">添加自定义集成</button>
+                    <button id="create_integration_btn" class="btn-lg btn-info" type="button">添加自定义集成
+                    </button>
                 </div>
 
             </div>
         </div>
     </div>
+    <link rel="stylesheet" type="text/css" href="../../../static/css/toastr.css">
     <script type="text/javascript" src="../../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../../static/js/jquery.autocomplete.js"></script>
     <script type="text/javascript" src="../../../static/js/toastr.js"></script>
     <script type="text/javascript">
-        $('#selected_channel').autocomplete({
-            maxHeight: 400,
-            lookup: {{ channels }},
-            serviceUrl: '../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels',
-            dataType: 'json',
-            onSelect: function (suggestion) {
-                $(this).val(suggestion);
-            }
+        var list = [];
+        {% if channels.__len__ == 0 %}
+            list.push("event_github");
+        {% else %}
+            {% for channel in channels %}
+                list.push({{ channel }});
+            {% endfor %}
+        {% endif %}
+
+        $(function () {
+            $('#selected_channel').autocomplete({
+                maxHeight: 400,
+                lookup: list,
+                onSelect: function (suggestion) {
+                    $(this).val(suggestion.value);
+                }
+            });
         });
 
-        $('#slack').on('click', function () {
-            console.log('sdfjldslkfkds');
-            console.log($(this).text());
-            $('#selected_channel').val($(this).text());
+        $('ul li').each(function () {
+            $(this).bind('click', function () {
+                console.log(this.id);
+                $('#selected_channel').val(this.id);
+            })
         });
-        $('#create_integration_btn').on('click', function () {
 
+        $(document).ready(function () {
+            $('#create_integration_btn').prop('disabled', true);
+            $('#selected_channel').keyup(function () {
+                if ($(this).val() != '') {
+                    $('#create_integration_btn').prop('disabled', false);
+                }
+            });
         });
+
+        $('#create_integration_btn').click(function () {
+            console.log('create integration');
+            var channel = $('#selected_channel').val();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/integrations",
+                data: JSON.stringify({channel: channel}),
+                success: function (data) {
+                    if (data != undefined) {
+                        if (data["token"]) {
+                            console.log('{{ url_for('auth.create_integration', token='sdfsafdsa', channel='sdfsafdfff') }}');
+                            window.location.href = '/auth/manage/create_integration/' + data["token"] + '/' + channel
+                        }
+                    } else {
+                        toastr.error("服务器异常");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("创建失败");
+                },
+                dataType: "json"
+            })
+        })
     </script>
 {% endblock %}

@@ -145,16 +145,16 @@ def load_user(developer_id):
 
 
 def generate_dev_key():
-    dev_key = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 40)])
+    dev_key = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 20)])
     return dev_key
 
 
 def generate_platform_id():
-    platform_id = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 40)])
+    platform_id = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 10)])
     return platform_id
 
 
 def generate_integration_id():
-    integration_id = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 40)])
+    integration_id = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 15)])
     return integration_id
 
