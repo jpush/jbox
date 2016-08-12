@@ -3,18 +3,24 @@ from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
 from .authentication import auth
 
+
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
 @api.route('/developers', methods=['POST'])
 def create_developer():
     if not request.json or not 'platform_id' in request.json:
         abort(400)
-    dev_key = generate_dev_key()
-    developer = Developer(dev_key=dev_key,
-                          platform=request.json['platform'],
-                          platform_id=request.json['platform_id'],
-                          username=request.json['username'])
-    developer.insert_to_db()
-    return jsonify({'dev_key': developer.dev_key}), 201
+    developer = Developer.query.filter_by(platform_id=request.json['platform_id'],
+                                          platform=request.json['platform']).first()
+    if developer is None:
+        dev_key = generate_dev_key()
+        developer = Developer(dev_key=dev_key,
+                              platform=request.json['platform'],
+                              platform_id=request.json['platform_id'],
+                              username=request.json['username'])
+        developer.insert_to_db()
+        return jsonify({'dev_key': developer.dev_key}), 201
+    else:
+        return jsonify({'created': False}), 304
 
 
 # 通过 platform 和 platform_id 来获取用户信息
@@ -39,7 +45,7 @@ def get_developer(platform, platform_id):
 #     return jsonify
 
 # 获取 developer 的信息, 通过 dev_key 查询
-@api.route('/developers/<dev_key>',methods=['GET'])
+@api.route('/developers/<dev_key>', methods=['GET'])
 @auth.login_required
 def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
@@ -53,7 +59,6 @@ def get_developer_info(dev_key):
 # 在dev_key 下创建一个 channel
 @api.route('/developers/<string:dev_key>/channels', methods=['POST'])
 def create_channel(dev_key):
-    print("creating channel")
     if not request.json or not 'channel' in request.json:
         abort(400)
     developer = Developer.query.filter_by(dev_key=dev_key).first()
@@ -105,6 +110,7 @@ def get_channels(dev_key):
         return jsonify({'channels': list}), 200
     return jsonify({'none': True}), 200
 
+
 # 获取 dev_key 下的所有自定义集成的信息
 @api.route('/developers/<dev_key>/integrations', methods=['GET'])
 @auth.login_required
@@ -124,6 +130,7 @@ def get_integrations(dev_key):
                           'icon': integration.icon,
                           'channel': integration.channel})
     return jsonify(data_json), 200
+
 
 # 添加一个集成，并返回 integration_id ，如果 channel 已存在，直接绑定该 channel， 否则新建一个 channel
 @api.route('/developers/<dev_key>/integrations', methods=['POST'])
@@ -175,13 +182,14 @@ def create_integrations(dev_key):
             db.session.rollback()
             abort(500)
 
+
 # PUT 修改 dev_key 下 所绑定的 integration
-@api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
+@api.route('/developers/<dev_key>/<integration_id>', methods=['POST', 'PUT'])
 def modificate_integration(dev_key, integration_id):
     if not request.json or not 'channel' in request.json:
         abort(400)
     developer = get_developer_with_devkey(dev_key)
-    integration = Integration.query.filter_by(developer_id=developer.id,integration_id=integration_id).first()
+    integration = Integration.query.filter_by(developer_id=developer.id, integration_id=integration_id).first()
     if integration is None:
         abort(400)
     integration.channel = request.json['channel']
@@ -215,6 +223,7 @@ def get_developer_with_devkey(dev_key):
     if developer is None:
         abort(400)
     return developer
+
 
 # FIX: TOKEN
 # 重新生成 integration token   这个接口没有测试

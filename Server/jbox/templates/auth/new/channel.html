@@ -1,6 +1,13 @@
 {% extends "base_manage.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+{% endblock %}
+
 {% block title %}极光宝盒-创建集成{% endblock %}
 
 {% block content %}
@@ -20,9 +27,6 @@
             </button>
         </div>
     </div>
-    <link rel="stylesheet" type="text/css" href="../../../static/css/toastr.css">
-    <script type="text/javascript" src="../../../static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../../../static/js/toastr.js"></script>
     <script type="text/javascript">
         toastr.options = {
             "closeButton": false,

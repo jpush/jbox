@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
 {% endblock %}
 
@@ -13,66 +15,149 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row-fluid">
-            <form class="col-lg-8 col-lg-offset-2" style="padding: 10px;">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <form name="edit_form" action="/auth/edit_integration/{{ integration_id }}" method="POST"
+                  class="col-lg-8 col-lg-offset-2" style="padding: 10px;">
                 <h3>webhook:api.jobx.com/ {{ token }}</h3>
-                <h3><span class="label label-info">应用名</span></h3>
-                <input title="应用名" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
-                       type="text" name="integration_name"/>
-                <h3><span class="label label-info">应用描述</span></h3>
-                <input title="应用描述" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
-                       type="text" name="integration_desc"/>
+                <h3><span class="label label-info" style="padding: 10px;">应用名</span></h3>
+                {{ form.integration_name(id='integration_name', style="margin-top: 5px; width: 100%; height: 46px; font-size: large") }}
+                {#                <input title="应用名" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"#}
+                {#                       type="text" name="integration_name"/>#}
+                <h3><span class="label label-info" style="padding: 10px;">应用描述</span></h3>
+                {{ form.description(id='desc', style="margin-top: 5px; width: 100%; height: 46px; font-size: large") }}
+                {#                <input title="应用描述" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"#}
+                {#                       type="text" name="integration_desc"/>#}
+                {#                {{ form.channel(style="margin-top: 10px") }}#}
+                {#                <a class="btn btn-link" style="color: #2ab27b;" role="button" data-toggle="collapse"#}
+                {#                   href="#channel_collapse"#}
+                {#                   aria-expanded="false" aria-controls="channel_collapse">新建 Channel</a>#}
                 <div class="dropdown" style="margin-top: 10px">
                     <button class="btn btn-default dropdown-toggle" type="button" id="channel_dropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        选择一个channel
+                        <span id="dropdowntitle">{{ channel }}</span>
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Github</a></li>
-                        <li><a href="#">Slack</a></li>
+                    {{ form.input(id="input_hidding", type="hidden") }}
+                    <ul id="content" class="dropdown-menu">
+                        {% for channel in channels %}
+                            <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                        {% endfor %}
                     </ul>
                     <a class="btn btn-link" style="color: #2ab27b;" role="button" data-toggle="collapse"
                        href="#channel_collapse"
                        aria-expanded="false" aria-controls="channel_collapse">新建 Channel</a>
                 </div>
-                <div class="collapse" id="channel_collapse" style="margin-top: 10px">
-                    <input class="input-lg" type="text" style="width: 60%; height: 46px; font-size: large"
-                           placeholder="输入 channel" name="channel_name"/>
-                    <button title="新建Channel" class="btn-lg btn-info" type="button">新建 Channel</button>
+                <div class="collapse" id="channel_collapse" style="margin-top: 20px">
+                    <input id="new_channel" class="input-lg" type="text"
+                           style="width: 60%; height: 46px; font-size: large"
+                           placeholder="输入 channel"/>
+                    <button id="create_channel" title="新建Channel" class="btn-lg btn-info" type="button">新建 Channel
+                    </button>
                 </div>
-                <div>
-                    <input type="file" id="picpath" name="icon_image">
-                    <a href="javascript:void(0);" class="button">上传集成标志</a>
-                    <input type="text" name="path" readonly>
-                    <img id="icon" src="#" title="icon">
+                <div id="upload_area" style="margin-top: 20px;">
+                    <h3><span class="label label-info" style="padding: 10px;">上传自定义集成标志</span></h3>
+                    {#                    <input type="file" id="picpath" name="picpath">#}
+                    {{ form.icon(id='picpath', style="margin-top: 20px") }}
+                    <div style="margin-top: 10px; margin-bottom: 20px">
+                        <img id="icon" src="#" title="icon">
+                    </div>
+
                 </div>
-                <div style="margin-top: 10px">
-                    <button class="btn-lg" style="background-color: #2ab27b; color: #ffffff;" onclick="">保存集成设置</button>
-                </div>
+                {{ form.submit(value='保存设置', style="position: absolute; left: 10px; background-color: #08E17E;
+                    color: #ffffff; padding: 10px; border-radius: 5px;") }}
+                {#                <div style="margin-top: 10px">#}
+                {#                    <input type="submit" value="保存设置" class="btn-lg"#}
+                {#                           style="position: absolute; left: 10px; background-color: #2ab27b; color: #ffffff;">#}
+                {#                </div>#}
             </form>
         </div>
     </div>
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("input[type='file']").change(function () {
+                previewImage(this);
+            });
+            $("#upload_area").find("a").click(function () {
+                document.edit_form.picpath.click();
+            });
+            if (!+[1,]) {
+                $('#upload_area').find("a").hide();
+                $("#upload_area").find("input[type='text']").hide();
+                $("#picpath").css({
+                    width: "240px",
+                    height: "20px",
+                    filter: "alpha(opacity=100)"
+                });
+            }
+            bindClick();
+        });
+
+        $(window).load(function () {
             $('#icon').imgAreaSelect({
                 handles: true,
                 aspectRatio: '1:1',
                 show: true,
                 resizable: true,
                 autoHide: false,
-                onSelectChange: preview
+                maxHeight: 200,
+                maxWidth: 200,
+                minHeight: 100,
+                minWidth: 100,
+                {#                onSelectChange: preview#}
             });
         });
 
-        $('<div><img id="view" src=' + atvatarUrl + ' style="position: relative;"/></div>')
-                .css({
-                    float: 'left',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    width: '100px',
-                    height: '100px'
-                }).insertAfter('#biuuu');
+        {#        $('<div><img id="view" src="#" style="position: relative;"/></div>')#}
+        {#                .css({#}
+        {#                    float: 'left',#}
+        {#                    position: 'relative',#}
+        {#                    overflow: 'hidden',#}
+        {#                    width: '100px',#}
+        {#                    height: '100px'#}
+        {#                }).insertAfter('#icon');#}
+
+        $('#create_channel').click(function () {
+            var new_channel = $('#new_channel').val();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "../../../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels",
+                data: JSON.stringify({channel: new_channel}),
+                success: function (data) {
+                    if (data != undefined) {
+                        if (data["created"]) {
+                            toastr.success("创建成功");
+                            $('#content').append('<li id="' + new_channel + '" class="channel_class"><a>'
+                                    + new_channel + '</a></li>');
+                            bindClick();
+                        }
+                    } else {
+                        toastr.success("已存在 channel");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("创建失败");
+                },
+                dataType: "json"
+            });
+        });
+
+        function bindClick() {
+            $('ul li').each(function () {
+            $(this).bind('click', function () {
+                console.log(this.id);
+                $('#dropdowntitle').text(this.id);
+                $('#input_hidding').val(this.id);
+            })
+        });
+        }
 
         function preview(img, selection) {
             var scaleX = 100 / (selection.width || 1);
@@ -93,7 +178,7 @@
 //判断该浏览器是否为w3c标准，既非IE浏览器
             if (file["files"] && file["files"][0]) {
 //使用JavaScript的FileReader对象来读取本地数据，并且将数据结果赋值给image的src，具体该对象如何实现的还未深入研究
-                var reader = newFileReader();
+                var reader = new FileReader();
                 reader.onload = function (evt) {
                     porImg.attr({src: evt.target.result});
                     viewImg.attr({src: evt.target.result});
@@ -113,7 +198,7 @@
                     width: '100px',
                     height: '100px'
                 }).attr({"id": "view"});
-                $(proIeImageDom).attr({"id": "biuuu"});
+                $(proIeImageDom).attr({"id": "icon"});
 //删除原有img对象，append创建div的dom对象
                 porImg.parent().prepend(proIeImageDom);
                 porImg.remove();

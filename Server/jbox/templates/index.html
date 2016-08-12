@@ -4,13 +4,19 @@
 {% block title %}Index{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>Hello!欢迎来到极光宝盒控制台{{ name }}!</h1>
-    <p><b>极光宝盒，<br>
-        你的消息管理中心，<br>
-        只需要简单配置，<br>
-        不需要写一行代码就能在 iOS 、android 端生成你的专属App
-    </b>
-    </p>
-</div>
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="page-header">
+        <h1>Hello!欢迎来到极光宝盒控制台{{ name }}!</h1>
+        <p><b>极光宝盒，<br>
+            你的消息管理中心，<br>
+            只需要简单配置，<br>
+            不需要写一行代码就能在 iOS 、android 端生成你的专属App
+        </b>
+        </p>
+    </div>
 {% endblock %}

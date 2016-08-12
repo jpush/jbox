@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired
 
 
@@ -13,5 +13,5 @@ class UserForm(Form):
 
 class FakeUserForm(Form):
     platform = StringField('input username')
-    platform_id = StringField('input password')
+    platform_id = PasswordField('input password')
     submit = SubmitField('submit')
