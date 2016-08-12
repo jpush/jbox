@@ -10,15 +10,47 @@
 #import "JBChannelTableViewCell.h"
 #import "JBMessageViewController.h"
 
+#import "JBNetwork.h"
+#import "JBSharedDevkey.h"
+
+#import "JPUSHService.h"
+
 @interface JBChannelTableViewController ()
+
+@property(nonatomic, retain)NSArray *channels;
 
 @end
 
 @implementation JBChannelTableViewController
 
+-(NSArray *)channels{
+    if (!_channels) {
+        _channels = [NSArray array];
+        self.channels = _channels;
+    }
+    return _channels;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.topItem.title = @"消息";
+
+    [JBSharedDevkey saveDevkey:@"hVkbyLdeA7K0Cm9BUgY6"];
+
+    WEAK_SELF(weakSelf);
+    [JBNetwork getChannelsWithDevkey:[JBSharedDevkey getDevkey] complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        weakSelf.channels = dict[@"channels"];
+        [weakSelf.tableView reloadData];
+    }];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+
+
+}
+
+-(void)didReceiveMessage:(NSNotification*)noti{
+    NSLog(@"%@",noti);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,7 +64,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 50;
+    return self.channels.count;
 }
 
 
@@ -41,6 +73,7 @@
     if (!cell) {
         cell = [[NSBundle mainBundle]loadNibNamed:@"JBChannelTableViewCell" owner:nil options:nil][0];
     }
+    cell.channel_label.text = self.channels[indexPath.row];
     return cell;
 }
 
@@ -52,49 +85,5 @@
     JBMessageViewController *messageVC = [[JBMessageViewController alloc] init];
     [self.navigationController pushViewController:messageVC animated:YES];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
+ 
 @end

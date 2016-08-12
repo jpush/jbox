@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "JPUSHService.h"
-
+#import "JBNetwork.h"
 @interface AppDelegate ()
 
 @end
@@ -33,6 +33,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
     //JPush sdk
     [JPUSHService setupWithOption:launchOptions appKey:@"abcacdf406411fa656ee11c3" channel:@"" apsForProduction:NO advertisingIdentifier:nil];
 

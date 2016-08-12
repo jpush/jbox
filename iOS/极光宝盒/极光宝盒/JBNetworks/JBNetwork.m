@@ -9,7 +9,7 @@
 #import "JBNetwork.h"
 #import <AFNetworking.h>
 
-NSString *const base_url = @"base_url/v1/developers/";
+NSString *const base_url = @"http://192.168.8.229:8888/api.jbox.jiguang.cn/v1/developers/";
 
 #define IsReachable [AFNetworkReachabilityManager sharedManager].isReachable
 #define StrBy(a,b) [NSString stringWithFormat:@"%@%@", a, b]
@@ -26,25 +26,25 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 #pragma mark - public
 
 //获取 developer 信息
-+(void)getDevInfo:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
++(void)getDevInfoWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
     [JBNetwork GET:devkey paramtes:devkey complete:^(id responseObject) {
         complete(responseObject);
     }];
 }
 
 //获取 devkey 下的 channel 列表
-+(void)getChannels:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
++(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
     [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
         complete(responseObject);
     }];
 }
 
 //获取 devkey 下的所有自定义应用的 appid（Web 、 App）
-+(void)getAppidUnderDevkey:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
-    [JBNetwork GET:StrBy(devkey, @"/app_ids") paramtes:nil complete:^(id responseObject) {
-        complete(responseObject);
-    }];
-}
+//+(void)getAppidWithDevkey:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
+//    [JBNetwork GET:StrBy(devkey, @"/app_ids") paramtes:nil complete:^(id responseObject) {
+//        complete(responseObject);
+//    }];
+//}
 
 
 //--------------------------------------- private ---------------------------------------//
@@ -85,7 +85,13 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 
     NSString *requestType = (type == RequestHttpTypeGET ? @"GET" : @"POST");
     AFHTTPRequestSerializer *requestSerializer = [AFHTTPRequestSerializer serializer];
-    [requestSerializer setValue:@"Basic (base64 auth string)" forHTTPHeaderField:@"Authorization"];
+
+    NSString *authStr   = [NSString stringWithFormat:@"%@:%@", @"Authorization", param];
+    NSData   *authData  = [authStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *authValue = [NSString stringWithFormat:@"Basic %@", [authData base64EncodedStringWithOptions:0]];
+
+    [requestSerializer setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [requestSerializer setValue:@"hVkbyLdeA7K0Cm9BUgY6" forHTTPHeaderField:@"dev_key"];
     [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
     NSString *requestUrlStr = [NSString stringWithFormat:@"%@%@",base_url,urlStr];

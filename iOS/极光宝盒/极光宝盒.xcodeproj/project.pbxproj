@@ -42,6 +42,12 @@
 		0D560ACF1D3F5DA50030D836 /* JBMessageTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D560ACC1D3F5DA50030D836 /* JBMessageTableViewCell.h */; };
 		0D560AD01D3F5DA50030D836 /* JBMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D560ACD1D3F5DA50030D836 /* JBMessageTableViewCell.m */; };
 		0D560AD11D3F5DA50030D836 /* JBMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D560ACE1D3F5DA50030D836 /* JBMessageTableViewCell.xib */; };
+		0D57E3A81D5DA2090045B410 /* JBSharedDevkey.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D57E3A61D5DA2090045B410 /* JBSharedDevkey.h */; };
+		0D57E3A91D5DA2090045B410 /* JBSharedDevkey.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D57E3A71D5DA2090045B410 /* JBSharedDevkey.m */; };
+		0D57E3B21D5DAC8A0045B410 /* JBDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D57E3B01D5DAC8A0045B410 /* JBDatabase.h */; };
+		0D57E3B31D5DAC8A0045B410 /* JBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D57E3B11D5DAC8A0045B410 /* JBDatabase.m */; };
+		0D57E3B61D5DB1100045B410 /* JBMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D57E3B41D5DB1100045B410 /* JBMessage.h */; };
+		0D57E3B71D5DB1100045B410 /* JBMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D57E3B51D5DB1100045B410 /* JBMessage.m */; };
 		0D7105DB1D49E03A00EACCCE /* LBXScanLineAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7103D71D49E03900EACCCE /* LBXScanLineAnimation.h */; };
 		0D7105DC1D49E03A00EACCCE /* LBXScanLineAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7103D81D49E03900EACCCE /* LBXScanLineAnimation.m */; };
 		0D7105DD1D49E03A00EACCCE /* LBXScanNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D7103D91D49E03900EACCCE /* LBXScanNative.h */; };
@@ -590,6 +596,12 @@
 		0D560ACC1D3F5DA50030D836 /* JBMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBMessageTableViewCell.h; sourceTree = "<group>"; };
 		0D560ACD1D3F5DA50030D836 /* JBMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBMessageTableViewCell.m; sourceTree = "<group>"; };
 		0D560ACE1D3F5DA50030D836 /* JBMessageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JBMessageTableViewCell.xib; sourceTree = "<group>"; };
+		0D57E3A61D5DA2090045B410 /* JBSharedDevkey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBSharedDevkey.h; sourceTree = "<group>"; };
+		0D57E3A71D5DA2090045B410 /* JBSharedDevkey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBSharedDevkey.m; sourceTree = "<group>"; };
+		0D57E3B01D5DAC8A0045B410 /* JBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBDatabase.h; sourceTree = "<group>"; };
+		0D57E3B11D5DAC8A0045B410 /* JBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBDatabase.m; sourceTree = "<group>"; };
+		0D57E3B41D5DB1100045B410 /* JBMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBMessage.h; sourceTree = "<group>"; };
+		0D57E3B51D5DB1100045B410 /* JBMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBMessage.m; sourceTree = "<group>"; };
 		0D7103D71D49E03900EACCCE /* LBXScanLineAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBXScanLineAnimation.h; sourceTree = "<group>"; };
 		0D7103D81D49E03900EACCCE /* LBXScanLineAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBXScanLineAnimation.m; sourceTree = "<group>"; };
 		0D7103D91D49E03900EACCCE /* LBXScanNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBXScanNative.h; sourceTree = "<group>"; };
@@ -1150,6 +1162,7 @@
 				0D286C591D3E28C700BCE395 /* Category */,
 				0D013E1B1D3E223000D34C1F /* Resources */,
 				0D013E021D3E196800D34C1F /* Supporting Files */,
+				0D57E3AF1D5DAC8A0045B410 /* JBDatabase */,
 			);
 			path = "极光宝盒";
 			sourceTree = "<group>";
@@ -1214,6 +1227,8 @@
 		0D013E201D3E230300D34C1F /* M */ = {
 			isa = PBXGroup;
 			children = (
+				0D57E3A61D5DA2090045B410 /* JBSharedDevkey.h */,
+				0D57E3A71D5DA2090045B410 /* JBSharedDevkey.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -1340,6 +1355,17 @@
 				0D10E0E41D530AAF00DE58D2 /* UILabel+ContentSize.m */,
 			);
 			name = Category;
+			sourceTree = "<group>";
+		};
+		0D57E3AF1D5DAC8A0045B410 /* JBDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				0D57E3B01D5DAC8A0045B410 /* JBDatabase.h */,
+				0D57E3B11D5DAC8A0045B410 /* JBDatabase.m */,
+				0D57E3B41D5DB1100045B410 /* JBMessage.h */,
+				0D57E3B51D5DB1100045B410 /* JBMessage.m */,
+			);
+			path = JBDatabase;
 			sourceTree = "<group>";
 		};
 		0D7103D61D49E03900EACCCE /* LBXScan */ = {
@@ -2240,6 +2266,7 @@
 				0D71076E1D49E03A00EACCCE /* ZXPDF417.h in Headers */,
 				0D7106211D49E03A00EACCCE /* ZXExpandedProductParsedResult.h in Headers */,
 				0D7107071D49E03A00EACCCE /* ZXBitArrayBuilder.h in Headers */,
+				0D57E3B61D5DB1100045B410 /* JBMessage.h in Headers */,
 				0D7106461D49E03A00EACCCE /* ZXURIResultParser.h in Headers */,
 				0D71061F1D49E03A00EACCCE /* ZXEmailDoCoMoResultParser.h in Headers */,
 				0D7106E11D49E03A00EACCCE /* ZXAbstractExpandedDecoder.h in Headers */,
@@ -2272,6 +2299,7 @@
 				0D71066B1D49E03A00EACCCE /* ZXBitArray.h in Headers */,
 				0D560AC31D3F53910030D836 /* JBAccountViewController.h in Headers */,
 				0D7107521D49E03A00EACCCE /* ZXModulusPoly.h in Headers */,
+				0D57E3A81D5DA2090045B410 /* JBSharedDevkey.h in Headers */,
 				0D71077A1D49E03A00EACCCE /* ZXingObjCPDF417.h in Headers */,
 				0D7107701D49E03A00EACCCE /* ZXPDF417BarcodeMatrix.h in Headers */,
 				0D71069D1D49E03A00EACCCE /* ZXPlanarYUVLuminanceSource.h in Headers */,
@@ -2325,6 +2353,7 @@
 				0D7106E91D49E03A00EACCCE /* ZXAI01393xDecoder.h in Headers */,
 				0D7106691D49E03A00EACCCE /* ZXReedSolomonEncoder.h in Headers */,
 				0D187B721D4F12D60041C9B7 /* LBXAlertAction.h in Headers */,
+				0D57E3B21D5DAC8A0045B410 /* JBDatabase.h in Headers */,
 				0D7107911D49E03A00EACCCE /* ZXQRCodeFormatInformation.h in Headers */,
 				0D7107A71D49E03A00EACCCE /* ZXQRCodeEncoder.h in Headers */,
 				0D7105EB1D49E03A00EACCCE /* LBXScanWrapper.h in Headers */,
@@ -2617,6 +2646,7 @@
 				0D71075B1D49E03A00EACCCE /* ZXPDF417BoundingBox.m in Sources */,
 				0D7107391D49E03A00EACCCE /* ZXMultiFormatOneDReader.m in Sources */,
 				0D7107141D49E03A00EACCCE /* ZXRSSDataCharacter.m in Sources */,
+				0D57E3B71D5DB1100045B410 /* JBMessage.m in Sources */,
 				0D7107121D49E03A00EACCCE /* ZXRSS14Reader.m in Sources */,
 				0D7105DC1D49E03A00EACCCE /* LBXScanLineAnimation.m in Sources */,
 				0D7107B01D49E03A00EACCCE /* ZXMultiFinderPatternFinder.m in Sources */,
@@ -2782,8 +2812,10 @@
 				0D7107571D49E03A00EACCCE /* ZXPDF417BarcodeMetadata.m in Sources */,
 				0D7106AE1D49E03A00EACCCE /* ZXDataMatrixDecodedBitStreamParser.m in Sources */,
 				0D7106781D49E03A00EACCCE /* ZXDecoderResult.m in Sources */,
+				0D57E3A91D5DA2090045B410 /* JBSharedDevkey.m in Sources */,
 				0D71078C1D49E03A00EACCCE /* ZXQRCodeDecoder.m in Sources */,
 				0D7106951D49E03A00EACCCE /* ZXEncodeHints.m in Sources */,
+				0D57E3B31D5DAC8A0045B410 /* JBDatabase.m in Sources */,
 				0D7106881D49E03A00EACCCE /* ZXStringUtils.m in Sources */,
 				0D7105FB1D49E03A00EACCCE /* ZXAztecCode.m in Sources */,
 				0D7107961D49E03A00EACCCE /* ZXQRCodeVersion.m in Sources */,

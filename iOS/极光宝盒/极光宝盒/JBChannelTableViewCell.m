@@ -12,7 +12,6 @@ IB_DESIGNABLE
 @interface JBChannelTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *icon_label;
-@property (weak, nonatomic) IBOutlet UILabel *channel_label;
 
 @end
 
@@ -20,6 +19,7 @@ IB_DESIGNABLE
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    self.title_label.text = @"";
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
