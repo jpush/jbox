@@ -16,7 +16,7 @@ def send_message(integration_id, token):
     if developer is None:
         abort(404)
 
-    _jpush = jpush.JPush(u'a1703c14b186a68a66ef86c1', u'9dabdf8bb704b421759cb49c')
+    _jpush = jpush.JPush(u'abcacdf406411fa656ee11c3', u'682acd395df807d97e24eb50')
     push = _jpush.create_push()
     _jpush.set_logging("DEBUG")
     push.audience = jpush.audience(
@@ -31,6 +31,8 @@ def send_message(integration_id, token):
                                                              'message': request.json['message']})
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
     push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
+    push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
+                                 extras={'app_key': developer.dev_key, 'channel': integration.channel})
     push.options = {"time_to_live": 86400, "sendno": 12345, "apns_production": False}
     push.platform = jpush.all_
     try:
