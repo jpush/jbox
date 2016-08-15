@@ -66,7 +66,6 @@ def new_channel():
 @auth.route('/qrcode', methods=['GET'])
 @login_required
 def qrcode():
-    print(current_user.dev_key, "huangmin999")
     return render_template('auth/qrcode.html', dev_key=current_user.dev_key)
 
 
