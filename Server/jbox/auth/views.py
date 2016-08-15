@@ -4,11 +4,12 @@ from flask import json, jsonify, render_template, redirect, request, url_for, fl
 from flask_login import login_user, logout_user, login_required, current_user
 from wtforms import Form
 from . import auth
+from config import basedir
 from ..models import Developer, Integration
 from ..main.forms import FakeUserForm
 from ..api_1_0.developers import get_channels, modificate_integration
 
-UPLOAD_FOLDER = '/users/admin/Desktop/temp/'
+UPLOAD_FOLDER = basedir + '/jbox/static/images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
@@ -34,24 +35,22 @@ def manage():
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>', methods=['GET', 'POST'])
 @login_required
 def create_integration(integration_id, token, channel):
+    print("create_integration")
     channels = get_channel_list()
     dev_key = current_user.dev_key
     return render_template('auth/create.html', **locals())
 
 
-@auth.route('/manage/edit_integration', methods=['GET', 'POST'])
+@auth.route('/manage/edit_integration/<string:integration_id>', methods=['GET', 'POST'])
 @login_required
-def edit_integration():
-    if request.json['name'] is not None:
-        integration_id = request.json['id']
-        name = request.json['name']
-        description = request.json['description']
-        icon = request.json['icon']
-        channel = request.json['channel']
-        token = request.json['token']
-        print('name: ' + name + ' desc: ' + description + ' icon: ' + icon + " channel: " +channel)
-        return redirect(url_for('auth.create_integration', **locals()))
-        # return render_template('auth/create.html', **locals())
+def edit_integration(integration_id):
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
+    name = integration.name
+    description = integration.description
+    channel = integration.channel
+    icon = integration.icon
+    channels = get_channel_list()
+    return render_template('auth/create.html', **locals())
 
 
 @auth.route('/new/postTochannels', methods=['GET'])

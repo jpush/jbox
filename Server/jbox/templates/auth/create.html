@@ -57,7 +57,7 @@
                     <label for="file">上传自定义集成标志</label>
                     <input name="file" type="file">
                     <div style="margin-top: 10px; margin-bottom: 20px">
-                        <img id="icon" src="/users/admin/Desktop/temp/{{ icon }}" title="icon">
+                        <img id="icon" src="/static/images/{{ icon }}" title="icon">
                     </div>
                     <button id="upload" class="btn-lg" type="button">上传</button>
                 </form>
@@ -91,8 +91,8 @@
         };
 
         $(document).ready(function () {
-            $('#name').val({{ name }});
-            $('#description').val({{ description }});
+            $('#name').val("{{ name }}");
+            $('#description').val("{{ description }}");
             $("input[type='file']").change(function () {
                 previewImage(this);
             });
