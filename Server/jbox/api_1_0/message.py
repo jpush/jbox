@@ -32,7 +32,7 @@ def send_message(integration_id, token):
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
     push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
     push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
-                                 extras={'app_key': developer.dev_key, 'channel': integration.channel})
+                                 extras={'dev_key': developer.dev_key, 'channel': integration.channel})
     push.options = {"time_to_live": 86400, "sendno": 12345, "apns_production": False}
     push.platform = jpush.all_
     try:
