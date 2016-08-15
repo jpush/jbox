@@ -39,15 +39,17 @@ def create_integration(integration_id, token, channel):
     return render_template('auth/create.html', **locals())
 
 
-@auth.route('/manage/edit_integration', methods=['GET'])
+@auth.route('/manage/edit_integration', methods=['GET', 'POST'])
 @login_required
 def edit_integration():
     if request.json['name'] is not None:
         name = request.json['name']
         description = request.json['description']
-        channel = request.json['channel']
         icon = request.json['icon']
-    return render_template('auth/create.html', **locals())
+        channel = request.json['channel']
+        print('name: ' + name + ' desc: ' + description + ' icon: ' + icon + " channel: " +channel)
+        return redirect(url_for('auth.create_integration', **locals()))
+        # return render_template('auth/create.html', **locals())
 
 
 @auth.route('/new/postTochannels', methods=['GET'])
@@ -79,26 +81,6 @@ def upldfile():
             file_size = os.path.getsize(os.path.join(UPLOAD_FOLDER, filename))
             return jsonify(name=filename, size=file_size)
 
-
-# @auth.route('/edit_integration/<string:integration_id>', methods=['GET', 'POST'])
-# @login_required
-# def edit_integration(integration_id):
-#     dev_key = current_user.dev_key
-#     file = form.icon.data
-#     if file and allowed_file(file.filename):
-#         filename = file.filename
-#         file.save(os.path.join(UPLOAD_FOLDER, filename))
-#         name = form.integration_name.data
-#         description = form.description.data
-#         channel = form.input.data
-#         print("name: " + name + " description: " + description + " channel: " + channel)
-#
-#         r = modificate_integration(dev_key, integration_id)
-#         print(dir(r))
-#         return redirect(url_for('/manage'))
-#     else:
-#         flash('file is not null or not allowed')
-#     return render_template('auth/create.html', **locals())
 
 def get_channel_list():
     channel_list = []

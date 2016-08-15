@@ -90,6 +90,7 @@ class Integration(db.Model):
     description = db.Column(db.String(150))
     icon = db.Column(db.String(150))
     channel = db.Column(db.String(150))
+    token = db.Column(db.String(150))
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
 
     def __repr__(self):

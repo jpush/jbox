@@ -68,16 +68,21 @@
     <script type="text/javascript">
         {% for integration in integrations %}
             $('#{{ integration.id }}').click(function () {
-                {#                window.location.href = '/auth/manage/create_integration/{{ integration.id }}/{{ integration.description }}/{{ integration.channel }}'#}
+                console.log('url: ' + '{{ url_for('auth.edit_integration') }}');
+                var name = "{{ integration.name }}";
+                var desc = "{{ integration.description }}";
+                var icon = "{{ integration.icon }}";
+                var channel = "{{ integration.channel }}";
+{#                window.location.href = '/auth/manage/edit_integration';#}
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "/auth/manage/edit_integration",
                     data: JSON.stringify({
-                        name: {{ integration.name }},
-                        description: {{ integration.description }},
-                        icon: {{ integration.icon }},
-                        channel: {{ integration.channel }}
+                        name: name,
+                        description: desc,
+                        icon: icon,
+                        channel: channel
                     }),
                     dataType: "json"
                 })
