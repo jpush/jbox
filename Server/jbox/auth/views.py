@@ -43,10 +43,12 @@ def create_integration(integration_id, token, channel):
 @login_required
 def edit_integration():
     if request.json['name'] is not None:
+        integration_id = request.json['id']
         name = request.json['name']
         description = request.json['description']
         icon = request.json['icon']
         channel = request.json['channel']
+        token = request.json['token']
         print('name: ' + name + ' desc: ' + description + ' icon: ' + icon + " channel: " +channel)
         return redirect(url_for('auth.create_integration', **locals()))
         # return render_template('auth/create.html', **locals())

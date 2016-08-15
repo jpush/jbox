@@ -152,17 +152,15 @@ def create_integrations(dev_key):
                                       integration_id=new_integration_id,
                                       developer_id=developer.id,
                                       channel=request.json['channel'])
+        token = new_integration.generate_auth_token(3600000000)
+        new_integration.token = token
         db.session.add(new_integration)
         try:
             db.session.commit()
-        except:
-            db.session.rollback()
-            abort(500)
-        try:
-            token = new_integration.generate_auth_token(3600000000)
             return jsonify({'integration_id': new_integration_id,
                             'token': token.decode('utf-8')})
         except:
+            db.session.rollback()
             abort(500)
     else:
         new_channel = Channel(developer=developer, channel=request.json['channel'])
@@ -173,9 +171,10 @@ def create_integrations(dev_key):
                                           integration_id=new_integration_id,
                                           developer_id=developer.id,
                                           channel=request.json['channel'])
+            token = new_integration.generate_auth_token(3600000000)
+            new_integration.token = token
             db.session.add(new_integration)
             db.session.commit()
-            token = new_integration.generate_auth_token(3600000000)
             return jsonify({'integration_id': new_integration_id,
                             'token': token.decode('utf-8')})
         except:

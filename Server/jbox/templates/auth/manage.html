@@ -73,16 +73,19 @@
                 var desc = "{{ integration.description }}";
                 var icon = "{{ integration.icon }}";
                 var channel = "{{ integration.channel }}";
+                var token = "{{ integration.token }}";
 {#                window.location.href = '/auth/manage/edit_integration';#}
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "/auth/manage/edit_integration",
                     data: JSON.stringify({
+                        id: {{ integration.id }},
                         name: name,
                         description: desc,
                         icon: icon,
-                        channel: channel
+                        channel: channel,
+                        token: token
                     }),
                     dataType: "json"
                 })
