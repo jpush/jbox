@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 23
+    buildToolsVersion '24.0.0'
 
     dataBinding {
         enabled = true
@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.jiguang.jbox"
         minSdkVersion 17
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -21,15 +21,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile files('libs/jpush-android-2.1.7.jar')
-    compile files('libs/zxing.jar')
-    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:support-v4:23.4.0'
     compile 'com.google.guava:guava:19.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.baoyz.swipemenulistview:library:1.3.0'
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.3@aar'
+    compile 'cn.bingoogolapple:bga-zxing:1.1.3@aar'
+    compile 'pub.devrel:easypermissions:0.1.9'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
 }

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/lv_channel"
+    <data>
+
+        <import type="android.view.View"/>
+
+    </data>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item_base" />
+        android:orientation="vertical">
 
-</LinearLayout>
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/lv_channel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_item_channel" />
+
+    </LinearLayout>
+
+</layout>

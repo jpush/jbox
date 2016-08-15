@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">极光宝盒</string>
 
+    <!-- login start -->
+    <string name="error_open_camera">打开相机错误</string>
+    <!-- login end -->
+
     <!-- main start -->
     <string name="message">消 息</string>
     <string name="account">账 户</string>

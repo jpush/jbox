@@ -1,5 +1,6 @@
 package com.jiguang.jbox.channel;
 
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,20 +8,28 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.jiguang.jbox.R;
+import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.databinding.ListItemChannelBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChannelFragment extends Fragment {
+
+    private ChannelAdapter mListAdapter;
+
     public ChannelFragment() {
     }
 
     public static ChannelFragment newInstance() {
-        ChannelFragment fragment = new ChannelFragment();
-        return fragment;
+        return new ChannelFragment();
     }
 
     @Override
@@ -56,6 +65,65 @@ public class ChannelFragment extends Fragment {
         listView.setMenuCreator(creator);
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
 
+        mListAdapter = new ChannelAdapter(new ArrayList<Channel>(0));
+        listView.setAdapter(mListAdapter);
+
         return v;
+    }
+
+    public void showChannels(List<Channel> channels) {
+        mListAdapter.replaceData(channels);
+    }
+
+    private static class ChannelAdapter extends BaseAdapter {
+
+        private List<Channel> mChannels;
+
+        public ChannelAdapter(List<Channel> channels) {
+            mChannels = channels;
+        }
+
+        public void replaceData(List<Channel> data) {
+            setList(data);
+        }
+
+        private void setList(List<Channel> data) {
+            mChannels = data;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return mChannels == null ? 0 : mChannels.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mChannels.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Channel channel = (Channel) getItem(position);
+            ListItemChannelBinding binding;
+
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+                binding = ListItemChannelBinding.inflate(inflater, parent, false);
+            } else {
+                binding = DataBindingUtil.getBinding(convertView);
+            }
+
+            binding.setChannel(channel);
+            binding.executePendingBindings();
+
+            return binding.getRoot();
+        }
     }
 }

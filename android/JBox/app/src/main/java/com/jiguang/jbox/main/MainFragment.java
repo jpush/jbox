@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.account.AccountFragment;
-import com.jiguang.jbox.channel.ChannelFragment;
-import com.jiguang.jbox.message.MessageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         List<Fragment> fragments = new ArrayList<Fragment>();
-        fragments.add(new ChannelFragment().newInstance());
+        fragments.add(new MessageFragment().newInstance());
         fragments.add(new AccountFragment().newInstance());
 
         TabsAdapter tabsAdapter = new TabsAdapter(fm);
