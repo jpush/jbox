@@ -1,7 +1,12 @@
 {% extends "base_manage.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-<body onload="showChannels();"></body>
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+{% endblock %}
 
 {% block title %}极光宝盒-创建集成{% endblock %}
 
@@ -40,11 +45,24 @@
             </div>
         </div>
     </div>
-    <link rel="stylesheet" type="text/css" href="../../../static/css/toastr.css">
-    <script type="text/javascript" src="../../../static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../../../static/js/jquery.autocomplete.js"></script>
-    <script type="text/javascript" src="../../../static/js/toastr.js"></script>
     <script type="text/javascript">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
         var list = [];
         {% if channels.__len__ == 0 %}
             list.push("event_github");

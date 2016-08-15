@@ -1,64 +1,87 @@
 {% extends "base_manage.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block content %}
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span8">
-			<h2>
-				集成自己的应用
-			</h2>
-			 <button class="btn btn-info btn-large" type="button" onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>新建自定义集成</button>
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
 
-			<table class="table">
-				<thead>
-					<tr>
-						<th>
-							应用名
-						</th>
-						<th>
-							Tag
-						</th>
-						<th>
-							Token
-						</th>
+{% block title %}极光宝盒-管理集成{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span8">
+                <h2>
+                    集成自己的应用
+                </h2>
+                <button class="btn btn-info btn-large" type="button"
+                        onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>新建自定义集成
+                </button>
+
+                <table id="table" class="table" style="margin-top: 20px;">
+                    <thead>
+                    <tr class="warning">
+                        <th>
+                            应用名
+                        </th>
+                        <th>
+                            描述
+                        </th>
+                        <th>
+                            Channel
+                        </th>
                         <th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="success">
-						<td>
-							github
-						</td>
-						<td>
-							issue
-						</td>
-						<td>
-							dskf938d9fd90fd9
-						</td>
-                        <td>
-                            <button class="btn btn-info btn-middle" type="button">编辑</button>
-                        </td>
-					</tr>
-					<tr class="error">
-						<td>
-							slack
-						</td>
-						<td>
-							staff
-						</td>
-						<td>
-							hhsi298djk3d83do
-						</td>
-                        <td>
-                            <button class="btn btn-info btn-middle" type="button">编辑</button>
-                        </td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="span4">
-		</div>
-	</div>
-</div>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for integration in integrations %}
+                        <tr class="success">
+                            <td>
+                                {{ integration.name }}
+                            </td>
+                            <td>
+                                {{ integration.description }}
+                            </td>
+                            <td>
+                                {{ integration.channel }}
+                            </td>
+                            <td>
+                                <button id='{{ integration.id }}' name="edit" class="btn btn-info btn-middle"
+                                        type="button">编辑
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="span4">
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        {% for integration in integrations %}
+            $('#{{ integration.id }}').click(function () {
+                {#                window.location.href = '/auth/manage/create_integration/{{ integration.id }}/{{ integration.description }}/{{ integration.channel }}'#}
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/auth/manage/edit_integration",
+                    data: JSON.stringify({
+                        name: {{ integration.name }},
+                        description: {{ integration.description }},
+                        icon: {{ integration.icon }},
+                        channel: {{ integration.channel }}
+                    }),
+                    dataType: "json"
+                })
+            });
+        {% endfor %}
+    </script>
 {% endblock %}

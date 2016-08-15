@@ -26,7 +26,7 @@ def create_developer():
 # 通过 platform 和 platform_id 来获取用户信息
 @api.route('/developers/<string:platform>/<string:platform_id>', methods=['GET'])
 def get_developer(platform, platform_id):
-    developer = Developer.query.filter_by(platform_id=platform_id).first()
+    developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
     if developer is None:
         abort(404)
     return jsonify({'dev_key': developer.dev_key,

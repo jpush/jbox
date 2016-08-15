@@ -21,28 +21,22 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <form name="edit_form" action="/auth/edit_integration/{{ integration_id }}" method="POST"
-                  class="col-lg-8 col-lg-offset-2" style="padding: 10px;">
+            <div id="edit_form" class="col-lg-8 col-lg-offset-2" style="padding: 10px;">
                 <h3>webhook:api.jobx.com/ {{ token }}</h3>
                 <h3><span class="label label-info" style="padding: 10px;">应用名</span></h3>
-                {{ form.integration_name(id='integration_name', style="margin-top: 5px; width: 100%; height: 46px; font-size: large") }}
-                {#                <input title="应用名" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"#}
-                {#                       type="text" name="integration_name"/>#}
+                <input id="name" title="应用名" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
+                       type="text"/>
                 <h3><span class="label label-info" style="padding: 10px;">应用描述</span></h3>
-                {{ form.description(id='desc', style="margin-top: 5px; width: 100%; height: 46px; font-size: large") }}
-                {#                <input title="应用描述" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"#}
-                {#                       type="text" name="integration_desc"/>#}
-                {#                {{ form.channel(style="margin-top: 10px") }}#}
-                {#                <a class="btn btn-link" style="color: #2ab27b;" role="button" data-toggle="collapse"#}
-                {#                   href="#channel_collapse"#}
-                {#                   aria-expanded="false" aria-controls="channel_collapse">新建 Channel</a>#}
+                <input id="description" title="应用描述"
+                       style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
+                       type="text"/>
                 <div class="dropdown" style="margin-top: 10px">
                     <button class="btn btn-default dropdown-toggle" type="button" id="channel_dropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         <span id="dropdowntitle">{{ channel }}</span>
                         <span class="caret"></span>
                     </button>
-                    {{ form.input(id="input_hidding", type="hidden") }}
+                    <input id="input_hidding" type="hidden">
                     <ul id="content" class="dropdown-menu">
                         {% for channel in channels %}
                             <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
@@ -56,30 +50,50 @@
                     <input id="new_channel" class="input-lg" type="text"
                            style="width: 60%; height: 46px; font-size: large"
                            placeholder="输入 channel"/>
-                    <button id="create_channel" title="新建Channel" class="btn-lg btn-info" type="button">新建 Channel
+                    <button id="create_channel" title="新建Channel" class="btn-lg btn-info" type="button">创建 Channel
                     </button>
                 </div>
-                <div id="upload_area" style="margin-top: 20px;">
-                    <h3><span class="label label-info" style="padding: 10px;">上传自定义集成标志</span></h3>
-                    {#                    <input type="file" id="picpath" name="picpath">#}
-                    {{ form.icon(id='picpath', style="margin-top: 20px") }}
+                <form id="uploadform" method="post" enctype="multipart/form-data">
+                    <label for="file">上传自定义集成标志</label>
+                    <input name="file" type="file">
                     <div style="margin-top: 10px; margin-bottom: 20px">
                         <img id="icon" src="#" title="icon">
                     </div>
-
+                    <button id="upload" class="btn-lg" type="button">上传</button>
+                </form>
+                <p>Result Filename:&nbsp;<span id="resultFilename"> here</span></p>
+                <p>Result Filesize:&nbsp;<span id="resultFilesize">here</span></p>
+                <div style="margin-top: 10px">
+                    <input id="submit" type="submit" value="保存设置" class="btn-lg"
+                           style="position: absolute; left: 10px; background-color: #2ab27b; color: #ffffff;">
                 </div>
-                {{ form.submit(value='保存设置', style="position: absolute; left: 10px; background-color: #08E17E;
-                    color: #ffffff; padding: 10px; border-radius: 5px;") }}
-                {#                <div style="margin-top: 10px">#}
-                {#                    <input type="submit" value="保存设置" class="btn-lg"#}
-                {#                           style="position: absolute; left: 10px; background-color: #2ab27b; color: #ffffff;">#}
-                {#                </div>#}
-            </form>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
         $(document).ready(function () {
+            $('#name').val({{ name }});
+            $('#description').val({{ description }});
+            $('#input_hidding').val({{ channel }});
             $("input[type='file']").change(function () {
                 previewImage(this);
             });
@@ -127,7 +141,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "../../../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels",
+                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels",
                 data: JSON.stringify({channel: new_channel}),
                 success: function (data) {
                     if (data != undefined) {
@@ -151,12 +165,12 @@
 
         function bindClick() {
             $('ul li').each(function () {
-            $(this).bind('click', function () {
-                console.log(this.id);
-                $('#dropdowntitle').text(this.id);
-                $('#input_hidding').val(this.id);
-            })
-        });
+                $(this).bind('click', function () {
+                    $('#dropdowntitle').text(this.id);
+                    $('#input_hidding').val(this.id);
+                    console.log($('#input_hidding').val())
+                })
+            });
         }
 
         function preview(img, selection) {
@@ -175,9 +189,9 @@
         function previewImage(file) {
             var porImg = $('#icon'),//首先获取大图片jquery对象
                     viewImg = $('#view');//小图片jquery对象
-//判断该浏览器是否为w3c标准，既非IE浏览器
+            //判断该浏览器是否为w3c标准，既非IE浏览器
             if (file["files"] && file["files"][0]) {
-//使用JavaScript的FileReader对象来读取本地数据，并且将数据结果赋值给image的src，具体该对象如何实现的还未深入研究
+                //使用JavaScript的FileReader对象来读取本地数据，并且将数据结果赋值给image的src，具体该对象如何实现的还未深入研究
                 var reader = new FileReader();
                 reader.onload = function (evt) {
                     porImg.attr({src: evt.target.result});
@@ -185,12 +199,13 @@
                 };
                 reader.readAsDataURL(file.files[0]);
             }
-//如果是IE浏览器，采用滤镜效果，进行显示，但特别注意的是该滤镜效果使用的对象是div对象，并非img对象，因此我们需要将原有的img对象remove同时生成新的div对象，并且赋值相应的class和id
+            //如果是IE浏览器，采用滤镜效果，进行显示，但特别注意的是该滤镜效果使用的对象是div对象，并非img对象，因此我们需要将原有的img对象
+            // remove同时生成新的div对象，并且赋值相应的class和id
             else {
-//创建需要滤镜显示的div的dom对象
+                //创建需要滤镜显示的div的dom对象
                 var ieImageDom = document.createElement("div");
                 var proIeImageDom = document.createElement("div");
-//设置对象的css属性和原有的img对象属性相同，添加相应的id属性值
+                //设置对象的css属性和原有的img对象属性相同，添加相应的id属性值
                 $(ieImageDom).css({
                     float: 'left',
                     position: 'relative',
@@ -199,18 +214,59 @@
                     height: '100px'
                 }).attr({"id": "view"});
                 $(proIeImageDom).attr({"id": "icon"});
-//删除原有img对象，append创建div的dom对象
+                //删除原有img对象，append创建div的dom对象
                 porImg.parent().prepend(proIeImageDom);
                 porImg.remove();
                 viewImg.parent().append(ieImageDom);
                 viewImg.remove();
-//采用滤镜效果生成图片预览
+                //采用滤镜效果生成图片预览
                 file.select();
                 path = document.selection.createRange().text;
                 $(ieImageDom).css({"filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")"});
                 $(proIeImageDom).css({"filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")"});
-// .style.filter ="progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\""+ path + "\")";//使用滤镜效果
             }
         }
+
+        $('#upload').click(function () {
+            event.preventDefault();
+            var form_data = new FormData($('#uploadform')[0]);
+            $.ajax({
+                type: 'POST',
+                url: '/auth/uploadajax',
+                data: form_data,
+                contentType: false,
+                processData: false,
+                dataType: 'json'
+            }).done(function (data, textStatus, jqXHR) {
+                toastr.success('上传成功');
+                $("#resultFilename").text(data['name']);
+                $("#resultFilesize").text(data['size']);
+            }).fail(function (data) {
+                toastr.error('上传失败!');
+            });
+        });
+
+        $('#submit').click(function () {
+            var name = $('#name').val();
+            var desc = $('#description').val();
+            var path = $('#resultFilename').val();
+            var channel = $('#input_hidding').val();
+            console.log('path: ' + path + 'channel: ' + channel);
+{#            $.ajax({#}
+{#                type: "PUT",#}
+{#                contentType: "application/json; charset=utf-8",#}
+{#                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration_id }}",#}
+{#                data: JSON.stringify({name: name, description: desc, icon: path, channel: channel}),#}
+{#                success: function (data) {#}
+{#                    toastr.success("保存成功");#}
+{#                    window.location.href = '/auth/manage'#}
+{#                },#}
+{#                error: function (error) {#}
+{#                    console.log(error);#}
+{#                    toastr.error("保存失败");#}
+{#                },#}
+{#                dataType: "json"#}
+{#            });#}
+        })
     </script>
 {% endblock %}
