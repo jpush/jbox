@@ -46,7 +46,7 @@ def get_developer(platform, platform_id):
 
 # 获取 developer 的信息, 通过 dev_key 查询
 @api.route('/developers/<dev_key>', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
