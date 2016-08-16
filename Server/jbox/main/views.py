@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import render_template, session, redirect, url_for, flash
-from flask_login import login_user
+from flask_login import login_user, current_user
 from . import main
 from .forms import UserForm, FakeUserForm
 from .. import db
@@ -25,7 +25,8 @@ def login():
             developer = Developer.query.filter_by(platform=form.platform.data, platform_id=form.platform_id.data).first()
             if developer is not None:
                 login_user(developer, remember=True)
-                return render_template('auth/manage.html')
+                integrations = Developer.query.filter_by(dev_key=current_user.dev_key).first().integrations
+                return render_template('auth/manage.html', integrations=integrations, dev_key=current_user.dev_key)
             else:
                 flash('Can find user by user_id=1')
     return render_template('login.html', form=form)
