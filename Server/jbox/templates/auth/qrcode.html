@@ -4,27 +4,24 @@
 {% block title %}极光宝盒-扫描二维码{% endblock %}
 {% block head %}
     {{ super() }}
-    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename = 'js/qrcode.js') }}"></script>
 {% endblock %}
 {% block content %}
-    <div id="qrcode"></div>
-
-    <p>
-	    scan DevKey qrcode
-    </p>
+    <div id="qrcode" class="col-lg-4 col-lg-offset-5">
+        <p>
+            scan DevKey qrcode
+        </p>
+    </div>
 
     <script type="text/javascript">
         var qrcode = new QRCode(document.getElementById("qrcode"), {
-	width : 100,
-	height : 100
-});
+            width: 200,
+            height: 200
+        });
 
-function makeCode () {
-	var elText = document.getElementById("text");
-	qrcode.makeCode("{{ dev_key }}");
-}
-
-makeCode();
+        $(document).ready(function () {
+            qrcode.makeCode("{{ dev_key }}");
+        });
     </script>
 {% endblock %}
