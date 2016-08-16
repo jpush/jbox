@@ -4,10 +4,16 @@
 {% block title %}第三方登录授权{% endblock %}
 
 {% block content %}
-<div>
-    <h1>跳转到第三方应用授权页面</h1>
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div>
+        <h1>跳转到第三方应用授权页面</h1>
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
     </div>
-</div>
 {% endblock %}

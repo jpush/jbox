@@ -29,7 +29,7 @@ def logout():
 @login_required
 def manage():
     integrations = Developer.query.filter_by(dev_key=current_user.dev_key).first().integrations
-    return render_template('auth/manage.html', integrations=integrations)
+    return render_template('auth/manage.html', integrations=integrations, dev_key=current_user.dev_key)
 
 
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>', methods=['GET', 'POST'])

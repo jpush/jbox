@@ -1,4 +1,5 @@
 from flask import abort, Flask, json, jsonify, request, make_response
+from flask_login import login_required
 from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
 from .authentication import auth
@@ -184,6 +185,7 @@ def create_integrations(dev_key):
 
 # PUT 修改 dev_key 下 所绑定的 integration
 @api.route('/developers/<dev_key>/<integration_id>', methods=['POST', 'PUT'])
+@login_required
 def modificate_integration(dev_key, integration_id):
     if not request.json or not 'channel' in request.json:
         abort(400)
@@ -205,6 +207,26 @@ def modificate_integration(dev_key, integration_id):
         db.session.rollback()
         abort(500)
     return jsonify({'modification': True}), 200
+
+
+@api.route('/developers/<dev_key>/<integration_id>', methods=['DELETE'])
+@login_required
+def delete_integration(dev_key, integration_id):
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is not None:
+        integration = Integration.query.filter_by(integration_id=integration_id).first()
+        if integration is not None:
+            try:
+                db.session.delete(integration)
+                db.session.commit()
+                return jsonify({'deleted': True}), 200
+            except:
+                db.session.rollback()
+                abort(500)
+        else:
+            abort(404)
+    else:
+        abort(404)
 
 
 def create_channel_and_insert2db(developer, channel):
