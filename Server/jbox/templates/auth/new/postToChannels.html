@@ -101,26 +101,28 @@
         $('#create_integration_btn').click(function () {
             console.log('create integration');
             var channel = $('#selected_channel').val();
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: "../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/integrations",
-                data: JSON.stringify({channel: channel}),
-                success: function (data) {
-                    if (data != undefined) {
-                        if (data["token"]) {
-                            window.location.href = '/auth/manage/create_integration/' + data["integration_id"] + '/' + data["token"] + '/' + channel
+            if (channel != '') {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/integrations",
+                    data: JSON.stringify({channel: channel}),
+                    success: function (data) {
+                        if (data != undefined) {
+                            if (data["token"]) {
+                                window.location.href = '/auth/manage/create_integration/' + data["integration_id"] + '/' + data["token"] + '/' + channel
+                            }
+                        } else {
+                            toastr.error("服务器异常");
                         }
-                    } else {
-                        toastr.error("服务器异常");
-                    }
-                },
-                error: function (error) {
-                    console.log(error);
-                    toastr.error("创建失败");
-                },
-                dataType: "json"
-            })
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        toastr.error("创建失败");
+                    },
+                    dataType: "json"
+                })
+            }
         })
     </script>
 {% endblock %}
