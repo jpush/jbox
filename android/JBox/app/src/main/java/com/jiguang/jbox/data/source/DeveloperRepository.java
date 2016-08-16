@@ -12,6 +12,7 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DeveloperRepository implements DeveloperDataSource {
+
     private static DeveloperRepository INSTANCE = null;
 
     private final DeveloperDataSource mDevelopersRemoteDataSource;
@@ -123,6 +124,10 @@ public class DeveloperRepository implements DeveloperDataSource {
         mDevelopersLocalDataSource.deleteDeveloper(devKey);
 
         mCachedDevelopers.remove(devKey);
+    }
+
+    public boolean isEmpty() {
+        return mCachedDevelopers == null || mCachedDevelopers.isEmpty();
     }
 
     private void getDevelopersFromRemoteDataSource(@NonNull final LoadDevelopersCallback callback) {

@@ -55,8 +55,11 @@ public class LoginActivity extends Activity implements QRCodeView.Delegate {
         // 保存 dev 信息。
         try {
             JSONObject json = new JSONObject(result);
-            Developer dev = new Developer(json.getString("dev_name"), json.getString("dev_key"),
-                    json.getString("platform"));
+            String devName = json.getString("dev_name");
+            String devKey = json.getString("dev_key");
+            String platform = json.getString("platform");
+            Developer dev = new Developer(devName, devKey, platform);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

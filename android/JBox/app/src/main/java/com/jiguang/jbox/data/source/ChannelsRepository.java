@@ -38,7 +38,7 @@ public class ChannelsRepository implements ChannelsDataSource {
         return INSTANCE;
     }
 
-    public static void destoryInstance() {
+    public static void destroyInstance() {
         INSTANCE = null;
     }
 
@@ -55,7 +55,7 @@ public class ChannelsRepository implements ChannelsDataSource {
     }
 
     @Override
-    public void getChannels(@NonNull final LoadChannelsCallback callback) {
+    public void getChannels(final String devKey, @NonNull final LoadChannelsCallback callback) {
         checkNotNull(callback);
 
         // 如果缓存可用，就直接从缓存中获取数据。
@@ -66,10 +66,10 @@ public class ChannelsRepository implements ChannelsDataSource {
 
         if (mCacheIsDirty) {
             // 如果缓存中数据过期，就从服务器重新获取。
-            getChannelsFromRemoteDataSource(callback);
+            getChannelsFromRemoteDataSource(devKey, callback);
         } else {
             // 从本地数据库读取。如果不行，就从服务器查询。
-            mChannelsLocalDataSource.getChannels(new LoadChannelsCallback() {
+            mChannelsLocalDataSource.getChannels(devKey, new LoadChannelsCallback() {
                 @Override
                 public void onChannelsLoaded(List<Channel> channels) {
                     refreshCache(channels);
@@ -78,10 +78,15 @@ public class ChannelsRepository implements ChannelsDataSource {
 
                 @Override
                 public void onDataNotAvailable() {
-                    getChannelsFromRemoteDataSource(callback);
+                    getChannelsFromRemoteDataSource(devKey, callback);
                 }
             });
         }
+    }
+
+    @Override
+    public void getSubscribedChannels(String devKey, @NonNull LoadChannelsCallback callback) {
+
     }
 
     @Override
@@ -134,8 +139,8 @@ public class ChannelsRepository implements ChannelsDataSource {
         mCachedChannels.clear();
     }
 
-    private void getChannelsFromRemoteDataSource(@NonNull final LoadChannelsCallback callback) {
-        mChannelsRemoteDataSource.getChannels(new LoadChannelsCallback() {
+    private void getChannelsFromRemoteDataSource(String devKey, @NonNull final LoadChannelsCallback callback) {
+        mChannelsRemoteDataSource.getChannels(devKey, new LoadChannelsCallback() {
             @Override
             public void onChannelsLoaded(List<Channel> channels) {
                 refreshCache(channels);

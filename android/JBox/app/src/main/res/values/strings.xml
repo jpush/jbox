@@ -21,4 +21,11 @@
     <string name="account_account">账 户</string>
     <string name="account_remove">删除</string>
     <!-- account end -->
+
+    <!-- http url start -->
+    <string name="url_base">http://api.jbox.jiguang.cn</string>
+    <string name="url_get_developers">http://api.jbox.jiguang.cn/developers/%s</string>
+    <string name="url_get_channels">http://api.jbox.jiguang.cn/developers/%s/channels</string>
+    <!-- http url end -->
+
 </resources>

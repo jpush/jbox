@@ -8,9 +8,13 @@ import com.jiguang.jbox.data.source.ChannelsDataSource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+
 public class ChannelRemoteDataSource implements ChannelsDataSource {
 
     private static ChannelRemoteDataSource INSTANCE;
+
+    private OkHttpClient mHttpClient;
 
     private final static Map<String, Channel> CHANNEL_SERVICE_DATA;
 
@@ -25,7 +29,8 @@ public class ChannelRemoteDataSource implements ChannelsDataSource {
         return INSTANCE;
     }
 
-    private ChannelRemoteDataSource() {}
+    private ChannelRemoteDataSource() {
+    }
 
     @Override
     public void saveChannel(@NonNull Channel channel) {
@@ -33,15 +38,18 @@ public class ChannelRemoteDataSource implements ChannelsDataSource {
     }
 
     @Override
-    public void getChannels(@NonNull LoadChannelsCallback callback) {
+    public void getChannels(String devKey, @NonNull LoadChannelsCallback callback) {
+
+    }
+
+    @Override
+    public void getSubscribedChannels(String devKey, @NonNull LoadChannelsCallback callback) {
 
     }
 
     @Override
     public void getChannel(@NonNull String name, @NonNull GetChannelCallback callback) {
         Channel channel = CHANNEL_SERVICE_DATA.get(name);
-
-        // 从网络获取数据。
     }
 
     @Override

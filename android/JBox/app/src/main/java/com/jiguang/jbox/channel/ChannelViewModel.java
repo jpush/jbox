@@ -17,4 +17,6 @@ public class ChannelViewModel extends BaseObservable {
         mPresenter = presenter;
     }
 
+
+
 }

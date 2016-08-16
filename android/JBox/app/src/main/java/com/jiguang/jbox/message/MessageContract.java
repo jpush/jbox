@@ -1,4 +1,4 @@
-package com.jiguang.jbox.channel;
+package com.jiguang.jbox.message;
 
 import android.support.annotation.NonNull;
 
@@ -8,23 +8,20 @@ import com.jiguang.jbox.data.Channel;
 
 import java.util.List;
 
-public interface ChannelsContract {
+/**
+ * 控制主界面中的消息界面。
+ */
+public class MessageContract {
 
     interface Presenter extends BasePresenter {
 
-        void result(int requestCode, int resultCode);
-
         void loadChannels(boolean forceUpdate);
 
-        void subscribe();   // 订阅
-
-        void openChannelMessages(@NonNull Channel channel);
+        void openChannelDetail(@NonNull Channel channel);
     }
 
     interface View extends BaseView<Presenter> {
 
         void showChannels(List<Channel> channels);
-
     }
-
 }

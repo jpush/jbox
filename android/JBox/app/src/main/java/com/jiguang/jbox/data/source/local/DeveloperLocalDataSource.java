@@ -8,17 +8,16 @@ import android.support.annotation.NonNull;
 
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
+import com.jiguang.jbox.data.source.local.DeveloperPersistenceContract.DeveloperEntry;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.jiguang.jbox.data.source.local.DeveloperPersistenceContract.DeveloperEntry;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DeveloperLocalDataSource implements DeveloperDataSource {
 
-    private static DeveloperLocalDataSource INSTANCE;;
+    private static DeveloperLocalDataSource INSTANCE;
 
     private DeveloperDBHelper mDBHelper;
 
@@ -148,4 +147,5 @@ public class DeveloperLocalDataSource implements DeveloperDataSource {
 
         db.close();
     }
+
 }

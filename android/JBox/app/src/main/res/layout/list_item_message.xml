@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="channel"
             type="com.jiguang.jbox.data.Channel" />
@@ -35,8 +37,8 @@
             android:layout_marginTop="4dp"
             android:background="@drawable/badge"
             android:gravity="center"
-            android:text="@{channel.unReadMessageCount}"
-            android:visibility="@{channel.isAllReaded}"
+            android:visibility="@{channel.isAllReaded ? View.Gone : View.VISIBLE}"
+            android:text="@{channel.badge}"
             android:textColor="@android:color/white"
             android:textSize="12sp"/>
 
@@ -72,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:textColor="@color/gray_light"
-                android:text="@{channel.latestMessage.content}"
+                android:text="@{channel.description}"
                 android:textSize="12sp" />
         </LinearLayout>
 

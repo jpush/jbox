@@ -24,7 +24,10 @@ public interface ChannelsDataSource {
 
     void saveChannel(@NonNull Channel channel);
 
-    void getChannels(@NonNull LoadChannelsCallback callback);
+    void getChannels(String devKey, @NonNull LoadChannelsCallback callback);
+
+    // 读取所有订阅了的 Channel。
+    void getSubscribedChannels(String devKey, @NonNull LoadChannelsCallback callback);
 
     void getChannel(@NonNull String name, @NonNull GetChannelCallback callback);
 
