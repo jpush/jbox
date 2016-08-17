@@ -7,6 +7,8 @@ import com.jiguang.jbox.R;
 
 public class MainActivity extends FragmentActivity {
 
+    public static final String EXTRA_DEV_KEY = "DEV_KEY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

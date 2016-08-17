@@ -2,11 +2,13 @@ package com.jiguang.jbox.login;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.main.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +62,10 @@ public class LoginActivity extends Activity implements QRCodeView.Delegate {
             String platform = json.getString("platform");
             Developer dev = new Developer(devName, devKey, platform);
 
+            // 进入主界面。
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_DEV_KEY, devKey);
+            startActivity(intent);
         } catch (JSONException e) {
             e.printStackTrace();
         }

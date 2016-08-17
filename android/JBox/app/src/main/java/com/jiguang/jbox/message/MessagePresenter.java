@@ -15,7 +15,6 @@ public class MessagePresenter implements MessageContract.Presenter {
                             @NonNull MessageContract.View view) {
         mChannelsRepository = repository;
         mView = view;
-
         mView.setPresenter(this);
     }
 

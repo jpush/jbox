@@ -11,7 +11,12 @@ import android.widget.TextView;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.account.AccountFragment;
+import com.jiguang.jbox.channel.ChannelPresenter;
+import com.jiguang.jbox.data.source.ChannelsRepository;
+import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
+import com.jiguang.jbox.data.source.remote.ChannelRemoteDataSource;
 import com.jiguang.jbox.message.MessageFragment;
+import com.jiguang.jbox.message.MessagePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +42,18 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
-        List<Fragment> fragments = new ArrayList<Fragment>();
-        fragments.add(MessageFragment.newInstance());
-        fragments.add(AccountFragment.newInstance());
+        Fragment messageFragment = MessageFragment.newInstance();
+        ChannelRemoteDataSource channelRemoteDataSource = ChannelRemoteDataSource.getInstance();
+        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(getContext());
+        ChannelsRepository channelsRepository = ChannelsRepository.getInstance(channelRemoteDataSource,
+                channelLocalDataSource);
+        MessagePresenter messagePresenter = new MessagePresenter(channelsRepository, messageFragment);
+
+        Fragment accountFragment = AccountFragment.newInstance();
+
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(messageFragment);
+        fragments.add(accountFragment);
 
         TabsAdapter tabsAdapter = new TabsAdapter(fm);
         tabsAdapter.initData(fragments);

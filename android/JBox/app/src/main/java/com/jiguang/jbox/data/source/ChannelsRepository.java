@@ -30,7 +30,7 @@ public class ChannelsRepository implements ChannelsDataSource {
         mChannelsLocalDataSource = channelsLocalDataSource;
     }
 
-    public static ChannelsDataSource getInstance(ChannelsDataSource channelsRemoteDataSource,
+    public static ChannelsRepository getInstance(ChannelsDataSource channelsRemoteDataSource,
                                                  ChannelsDataSource channelsLocalDataSource) {
         if (INSTANCE == null) {
             INSTANCE = new ChannelsRepository(channelsRemoteDataSource, channelsLocalDataSource);

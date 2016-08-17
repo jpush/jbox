@@ -23,5 +23,7 @@ public class MessageContract {
     interface View extends BaseView<Presenter> {
 
         void showChannels(List<Channel> channels);
+
+        void showChannelMessages(String channelName);
     }
 }

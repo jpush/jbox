@@ -25,6 +25,8 @@
         </activity>
         <activity android:name=".account.ScanDeveloperActivity">
         </activity>
+        <activity android:name=".messagedetail.MessageDetailActivity">
+        </activity>
     </application>
 
 </manifest>
