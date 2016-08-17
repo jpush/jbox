@@ -22,7 +22,8 @@
                 </div>
             {% endfor %}
             <div id="edit_form" class="col-lg-8 col-lg-offset-2" style="padding: 10px;">
-                <h3>webhook:api.jobx.com/ {{ token }}</h3>
+                <h3 id="token_h3">webhook:api.jobx.com/ {{ token }}</h3>
+                <button id="regenerate_token" class="btn btn-warning btn-middle" type="button">重新生成 token</button>
                 <h3><span class="label label-info" style="padding: 10px;">应用名</span></h3>
                 <input id="name" title="应用名" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
                        type="text" value="{{ name }}"/>
@@ -33,7 +34,7 @@
                 <div class="dropdown" style="margin-top: 10px">
                     <button class="btn btn-default dropdown-toggle" type="button" id="channel_dropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span id="dropdowntitle">{{ channel }}</span>
+                        <span id="drop_down_title">{{ channel }}</span>
                         <span class="caret"></span>
                     </button>
                     <input id="input_hidding" type="hidden" value="{{ channel }}">
@@ -53,7 +54,7 @@
                     <button id="create_channel" title="新建Channel" class="btn-lg btn-info" type="button">创建 Channel
                     </button>
                 </div>
-                <form id="uploadform" method="post" enctype="multipart/form-data">
+                <form id="uploadform" method="post" enctype="multipart/form-data" style="margin-top: 10px">
                     <label for="file">上传自定义集成标志</label>
                     <input name="file" type="file">
                     <div style="margin-top: 10px; margin-bottom: 20px">
@@ -135,6 +136,24 @@
         {#                    height: '100px'#}
         {#                }).insertAfter('#icon');#}
 
+        $('#regenerate_token').click(function () {
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                url: "/api.jbox.jiguang.cn/v1/{{ integration_id }}/token",
+                success: function (data) {
+                    if (data != undefined) {
+                        $('#token_h3').text("webhook:api.jobx.com/" + data['token']);
+                        toastr.success("已重新生成 token");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("生成 token 失败")
+                }
+            })
+        });
+
         $('#create_channel').click(function () {
             var new_channel = $('#new_channel').val();
             $.ajax({
@@ -165,7 +184,7 @@
         function bindClick() {
             $('ul li').each(function () {
                 $(this).bind('click', function () {
-                    $('#dropdowntitle').text(this.id);
+                    $('#drop_down_title').text(this.id);
                     $('#input_hidding').val(this.id);
                     console.log($('#input_hidding').val())
                 })

@@ -247,11 +247,19 @@ def get_developer_with_devkey(dev_key):
 
 
 # FIX: TOKEN
-# 重新生成 integration token   这个接口没有测试 TODO: 更新数据库
-@api.route('/developer/<integration_id>/token', methods=['PUT'])
+# 重新生成 integration token   这个接口没有测试
+@api.route('/<integration_id>/token', methods=['PUT'])
 def regenerate_integration_token(integration_id):
-    integration = Integration.query.filter_by(integration_id=integration_id)
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
         abort(400)
     token = integration.generate_auth_token(3600000000)
-    return jsonify({'token': token.decode('utf-8')})
+    integration.token = token
+    try:
+        db.session.add(integration)
+        db.session.commit()
+        return jsonify({'token': token.decode('utf-8')}), 200
+    except:
+        db.session.rollback()
+        abort(500)
+

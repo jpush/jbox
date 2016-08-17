@@ -35,7 +35,6 @@ def manage():
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>', methods=['GET', 'POST'])
 @login_required
 def create_integration(integration_id, token, channel):
-    print("create_integration")
     channels = get_channel_list()
     dev_key = current_user.dev_key
     return render_template('auth/create.html', **locals())
@@ -49,6 +48,7 @@ def edit_integration(integration_id):
     description = integration.description
     channel = integration.channel
     icon = integration.icon
+    token = integration.token
     channels = get_channel_list()
     return render_template('auth/create.html', **locals())
 

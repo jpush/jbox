@@ -7,6 +7,7 @@ from jbox import db
 from flask_login import UserMixin
 from . import login_manager
 
+
 class Developer(UserMixin, db.Model):
     __tablename__ = 'developers'
     id = db.Column(db.Integer, primary_key=True)
@@ -68,11 +69,13 @@ class Developer(UserMixin, db.Model):
                         b = False
         return True
 
+
 @login_manager.user_loader
 def developer_loader(platform, platform_id):
     print("huangmin44 developer loader",platform,platform_id)
     developer = Developer.query.filter_by(platform=platform,platform_id=platform_id)
     return developer
+
 
 @login_manager.request_loader
 def request_loader(request):
@@ -81,6 +84,7 @@ def request_loader(request):
     print("huangmin44 request loader", platform, platform_id)
     developer = Developer.query.filter_by(platform=platform, platform_id=platform_id)
     return developer
+
 
 class Integration(db.Model):
     __tablename__ = 'integrations'
@@ -117,6 +121,7 @@ class Integration(db.Model):
                 else:
                     flag = True
         return True
+
     def generate_auth_token(self, expiration):
         s = Serializer(current_app.config["SECRET_KEY"], expires_in=expiration)
         return s.dumps({'id': self.id})
@@ -129,6 +134,7 @@ class Integration(db.Model):
         except:
             return None
         return Integration.query.get(data['id'])
+
 
 class Channel(db.Model):
     __tablename__ = 'channels'
