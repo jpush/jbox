@@ -72,8 +72,7 @@ class Developer(UserMixin, db.Model):
 
 @login_manager.user_loader
 def developer_loader(platform, platform_id):
-    print("huangmin44 developer loader",platform,platform_id)
-    developer = Developer.query.filter_by(platform=platform,platform_id=platform_id)
+    developer = Developer.query.filter_by(platform=platform,platform_id=platform_id).first()
     return developer
 
 
@@ -81,8 +80,7 @@ def developer_loader(platform, platform_id):
 def request_loader(request):
     platform = request.form.get("platform")
     platform_id = request.form.get("platform")
-    print("huangmin44 request loader", platform, platform_id)
-    developer = Developer.query.filter_by(platform=platform, platform_id=platform_id)
+    developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
     return developer
 
 
