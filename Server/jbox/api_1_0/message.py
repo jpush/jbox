@@ -11,12 +11,10 @@ def send_message(integration_id, token):
     if not request.json or not 'message' in request.json or not 'title' in request.json:
         abort(400)
     integration = Integration.verify_auth_token(token)
-    print(dir(integration))
     if integration is None:
         abort(404)
     # channel dev_ID
     developer = Developer.query.filter_by(id=integration.developer_id).first()
-    print(dir(developer))
     if developer is None:
         abort(404)
 

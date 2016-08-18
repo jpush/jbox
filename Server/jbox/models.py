@@ -122,7 +122,7 @@ class Integration(db.Model):
 
     def generate_auth_token(self, expiration):
         s = Serializer(current_app.config["SECRET_KEY"], expires_in=expiration)
-        return s.dumps({'id': self.id})
+        return s.dumps({'id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_auth_token(token):
