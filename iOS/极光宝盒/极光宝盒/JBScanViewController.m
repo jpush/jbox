@@ -112,10 +112,11 @@
 }
 
 - (void)showScanResultViewController:(LBXScanResult*)strResult{
-    JBAccountViewController *controller = self.navigationController.viewControllers[1];
-    controller.scanString   = strResult.strScanned;
-    controller.scanCodeType = strResult.strBarCodeType;
+    UITabBarController *tbC = self.navigationController.viewControllers[0];
+    JBAccountViewController *controller = tbC.viewControllers[1];
+    controller.scanedDevkey = [strResult.strScanned copy];
     [self.navigationController popToRootViewControllerAnimated:YES];
+    [controller.channel_tableView reloadData];
 }
 
 @end

@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JBChannel.h"
 
 @interface JBDatabase : NSObject
 
-+(void)createChannelWithName:(NSString*)name;
-+(void)insertToChannel:(NSString*)channel Messages:(NSMutableArray*)mArray;
-+(NSMutableArray*)getMessagesFromChannel:(NSString*)channel;
++(void)createChannels:(NSArray*)channels;
++(void)insertMessages:(NSMutableArray*)mArray;
++(NSMutableArray*)getMessagesFromChannel:(JBChannel*)channel;
+
+
 
 @end

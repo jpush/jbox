@@ -1,5 +1,5 @@
 //
-//  JBMessage.h
+//  JBChannel.h
 //  极光宝盒
 //
 //  Created by wuxingchen on 16/8/12.
@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JBMessage : NSObject
-@property(nonatomic, retain)NSString *title;
-@property(nonatomic, retain)NSString *message;
+@interface JBChannel : NSObject
 @property(nonatomic, retain)NSString *devkey;
-@property(nonatomic, retain)NSString *channel;
+@property(nonatomic, retain)NSString *name;
+@property(nonatomic, retain)NSString *isTag;// 0/1
 @end

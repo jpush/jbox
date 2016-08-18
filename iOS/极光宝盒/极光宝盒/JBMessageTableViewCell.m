@@ -9,12 +9,10 @@
 #import "JBMessageTableViewCell.h"
 
 @interface JBMessageTableViewCell()
+
 @property (weak, nonatomic) IBOutlet UILabel *icon_label;
-@property (weak, nonatomic) IBOutlet UILabel *content_label;
 @property (weak, nonatomic) IBOutlet UILabel *time_label;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeightConstraint;
-@property (weak, nonatomic) IBOutlet UILabel *title_label;
-
 
 @end
 

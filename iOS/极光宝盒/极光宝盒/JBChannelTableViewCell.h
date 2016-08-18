@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JBMessage.h"
+#import "JBChannel.h"
 
 @class JBChannelTableViewCell;
 
@@ -16,11 +18,10 @@
 
 @interface JBChannelTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *channel_label;
 @property (weak, nonatomic) IBOutlet UIImageView *arrow_imageView;
-@property (weak, nonatomic) IBOutlet UILabel *title_label;
 @property (nonatomic, assign)BOOL subscribed;
 @property (nonatomic, assign)id <JBChannelTableViewCellChangeEditStyleDelegate>delegate;
+@property(nonatomic, retain)JBChannel *channel;
 
 @end
 

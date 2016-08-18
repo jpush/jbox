@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface JBMessageViewController : UIViewController
-
+@property(nonatomic ,retain)NSArray *messageArray;
 @end

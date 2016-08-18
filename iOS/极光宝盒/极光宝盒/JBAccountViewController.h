@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface JBAccountViewController : UIViewController
-@property (nonatomic, retain)NSString *scanString;
-@property (nonatomic, retain)NSString *scanCodeType;
+
+@property (nonatomic, retain)NSString *scanedDevkey;
+
+@property (weak, nonatomic) IBOutlet UITableView *channel_tableView;
+
 @end

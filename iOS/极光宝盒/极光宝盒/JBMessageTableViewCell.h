@@ -10,4 +10,7 @@
 
 @interface JBMessageTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *content_label;
+@property (weak, nonatomic) IBOutlet UILabel *title_label;
+
 @end

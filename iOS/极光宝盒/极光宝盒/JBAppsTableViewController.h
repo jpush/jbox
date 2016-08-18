@@ -10,4 +10,6 @@
 
 @interface JBAppsTableViewController : UITableViewController
 
+@property(nonatomic, retain)NSString *devkey;
+
 @end

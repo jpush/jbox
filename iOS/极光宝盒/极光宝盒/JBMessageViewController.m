@@ -8,8 +8,10 @@
 
 #import "JBMessageViewController.h"
 #import "JBMessageTableViewCell.h"
+#import "JBMessage.h"
 
 @interface JBMessageViewController ()<UITableViewDataSource, UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *message_tableView;
 
 @end
@@ -28,6 +30,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(NSArray *)messageArray{
+    if (!_messageArray) {
+        _messageArray = [NSArray array];
+        self.messageArray = _messageArray;
+    }
+    return _messageArray;
+}
 
 #pragma mark - tableView
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -35,7 +44,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return self.messageArray.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -47,6 +56,9 @@
     if (!cell) {
         cell = [[NSBundle mainBundle] loadNibNamed:@"JBMessageTableViewCell" owner:nil options:nil].lastObject;
     }
+    JBMessage *message      = self.messageArray[indexPath.row];
+    cell.title_label.text   = message.title;
+    cell.content_label.text = message.message;
     return cell;
 }
 

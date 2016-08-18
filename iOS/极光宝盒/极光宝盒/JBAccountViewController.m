@@ -7,17 +7,28 @@
 //
 
 #import "JBAccountViewController.h"
-#import "JBChannelTableViewCell.h"
+#import "JBDevkeyTableViewCell.h"
 #import "JBAppsTableViewController.h"
 #import "JBScanViewController.h"
+#import "JBDevkeyManager.h"
 
 @interface JBAccountViewController ()<UITableViewDelegate, UITableViewDataSource>
+
 - (IBAction)scan_button:(id)sender;
-@property (weak, nonatomic) IBOutlet UITableView *channel_tableView;
+@property(nonatomic, retain)NSArray *devkeys;
 
 @end
 
 @implementation JBAccountViewController
+
+-(NSArray *)devkeys{
+    return [JBDevkeyManager getDevkeys];
+}
+
+-(void)setScanedDevkey:(NSString *)scanedDevkey{
+    _scanedDevkey = scanedDevkey;
+    [JBDevkeyManager saveDevkey:scanedDevkey];
+}
 
 #pragma mark - default
 - (void)viewDidLoad {
@@ -44,7 +55,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return self.devkeys.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -52,10 +63,11 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    JBChannelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellReuseIdentifier];
+    JBDevkeyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellReuseIdentifier];
     if (!cell) {
-        cell = [[NSBundle mainBundle] loadNibNamed:@"JBChannelTableViewCell" owner:nil options:nil].lastObject;
+        cell = [[NSBundle mainBundle] loadNibNamed:@"JBDevkeyTableViewCell" owner:nil options:nil].lastObject;
     }
+    cell.devkey = self.devkeys[indexPath.row];
     return cell;
 }
 
@@ -89,11 +101,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JBAppsTableViewController *appsVC = [[JBAppsTableViewController alloc] init];
-    JBChannelTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    appsVC.navigationItem.title = cell.title_label.text;
+    JBDevkeyTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    appsVC.navigationItem.title = cell.devkey;
+    appsVC.devkey = cell.devkey;
     [self.navigationController pushViewController:appsVC animated:YES];
 }
-
-
 
 @end

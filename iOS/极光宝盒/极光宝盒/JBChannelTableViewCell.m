@@ -7,15 +7,25 @@
 //
 
 #import "JBChannelTableViewCell.h"
+#import "JBDatabase.h"
 
 IB_DESIGNABLE
 @interface JBChannelTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *icon_label;
+@property (weak, nonatomic) IBOutlet UILabel *channel_label;
+@property (weak, nonatomic) IBOutlet UILabel *title_label;
 
 @end
 
 @implementation JBChannelTableViewCell
+
+-(void)setChannel:(JBChannel *)channel{
+    _channel = channel;
+    self.channel_label.text = channel.name;
+    JBMessage *message = [JBDatabase getMessagesFromChannel:channel].lastObject;
+    self.title_label.text = message.title;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

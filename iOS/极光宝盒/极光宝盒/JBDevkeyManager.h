@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JBSharedDevkey : NSObject
+@interface JBDevkeyManager : NSObject
 +(void)saveDevkey:(NSString*)devkey;
-+(NSString*)getDevkey;
++(NSArray*)getDevkeys;
 @end

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "JPUSHService.h"
 #import "JBNetwork.h"
+
 @interface AppDelegate ()
 
 @end
@@ -36,6 +37,8 @@
 
     //JPush sdk
     [JPUSHService setupWithOption:launchOptions appKey:@"abcacdf406411fa656ee11c3" channel:@"" apsForProduction:NO advertisingIdentifier:nil];
+//    [JPUSHService setupWithOption:launchOptions appKey:@"a1703c14b186a68a66ef86c1" channel:@"" apsForProduction:NO advertisingIdentifier:nil];
+
 
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 

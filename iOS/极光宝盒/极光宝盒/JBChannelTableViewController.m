@@ -11,21 +11,21 @@
 #import "JBMessageViewController.h"
 
 #import "JBNetwork.h"
-#import "JBSharedDevkey.h"
-
+#import "JBDevkeyManager.h"
+#import "JBDatabase.h"
 #import "JPUSHService.h"
 
 @interface JBChannelTableViewController ()
 
-@property(nonatomic, retain)NSArray *channels;
+@property(nonatomic, retain)NSMutableArray *channels;
 
 @end
 
 @implementation JBChannelTableViewController
 
--(NSArray *)channels{
+-(NSMutableArray *)channels{
     if (!_channels) {
-        _channels = [NSArray array];
+        _channels = [NSMutableArray array];
         self.channels = _channels;
     }
     return _channels;
@@ -35,18 +35,18 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.topItem.title = @"消息";
 
-    [JBSharedDevkey saveDevkey:@"hVkbyLdeA7K0Cm9BUgY6"];
-
-    WEAK_SELF(weakSelf);
-    [JBNetwork getChannelsWithDevkey:[JBSharedDevkey getDevkey] complete:^(id responseObject) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        weakSelf.channels = dict[@"channels"];
-        [weakSelf.tableView reloadData];
-    }];
+    [self refreshChannels];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+}
 
-
+-(void)refreshChannels{
+    WEAK_SELF(weakSelf);
+    [JBNetwork getChannelsWithDevkeys:[JBDevkeyManager getDevkeys] complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        [weakSelf.channels addObjectsFromArray:dict[@"channels"]];
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 -(void)didReceiveMessage:(NSNotification*)noti{
@@ -73,7 +73,7 @@
     if (!cell) {
         cell = [[NSBundle mainBundle]loadNibNamed:@"JBChannelTableViewCell" owner:nil options:nil][0];
     }
-    cell.channel_label.text = self.channels[indexPath.row];
+    cell.channel = self.channels[indexPath.row];
     return cell;
 }
 
@@ -83,6 +83,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JBMessageViewController *messageVC = [[JBMessageViewController alloc] init];
+    JBChannelTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    messageVC.messageArray = [JBDatabase getMessagesFromChannel:cell.channel];
     [self.navigationController pushViewController:messageVC animated:YES];
 }
  

@@ -8,18 +8,45 @@
 
 #import "JBAppsTableViewController.h"
 #import "JBChannelTableViewCell.h"
+#import "JBNetwork.h"
+#import "JBChannel.h"
 
 @interface JBAppsTableViewController ()<JBChannelTableViewCellChangeEditStyleDelegate>
+
+@property(nonatomic, retain)NSArray *channelsArr;
 
 @end
 
 @implementation JBAppsTableViewController
+
+@synthesize channelsArr = _channelsArr;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.backItem.title = @"返回";
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+}
+
+-(void)setDevkey:(NSString *)devkey{
+    _devkey = devkey;
+    WEAK_SELF(weakSelf);
+    [JBNetwork getChannelsWithDevkey:devkey complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        weakSelf.channelsArr = dict[@"channels"];
+    }];
+}
+
+-(void)setChannelsArr:(NSArray *)channelsArr{
+    _channelsArr = channelsArr;
+    [self.tableView reloadData];
+}
+
+-(NSArray *)channelsArr{
+    if (!_channelsArr) {
+        _channelsArr = [NSArray array];
+    }
+    return _channelsArr;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,7 +60,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 20;
+    return self.channelsArr.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -41,13 +68,16 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-        JBChannelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellReuseIdentifier];
-        if (!cell) {
-            cell = [[NSBundle mainBundle] loadNibNamed:@"JBChannelTableViewCell" owner:nil options:nil].lastObject;
-        }
-        cell.arrow_imageView.hidden = YES;
-        cell.delegate = self;
-        return cell;
+    JBChannelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellReuseIdentifier];
+    if (!cell) {
+        cell = [[NSBundle mainBundle] loadNibNamed:@"JBChannelTableViewCell" owner:nil options:nil].lastObject;
+    }
+    cell.arrow_imageView.hidden = YES;
+    cell.delegate = self;
+    JBChannel *channel = [JBChannel new];
+    channel.name = self.channelsArr[indexPath.row];
+    cell.channel = channel;
+    return cell;
 }
 
 

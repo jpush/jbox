@@ -8,8 +8,9 @@
 
 #import "JBNetwork.h"
 #import <AFNetworking.h>
+#import "JBDatabase.h"
 
-NSString *const base_url = @"http://192.168.8.229:8888/api.jbox.jiguang.cn/v1/developers/";
+NSString *const base_url = @"http://192.168.10.44:8888/api.jbox.jiguang.cn/v1/developers/";
 
 #define IsReachable [AFNetworkReachabilityManager sharedManager].isReachable
 #define StrBy(a,b) [NSString stringWithFormat:@"%@%@", a, b]
@@ -35,8 +36,26 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 //获取 devkey 下的 channel 列表
 +(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
     [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSMutableArray *channels = [NSMutableArray array];
+        for (NSString *name in dict[@"channels"]) {
+            JBChannel *channel = [JBChannel new];
+            channel.name = name;
+            channel.isTag = @"1";
+            channel.devkey = devkey;
+            [channels addObject:channel];
+        }
+        [JBDatabase createChannels:channels];
         complete(responseObject);
     }];
+}
+
++(void)getChannelsWithDevkeys:(NSArray*)devkeys complete:(void (^)(id responseObject))complete{
+    for (NSString *devkey in devkeys) {
+        [JBNetwork getDevInfoWithDevkey:devkey complete:^(id responseObject) {
+            complete(responseObject);
+        }];
+    }
 }
 
 //获取 devkey 下的所有自定义应用的 appid（Web 、 App）
