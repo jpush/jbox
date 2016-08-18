@@ -12,8 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -62,7 +62,7 @@ public class HttpUtil {
         return null;
     }
 
-    public Map<String, Channel> requestChannels(String devKey) {
+    public List<Channel> requestChannels(String devKey) {
         Resources resources = mContext.getResources();
         String url = String.format(resources.getString(R.string.url_get_channels), devKey);
 
@@ -72,11 +72,11 @@ public class HttpUtil {
             if (response.isSuccessful()) {
                 String body = response.body().string();
                 JSONArray jsonArr = new JSONArray(body);
-                Map<String, Channel> channels = new LinkedHashMap<>();
+                List<Channel> channels = new ArrayList<>();
                 for (int i = 0; i < jsonArr.length(); i++) {
                     String channelName = jsonArr.getString(i);
                     Channel channel = new Channel(channelName);
-                    channels.put(channelName, channel);
+                    channels.add(channel);
                 }
                 return channels;
             } else {

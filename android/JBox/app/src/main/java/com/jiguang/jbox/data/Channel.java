@@ -1,6 +1,7 @@
 package com.jiguang.jbox.data;
 
 import java.util.List;
+import java.util.Stack;
 
 public class Channel {
 
@@ -8,13 +9,11 @@ public class Channel {
 
     private String mDescription;
 
-    private boolean isSubscription; // 是否被订阅。
-
-    private Message mLatestMessage; // 最近收到的消息。
+    private Developer mDeveloper; // 订阅的 developer。若为空，代表没有被订阅。
 
     private int unReadMessageCount; // 未读消息数。
 
-    private List<Message> mMessages;
+    private Stack<Message> mMessages;
 
     public Channel(String name) {
         mName = name;
@@ -32,20 +31,8 @@ public class Channel {
         return mDescription;
     }
 
-    public boolean isSubscription() {
-        return isSubscription;
-    }
-
-    public void setSubscription(boolean subscription) {
-        isSubscription = subscription;
-    }
-
     public Message getLatestMessage() {
-        return mLatestMessage;
-    }
-
-    public void setLatestMessage(Message latestMessage) {
-        mLatestMessage = latestMessage;
+        return mMessages.pop();
     }
 
     public int getUnReadMessageCount() {
@@ -56,15 +43,20 @@ public class Channel {
         this.unReadMessageCount = unReadMessageCount;
     }
 
-    public boolean isAllReaded() {
-        return unReadMessageCount == 0;
-    }
-
     public List<Message> getMessages() {
         return mMessages;
     }
 
-    public void setMessages(List<Message> messages) {
+    public void setMessages(Stack<Message> messages) {
         mMessages = messages;
     }
+
+    public Developer getDeveloper() {
+        return mDeveloper;
+    }
+
+    public void setDevKey(Developer dev) {
+        mDeveloper = dev;
+    }
+
 }

@@ -8,7 +8,7 @@ public class DeveloperDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "Developers.db";
+    public static final String DATABASE_NAME = "JBox.db";
 
     private static final String TEXT_TYPE = " TEXT";
 
@@ -17,7 +17,6 @@ public class DeveloperDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + DeveloperPersistenceContract.DeveloperEntry.TABLE_NAME + " (" +
                     DeveloperPersistenceContract.DeveloperEntry._ID + TEXT_TYPE + " PRIMARY KEY," +
-                    DeveloperPersistenceContract.DeveloperEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     DeveloperPersistenceContract.DeveloperEntry.COLUMN_NAME_KEY + TEXT_TYPE + COMMA_SEP +
                     DeveloperPersistenceContract.DeveloperEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     DeveloperPersistenceContract.DeveloperEntry.COLUMN_NAME_PLATFORM + TEXT_TYPE + COMMA_SEP +

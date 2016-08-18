@@ -11,12 +11,11 @@ import android.widget.TextView;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.account.AccountFragment;
-import com.jiguang.jbox.channel.ChannelPresenter;
+import com.jiguang.jbox.channelmessage.ChannelMessageFragment;
+import com.jiguang.jbox.channelmessage.ChannelMessagePresenter;
 import com.jiguang.jbox.data.source.ChannelsRepository;
 import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
 import com.jiguang.jbox.data.source.remote.ChannelRemoteDataSource;
-import com.jiguang.jbox.message.MessageFragment;
-import com.jiguang.jbox.message.MessagePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +29,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
     }
 
     public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-        return fragment;
+        return new MainFragment();
     }
 
     @Override
@@ -42,17 +40,18 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
-        Fragment messageFragment = MessageFragment.newInstance();
-        ChannelRemoteDataSource channelRemoteDataSource = ChannelRemoteDataSource.getInstance();
-        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(getContext());
-        ChannelsRepository channelsRepository = ChannelsRepository.getInstance(channelRemoteDataSource,
-                channelLocalDataSource);
-        MessagePresenter messagePresenter = new MessagePresenter(channelsRepository, messageFragment);
+        // 消息界面
+        ChannelMessageFragment channelMsgFragment = ChannelMessageFragment.getInstance();
+        ChannelsRepository channelsRepository = ChannelsRepository.getInstance(
+                ChannelRemoteDataSource.getInstance(), ChannelLocalDataSource.getInstance(getContext()));
+        ChannelMessagePresenter channelMessagePresenter = new ChannelMessagePresenter(
+                channelsRepository, channelMsgFragment);
 
+        // 用户界面
         Fragment accountFragment = AccountFragment.newInstance();
 
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(messageFragment);
+        fragments.add(channelMsgFragment);
         fragments.add(accountFragment);
 
         TabsAdapter tabsAdapter = new TabsAdapter(fm);

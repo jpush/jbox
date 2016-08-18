@@ -1,55 +1,49 @@
 package com.jiguang.jbox.data.source.remote;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.source.ChannelsDataSource;
+import com.jiguang.jbox.util.HttpUtil;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import okhttp3.OkHttpClient;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ChannelRemoteDataSource implements ChannelsDataSource {
 
     private static ChannelRemoteDataSource INSTANCE;
 
-    private OkHttpClient mHttpClient;
+    private Context mContext;
 
-    private final static Map<String, Channel> CHANNEL_SERVICE_DATA;
-
-    static {
-        CHANNEL_SERVICE_DATA = new LinkedHashMap<String, Channel>();
-    }
-
-    public static ChannelRemoteDataSource getInstance() {
+    public static ChannelRemoteDataSource getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new ChannelRemoteDataSource();
+            INSTANCE = new ChannelRemoteDataSource(context);
         }
         return INSTANCE;
     }
 
-    private ChannelRemoteDataSource() {
+    private ChannelRemoteDataSource(Context context) {
+        mContext = context;
     }
 
     @Override
-    public void saveChannel(@NonNull Channel channel) {
-        CHANNEL_SERVICE_DATA.put(channel.getName(), channel);
-    }
-
-    @Override
-    public void getChannels(String devKey, @NonNull LoadChannelsCallback callback) {
+    public void getChannels(@NonNull LoadChannelsCallback callback) {
 
     }
 
     @Override
-    public void getSubscribedChannels(String devKey, @NonNull LoadChannelsCallback callback) {
+    public void getChannels(@NonNull String devKey, @NonNull LoadChannelsCallback callback) {
+        checkNotNull(devKey);
+        checkNotNull(callback);
 
+        Map<String, List> channels = HttpUtil.getInstance(mContext).requestChannels(devKey);
     }
 
     @Override
-    public void getChannel(@NonNull String name, @NonNull GetChannelCallback callback) {
-        Channel channel = CHANNEL_SERVICE_DATA.get(name);
+    public void getSubscribedChannels(@NonNull LoadChannelsCallback callback) {
+
     }
 
     @Override
@@ -58,12 +52,13 @@ public class ChannelRemoteDataSource implements ChannelsDataSource {
     }
 
     @Override
-    public void deleteChannel(@NonNull String name) {
-        CHANNEL_SERVICE_DATA.remove(name);
+    public void subscribeChannel(@NonNull String name) {
+
     }
 
     @Override
-    public void deleteAllChannels() {
-        CHANNEL_SERVICE_DATA.clear();
+    public void unSubscribeChannels() {
+
     }
+
 }

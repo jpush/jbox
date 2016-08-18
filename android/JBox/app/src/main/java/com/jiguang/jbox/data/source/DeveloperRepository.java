@@ -1,8 +1,11 @@
 package com.jiguang.jbox.data.source;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
+import com.jiguang.jbox.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -15,24 +18,22 @@ public class DeveloperRepository implements DeveloperDataSource {
 
     private static DeveloperRepository INSTANCE = null;
 
-    private final DeveloperDataSource mDevelopersRemoteDataSource;
-
     private final DeveloperDataSource mDevelopersLocalDataSource;
 
     Map<String, Developer> mCachedDevelopers;
 
     boolean mCacheIsDirty = false;
 
-    private DeveloperRepository(@NonNull DeveloperDataSource remoteDataSource,
-                                @NonNull DeveloperDataSource localDataSource) {
-        mDevelopersRemoteDataSource = checkNotNull(remoteDataSource);
+    private DeveloperRepository(@NonNull DeveloperDataSource localDataSource) {
         mDevelopersLocalDataSource = checkNotNull(localDataSource);
     }
 
-    public static DeveloperRepository getInstance(DeveloperDataSource remoteDataSource,
-                                                  DeveloperDataSource localDataSource) {
+    /**
+     * 暂时没有远程接口，只能从本地获取 dev 历史数据。
+     */
+    public static DeveloperRepository getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new DeveloperRepository(remoteDataSource, localDataSource);
+            INSTANCE = new DeveloperRepository(DeveloperLocalDataSource.getInstance(context));
         }
         return INSTANCE;
     }
@@ -50,9 +51,7 @@ public class DeveloperRepository implements DeveloperDataSource {
             return;
         }
 
-        if (mCacheIsDirty) {
-            getDevelopersFromRemoteDataSource(callback);
-        } else {
+        if (mCacheIsDirty) {    // 需要更新。
             mDevelopersLocalDataSource.getDevelopers(new LoadDevelopersCallback() {
                 @Override
                 public void onDevelopersLoaded(List<Developer> developers) {
@@ -62,7 +61,7 @@ public class DeveloperRepository implements DeveloperDataSource {
 
                 @Override
                 public void onDataNotAvailable() {
-                    getDevelopersFromRemoteDataSource(callback);
+                    LogUtil.LOGI("DeveloperRepository", "No data available.");
                 }
             });
         }
@@ -97,7 +96,6 @@ public class DeveloperRepository implements DeveloperDataSource {
     public void saveDeveloper(@NonNull Developer dev) {
         checkNotNull(dev);
         mDevelopersLocalDataSource.saveDeveloper(dev);
-        mDevelopersRemoteDataSource.saveDeveloper(dev);
 
         if (mCachedDevelopers == null) {
             mCachedDevelopers = new LinkedHashMap<>();
@@ -112,7 +110,6 @@ public class DeveloperRepository implements DeveloperDataSource {
 
     @Override
     public void deleteAllDevelopers() {
-        mDevelopersRemoteDataSource.deleteAllDevelopers();
         mDevelopersLocalDataSource.deleteAllDevelopers();
 
         mCachedDevelopers.clear();
@@ -120,7 +117,6 @@ public class DeveloperRepository implements DeveloperDataSource {
 
     @Override
     public void deleteDeveloper(@NonNull String devKey) {
-        mDevelopersRemoteDataSource.deleteDeveloper(devKey);
         mDevelopersLocalDataSource.deleteDeveloper(devKey);
 
         mCachedDevelopers.remove(devKey);
@@ -128,22 +124,6 @@ public class DeveloperRepository implements DeveloperDataSource {
 
     public boolean isEmpty() {
         return mCachedDevelopers == null || mCachedDevelopers.isEmpty();
-    }
-
-    private void getDevelopersFromRemoteDataSource(@NonNull final LoadDevelopersCallback callback) {
-        mDevelopersRemoteDataSource.getDevelopers(new LoadDevelopersCallback() {
-            @Override
-            public void onDevelopersLoaded(List<Developer> developers) {
-                refreshCache(developers);
-                refreshLocalDataSource(developers);
-                callback.onDevelopersLoaded(new ArrayList<>(mCachedDevelopers.values()));
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
-            }
-        });
     }
 
     private void refreshCache(List<Developer> developers) {

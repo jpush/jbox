@@ -1,8 +1,12 @@
 package com.jiguang.jbox.data;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.base.Objects;
 
 import java.util.UUID;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Developer {
 
@@ -14,11 +18,14 @@ public class Developer {
 
     private final String mPlatform;    // 第三方登录平台。
 
-    public Developer(String devName, String devKey, String platform) {
+    private String mHeadStr;           // Username 的首字母。
+
+    public Developer(@NonNull String devName, @NonNull String devKey, @NonNull String platform) {
         mId = UUID.randomUUID().toString();
-        mDevName = devName;
-        mDevKey = devKey;
-        mPlatform = platform;
+        mDevName = checkNotNull(devName);
+        mDevKey = checkNotNull(devKey);
+        mPlatform = checkNotNull(platform);
+        mHeadStr = devName.substring(0, 1);
     }
 
     public String getId() {
@@ -35,6 +42,10 @@ public class Developer {
 
     public String getPlatform() {
         return mPlatform;
+    }
+
+    public String getHeadStr() {
+        return mHeadStr;
     }
 
     @Override

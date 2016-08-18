@@ -26,6 +26,9 @@
     <string name="url_base">http://api.jbox.jiguang.cn</string>
     <string name="url_get_developers">http://api.jbox.jiguang.cn/developers/%s</string>
     <string name="url_get_channels">http://api.jbox.jiguang.cn/developers/%s/channels</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- http url end -->
 
 </resources>

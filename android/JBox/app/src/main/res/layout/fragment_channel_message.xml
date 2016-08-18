@@ -5,8 +5,8 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/lv_channel"
+    <ListView
+        android:id="@+id/lv_message_channel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/list_item_channel"/>

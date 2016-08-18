@@ -22,18 +22,18 @@ public interface ChannelsDataSource {
         void onDataNotAvailable();
     }
 
-    void saveChannel(@NonNull Channel channel);
+    void getChannels(@NonNull LoadChannelsCallback callback);
 
     void getChannels(String devKey, @NonNull LoadChannelsCallback callback);
 
     // 读取所有订阅了的 Channel。
-    void getSubscribedChannels(String devKey, @NonNull LoadChannelsCallback callback);
-
-    void getChannel(@NonNull String name, @NonNull GetChannelCallback callback);
+    void getSubscribedChannels(@NonNull LoadChannelsCallback callback);
 
     void refreshChannels();
 
-    void deleteChannel(@NonNull String name);
+    // 打上 tag。
+    void subscribeChannel(@NonNull String name);
 
-    void deleteAllChannels();
+    // 不打 tag，使其无法收到消息。
+    void unSubscribeChannels();
 }

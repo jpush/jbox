@@ -8,7 +8,20 @@ public class ChannelDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
 
-    private static final String DATABASE_NAME = "Channels.db";
+    private static final String DATABASE_NAME = "JBox.db";
+
+    private static final String TEXT_TYPE = " TEXT";
+
+    private static final String COMMA_SEP = ",";
+
+    private static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + ChannelPersistenceContract.ChannelEntry.TABLE_NAME + " (" +
+                    ChannelPersistenceContract.ChannelEntry._ID + TEXT_TYPE + " PRIMARY KEY," +
+                    ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+                    ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+                    ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_DEV_KEY + TEXT_TYPE + COMMA_SEP +
+                    ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE +
+            " )";
 
     public ChannelDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -16,11 +29,16 @@ public class ChannelDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(SQL_CREATE_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 }

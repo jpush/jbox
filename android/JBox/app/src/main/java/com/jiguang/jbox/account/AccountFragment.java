@@ -1,7 +1,6 @@
 package com.jiguang.jbox.account;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +19,6 @@ import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.DeveloperRepository;
 import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
-import com.jiguang.jbox.data.source.remote.DeveloperRemoteDataSource;
 import com.jiguang.jbox.databinding.FragmentAccountBinding;
 import com.jiguang.jbox.databinding.ListItemDevBinding;
 

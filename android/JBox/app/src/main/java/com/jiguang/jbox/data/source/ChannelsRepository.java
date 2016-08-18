@@ -20,7 +20,7 @@ public class ChannelsRepository implements ChannelsDataSource {
 
     private final ChannelsDataSource mChannelsLocalDataSource;
 
-    Map<String, Channel> mCachedChannels;
+    Map<String, List<Channel>> mCachedChannels; // key: devKey.
 
     boolean mCacheIsDirty = false;
 
@@ -49,18 +49,52 @@ public class ChannelsRepository implements ChannelsDataSource {
         mChannelsLocalDataSource.saveChannel(channel);
 
         if (mCachedChannels == null) {
-            mCachedChannels = new LinkedHashMap<String, Channel>();
+            mCachedChannels = new LinkedHashMap<>();
         }
-        mCachedChannels.put(channel.getName(), channel);
+
+        String devKey = channel.getDeveloper().getDevKey();
+        List<Channel> list = mCachedChannels.get(devKey);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        list.add(channel);
+        mCachedChannels.put(devKey, list);
     }
 
+    /**
+     * 获取所有的 Channel。
+     * @param callback
+     */
+    @Override
+    public void getChannels(@NonNull LoadChannelsCallback callback) {
+        checkNotNull(callback);
+
+        List<Channel> list = new ArrayList<>();
+        if (mCachedChannels != null && !mCacheIsDirty) {
+            for (int i = 0; i < mCachedChannels.size(); i++) {
+                list.addAll(mCachedChannels.get(i));
+            }
+            callback.onChannelsLoaded(list);
+            return;
+        }
+
+        if(mCacheIsDirty) {
+            getChannelsFromRemoteDataSource();
+        }
+    }
+
+    /**
+     * 获取指定 devKey 下的所有 Channel。
+     * @param devKey
+     * @param callback
+     */
     @Override
     public void getChannels(final String devKey, @NonNull final LoadChannelsCallback callback) {
         checkNotNull(callback);
 
         // 如果缓存可用，就直接从缓存中获取数据。
         if (mCachedChannels != null && !mCacheIsDirty) {
-            callback.onChannelsLoaded(new ArrayList<Channel>(mCachedChannels.values()));
+            callback.onChannelsLoaded(mCachedChannels.get(devKey));
             return;
         }
 
@@ -73,7 +107,7 @@ public class ChannelsRepository implements ChannelsDataSource {
                 @Override
                 public void onChannelsLoaded(List<Channel> channels) {
                     refreshCache(channels);
-                    callback.onChannelsLoaded(new ArrayList<Channel>(mCachedChannels.values()));
+                    callback.onChannelsLoaded(new ArrayList<Channel>(mCachedChannels.get(devKey)));
                 }
 
                 @Override
@@ -84,8 +118,13 @@ public class ChannelsRepository implements ChannelsDataSource {
         }
     }
 
+    /**
+     * 获取所有 devKey 已订阅的 channel。
+     * @param callback
+     */
     @Override
-    public void getSubscribedChannels(String devKey, @NonNull LoadChannelsCallback callback) {
+    public void getSubscribedChannels(@NonNull LoadChannelsCallback callback) {
+        checkNotNull(callback);
 
     }
 
@@ -93,8 +132,6 @@ public class ChannelsRepository implements ChannelsDataSource {
     public void getChannel(@NonNull String name, @NonNull final GetChannelCallback callback) {
         checkNotNull(name);
         checkNotNull(callback);
-
-        Channel cacheChannel = getChannelWithName(name);
 
         if (cacheChannel != null) {
             callback.onChannelLoaded(cacheChannel);
@@ -134,9 +171,23 @@ public class ChannelsRepository implements ChannelsDataSource {
         mChannelsLocalDataSource.deleteAllChannels();
 
         if (mCachedChannels == null) {
-            mCachedChannels = new LinkedHashMap<String, Channel>();
+            mCachedChannels = new LinkedHashMap<>();
         }
         mCachedChannels.clear();
+    }
+
+    private void getChannelsFromRemoteDataSource(final LoadChannelsCallback callback) {
+        mChannelsRemoteDataSource.getChannels(new LoadChannelsCallback() {
+            @Override
+            public void onChannelsLoaded(List<Channel> channels) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     private void getChannelsFromRemoteDataSource(String devKey, @NonNull final LoadChannelsCallback callback) {
@@ -155,18 +206,20 @@ public class ChannelsRepository implements ChannelsDataSource {
         });
     }
 
-    private void refreshCache(List<Channel> channels) {
-        if (mCachedChannels == null) {
-            mCachedChannels = new LinkedHashMap<String, Channel>();
+    private void refreshCache(@NonNull List<Channel> list) {
+        checkNotNull(list);
+        if (!list.isEmpty()) {
+            String devKey = list.get(0).getDeveloper().getDevKey();
+            if (mCachedChannels.containsKey(devKey)) {
+                mCachedChannels.get(devKey).addAll(list);
+            } else {
+                mCachedChannels.put(devKey, list);
+            }
         }
-        mCachedChannels.clear();
-        for (Channel channel : channels) {
-            mCachedChannels.put(channel.getName(), channel);
-        }
-        mCacheIsDirty = false;
     }
 
-    private void refreshLocalDataSource(List<Channel> channels) {
+    private void refreshLocalDataSource(@NonNull List<Channel> channels) {
+        checkNotNull(channels);
         mChannelsLocalDataSource.deleteAllChannels();
         for (Channel channel : channels) {
             mChannelsLocalDataSource.saveChannel(channel);
@@ -174,12 +227,13 @@ public class ChannelsRepository implements ChannelsDataSource {
     }
 
     @Nullable
-    private Channel getChannelWithName(@NonNull String name) {
-        checkNotNull(name);
+    private List<Channel> getChannelsWithDevKey(@NonNull String devKey) {
+        checkNotNull(devKey);
         if (mCachedChannels == null || mCachedChannels.isEmpty()) {
             return null;
         } else {
-            return mCachedChannels.get(name);
+            return mCachedChannels.get(devKey);
         }
     }
+
 }
