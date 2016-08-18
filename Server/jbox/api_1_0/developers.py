@@ -156,8 +156,7 @@ def create_integrations(dev_key):
                                       channel=request.json['channel'])
         new_integration.insert_to_db()
         token = new_integration.generate_auth_token(3600000000)
-        new_integration.token = token
-        print(token)
+        new_integration.token = token.decode('utf-8')
         db.session.add(new_integration)
         try:
             db.session.commit()
@@ -177,7 +176,7 @@ def create_integrations(dev_key):
                                           channel=request.json['channel'])
             new_integration.insert_to_db()
             token = new_integration.generate_auth_token(3600000000)
-            new_integration.token = token
+            new_integration.token = token.decode('utf-8')
             db.session.add(new_integration)
             db.session.commit()
             return jsonify({'integration_id': new_integration_id,

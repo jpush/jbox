@@ -49,9 +49,6 @@ def edit_integration(integration_id):
     channel = integration.channel
     icon = integration.icon
     token = integration.token
-    print(token)
-    token = token[2:-1]
-    print(token)
     channels = get_channel_list()
     dev_key = current_user.dev_key
     return render_template('auth/create.html', **locals())
