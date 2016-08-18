@@ -129,7 +129,8 @@ def get_integrations(dev_key):
                           'integration_id': integration.integration_id,
                           'description': integration.description,
                           'icon': integration.icon,
-                          'channel': integration.channel})
+                          'channel': integration.channel,
+                          'token': integration.token})
     return jsonify(data_json), 200
 
 
@@ -153,13 +154,15 @@ def create_integrations(dev_key):
                                       integration_id=new_integration_id,
                                       developer_id=developer.id,
                                       channel=request.json['channel'])
+        new_integration.insert_to_db()
         token = new_integration.generate_auth_token(3600000000)
         new_integration.token = token
+        print(token)
         db.session.add(new_integration)
         try:
             db.session.commit()
             return jsonify({'integration_id': new_integration_id,
-                            'token': token.decode('utf-8')})
+                            'token': token.decode('utf-8')}), 201
         except:
             db.session.rollback()
             abort(500)
@@ -172,11 +175,13 @@ def create_integrations(dev_key):
                                           integration_id=new_integration_id,
                                           developer_id=developer.id,
                                           channel=request.json['channel'])
+            new_integration.insert_to_db()
             token = new_integration.generate_auth_token(3600000000)
+            new_integration.token = token
             db.session.add(new_integration)
             db.session.commit()
             return jsonify({'integration_id': new_integration_id,
-                            'token': token})
+                            'token': token.decode('utf-8')}), 201
         except:
             db.session.rollback()
             abort(500)
@@ -257,7 +262,7 @@ def regenerate_integration_token(integration_id):
     try:
         db.session.add(integration)
         db.session.commit()
-        return jsonify({'token': token}), 200
+        return jsonify({'token': token.decode('utf-8')}), 200
     except:
         db.session.rollback()
         abort(500)
