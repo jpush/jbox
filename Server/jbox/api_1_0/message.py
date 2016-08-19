@@ -10,9 +10,14 @@ from jpush import common
 def send_message(integration_id, token):
     if not request.json or not 'message' in request.json or not 'title' in request.json:
         abort(400)
-    integration = Integration.verify_auth_token(token)
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
         abort(404)
+    print(integration.token == token)
+    if integration.token != token:
+        return jsonify({'error': 'useless token'}), 406
+    integration = Integration.verify_auth_token(token)
+
     # channel dev_ID
     developer = Developer.query.filter_by(id=integration.developer_id).first()
     if developer is None:

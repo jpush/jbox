@@ -79,7 +79,7 @@ def developer_loader(platform, platform_id):
 @login_manager.request_loader
 def request_loader(request):
     platform = request.form.get("platform")
-    platform_id = request.form.get("platform")
+    platform_id = request.form.get("platform_id")
     developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
     return developer
 
