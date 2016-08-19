@@ -159,6 +159,17 @@
     return channels;
 }
 
++(NSMutableArray*)getAllSubscribedChannels{
+    NSMutableArray *channels = [JBDatabase getAllChannels];
+    for (JBChannel *channel in channels) {
+        if ([channel.isTag isEqualToString:@"0"]) {
+            [channels delete:channel];
+        }
+    }
+    return channels;
+}
+
+
 +(NSMutableArray*)getChannelsFromDevkey:(NSString*)devkey{
     NSMutableArray *modelArray = [NSMutableArray array];
     if ([JBSharedChannelDatabase open]) {
@@ -179,6 +190,16 @@
 +(void)updateChannel:(JBChannel*)channel{
     if ([JBSharedChannelDatabase open]) {
         NSString *sqlInsertTable = [NSString stringWithFormat:@"UPDATE %@ SET isTag = %@ WHERE devkey = %@ AND name = %@",JBTableName(JBChannelTableName, channel.devkey), channel.isTag, channel.devkey, channel.name];
+        BOOL result = [JBSharedChannelDatabase executeUpdate:sqlInsertTable];
+        if (result) {
+        }
+        [JBSharedChannelDatabase close];
+    }
+}
+
++(void)deleteChannel:(JBChannel*)channel{
+    if ([JBSharedChannelDatabase open]) {
+        NSString *sqlInsertTable = [NSString stringWithFormat:@"delete from %@ WHERE name = %@",JBTableName(JBChannelTableName, channel.devkey), channel.name];
         BOOL result = [JBSharedChannelDatabase executeUpdate:sqlInsertTable];
         if (result) {
         }

@@ -19,7 +19,9 @@
 +(void)updateChannelDatabase;
 +(void)insertChannel:(JBChannel*)channel;
 +(NSMutableArray*)getAllChannels;
++(NSMutableArray*)getAllSubscribedChannels;
 +(NSMutableArray*)getChannelsFromDevkey:(NSString*)devkey;
 +(void)updateChannel:(JBChannel*)channel;
++(void)deleteChannel:(JBChannel*)channel;
 
 @end

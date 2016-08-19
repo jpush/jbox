@@ -37,6 +37,21 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 +(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
     [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        //把数据库里有，但是下载没有的数据删掉
+        NSArray *downloadChannels = dict[@"channels"];
+        NSArray *storedChannels = [JBDatabase getChannelsFromDevkey:devkey];
+        NSMutableArray *storedChannelNames = [NSMutableArray array];
+        for (JBChannel *channel in storedChannels) {
+            [storedChannelNames addObject:channel.name];
+        }
+        [storedChannelNames removeObjectsInArray:downloadChannels];
+        for (NSString *name in storedChannelNames) {
+            JBChannel *channel = [JBChannel new];
+            channel.name = name;
+            channel.devkey = devkey;
+            [JBDatabase deleteChannel:channel];
+        }
+
         NSMutableArray *channels = [NSMutableArray array];
         for (NSString *name in dict[@"channels"]) {
             JBChannel *channel = [JBChannel new];
@@ -49,14 +64,6 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
         complete(responseObject);
     }];
 }
-
-//获取 devkey 下的所有自定义应用的 appid（Web 、 App）
-//+(void)getAppidWithDevkey:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
-//    [JBNetwork GET:StrBy(devkey, @"/app_ids") paramtes:nil complete:^(id responseObject) {
-//        complete(responseObject);
-//    }];
-//}
-
 
 //--------------------------------------- private ---------------------------------------//
 

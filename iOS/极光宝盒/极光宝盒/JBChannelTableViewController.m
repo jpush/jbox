@@ -60,7 +60,7 @@
                 channel.isTag      = @"1";
                 [JBDatabase insertChannel:channel];
             }
-            self.channels = [JBDatabase getAllChannels];
+            self.channels = [JBDatabase getAllSubscribedChannels];
             [self.tableView reloadData];
         }];
     }
