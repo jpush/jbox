@@ -28,7 +28,7 @@ def login():
                 integrations = Developer.query.filter_by(dev_key=current_user.dev_key).first().integrations
                 return render_template('auth/manage.html', integrations=integrations, dev_key=current_user.dev_key)
             else:
-                flash('Can find user by user_id=1')
+                flash('Can find user by platform:' + form.platform.data + ' platform_id' + form.platform_id.data)
     return render_template('login.html', form=form)
 
 
