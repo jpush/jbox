@@ -257,7 +257,7 @@ def regenerate_integration_token(integration_id):
     if integration is None:
         abort(400)
     token = integration.generate_auth_token(3600000000)
-    integration.token = token
+    integration.token = token.decode('utf-8')
     try:
         db.session.add(integration)
         db.session.commit()
