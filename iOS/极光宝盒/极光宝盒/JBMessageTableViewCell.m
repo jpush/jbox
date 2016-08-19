@@ -7,20 +7,31 @@
 //
 
 #import "JBMessageTableViewCell.h"
+#import "UILabel+ContentSize.h"
 
 @interface JBMessageTableViewCell()
 
+@property (weak, nonatomic) IBOutlet UILabel *content_label;
+@property (weak, nonatomic) IBOutlet UILabel *title_label;
 @property (weak, nonatomic) IBOutlet UILabel *icon_label;
 @property (weak, nonatomic) IBOutlet UILabel *time_label;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeightConstraint;
 
 @end
 
 @implementation JBMessageTableViewCell
 
+-(void)setMessage:(JBMessage *)message{
+    _message = message;
+    self.content_label.text = message.content;
+    self.title_label.text   = message.title;
+    self.time_label.text    = message.time;
+    CGSize size = [self.content_label caculatedSize];
+    self.suitableHeight = 60 + size.height - 16;
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    self.suitableHeight = 60;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

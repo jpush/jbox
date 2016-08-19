@@ -18,5 +18,10 @@
 #import "UIColor+Hex.h"
 
 static NSString *CellReuseIdentifier = @"cell";
+static NSString *JBChannelTableViewControllerShouldUpdate = @"JBChannelTableViewControllerShouldUpdate";
+static NSString *JBMessageViewControllerShouldUpdate = @"JBMessageViewControllerShouldUpdate";
+
 
 #define WEAK_SELF(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
+

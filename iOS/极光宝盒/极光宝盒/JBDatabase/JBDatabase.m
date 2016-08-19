@@ -9,14 +9,17 @@
 #import "JBDatabase.h"
 #import <FMDB.h>
 #import "JBMessage.h"
+#import "JBDevkeyManager.h"
 
 #define JBDatabaseName @"jboxDatabase.sqlite"
 #define JBChannelDatabaseName @"jboxChannelDatabase.sqlite"
+#define JBChannelTableName @"JBChannelTableName"
+
 
 #define JBSharedDatabase [JBDatabase sharedDatabase]
 #define JBSharedChannelDatabase [JBDatabase sharedChannelDatabase]
 
-#define DevChannelName(devkey,channel) [NSString stringWithFormat:@"%@-%@",devkey, channel]
+#define JBTableName(name1,name2) [NSString stringWithFormat:@"%@%@",name1, name2]
 
 @implementation JBDatabase
 
@@ -35,15 +38,13 @@
 }
 
 +(void)createChannel:(JBChannel*)channel{
-    if (![JBDatabase isTableExist:channel]) {
-        if ([JBSharedDatabase open]) {
-            NSString *sqlCreateTable = [NSString stringWithFormat:@"create table if not exists %@ (id integer primary key autoincrement ,title text ,message text ,devkey text ,channel text)", DevChannelName(channel.devkey, channel.name)];
-            BOOL result = [JBSharedDatabase executeUpdate:sqlCreateTable];
-            if (result) {
+    if ([JBSharedDatabase open]) {
+        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (id integer PRIMARY KEY AUTOINCREMENT,title text ,message text ,devkey text ,channel text, time text)", JBTableName(channel.devkey, channel.name)];
+        BOOL result = [JBSharedDatabase executeUpdate:sqlCreateTable];
+        if (result) {
 
-            }
-            [JBSharedDatabase close];
         }
+        [JBSharedDatabase close];
     }
 }
 
@@ -53,23 +54,10 @@
     }
 }
 
-+(BOOL)isTableExist:(JBChannel*)channel{
-    FMResultSet *rs = [JBSharedDatabase executeQuery:@"select count(*) as 'count' from sqlite_master where type ='table' and name = ?", DevChannelName(channel.devkey, channel.name)];
-    while ([rs next]){
-        NSInteger count = [rs intForColumn:@"count"];
-        if (0 == count){
-            return NO;
-        }else{
-            return YES;
-        }
-    }
-    return NO;
-}
-
-+(void)insertMessages:(NSMutableArray*)mArray{
++(void)insertMessages:(NSArray*)mArray{
     if ([JBSharedDatabase open]) {
         for (JBMessage *message in mArray) {
-            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into %@ (title,message,devkey,channel) values ('%@','%@','%@','%@')",DevChannelName(message.devkey, message.channel), message.title, message.message, message.devkey, message.title];
+            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into %@ (title,message,devkey,channel,time) values ('%@','%@','%@','%@','%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.title, message.time];
             BOOL result = [JBSharedDatabase executeUpdate:sqlInsertTable];
             if (result) {
             }
@@ -81,14 +69,15 @@
 +(NSMutableArray*)getMessagesFromChannel:(JBChannel*)channel{
     NSMutableArray *modelArray = [NSMutableArray array];
     if ([JBSharedDatabase open]) {
-        NSString *sqlSelect = [NSString stringWithFormat:@"select * from %@", DevChannelName(channel.devkey, channel.name)];
+        NSString *sqlSelect = [NSString stringWithFormat:@"select * from %@", JBTableName(channel.devkey, channel.name)];
         FMResultSet *set = [JBSharedDatabase executeQuery:sqlSelect];
         while ([set next]) {
             JBMessage *message = [JBMessage new];
             message.title   = [set stringForColumn:@"title"];
-            message.message = [set stringForColumn:@"message"];
+            message.content = [set stringForColumn:@"message"];
             message.devkey  = [set stringForColumn:@"devkey"];
             message.channel = [set stringForColumn:@"channel"];
+            message.time    = [set stringForColumn:@"time"];
             [modelArray addObject:message];
         }
         [JBSharedDatabase close];
@@ -96,35 +85,53 @@
     return modelArray;
 }
 
++(NSString*)getLastMessage:(JBChannel*)channel{
+    NSString *lastMessage;
+    if ([JBSharedDatabase open]) {
+        NSString *sqlStr = [NSString stringWithFormat:@"select max(id),title from %@", JBTableName(channel.devkey, channel.name)];
+        FMResultSet *set = [JBSharedDatabase executeQuery:sqlStr];
+        while ([set next]) {
+            lastMessage = [set stringForColumn:@"title"];
+        }
+        [JBSharedDatabase close];
+    }
+    return lastMessage;
+}
+
 +(void)clearChannelWithChannel:(JBChannel*)channel{
-    NSString *sqlstr = [NSString stringWithFormat:@"DELETE FROM %@", DevChannelName(channel.devkey, channel.name)];
+    NSString *sqlstr = [NSString stringWithFormat:@"DELETE FROM %@", JBTableName(channel.devkey, channel.name)];
     [JBSharedDatabase executeUpdate:sqlstr];
 }
 
 +(void)deleteChannelWithChannel:(JBChannel*)channel{
-    NSString *sqlstr = [NSString stringWithFormat:@"DROP TABLE %@", DevChannelName(channel.devkey, channel.name)];
+    NSString *sqlstr = [NSString stringWithFormat:@"DROP TABLE %@", JBTableName(channel.devkey, channel.name)];
     [JBSharedDatabase executeUpdate:sqlstr];
 }
 
 //--------------------------------------- channel ---------------------------------------//
 
++(void)updateChannelDatabase{
+    NSArray *devkeys = [JBDevkeyManager getDevkeys];
+    for (NSString *devkey in devkeys) {
+        [JBDatabase createChannelTableWithDevkey:devkey];
+    }
+}
+
 +(FMDatabase*)sharedChannelDatabase{
     static FMDatabase *database = nil;
-    static dispatch_once_t predicate; dispatch_once(&predicate, ^{
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
         NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *docPath = [array lastObject];
         NSString *dbPath = [docPath stringByAppendingPathComponent:JBChannelDatabaseName];
         database = [FMDatabase databaseWithPath:dbPath];
-        if (![JBDatabase isChannelTableExist]) {
-            [JBDatabase createChannelTable];
-        }
     });
     return database;
 }
 
-+(void)createChannelTable{
-    if ([JBSharedDatabase open]) {
-        NSString *sqlCreateTable = [NSString stringWithFormat:@"create table if not exists %@ (id integer primary key autoincrement ,devkey text ,name text ,isTag text)",JBChannelDatabaseName];
++(void)createChannelTableWithDevkey:(NSString*)devkey{
+    if ([JBSharedChannelDatabase open]) {
+        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (id integer PRIMARY KEY AUTOINCREMENT, name TEXT UNIQUE, devkey text, isTag text);",JBTableName(JBChannelTableName, devkey)];
         BOOL result = [JBSharedChannelDatabase executeUpdate:sqlCreateTable];
         if (result) {
 
@@ -135,7 +142,7 @@
 
 +(void)insertChannel:(JBChannel*)channel{
     if ([JBSharedChannelDatabase open]) {
-        NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into %@ (devkey,name,isTag) values ('%@','%@','%@')",JBChannelDatabaseName, channel.devkey, channel.name, channel.isTag];
+        NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into %@ (devkey,name,isTag) values ('%@','%@','%@')",JBTableName(JBChannelTableName, channel.devkey), channel.devkey, channel.name, channel.isTag];
         BOOL result = [JBSharedChannelDatabase executeUpdate:sqlInsertTable];
         if (result) {
         }
@@ -143,28 +150,40 @@
     }
 }
 
-+(void)changeChannel:(JBChannel*)channel{
++(NSMutableArray*)getAllChannels{
+    NSArray *devkeys = [JBDevkeyManager getDevkeys];
+    NSMutableArray *channels = [NSMutableArray array];
+    for (NSString *devkey in devkeys) {
+        [channels addObjectsFromArray:[JBDatabase getChannelsFromDevkey:devkey]];
+    }
+    return channels;
+}
+
++(NSMutableArray*)getChannelsFromDevkey:(NSString*)devkey{
+    NSMutableArray *modelArray = [NSMutableArray array];
     if ([JBSharedChannelDatabase open]) {
-        NSString *sqlInsertTable = [NSString stringWithFormat:@"UPDATE %@ SET isTag = %@ WHERE devkey = %@ AND name = %@",JBChannelDatabaseName, channel.isTag, channel.devkey, channel.name];
+        NSString *sqlSelect = [NSString stringWithFormat:@"select * from %@", JBTableName(JBChannelTableName, devkey)];
+        FMResultSet *set = [JBSharedChannelDatabase executeQuery:sqlSelect];
+        while ([set next]) {
+            JBChannel *channel = [JBChannel new];
+            channel.devkey     = [set stringForColumn:@"devkey"];
+            channel.name       = [set stringForColumn:@"name"];
+            channel.isTag      = [set stringForColumn:@"isTag"];
+            [modelArray addObject:channel];
+        }
+        [JBSharedChannelDatabase close];
+    }
+    return modelArray;
+}
+
++(void)updateChannel:(JBChannel*)channel{
+    if ([JBSharedChannelDatabase open]) {
+        NSString *sqlInsertTable = [NSString stringWithFormat:@"UPDATE %@ SET isTag = %@ WHERE devkey = %@ AND name = %@",JBTableName(JBChannelTableName, channel.devkey), channel.isTag, channel.devkey, channel.name];
         BOOL result = [JBSharedChannelDatabase executeUpdate:sqlInsertTable];
         if (result) {
         }
         [JBSharedChannelDatabase close];
     }
-}
-
-+(BOOL)isChannelTableExist{
-    FMResultSet *rs = [JBSharedChannelDatabase executeQuery:@"select count(*) as 'count' from sqlite_master where type ='table' and name = ?", JBChannelDatabaseName];
-    while ([rs next]){
-        // just print out what we've got in a number of formats.
-        NSInteger count = [rs intForColumn:@"count"];
-        if (0 == count){
-            return NO;
-        }else{
-            return YES;
-        }
-    }
-    return NO;
 }
 
 @end

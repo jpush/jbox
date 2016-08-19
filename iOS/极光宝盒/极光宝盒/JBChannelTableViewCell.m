@@ -14,7 +14,6 @@ IB_DESIGNABLE
 
 @property (weak, nonatomic) IBOutlet UILabel *icon_label;
 @property (weak, nonatomic) IBOutlet UILabel *channel_label;
-@property (weak, nonatomic) IBOutlet UILabel *title_label;
 
 @end
 
@@ -25,6 +24,7 @@ IB_DESIGNABLE
     self.channel_label.text = channel.name;
     JBMessage *message = [JBDatabase getMessagesFromChannel:channel].lastObject;
     self.title_label.text = message.title;
+    self.subscribed = [channel.isTag intValue];
 }
 
 - (void)awakeFromNib {

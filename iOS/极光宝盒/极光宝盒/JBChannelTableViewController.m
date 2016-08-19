@@ -14,6 +14,8 @@
 #import "JBDevkeyManager.h"
 #import "JBDatabase.h"
 #import "JPUSHService.h"
+#import "JBMessage.h"
+#import <MJRefresh.h>
 
 @interface JBChannelTableViewController ()
 
@@ -26,7 +28,6 @@
 -(NSMutableArray *)channels{
     if (!_channels) {
         _channels = [NSMutableArray array];
-        self.channels = _channels;
     }
     return _channels;
 }
@@ -38,19 +39,48 @@
     [self refreshChannels];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
-}
 
--(void)refreshChannels{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshChannels) name:JBChannelTableViewControllerShouldUpdate object:nil];
+
     WEAK_SELF(weakSelf);
-    [JBNetwork getChannelsWithDevkeys:[JBDevkeyManager getDevkeys] complete:^(id responseObject) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        [weakSelf.channels addObjectsFromArray:dict[@"channels"]];
-        [weakSelf.tableView reloadData];
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf refreshChannels];
+        [weakSelf.tableView.mj_header endRefreshing];
     }];
 }
 
+-(void)refreshChannels{
+    for (NSString *devkey in [JBDevkeyManager getDevkeys]) {
+        [JBNetwork getChannelsWithDevkey:devkey complete:^(id responseObject) {
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+            for (NSString *name in dict[@"channels"]) {
+                JBChannel *channel = [JBChannel new];
+                channel.name       = name;
+                channel.devkey     = devkey;
+                channel.isTag      = @"1";
+                [JBDatabase insertChannel:channel];
+            }
+            self.channels = [JBDatabase getAllChannels];
+            [self.tableView reloadData];
+        }];
+    }
+}
+
 -(void)didReceiveMessage:(NSNotification*)noti{
-    NSLog(@"%@",noti);
+    NSDictionary *dict = [noti userInfo];
+    JBMessage *message = [JBMessage new];
+    message.title      = dict[@"title"];
+    message.content    = dict[@"content"];
+    message.devkey     = dict[@"extras"][@"dev_key"];
+    message.channel    = dict[@"extras"][@"channel"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[(NSString*)(dict[@"extras"][@"datetime"]) integerValue]];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"HH:mm"];
+    NSString *time = [formatter stringFromDate:date];
+    message.time       = time;
+    [JBDatabase insertMessages:@[message]];
+    [self.tableView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JBMessageViewControllerShouldUpdate object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,13 +97,13 @@
     return self.channels.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     JBChannelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellReuseIdentifier];
     if (!cell) {
         cell = [[NSBundle mainBundle]loadNibNamed:@"JBChannelTableViewCell" owner:nil options:nil][0];
     }
     cell.channel = self.channels[indexPath.row];
+    cell.title_label.text = [JBDatabase getLastMessage:cell.channel];
     return cell;
 }
 
@@ -84,7 +114,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JBMessageViewController *messageVC = [[JBMessageViewController alloc] init];
     JBChannelTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    messageVC.messageArray = [JBDatabase getMessagesFromChannel:cell.channel];
+    messageVC.channel = cell.channel;
     [self.navigationController pushViewController:messageVC animated:YES];
 }
  

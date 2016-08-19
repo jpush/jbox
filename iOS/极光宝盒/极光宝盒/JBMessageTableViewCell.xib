@@ -37,7 +37,7 @@
                         <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="content" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XFq-GH-ayx">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="content" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XFq-GH-ayx">
                         <rect key="frame" x="74" y="35" width="235" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="cNv-Fg-JQI"/>
@@ -45,6 +45,11 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.49019607840000001" green="0.49019607840000001" blue="0.49019607840000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="cNv-Fg-JQI"/>
+                            </mask>
+                        </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MwC-rV-Wfv">
                         <rect key="frame" x="278" y="7" width="28.5" height="16"/>
@@ -59,21 +64,23 @@
                     <constraint firstAttribute="trailing" secondItem="XFq-GH-ayx" secondAttribute="trailing" constant="11" id="DBd-eq-Qv6"/>
                     <constraint firstItem="XFq-GH-ayx" firstAttribute="leading" secondItem="VFv-RF-eYu" secondAttribute="leading" id="DVq-N1-ZmT"/>
                     <constraint firstItem="VFv-RF-eYu" firstAttribute="leading" secondItem="7hY-Xu-lGE" secondAttribute="trailing" constant="18" id="IHc-6l-I3w"/>
+                    <constraint firstItem="XFq-GH-ayx" firstAttribute="top" secondItem="VFv-RF-eYu" secondAttribute="bottom" constant="7" id="IgW-Nt-85x"/>
                     <constraint firstItem="7hY-Xu-lGE" firstAttribute="leading" secondItem="1b9-0n-LmH" secondAttribute="leading" constant="11" id="M9F-Bl-zYd"/>
                     <constraint firstItem="MwC-rV-Wfv" firstAttribute="top" secondItem="VFv-RF-eYu" secondAttribute="top" id="Zad-PX-Jik"/>
                     <constraint firstAttribute="trailing" secondItem="MwC-rV-Wfv" secondAttribute="trailing" constant="13" id="aY7-om-mkc"/>
                     <constraint firstItem="VFv-RF-eYu" firstAttribute="top" secondItem="7hY-Xu-lGE" secondAttribute="top" id="b18-pA-Zhu"/>
                     <constraint firstItem="XFq-GH-ayx" firstAttribute="bottom" secondItem="7hY-Xu-lGE" secondAttribute="bottom" id="lZo-rV-GXY"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XFq-GH-ayx" secondAttribute="bottom" constant="8" id="omR-EY-PYP"/>
                     <constraint firstItem="7hY-Xu-lGE" firstAttribute="top" secondItem="1b9-0n-LmH" secondAttribute="top" constant="7" id="rhR-6T-CF0"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="ALY-9Q-MxC"/>
+                        <exclude reference="lZo-rV-GXY"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <connections>
-                <outlet property="contentHeightConstraint" destination="cNv-Fg-JQI" id="0Zf-i8-jAb"/>
                 <outlet property="content_label" destination="XFq-GH-ayx" id="5Mc-th-Cqk"/>
                 <outlet property="icon_label" destination="7hY-Xu-lGE" id="6cG-xc-P2u"/>
                 <outlet property="time_label" destination="MwC-rV-Wfv" id="xL6-gO-upU"/>

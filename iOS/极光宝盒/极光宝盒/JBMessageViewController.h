@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JBChannel.h"
 
 @interface JBMessageViewController : UIViewController
-@property(nonatomic ,retain)NSArray *messageArray;
+@property(nonatomic, retain)JBChannel *channel;
 @end

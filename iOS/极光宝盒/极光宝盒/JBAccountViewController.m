@@ -11,6 +11,10 @@
 #import "JBAppsTableViewController.h"
 #import "JBScanViewController.h"
 #import "JBDevkeyManager.h"
+#import "JBNetwork.h"
+#import "JPUSHService.h"
+#import "JBDatabase.h"
+#import "JBChannel.h"
 
 @interface JBAccountViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -28,6 +32,29 @@
 -(void)setScanedDevkey:(NSString *)scanedDevkey{
     _scanedDevkey = scanedDevkey;
     [JBDevkeyManager saveDevkey:scanedDevkey];
+    //获取所有 channel 并且打 tag
+    [JBNetwork getChannelsWithDevkey:scanedDevkey complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSArray *channels = dict[@"channels"];
+        
+        NSMutableArray *tagsArr = [NSMutableArray array];
+        for (NSString *channel in channels) {
+            NSString *tag = [NSString stringWithFormat:@"%@%@", scanedDevkey, channel];
+            [tagsArr addObject:tag];
+        }
+        NSSet *tagsSet = [NSSet setWithArray:tagsArr];
+        [JPUSHService setTags:tagsSet aliasInbackground:nil];
+
+        for (NSString *name in channels) {
+            JBChannel *channel = [JBChannel new];
+            channel.name   = name;
+            channel.devkey = scanedDevkey;
+            channel.isTag  = @"1";
+            [JBDatabase insertChannel:channel];
+            NSString *tag = [NSString stringWithFormat:@"%@%@", scanedDevkey, name];
+            [JPUSHService setTags:[NSSet setWithObject:tag] aliasInbackground:nil];
+        }
+    }];
 }
 
 #pragma mark - default

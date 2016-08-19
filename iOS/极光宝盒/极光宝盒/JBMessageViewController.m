@@ -9,10 +9,12 @@
 #import "JBMessageViewController.h"
 #import "JBMessageTableViewCell.h"
 #import "JBMessage.h"
+#import "JBDatabase.h"
 
 @interface JBMessageViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *message_tableView;
+@property(nonatomic ,retain)NSArray *messageArray;
 
 @end
 
@@ -23,6 +25,23 @@
     self.navigationController.navigationBar.backItem.title = @"返回";
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update) name:JBMessageViewControllerShouldUpdate object:nil];
+    [self update];
+}
+
+-(void)setChannel:(JBChannel *)channel{
+    _channel = channel;
+    [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(update) userInfo:nil repeats:NO];
+}
+
+-(void)update{
+    self.messageArray = [JBDatabase getMessagesFromChannel:_channel];
+    [self.message_tableView reloadData];
+    if (self.messageArray.count > 0) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.messageArray.count - 1 inSection:0];
+        [self.message_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.view layoutIfNeeded];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,7 +52,6 @@
 -(NSArray *)messageArray{
     if (!_messageArray) {
         _messageArray = [NSArray array];
-        self.messageArray = _messageArray;
     }
     return _messageArray;
 }
@@ -48,7 +66,11 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 60;
+    JBMessageTableViewCell *cell = (JBMessageTableViewCell*)[self tableView:_message_tableView cellForRowAtIndexPath:indexPath];
+    if (!cell) {
+        return 60;
+    }
+    return cell.suitableHeight;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -56,11 +78,8 @@
     if (!cell) {
         cell = [[NSBundle mainBundle] loadNibNamed:@"JBMessageTableViewCell" owner:nil options:nil].lastObject;
     }
-    JBMessage *message      = self.messageArray[indexPath.row];
-    cell.title_label.text   = message.title;
-    cell.content_label.text = message.message;
+    cell.message = self.messageArray[indexPath.row];
     return cell;
 }
-
 
 @end

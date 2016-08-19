@@ -10,7 +10,8 @@
 
 @interface JBMessage : NSObject
 @property(nonatomic, retain)NSString *title;
-@property(nonatomic, retain)NSString *message;
+@property(nonatomic, retain)NSString *content;
 @property(nonatomic, retain)NSString *devkey;
 @property(nonatomic, retain)NSString *channel;
+@property(nonatomic, retain)NSString *time;
 @end

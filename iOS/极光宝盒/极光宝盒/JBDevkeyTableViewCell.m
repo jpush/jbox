@@ -20,7 +20,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    self.title_label.text = @"";
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

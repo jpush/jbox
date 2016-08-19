@@ -10,6 +10,8 @@
 #import "JBChannelTableViewCell.h"
 #import "JBNetwork.h"
 #import "JBChannel.h"
+#import "JBDatabase.h"
+#import "JPUSHService.h"
 
 @interface JBAppsTableViewController ()<JBChannelTableViewCellChangeEditStyleDelegate>
 
@@ -31,9 +33,22 @@
 -(void)setDevkey:(NSString *)devkey{
     _devkey = devkey;
     WEAK_SELF(weakSelf);
+    //每次获取 channels 本地不存在的，保存，并打 tag
     [JBNetwork getChannelsWithDevkey:devkey complete:^(id responseObject) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        weakSelf.channelsArr = dict[@"channels"];
+        NSArray *channleNameArr = dict[@"channels"];
+
+        for (NSString *name in channleNameArr) {
+            JBChannel *channel = [JBChannel new];
+            channel.name   = name;
+            channel.devkey = devkey;
+            channel.isTag  = @"1";
+            [JBDatabase insertChannel:channel];
+            NSString *tag = [NSString stringWithFormat:@"%@%@", devkey, name];
+            [JPUSHService setTags:[NSSet setWithObject:tag] aliasInbackground:nil];
+        }
+        weakSelf.channelsArr = [JBDatabase getChannelsFromDevkey:devkey];
+
     }];
 }
 
@@ -74,9 +89,7 @@
     }
     cell.arrow_imageView.hidden = YES;
     cell.delegate = self;
-    JBChannel *channel = [JBChannel new];
-    channel.name = self.channelsArr[indexPath.row];
-    cell.channel = channel;
+    cell.channel = self.channelsArr[indexPath.row];
     return cell;
 }
 
@@ -95,14 +108,12 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         JBChannelTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        if (cell.subscribed) {
-
-
-        }else{
-
-        }
-
-    } 
+        JBChannel *channel = cell.channel;
+        channel.isTag = cell.subscribed ? @"0" : @"1";
+        [JBDatabase updateChannel:channel];
+        cell.subscribed = !cell.subscribed;
+        [self.tableView setEditing:NO animated:YES];
+    }
 }
 
 -(void)changeEditStyle:(JBChannelTableViewCell *)cell{
@@ -117,6 +128,15 @@
                 button.titleLabel.text = @"删除";
             }
         }
+    }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    JBChannelTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (!cell.subscribed) {
+        return @"订阅";
+    }else{
+        return @"删除";
     }
 }
 

@@ -50,14 +50,6 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
     }];
 }
 
-+(void)getChannelsWithDevkeys:(NSArray*)devkeys complete:(void (^)(id responseObject))complete{
-    for (NSString *devkey in devkeys) {
-        [JBNetwork getDevInfoWithDevkey:devkey complete:^(id responseObject) {
-            complete(responseObject);
-        }];
-    }
-}
-
 //获取 devkey 下的所有自定义应用的 appid（Web 、 App）
 //+(void)getAppidWithDevkey:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete{
 //    [JBNetwork GET:StrBy(devkey, @"/app_ids") paramtes:nil complete:^(id responseObject) {

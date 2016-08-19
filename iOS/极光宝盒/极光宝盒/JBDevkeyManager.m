@@ -8,6 +8,8 @@
 
 #import "JBDevkeyManager.h"
 #import "JPUSHService.h"
+#import "JBNetwork.h"
+#import "JBDatabase.h"
 
 static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 
@@ -18,8 +20,23 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
     NSMutableSet *devkeySet = [NSMutableSet setWithArray:devkeys];
     [devkeySet addObject:devkey];
     [[NSUserDefaults standardUserDefaults] setValue:devkeySet.allObjects forKey:JBUserDefaultsDevkey];
-    NSSet *tags = [NSSet setWithObjects:devkey, nil];
-    [JPUSHService setTags:tags aliasInbackground:nil ];
+
+    [JBDatabase updateChannelDatabase];
+
+    //获取全部 channel 打 tag
+    [JBNetwork getChannelsWithDevkey:devkey complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSArray *channels = dict[@"channels"];
+        NSMutableArray *tags = [NSMutableArray array];
+        for (NSString *channel in channels) {
+            NSString *tag = [NSString stringWithFormat:@"%@%@", devkey, channel];
+            [tags addObject:tag];
+        }
+        [JPUSHService setTags:[NSSet setWithArray:tags] aliasInbackground:nil];
+    }];
+
+    //需要刷新消息页面
+    [[NSNotificationCenter defaultCenter] postNotificationName:JBChannelTableViewControllerShouldUpdate object:nil];
 }
 
 +(NSArray*)getDevkeys{

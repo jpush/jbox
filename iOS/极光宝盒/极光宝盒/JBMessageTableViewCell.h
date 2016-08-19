@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JBMessage.h"
 
 @interface JBMessageTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *content_label;
-@property (weak, nonatomic) IBOutlet UILabel *title_label;
+@property(nonatomic, retain)JBMessage *message;
+@property(nonatomic, assign)CGFloat suitableHeight;
 
 @end

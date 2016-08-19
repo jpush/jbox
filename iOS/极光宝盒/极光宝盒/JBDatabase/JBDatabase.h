@@ -12,9 +12,14 @@
 @interface JBDatabase : NSObject
 
 +(void)createChannels:(NSArray*)channels;
-+(void)insertMessages:(NSMutableArray*)mArray;
++(void)insertMessages:(NSArray*)mArray;
 +(NSMutableArray*)getMessagesFromChannel:(JBChannel*)channel;
++(NSString*)getLastMessage:(JBChannel*)channel;
 
-
++(void)updateChannelDatabase;
++(void)insertChannel:(JBChannel*)channel;
++(NSMutableArray*)getAllChannels;
++(NSMutableArray*)getChannelsFromDevkey:(NSString*)devkey;
++(void)updateChannel:(JBChannel*)channel;
 
 @end
