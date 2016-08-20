@@ -1,8 +1,8 @@
 package com.jiguang.jbox.util;
 
-import android.content.Context;
 import android.content.res.Resources;
 
+import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
@@ -23,25 +23,22 @@ public class HttpUtil {
 
     private static HttpUtil INSTANCE;
 
-    private Context mContext;
-
     private OkHttpClient mHttpClient;
 
-    public static HttpUtil getInstance(Context context) {
+    public static HttpUtil getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new HttpUtil(context);
+            INSTANCE = new HttpUtil();
         }
         return INSTANCE;
     }
 
-    private HttpUtil(Context context) {
-        mContext = context;
+    private HttpUtil() {
         mHttpClient = new OkHttpClient();
     }
 
     // 请求开发者数据。
     public Developer requestDevelopers(String devKey) {
-        Resources resources = mContext.getResources();
+        Resources resources = AppApplication.getContext().getResources();
         String url = String.format(resources.getString(R.string.url_get_developers), devKey);
 
         Request request = new Request.Builder().url(url).build();
@@ -63,7 +60,7 @@ public class HttpUtil {
     }
 
     public List<Channel> requestChannels(String devKey) {
-        Resources resources = mContext.getResources();
+        Resources resources = AppApplication.getContext().getResources();
         String url = String.format(resources.getString(R.string.url_get_channels), devKey);
 
         Request request = new Request.Builder().url(url).build();

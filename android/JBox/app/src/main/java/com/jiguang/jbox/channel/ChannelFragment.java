@@ -16,7 +16,6 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.databinding.ListItemChannelBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,20 +109,14 @@ public class ChannelFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Channel channel = (Channel) getItem(position);
-            ListItemChannelBinding binding;
 
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
-                binding = ListItemChannelBinding.inflate(inflater, parent, false);
-            } else {
-                binding = DataBindingUtil.getBinding(convertView);
+                convertView = inflater.inflate(R.layout.list_item_channel, parent, false);
             }
 
-            binding.setChannel(channel);
-            binding.executePendingBindings();
 
-            return binding.getRoot();
+            return convertView;
         }
     }
 }

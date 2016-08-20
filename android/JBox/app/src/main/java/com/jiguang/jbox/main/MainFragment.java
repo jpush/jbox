@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.account.AccountFragment;
+import com.jiguang.jbox.channel.ChannelPresenter;
 import com.jiguang.jbox.channelmessage.ChannelMessageFragment;
 import com.jiguang.jbox.channelmessage.ChannelMessagePresenter;
 import com.jiguang.jbox.data.source.ChannelsRepository;
@@ -43,9 +44,11 @@ public class MainFragment extends Fragment implements View.OnClickListener, View
         // 消息界面
         ChannelMessageFragment channelMsgFragment = ChannelMessageFragment.getInstance();
         ChannelsRepository channelsRepository = ChannelsRepository.getInstance(
-                ChannelRemoteDataSource.getInstance(), ChannelLocalDataSource.getInstance(getContext()));
-        ChannelMessagePresenter channelMessagePresenter = new ChannelMessagePresenter(
-                channelsRepository, channelMsgFragment);
+                ChannelRemoteDataSource.getInstance(getContext()),
+                ChannelLocalDataSource.getInstance(getContext()));
+        ChannelMessagePresenter channelPresenter = new ChannelMessagePresenter(channelsRepository,
+                channelMsgFragment);
+        channelMsgFragment.setPresenter(channelPresenter);
 
         // 用户界面
         Fragment accountFragment = AccountFragment.newInstance();

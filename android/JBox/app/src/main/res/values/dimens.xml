@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="account_top_height">162dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="widget_height">48dp</dimen>
 </resources>

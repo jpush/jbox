@@ -22,8 +22,6 @@ public interface ChannelsDataSource {
         void onDataNotAvailable();
     }
 
-    void getChannels(@NonNull LoadChannelsCallback callback);
-
     void getChannels(String devKey, @NonNull LoadChannelsCallback callback);
 
     // 读取所有订阅了的 Channel。
@@ -31,9 +29,4 @@ public interface ChannelsDataSource {
 
     void refreshChannels();
 
-    // 打上 tag。
-    void subscribeChannel(@NonNull String name);
-
-    // 不打 tag，使其无法收到消息。
-    void unSubscribeChannels();
 }

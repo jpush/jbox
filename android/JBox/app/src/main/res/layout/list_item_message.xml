@@ -29,14 +29,14 @@
         android:textSize="12sp"
         android:visibility="invisible"/>
 
-    <ImageView
-        android:id="@+id/iv_to_right"
+    <TextView
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
-        android:src="@drawable/ic_to_right"/>
+        android:textColor="@color/gray_light"
+        android:layout_marginLeft="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

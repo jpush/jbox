@@ -1,8 +1,8 @@
 package com.jiguang.jbox.data.source.remote;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.source.ChannelsDataSource;
 import com.jiguang.jbox.util.HttpUtil;
 
@@ -15,22 +15,14 @@ public class ChannelRemoteDataSource implements ChannelsDataSource {
 
     private static ChannelRemoteDataSource INSTANCE;
 
-    private Context mContext;
-
-    public static ChannelRemoteDataSource getInstance(Context context) {
+    public static ChannelRemoteDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new ChannelRemoteDataSource(context);
+            INSTANCE = new ChannelRemoteDataSource();
         }
         return INSTANCE;
     }
 
-    private ChannelRemoteDataSource(Context context) {
-        mContext = context;
-    }
-
-    @Override
-    public void getChannels(@NonNull LoadChannelsCallback callback) {
-
+    private ChannelRemoteDataSource() {
     }
 
     @Override
@@ -38,7 +30,8 @@ public class ChannelRemoteDataSource implements ChannelsDataSource {
         checkNotNull(devKey);
         checkNotNull(callback);
 
-        Map<String, List> channels = HttpUtil.getInstance(mContext).requestChannels(devKey);
+        List<Channel> channels = HttpUtil.getInstance().requestChannels(devKey);
+        callback.onChannelsLoaded(channels);
     }
 
     @Override
@@ -48,16 +41,6 @@ public class ChannelRemoteDataSource implements ChannelsDataSource {
 
     @Override
     public void refreshChannels() {
-
-    }
-
-    @Override
-    public void subscribeChannel(@NonNull String name) {
-
-    }
-
-    @Override
-    public void unSubscribeChannels() {
 
     }
 

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.source.ChannelsDataSource;
 import com.jiguang.jbox.data.source.ChannelsRepository;
+import com.jiguang.jbox.data.source.DeveloperRepository;
 
 import java.util.List;
 
@@ -27,18 +28,23 @@ public class ChannelMessagePresenter implements ChannelMessageContract.Presenter
 
     }
 
+    @Override
+    public void loadChannels(List<String> devKeys, boolean forceUpdate) {
+
+    }
+
     /**
      * 加载所有已订阅的 Channel。
      */
     @Override
-    public void loadChannels(boolean forceUpdate) {
+    public void loadChannels(String devKey, boolean forceUpdate) {
         if (forceUpdate) {
             mChannelsRepository.refreshChannels();
         }
-        mChannelsRepository.getChannels(new ChannelsDataSource.LoadChannelsCallback() {
+        mChannelsRepository.getChannels(devKey, new ChannelsDataSource.LoadChannelsCallback() {
             @Override
             public void onChannelsLoaded(List<Channel> channels) {
-
+                mView.showChannels(channels);
             }
 
             @Override

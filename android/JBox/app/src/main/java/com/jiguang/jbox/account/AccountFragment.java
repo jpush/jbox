@@ -17,15 +17,10 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
-import com.jiguang.jbox.data.source.DeveloperRepository;
-import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
-import com.jiguang.jbox.databinding.FragmentAccountBinding;
-import com.jiguang.jbox.databinding.ListItemDevBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.databinding.DataBindingUtil.getBinding;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AccountFragment extends Fragment implements DeveloperContract.View {
@@ -49,20 +44,14 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
         super.onCreate(savedInstanceState);
 
         // Create the presenter.
-        DeveloperRemoteDataSource remoteDataSource = DeveloperRemoteDataSource.getInstance();
-        DeveloperLocalDataSource localDataSource = DeveloperLocalDataSource.getInstance(getContext());
-        DeveloperRepository repository = DeveloperRepository.getInstance(remoteDataSource, localDataSource);
-        mPresenter = new DeveloperPresenter(repository, this);
         mViewModel = new DeveloperViewModel(getContext(), mPresenter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentAccountBinding accountBinding = FragmentAccountBinding.inflate(inflater, container, false);
+        View root = inflater.inflate(R.layout.fragment_account, container, false);
 
-        accountBinding.setActionHandler(mPresenter);
-
-        SwipeMenuListView listView = accountBinding.lvAccounts;
+        SwipeMenuListView listView = (SwipeMenuListView) root.findViewById(R.id.lv_accounts);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
@@ -92,7 +81,7 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
 
         mListAdapter = new DevelopersAdapter(new ArrayList<Developer>(0), mPresenter);
 
-        return accountBinding.getRoot();
+        return root;
     }
 
     public void setPresenter(@NonNull DeveloperContract.Presenter presenter) {
@@ -179,19 +168,14 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Developer dev = (Developer) getItem(position);
-            ListItemDevBinding binding;
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-                binding = ListItemDevBinding.inflate(inflater, parent, false);
-            } else {
-                binding = getBinding(convertView);
+                convertView = inflater.inflate(R.layout.list_item_dev, parent, false);
             }
 
-            binding.setDeveloper(dev);
-            binding.executePendingBindings();
+            Developer dev = (Developer) getItem(position);
 
-            return binding.getRoot();
+            return convertView;
         }
     }
 }

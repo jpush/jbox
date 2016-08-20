@@ -9,7 +9,7 @@ public class Channel {
 
     private String mDescription;
 
-    private Developer mDeveloper; // 订阅的 developer。若为空，代表没有被订阅。
+    private String mDevKey; // 订阅的 developer。若为空，代表没有被订阅。
 
     private int unReadMessageCount; // 未读消息数。
 
@@ -51,12 +51,12 @@ public class Channel {
         mMessages = messages;
     }
 
-    public Developer getDeveloper() {
-        return mDeveloper;
+    public String getDevKey() {
+        return mDevKey;
     }
 
-    public void setDevKey(Developer dev) {
-        mDeveloper = dev;
+    public void setDevKey(String devKey) {
+        mDevKey = devKey;
     }
 
 }

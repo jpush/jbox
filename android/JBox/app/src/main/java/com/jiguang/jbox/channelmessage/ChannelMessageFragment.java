@@ -1,5 +1,6 @@
 package com.jiguang.jbox.channelmessage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.message.MessageActivity;
 import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.ArrayList;
@@ -65,9 +67,15 @@ public class ChannelMessageFragment extends Fragment implements ChannelMessageCo
     }
 
     @Override
+    public void showChannels(List<Channel> channels) {
+        mAdapter.replaceData(channels);
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         // 进入消息列表界面。
-
+        Intent intent = new Intent(getActivity(), MessageActivity.class);
+        startActivity(intent);
     }
 
     private static class ChannelMessageAdapter extends BaseAdapter {

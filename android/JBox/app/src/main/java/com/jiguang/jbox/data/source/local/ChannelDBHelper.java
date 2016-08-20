@@ -1,8 +1,9 @@
 package com.jiguang.jbox.data.source.local;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.jiguang.jbox.AppApplication;
 
 public class ChannelDBHelper extends SQLiteOpenHelper {
 
@@ -12,6 +13,8 @@ public class ChannelDBHelper extends SQLiteOpenHelper {
 
     private static final String TEXT_TYPE = " TEXT";
 
+    private static final String INTEGER_TYPE = " INTEGER";
+
     private static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_ENTRIES =
@@ -20,11 +23,11 @@ public class ChannelDBHelper extends SQLiteOpenHelper {
                     ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_DEV_KEY + TEXT_TYPE + COMMA_SEP +
-                    ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE +
+                    ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_UNREAD_COUNT + INTEGER_TYPE +
             " )";
 
-    public ChannelDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public ChannelDBHelper() {
+        super(AppApplication.getContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
