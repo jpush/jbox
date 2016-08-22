@@ -25,6 +25,8 @@
 
 @implementation JBChannelTableViewController
 
+@synthesize channels = _channels;
+
 -(NSMutableArray *)channels{
     if (!_channels) {
         _channels = [NSMutableArray array];
@@ -32,9 +34,13 @@
     return _channels;
 }
 
+-(void)setChannels:(NSMutableArray *)channels{
+    _channels = [self sortChannel:channels];
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.topItem.title = @"消息";
 
     [self refreshChannels];
 
@@ -49,6 +55,12 @@
     }];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.topItem.title = @"消息";
+    [self refreshChannels];
+}
+
 -(void)refreshChannels{
     for (NSString *devkey in [JBDevkeyManager getDevkeys]) {
         [JBNetwork getChannelsWithDevkey:devkey complete:^(id responseObject) {
@@ -60,7 +72,13 @@
                 channel.isTag      = @"1";
                 [JBDatabase insertChannel:channel];
             }
-            self.channels = [JBDatabase getAllSubscribedChannels];
+            NSMutableArray *getChannels = [JBDatabase getAllSubscribedChannels];
+            NSMutableSet *set = [NSMutableSet set];
+            for (JBChannel *channel in getChannels) {
+                [set addObject:[NSString stringWithFormat:@"%@%@",channel.devkey,channel.name]];
+            }
+            [JPUSHService setTags:set aliasInbackground:nil];
+            self.channels = getChannels;
             [self.tableView reloadData];
         }];
     }
@@ -73,14 +91,24 @@
     message.content    = dict[@"content"];
     message.devkey     = dict[@"extras"][@"dev_key"];
     message.channel    = dict[@"extras"][@"channel"];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[(NSString*)(dict[@"extras"][@"datetime"]) integerValue]];
-    NSDateFormatter *formatter = [NSDateFormatter new];
-    [formatter setDateFormat:@"HH:mm"];
-    NSString *time = [formatter stringFromDate:date];
-    message.time       = time;
+    message.time       = dict[@"extras"][@"datetime"];
+    message.read       = @"0";
     [JBDatabase insertMessages:@[message]];
     [self.tableView reloadData];
     [[NSNotificationCenter defaultCenter] postNotificationName:JBMessageViewControllerShouldUpdate object:nil];
+    self.channels = [JBDatabase getAllSubscribedChannels];
+    [self.tableView reloadData];
+}
+
+-(NSMutableArray*)sortChannel:(NSMutableArray*)channels{
+    [channels sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        JBChannel *channel1 = obj1;
+        JBChannel *channel2 = obj2;
+        JBMessage *message1 = [JBDatabase getLastMessage:channel1];
+        JBMessage *message2 = [JBDatabase getLastMessage:channel2];
+        return [message1.time intValue] < [message2.time intValue];
+    }];
+    return channels;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -103,7 +131,6 @@
         cell = [[NSBundle mainBundle]loadNibNamed:@"JBChannelTableViewCell" owner:nil options:nil][0];
     }
     cell.channel = self.channels[indexPath.row];
-    cell.title_label.text = [JBDatabase getLastMessage:cell.channel];
     return cell;
 }
 

@@ -24,9 +24,14 @@
     _message = message;
     self.content_label.text = message.content;
     self.title_label.text   = message.title;
-    self.time_label.text    = message.time;
     CGSize size = [self.content_label caculatedSize];
     self.suitableHeight = 60 + size.height - 16;
+
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[message.time integerValue]];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"HH:mm"];
+    NSString *time = [formatter stringFromDate:date];
+    self.time_label.text    = time;
 }
 
 - (void)awakeFromNib {

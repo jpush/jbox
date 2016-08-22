@@ -21,6 +21,11 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
     [devkeySet addObject:devkey];
     [[NSUserDefaults standardUserDefaults] setValue:devkeySet.allObjects forKey:JBUserDefaultsDevkey];
 
+    [JBNetwork getDevInfoWithDevkey:devkey complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        [[NSUserDefaults standardUserDefaults] setValue:dict[@"dev_name"] forKey:[NSString stringWithFormat:@"%@%@",devkey,JBDevkeyChannelkey]];
+    }];
+
     [JBDatabase updateChannelDatabase];
 
     //获取全部 channel 打 tag

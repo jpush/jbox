@@ -14,4 +14,5 @@
 @property(nonatomic, retain)NSString *devkey;
 @property(nonatomic, retain)NSString *channel;
 @property(nonatomic, retain)NSString *time;
+@property(nonatomic, retain)NSString *read;
 @end

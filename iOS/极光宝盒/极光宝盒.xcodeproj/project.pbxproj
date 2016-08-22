@@ -2984,6 +2984,7 @@
 			baseConfigurationReference = 076A22A2E46DB68A079EE8E3 /* Pods-极光宝盒.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/极光宝盒/PrefixHeader.pch";
 				INFOPLIST_FILE = "极光宝盒/Info.plist";
@@ -2999,6 +3000,7 @@
 			baseConfigurationReference = 940FE2803CA927CD28E065C5 /* Pods-极光宝盒.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/极光宝盒/PrefixHeader.pch";
 				INFOPLIST_FILE = "极光宝盒/Info.plist";

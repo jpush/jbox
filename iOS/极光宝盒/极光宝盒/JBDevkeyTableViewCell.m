@@ -7,6 +7,8 @@
 //
 
 #import "JBDevkeyTableViewCell.h"
+#import "JBNetwork.h"
+#import "JBDevkeyManager.h"
 
 @interface JBDevkeyTableViewCell ()
 
@@ -28,10 +30,15 @@
 
 }
 
-
 -(void)setDevkey:(NSString *)devkey{
     _devkey = devkey;
-    self.devkey_label.text = devkey;
+    self.title_label.text = devkey;
+    self.devkey_label.text = [[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"%@%@",devkey,JBDevkeyChannelkey]];
+    [JBNetwork getDevInfoWithDevkey:devkey complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        self.devkey_label.text = dict[@"dev_name"];
+        [[NSUserDefaults standardUserDefaults] setValue:dict[@"dev_name"] forKey:[NSString stringWithFormat:@"%@%@",devkey,JBDevkeyChannelkey]];
+    }];
 }
 
 @end

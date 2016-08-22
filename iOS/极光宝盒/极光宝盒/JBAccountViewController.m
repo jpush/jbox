@@ -129,7 +129,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JBAppsTableViewController *appsVC = [[JBAppsTableViewController alloc] init];
     JBDevkeyTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    appsVC.navigationItem.title = cell.devkey;
+    appsVC.navigationItem.title = @"频道";
     appsVC.devkey = cell.devkey;
     [self.navigationController pushViewController:appsVC animated:YES];
 }

@@ -12,10 +12,11 @@
 #import "JBChannel.h"
 #import "JBDatabase.h"
 #import "JPUSHService.h"
+#import "JBMessageViewController.h"
 
 @interface JBAppsTableViewController ()<JBChannelTableViewCellChangeEditStyleDelegate>
 
-@property(nonatomic, retain)NSArray *channelsArr;
+@property(nonatomic, retain)NSMutableArray *channelsArr;
 
 @end
 
@@ -28,6 +29,11 @@
     self.navigationController.navigationBar.backItem.title = @"返回";
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMessage) name:kJPFNetworkDidReceiveMessageNotification object:nil];
+}
+
+-(void)didReceiveMessage{
+    self.devkey = _devkey;
 }
 
 -(void)setDevkey:(NSString *)devkey{
@@ -52,14 +58,23 @@
     }];
 }
 
--(void)setChannelsArr:(NSArray *)channelsArr{
-    _channelsArr = channelsArr;
+-(NSMutableArray*)sortChannelArr:(NSMutableArray*)aChannelArr{
+    [aChannelArr sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        JBChannel *channel1 = obj1;
+        JBChannel *channel2 = obj2;
+        return [channel1.isTag intValue] < [channel2.isTag intValue];
+    }];
+    return aChannelArr;
+}
+
+-(void)setChannelsArr:(NSMutableArray *)channelsArr{
+    _channelsArr = [self sortChannelArr:channelsArr];
     [self.tableView reloadData];
 }
 
--(NSArray *)channelsArr{
+-(NSMutableArray *)channelsArr{
     if (!_channelsArr) {
-        _channelsArr = [NSArray array];
+        _channelsArr = [NSMutableArray array];
     }
     return _channelsArr;
 }
@@ -112,8 +127,21 @@
         channel.isTag = cell.subscribed ? @"0" : @"1";
         [JBDatabase updateChannel:channel];
         cell.subscribed = !cell.subscribed;
+        NSSet *set = [NSSet new];
+        [JPUSHService setTags:set alias:nil fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+            NSArray *channels = [JBDatabase getChannelsFromDevkey:channel.devkey];
+            NSMutableArray *tags = [NSMutableArray array];
+            for (JBChannel *channel in channels) {
+                [tags addObject:[NSString stringWithFormat:@"%@%@",cell.channel.devkey,channel.name]];
+            }
+            NSSet *set = [NSSet setWithArray:tags];
+            [JPUSHService setTags:set aliasInbackground:nil];
+        }];
         [self.tableView setEditing:NO animated:YES];
     }
+    self.channelsArr = [self sortChannelArr:_channelsArr];
+    [self.tableView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:JBChannelTableViewControllerShouldUpdate object:nil];
 }
 
 -(void)changeEditStyle:(JBChannelTableViewCell *)cell{
@@ -140,45 +168,16 @@
     }
 }
 
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.devkey = _devkey;
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    JBChannelTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    JBMessageViewController *msgVC = [JBMessageViewController new];
+    msgVC.channel = cell.channel;
+    [self.navigationController pushViewController:msgVC animated:YES];
 }
-*/
-
-/*
-#pragma mark - Table view delegate
-
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
-    
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

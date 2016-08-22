@@ -10,7 +10,7 @@
 #import <AFNetworking.h>
 #import "JBDatabase.h"
 
-NSString *const base_url = @"http://192.168.10.44:8888/api.jbox.jiguang.cn/v1/developers/";
+NSString *const base_url = @"http://192.168.8.235:8888/api.jbox.jiguang.cn/v1/developers/";
 
 #define IsReachable [AFNetworkReachabilityManager sharedManager].isReachable
 #define StrBy(a,b) [NSString stringWithFormat:@"%@%@", a, b]

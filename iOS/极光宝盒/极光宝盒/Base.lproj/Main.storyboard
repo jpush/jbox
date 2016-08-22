@@ -29,7 +29,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="消息" image="tabbar_account" selectedImage="tabbar_account_selected" id="Dyg-bS-y1h"/>
-                    <navigationItem key="navigationItem" id="ikd-7W-lnK"/>
+                    <navigationItem key="navigationItem" title="消息" id="ikd-7W-lnK"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QwS-E5-z7A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

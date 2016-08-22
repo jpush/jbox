@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *message_tableView;
 @property(nonatomic ,retain)NSArray *messageArray;
+@property(nonatomic, assign)BOOL appeared;
 
 @end
 
@@ -22,25 +23,44 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.backItem.title = @"返回";
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(update) name:JBMessageViewControllerShouldUpdate object:nil];
-    [self update];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateData) name:JBMessageViewControllerShouldUpdate object:nil];
+    [self updateData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.topItem.title = @"返回";
+    [JBDatabase setAllMessagesReadWithChannel:self.channel];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.appeared = YES;
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    self.appeared = NO;
 }
 
 -(void)setChannel:(JBChannel *)channel{
     _channel = channel;
-    [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(update) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateData) userInfo:nil repeats:NO];
+    self.title = channel.name;
 }
 
--(void)update{
+-(void)updateData{
     self.messageArray = [JBDatabase getMessagesFromChannel:_channel];
     [self.message_tableView reloadData];
     if (self.messageArray.count > 0) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.messageArray.count - 1 inSection:0];
         [self.message_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         [self.view layoutIfNeeded];
+    }
+    if (self.appeared) {
+        [JBDatabase setAllMessagesReadWithChannel:self.channel];
     }
 }
 

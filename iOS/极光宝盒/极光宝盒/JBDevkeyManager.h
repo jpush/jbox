@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString *const JBDevkeyChannelkey = @"JBDevkeyChannelkey";
+
 @interface JBDevkeyManager : NSObject
+
 +(void)saveDevkey:(NSString*)devkey;
 +(NSArray*)getDevkeys;
+
 @end

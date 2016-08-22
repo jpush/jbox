@@ -8,13 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "JBChannel.h"
+#import "JBMessage.h"
 
 @interface JBDatabase : NSObject
 
 +(void)createChannels:(NSArray*)channels;
 +(void)insertMessages:(NSArray*)mArray;
 +(NSMutableArray*)getMessagesFromChannel:(JBChannel*)channel;
-+(NSString*)getLastMessage:(JBChannel*)channel;
++(JBMessage*)getLastMessage:(JBChannel*)channel;
++(NSMutableArray*)getUnreadMessagesFromChannel:(JBChannel*)channel;
++(void)setAllMessagesReadWithChannel:(JBChannel*)channel;
 
 +(void)updateChannelDatabase;
 +(void)insertChannel:(JBChannel*)channel;
