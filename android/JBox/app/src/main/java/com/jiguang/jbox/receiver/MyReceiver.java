@@ -3,16 +3,13 @@ package com.jiguang.jbox.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.data.source.ChannelsRepository;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -48,8 +45,7 @@ public class MyReceiver extends BroadcastReceiver {
         msg.setTime(currentDate.toString());
 
         //TODO: 保存 msg 到本地，并刷新数据。
-        ChannelsRepository.getInstance().refreshChannels();
-
+        ChannelsRepository channelsRepository = ChannelsRepository.getInstance();
     }
 
 }

@@ -33,7 +33,7 @@ public class ChannelLocalDataSource implements ChannelsDataSource {
     }
 
     @Override
-    public void getChannels(String devKey, @NonNull LoadChannelsCallback callback) {
+    public void getChannels(@NonNull String devKey, @NonNull LoadChannelsCallback callback) {
         List<Channel> channels = new ArrayList<>();
         SQLiteDatabase db = mDBHelper.getReadableDatabase();
 
@@ -52,9 +52,13 @@ public class ChannelLocalDataSource implements ChannelsDataSource {
             while (c.moveToNext()) {
                 String name = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_NAME));
                 int unreadCount = c.getInt(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_UNREAD_COUNT));
+                boolean isSubscribe = c.getInt(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_IS_SUBSCRIBE)) == 1;
+
                 Channel channel = new Channel(name);
                 channel.setDevKey(devKey);
                 channel.setUnReadMessageCount(unreadCount);
+                channel.setSubscribe(isSubscribe);
+
                 channels.add(channel);
             }
 
@@ -73,10 +77,6 @@ public class ChannelLocalDataSource implements ChannelsDataSource {
         }
     }
 
-    public void updateUnreadCount(@NonNull Channel channel) {
-
-    }
-
     @Override
     public void getSubscribedChannels(@NonNull LoadChannelsCallback callback) {
 
@@ -86,5 +86,40 @@ public class ChannelLocalDataSource implements ChannelsDataSource {
     public void refreshChannels() {
 
     }
+
+    @Override
+    public void saveChannel(@NonNull Channel channel) {
+        checkNotNull(channel);
+
+        SQLiteDatabase db = mDBHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ChannelEntry.COLUMN_NAME_ENTRY_ID, channel.getId());
+        values.put(ChannelEntry.COLUMN_NAME_NAME, channel.getName());
+        values.put(ChannelEntry.COLUMN_NAME_DEV_KEY, channel.getDevKey());
+        values.put(ChannelEntry.COLUMN_NAME_UNREAD_COUNT, channel.getUnReadMessageCount());
+
+        db.insert(ChannelEntry.TABLE_NAME, null, values);
+
+        db.close();
+    }
+
+    @Override
+    public void setUnreadCount(@NonNull Channel channel) {
+        checkNotNull(channel);
+
+        SQLiteDatabase db = mDBHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ChannelEntry.COLUMN_NAME_UNREAD_COUNT, channel.getUnReadMessageCount());
+
+        String selection = channel.getName() + " = ? AND " + channel.getDevKey() + " = ?";
+        String[] args = new String[]{channel.getName(), channel.getDevKey()};
+
+        db.update(ChannelEntry.TABLE_NAME, values, selection, args);
+
+        db.close();
+    }
+
 
 }

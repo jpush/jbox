@@ -2,21 +2,33 @@ package com.jiguang.jbox.data;
 
 import java.util.List;
 import java.util.Stack;
+import java.util.UUID;
 
 public class Channel {
+
+    private String mId;
 
     private final String mName;
 
     private String mDescription;
 
-    private String mDevKey; // 订阅的 developer。若为空，代表没有被订阅。
+    private String mDevKey;
 
     private int unReadMessageCount; // 未读消息数。
 
     private Stack<Message> mMessages;
 
+    private Developer mDeveloper;
+
+    private boolean isSubscribe;
+
     public Channel(String name) {
+        mId = UUID.randomUUID().toString();
         mName = name;
+    }
+
+    public String getId() {
+        return mId;
     }
 
     public String getName() {
@@ -59,4 +71,19 @@ public class Channel {
         mDevKey = devKey;
     }
 
+    public Developer getDeveloper() {
+        return mDeveloper;
+    }
+
+    public void setDeveloper(Developer developer) {
+        mDeveloper = developer;
+    }
+
+    public boolean isSubscribe() {
+        return isSubscribe;
+    }
+
+    public void setSubscribe(boolean subscribe) {
+        isSubscribe = subscribe;
+    }
 }

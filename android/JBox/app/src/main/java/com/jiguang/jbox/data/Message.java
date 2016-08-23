@@ -17,7 +17,7 @@ public class Message {
         mContent = content;
     }
 
-    public String Title() {
+    public String getTitle() {
         return mTitle;
     }
 

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.account.AccountFragment;
-import com.jiguang.jbox.channel.ChannelPresenter;
 import com.jiguang.jbox.channelmessage.ChannelMessageFragment;
 import com.jiguang.jbox.channelmessage.ChannelMessagePresenter;
 import com.jiguang.jbox.data.source.ChannelsRepository;

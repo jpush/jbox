@@ -27,6 +27,10 @@ public interface ChannelMessageContract {
         void loadChannels(String devKey, boolean forceUpdate);
 
         void openChannelMessages(@NonNull Channel channel);
+
+        void saveChannel(@NonNull Channel channel);
+
+        void updateUnreadCount(@NonNull Channel channel);
     }
 
 }

@@ -15,6 +15,8 @@ public class ChannelDBHelper extends SQLiteOpenHelper {
 
     private static final String INTEGER_TYPE = " INTEGER";
 
+    private static final String BOOLEAN_TYPE = " INTEGER";
+
     private static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_ENTRIES =
@@ -24,6 +26,7 @@ public class ChannelDBHelper extends SQLiteOpenHelper {
                     ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_DEV_KEY + TEXT_TYPE + COMMA_SEP +
                     ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_UNREAD_COUNT + INTEGER_TYPE +
+                    ChannelPersistenceContract.ChannelEntry.COLUMN_NAME_IS_SUBSCRIBE + BOOLEAN_TYPE +
             " )";
 
     public ChannelDBHelper() {

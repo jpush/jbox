@@ -2,6 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.jiguang.jbox">
 
+    <uses-permission android:name="com.jiguang.jbox.permission.JPUSH_MESSAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
+    <permission
+        android:name="com.jiguang.jbox.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature"/>
+
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
@@ -9,7 +26,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -17,7 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,13 +40,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".account.ScanDeveloperActivity">
         </activity>
-
         <activity android:name=".message.MessageActivity">
         </activity>
-
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -48,7 +60,6 @@
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
             android:exported="false"/>
-
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
@@ -66,6 +77,7 @@
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
+
                 <category android:name="com.jiguang.jbox"/>
             </intent-filter>
             <intent-filter>
@@ -84,6 +96,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService"/>
+
                 <category android:name="com.jiguang.jbox"/>
             </intent-filter>
         </service>
@@ -93,6 +106,7 @@
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>
+
                 <category android:name="com.jiguang.jbox"/>
             </intent-filter>
             <intent-filter>
@@ -106,7 +120,6 @@
                 <category android:name="com.jiguang.jbox"/>
             </intent-filter>
         </receiver>
-        
         <receiver android:name="cn.jpush.android.service.AlarmReceiver"/>
 
         <meta-data
@@ -116,23 +129,8 @@
             android:name="JPUSH_APPKEY"
             android:value="e0eb67483f04f4425667d817"/>
 
+        <activity android:name=".channel.ChannelActivity">
+        </activity>
     </application>
-
-    <uses-permission android:name="com.jiguang.jbox.permission.JPUSH_MESSAGE"/>
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-
-    <permission
-        android:name="com.jiguang.jbox.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature"/>
 
 </manifest>

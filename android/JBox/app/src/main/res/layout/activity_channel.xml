@@ -6,19 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".message.MessageActivity">
+    tools:context="com.jiguang.jbox.channel.ChannelActivity">
 
     <com.jiguang.jbox.view.Topbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_height"
         app:showBack="true"
-        app:title="@string/message"
+        app:title="@string/channel"
         />
 
-    <ListView
-        android:id="@+id/lv_msg"
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/smlv_channel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/list_item_message"/>
+        tools:listitem="@layout/list_item_channel"
+        />
 
 </LinearLayout>

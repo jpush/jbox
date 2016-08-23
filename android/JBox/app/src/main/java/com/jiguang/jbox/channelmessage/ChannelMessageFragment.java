@@ -31,6 +31,8 @@ public class ChannelMessageFragment extends Fragment implements ChannelMessageCo
 
     private ChannelMessageContract.Presenter mPresenter;
 
+    private List<Channel> mChannels;
+
     public static ChannelMessageFragment getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ChannelMessageFragment();
@@ -68,13 +70,19 @@ public class ChannelMessageFragment extends Fragment implements ChannelMessageCo
 
     @Override
     public void showChannels(List<Channel> channels) {
+        mChannels = channels;
         mAdapter.replaceData(channels);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         // 进入消息列表界面。
+        Channel channel = mChannels.get(i);
+        channel.setUnReadMessageCount(0);
+        
+
         Intent intent = new Intent(getActivity(), MessageActivity.class);
+        intent.putExtra(MessageActivity.EXTRA_CHANNEL_ID, channel.getId());
         startActivity(intent);
     }
 

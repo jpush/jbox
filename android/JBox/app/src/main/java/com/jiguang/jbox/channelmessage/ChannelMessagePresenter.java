@@ -61,6 +61,17 @@ public class ChannelMessagePresenter implements ChannelMessageContract.Presenter
     }
 
     @Override
+    public void saveChannel(@NonNull Channel channel) {
+
+    }
+
+    @Override
+    public void updateUnreadCount(@NonNull Channel channel) {
+        checkNotNull(channel);
+
+    }
+
+    @Override
     public void start() {
         loadChannels(false);
     }

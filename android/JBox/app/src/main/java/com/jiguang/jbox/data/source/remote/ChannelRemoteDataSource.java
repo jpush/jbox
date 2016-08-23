@@ -7,7 +7,6 @@ import com.jiguang.jbox.data.source.ChannelsDataSource;
 import com.jiguang.jbox.util.HttpUtil;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -41,6 +40,11 @@ public class ChannelRemoteDataSource implements ChannelsDataSource {
 
     @Override
     public void refreshChannels() {
+
+    }
+
+    @Override
+    public void saveChannel(@NonNull Channel channel) {
 
     }
 

@@ -53,7 +53,7 @@ public class ChannelsRepository implements ChannelsDataSource {
      * @param callback
      */
     @Override
-    public void getChannels(final String devKey, @NonNull final LoadChannelsCallback callback) {
+    public void getChannels(@NonNull final String devKey, @NonNull final LoadChannelsCallback callback) {
         checkNotNull(callback);
 
         // 如果缓存可用，就直接从缓存中获取数据。
@@ -98,32 +98,13 @@ public class ChannelsRepository implements ChannelsDataSource {
     }
 
     @Override
-    public void subscribeChannel(@NonNull String devKey, @NonNull String channelName) {
-        List<Channel> channels = mCachedChannels.get(devKey);
-        for (Channel channel : channels) {
-            if (channel.getName().equals(channelName)) {
-
-            }
-        }
+    public void saveChannel(@NonNull Channel channel) {
+        mChannelsLocalDataSource.saveChannel(channel);
     }
 
     @Override
-    public void unSubscribeChannel(@NonNull String devKey, @NonNull String channelName) {
-
-    }
-
-    private void getChannelsFromRemoteDataSource(final LoadChannelsCallback callback) {
-        mChannelsRemoteDataSource.getChannels(new LoadChannelsCallback() {
-            @Override
-            public void onChannelsLoaded(List<Channel> channels) {
-
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
+    public void setUnreadCount(@NonNull Channel channel) {
+        mChannelsLocalDataSource.setUnreadCount(channel);
     }
 
     private void getChannelsFromRemoteDataSource(String devKey, @NonNull final LoadChannelsCallback callback) {

@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -17,19 +19,21 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class AccountFragment extends Fragment implements DeveloperContract.View {
+public class AccountFragment extends Fragment implements DeveloperContract.View,
+        AdapterView.OnItemClickListener {
 
     private DeveloperContract.Presenter mPresenter;
 
     private DevelopersAdapter mListAdapter;
 
-    private DeveloperViewModel mViewModel;
+    private List<Developer> mDevelopers;
 
     public AccountFragment() {
         // Required empty public constructor.
@@ -42,9 +46,6 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Create the presenter.
-        mViewModel = new DeveloperViewModel(getContext(), mPresenter);
     }
 
     @Override
@@ -78,8 +79,10 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
 
         listView.setMenuCreator(creator);
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+        listView.setOnItemClickListener(this);
 
-        mListAdapter = new DevelopersAdapter(new ArrayList<Developer>(0), mPresenter);
+        mListAdapter = new DevelopersAdapter(new ArrayList<Developer>(0));
+        listView.setAdapter(mListAdapter);
 
         return root;
     }
@@ -96,6 +99,7 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
 
     @Override
     public void showDevelopers(List<Developer> developers) {
+        mDevelopers = developers;
         mListAdapter.replaceData(developers);
     }
 
@@ -130,16 +134,19 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
         return false;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Developer dev = mDevelopers.get(i);
+
+    }
+
 
     private static class DevelopersAdapter extends BaseAdapter {
 
         private List<Developer> mDevelopers;
 
-        private DeveloperContract.Presenter mPresenter;
-
-        public DevelopersAdapter(List<Developer> developers, DeveloperContract.Presenter presenter) {
+        public DevelopersAdapter(List<Developer> developers) {
             mDevelopers = developers;
-            mPresenter = presenter;
         }
 
         public void replaceData(List<Developer> developers) {
@@ -175,7 +182,18 @@ public class AccountFragment extends Fragment implements DeveloperContract.View 
 
             Developer dev = (Developer) getItem(position);
 
+            TextView tvHead = ViewHolder.get(convertView, R.id.tv_head);
+            String devName = dev.getDevName();
+            tvHead.setText(devName.substring(0, 1));
+
+            TextView tvName = ViewHolder.get(convertView, R.id.tv_username);
+            tvName.setText(dev.getDevName());
+
+            TextView tvDevKey = ViewHolder.get(convertView, R.id.tv_dev_key);
+            tvDevKey.setText(dev.getDevKey());
+
             return convertView;
         }
     }
+
 }
