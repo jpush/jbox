@@ -1,48 +1,39 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}极光宝盒{% endblock %}
-{% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
-         <div class="container">
-             <div class="navbar-header">
-                 <button type="button" class="navbar-toggle"
-                  data-toggle="collapse" data-target=".navbar-collapse">
-                     <span class="sr-only">Toggle navigation</span>
-                     <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
-                 </button>
-                 <a class="navbar-brand" href="/">首页</a>
-             </div>
-             <div class="navbar-collapse collapse">
-                 <ul class="nav navbar-nav">
-                     <li><a href="{{ url_for('main.document') }}">API文档</a></li>
-                 </ul>
-                 <ul class="nav navbar-nav">
-                     <li><a href="{{ url_for('main.guide') }}">guide</a></li>
-                 </ul>
-                 <ul class="nav navbar-nav">
-                      <li><a href="{{ url_for('main.application') }}">极光宝盒app</a></li>
-                  </ul>
-                {% if current_user.is_authenticated %}
-                 <ul class="nav navbar-nav">
-                     <li><a href="{{ url_for('auth.manage') }}">管理</a> </li>
-                 </ul>
-                {% endif %}
-                 <ul class="nav navbar-nav navbar-right">
-                     {% if current_user.is_authenticated %}
 
-                     <li><a href="{{ url_for('auth.logout') }}">登出</a></li>
-                     {% else %}
-                     <li><a href="{{ url_for('main.login') }}">登录</a> </li>
-                     {% endif %}1
-                 </ul>
-             </div>
-         </div>
-</div>
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+{% endblock %}
+
+{% block title %}极光宝盒{% endblock %}
+
+{% block navbar %}
+    <div class="top-navigator">
+        <div class="left-navigator">
+            <img width="64px" height="59px" src="/static/images/icon.png">
+            <a class="jbox-font" style="font-size: 45px" href="{{ url_for('main.index') }}">JBox</a>
+        </div>
+        <div class="right-navigator">
+            <a class="jbox-font" style="font-size: 18px; margin-right: 30px;" href="{{ url_for('main.application') }}">极光宝盒app</a>
+            <a class="jbox-font" style="font-size: 18px; margin-right: 30px"
+               href="{{ url_for('main.document') }}">api文档</a>
+            <a class="jbox-font" style="font-size: 18px; margin-right: 30px"
+               href="{{ url_for('main.guide') }}">guide</a>
+            {% if current_user.is_authenticated %}
+                <a class="jbox-font" style="font-size: 18px; margin-right: 20px;" href="{{ url_for('auth.manage') }}">管理</a>
+            {% endif %}
+            <div style="width: 2px; height: 25px; background: #ffffff;margin-right: 23px;"></div>
+            {% if current_user.is_authenticated %}
+                <a class="jbox-font" style="font-size: 18px" href="{{ url_for('auth.logout') }}">登出</a>
+            {% else %}
+                <a class="jbox-font" style="font-size: 18px" href="{{ url_for('main.login') }}">登录</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    {% block page_content %}{% endblock %}
-</div>
+    <div class="container">
+        {% block page_content %}{% endblock %}
+    </div>
 {% endblock %}

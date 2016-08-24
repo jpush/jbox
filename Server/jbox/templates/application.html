@@ -1,14 +1,36 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/application.css') }}">
+{% endblock %}
+
 {% block title %}Index{% endblock %}
 
+
+
 {% block page_content %}
-<div class="page-header">
-    <h1>下载极光宝盒app</h1>
-    <button onclick="click_iOS()">iOS</button>
-    <button onclick="click_android()">android</button>
-</div>
+    <div class="content">
+        <div class="row-layer" id="layer1">
+            <div class="column-layer">
+                <img id="cloud1x" src="/static/images/cloud1x.png">
+                <img id="cloud-big" src="/static/images/cloud-big.png">
+            </div>
+            <img id="iceberg" src="/static/images/iceberg.png">
+            <img id="cloud1_5x" src="/static/images/cloud1.5x.png">
+        </div>
+        <p id="download-title" class="jbox-font">下载极光宝盒app</p>
+        <div class="row-layer">
+            <div id="ios" class="icon-background">
+                <img src="/static/images/ios.png">
+            </div>
+            <div id="android" class="icon-background">
+                <img src="/static/images/android.png">
+            </div>
+        </div>
+    </div>
+
     <script>
         function click_iOS() {
             window.location.href = "http://www.baidu.com";

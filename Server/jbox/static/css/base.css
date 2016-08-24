@@ -1,0 +1,31 @@
+.top-navigator {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 23px;
+    height: 59px;
+    width: 100%;
+}
+
+.left-navigator {
+    display: flex;
+    position: absolute;
+    left: 21px;
+    flex: 0;
+}
+
+.jbox-font {
+    font-family: "PingFang SC-Semibold";
+    color: #FFFFFF;
+    letter-spacing: 0;
+}
+
+.right-navigator {
+    display: flex;
+    position: absolute;
+    justify-content: flex-end;
+    right: 123px;
+    width: 70%;
+}

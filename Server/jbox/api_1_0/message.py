@@ -47,11 +47,16 @@ def send_message(integration_id, token):
         response = push.send()
         print(response)
     except common.Unauthorized:
-        raise common.Unauthorized("Unauthorized")
+        print("Unauthorized")
+        return jsonify({'error': 'Unauthorized request'}), 401
     except common.APIConnectionException:
-        raise common.APIConnectionException("conn error")
+        print('connect error')
+        return jsonify({'error': 'connect error, please try again later'}), 504
     except common.JPushFailure:
         print("JPushFailure")
+        response = common.JPushFailure.response
+        return jsonify({'error': 'JPush failed, please read the code and refer code document',
+                        'error_code': response.status_code}), 500
     except:
         print("Exception")
     return jsonify({}), 200

@@ -1,0 +1,75 @@
+body {
+    background: url("../images/application-background.png") no-repeat;
+}
+
+.content {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 349px;
+}
+
+.row-layer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.column-layer {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#layer1 {
+    margin-top: 130px;
+}
+
+#cloud1x {
+    align-self: flex-end;
+    margin-top: 42px;
+    margin-right: 51px
+}
+
+#cloud-big {
+    margin-top: 74px;
+}
+
+#iceberg {
+    margin-bottom: 112px;
+}
+
+#cloud1_5x {
+    align-self: flex-start;
+    margin-top: 26px
+}
+
+#download-title {
+    font-size: 48px;
+    align-self: center;
+    margin-left: 60px
+}
+
+.icon-background {
+    background: rgba(0, 0, 0, 0.50);
+    width: 250px;
+    height: 188px;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#ios {
+    margin-top: 90px;
+    margin-left: 60px;
+}
+
+#android {
+    margin-left: 126px;
+    margin-top: 90px
+}
+
