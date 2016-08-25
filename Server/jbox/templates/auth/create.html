@@ -5,6 +5,7 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
@@ -14,12 +15,6 @@
 
 {% block navbar %}
     {{ super() }}
-    <style>
-    .manage-navigator {
-        background:#000000 !important;
-        border:1px solid #979797;
-    }
-    </style>
 {% endblock %}
 
 {% block content %}

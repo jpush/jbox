@@ -3,6 +3,7 @@
 
 {% block head %}
     {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post2channel.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
@@ -11,15 +12,18 @@
 {% block title %}极光宝盒-创建集成{% endblock %}
 
 {% block content %}
-    <div class="col-lg-8 col-lg-offset-2"
-         style="padding: 10px; border-radius: 6px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .08); border: 1px solid #d8d8d8;"
-         xmlns="http://www.w3.org/1999/html">
-        <h4>推送到 Channel</h4>
+    <div class="post2channel-bg">
+        <img id="mac" src="/static/images/mac.png">
+        <img id="faly" src="/static/images/faly.png">
+        <img src="/static/images/iphone.png">
+    </div>
+    <div id="form" class="col-lg-8 col-lg-offset-2">
         <div class="row">
-            <div class="col-lg-2">
-                从选择一个 channel 开始, 接下来集成的应用的消息将会推送到这个 channel。
+            <div class="column">
+                <p id="title" class="jbox-font">推送到 Channel</p>
+                <p id="description" class="jbox-font">从选择一个 channel 开始, 接下来集成的应用的消息将会推送到这个 channel。</p>
             </div>
-            <div class="col-lg-6 col-lg-offset-1">
+            <div class="column">
                 <div class="input-group">
                     <input id="selected_channel" type="text" class="form-control" aria-label="..."
                            placeholder="选择一个 channel">
@@ -34,15 +38,15 @@
                         </ul>
                     </div>
                 </div>
-                <div style="margin-top: 10px; position: absolute; right: 15px;">
+                <div>
                     <a class="btn-link" href="{{ url_for('auth.new_channel') }}" style="color: #2ab27b">创建 channel</a>
                 </div>
-                <div style="margin-top: 40px;">
-                    <button id="create_integration_btn" class="btn-lg btn-info" type="button">添加自定义集成
-                    </button>
-                </div>
-
             </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <button id="create_integration_btn" type="button">添加自定义集成
+            </button>
         </div>
     </div>
     <script type="text/javascript">

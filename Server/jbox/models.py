@@ -91,7 +91,6 @@ class Integration(db.Model):
     name = db.Column(db.String(100))
     description = db.Column(db.String(150))
     icon = db.Column(db.String(150))
-    channel = db.Column(db.String(150))
     token = db.Column(db.String(150))
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
 
@@ -139,6 +138,9 @@ class Channel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
     channel = db.Column(db.String(150))
+    # 外键和 relationship 都放在 Channel 表, 表示 Channel 和 Integration 是多对一的关系
+    integration_id = db.Column(db.Integer, db.ForeignKey('integrations.id'))
+    integrations = db.relationship('Integration', backref='channel')
 
     def __repr__(self):
         return '<Channel %r>' % self.channel

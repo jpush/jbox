@@ -1,0 +1,79 @@
+#navbar {
+    background: #3B3849;
+}
+
+.post2channel-bg {
+    background: #777193;
+    width: 100%;
+    height: 456px;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#mac {
+    margin-right: 46px;
+}
+
+#faly {
+    margin-right: 149px;
+}
+
+#form {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 94px;
+    border-radius: 6px;
+    padding-bottom: 48px;
+    padding-left: 47px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .08);
+    border: 1px solid #d8d8d8;
+    margin-bottom: 158px;
+}
+
+.row {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.column {
+    display: flex;
+    flex-flow: column;
+}
+
+#title {
+    font-size: 24px;
+    margin-top: 34px;
+    color: #464646;
+}
+
+#description {
+    font-size: 20px;
+    color: #595959;
+    width: 234px;
+    margin-top: 20px;
+    margin-right: 49px;
+}
+
+#selected_channel {
+    margin-top: 77px;
+}
+
+#show_channels {
+    margin-top: 77px;
+    margin-right: 45px;
+}
+
+#create_integration_btn {
+    background: #64b868;
+    border-radius: 5px;
+    padding: 13px 25px 13px 25px;
+    width: 223px;
+    height: 62px;
+    font-size: 24px;
+    color: #FFFFFF;
+}

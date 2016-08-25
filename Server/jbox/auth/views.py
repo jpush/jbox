@@ -58,7 +58,7 @@ def edit_integration(integration_id):
 @login_required
 def post_to_channel():
     dev_key = current_user.dev_key
-    return render_template('auth/new/postToChannels.html', dev_key=dev_key, channels=get_channel_list())
+    return render_template('auth/new/post2channel.html', dev_key=dev_key, channels=get_channel_list())
 
 
 @auth.route('/new/channel', methods=['GET'])
