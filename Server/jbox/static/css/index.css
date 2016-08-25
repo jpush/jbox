@@ -14,3 +14,8 @@ body {
     align-self: center;
     margin-top: 127px;
 }
+
+#description {
+    font-size: 36px;
+    color: #FFFFFF;
+}

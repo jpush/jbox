@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_manage.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
@@ -11,6 +11,16 @@
 {% endblock %}
 
 {% block title %}极光宝盒-编辑集成{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+    <style>
+    .manage-navigator {
+        background:#000000 !important;
+        border:1px solid #979797;
+    }
+    </style>
+{% endblock %}
 
 {% block content %}
     <div class="container-fluid">

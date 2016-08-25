@@ -1,0 +1,57 @@
+.manage-background {
+    background: #a6d595;
+    height: 366px;
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    height: 100%;
+}
+
+#integration-title {
+    align-self: center;
+}
+
+.create-integration {
+    background:#64b868;
+    border-radius:5px;
+    width:186px;
+    height:48px;
+    font-family: "PingFang SC-Semibold";
+    font-size: 20px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    text-align: center;
+    align-self: center;
+}
+
+#table {
+    align-self: center;
+    width: 80%;
+    margin-top: 48px;
+}
+
+.table-header {
+    background:#c5e1a5;
+}
+
+.table-header-font {
+    font-size: 15px;
+    color: #464646;
+}
+
+.first-column {
+    padding-left: 75px;
+}
+
+.table-font {
+    table-layout: fixed;
+    width: 200px;
+    word-wrap: break-word;
+    word-break: normal;
+    font-size: 14px;
+    color: #595959;
+}

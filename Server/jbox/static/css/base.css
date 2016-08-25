@@ -1,31 +1,72 @@
-.top-navigator {
+.navigator {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+}
+
+.base-navigator {
     position: absolute;
     top: 23px;
     height: 59px;
-    width: 100%;
 }
 
 .left-navigator {
     display: flex;
-    position: absolute;
-    left: 21px;
-    flex: 0;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    margin-left: 21px;
+}
+
+#logo {
+    width: 64px;
+    height: 59px;
+    z-index: 2;
+}
+
+#jbox {
+    font-size: 45px;
+    color: #FFFFFF;
 }
 
 .jbox-font {
     font-family: "PingFang SC-Semibold";
-    color: #FFFFFF;
     letter-spacing: 0;
 }
 
 .right-navigator {
     display: flex;
-    position: absolute;
+    flex-flow: row nowrap;
     justify-content: flex-end;
-    right: 123px;
-    width: 70%;
+    margin-right: 123px;
+}
+
+.nav-font {
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-right: 30px;
+}
+
+#manage {
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-right: 20px;
+}
+
+#logout {
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+#login {
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+#nav-divider {
+    width: 2px;
+    height: 25px;
+    background: #ffffff;
+    margin-right: 23px;
 }
