@@ -34,17 +34,6 @@
     margin-bottom: 158px;
 }
 
-.row {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-}
-
-.column {
-    display: flex;
-    flex-flow: column;
-}
-
 #title {
     font-size: 24px;
     margin-top: 34px;

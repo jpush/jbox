@@ -70,3 +70,14 @@
     background: #ffffff;
     margin-right: 23px;
 }
+
+.row {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.column {
+    display: flex;
+    flex-flow: column;
+}

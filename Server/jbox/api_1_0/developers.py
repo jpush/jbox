@@ -77,26 +77,6 @@ def create_channel(dev_key):
     return jsonify({'created': True, 'existed': False}), 201
 
 
-# 删除 dev_key 下的某个 channel
-@api.route('/developers/<string:dev_key>/channels/<string:channel>', methods=['DELETE'])
-def delete_channel(dev_key, channel):
-    developer = Developer.query.filter_by(dev_key=dev_key).first()
-    if developer is None:
-        abort(404)
-    # channels = Channel.query.filter_by(developer_id=developer.id).all()
-    channels = developer.channels
-    for item in channels:
-        if item.channel == channel:
-            db.session.delete(item)
-            try:
-                db.session.commit()
-                return jsonify({'deleted': True}), 200
-            except:
-                db.session.rollback()
-                abort(500)
-    abort(404)
-
-
 # 获得 dev_key 下的所有 channel
 @api.route('/developers/<string:dev_key>/channels', methods=['GET'])
 def get_channels(dev_key):
@@ -144,31 +124,30 @@ def create_integrations(dev_key):
         abort(400)
     # channel_list = Channel.query.filter_by(developer_id=developer.id).all()
     channel_list = developer.channels
-    for channel in channel_list:
-        if request.json['channel'] == channel.channel:
-            new_integration_id = generate_integration_id()
-            new_integration = Integration(developer=developer,
-                                          integration_id=new_integration_id,
-                                          developer_id=developer.id,
-                                          channel=channel)
-            new_integration.insert_to_db()
-            token = new_integration.generate_auth_token(3600000000)
-            new_integration.token = token.decode('utf-8')
-            db.session.add(new_integration)
-            try:
-                db.session.commit()
-                return jsonify({'integration_id': new_integration_id,
-                                'token': token.decode('utf-8')}), 201
-            except:
-                db.session.rollback()
-                abort(500)
+    if channel_list is not None:
+        for channel in channel_list:
+            if request.json['channel'] == channel.channel:
+                new_integration_id = generate_integration_id()
+                new_integration = Integration(developer=developer,
+                                              integration_id=new_integration_id,
+                                              channel=channel)
+                new_integration.insert_to_db()
+                token = new_integration.generate_auth_token(3600000000)
+                new_integration.token = token.decode('utf-8')
+                db.session.add(new_integration)
+                try:
+                    db.session.commit()
+                    return jsonify({'integration_id': new_integration_id,
+                                    'token': token.decode('utf-8')}), 201
+                except:
+                    db.session.rollback()
+                    abort(500)
     new_channel = Channel(developer=developer, channel=request.json['channel'])
     db.session.add(new_channel)
     try:
         new_integration_id = generate_integration_id()
         new_integration = Integration(developer=developer,
                                       integration_id=new_integration_id,
-                                      developer_id=developer.id,
                                       channel=new_channel)
         new_integration.insert_to_db()
         token = new_integration.generate_auth_token(3600000000)

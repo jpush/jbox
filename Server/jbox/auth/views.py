@@ -54,7 +54,7 @@ def edit_integration(integration_id):
     return render_template('auth/create.html', **locals())
 
 
-@auth.route('/new/postTochannels', methods=['GET'])
+@auth.route('/new/post_to_channel', methods=['GET'])
 @login_required
 def post_to_channel():
     dev_key = current_user.dev_key

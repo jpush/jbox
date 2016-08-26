@@ -17,7 +17,7 @@ class Developer(UserMixin, db.Model):
     username = db.Column(db.String(150), index=True)
     confirmed = db.Column(db.Boolean, default=False)
     integrations = db.relationship('Integration', backref='developer')
-    channels = db.relationship('Channel', backref='developer')
+    channels = db.relationship('Channel', primaryjoin='Developer.id==Channel.developer_id', backref='developer')
 
     def __repr__(self):
         return '<Developer %r>' % self.dev_key
@@ -93,6 +93,7 @@ class Integration(db.Model):
     icon = db.Column(db.String(150))
     token = db.Column(db.String(150))
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
 
     def __repr__(self):
         return '<Integration %r>' % self.integration_id
@@ -138,8 +139,6 @@ class Channel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
     channel = db.Column(db.String(150))
-    # 外键和 relationship 都放在 Channel 表, 表示 Channel 和 Integration 是多对一的关系
-    integration_id = db.Column(db.Integer, db.ForeignKey('integrations.id'))
     integrations = db.relationship('Integration', backref='channel')
 
     def __repr__(self):

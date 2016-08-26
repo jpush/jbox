@@ -26,7 +26,7 @@
             <div class="column">
                 <div class="input-group">
                     <input id="selected_channel" type="text" class="form-control" aria-label="..."
-                           placeholder="选择一个 channel">
+                           placeholder="选择一个 channel 或者输入一个新的 channel">
                     <div class="input-group-btn">
                         <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
                                 data-toggle="dropdown"
@@ -37,9 +37,6 @@
                             {% endfor %}
                         </ul>
                     </div>
-                </div>
-                <div>
-                    <a class="btn-link" href="{{ url_for('auth.new_channel') }}" style="color: #2ab27b">创建 channel</a>
                 </div>
             </div>
         </div>
