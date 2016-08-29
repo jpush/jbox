@@ -7,76 +7,125 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/qrcode.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
 {% endblock %}
 
 {% block title %}极光宝盒-编辑集成{% endblock %}
 
-{% block navbar %}
-    {{ super() }}
-{% endblock %}
-
 {% block content %}
-    <div class="container-fluid">
-        <div class="row-fluid">
-            {% for message in get_flashed_messages() %}
-                <div class="alert alert-warning">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ message }}
+    <div id="content" class="column">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+        {% endfor %}
+        <p id="title" class="jbox-font">自定义集成设置</p>
+        <div id="edit_form">
+            <div class="row">
+                <div class="column span">
+                    <p class="jbox-font span-title">绑定 channel</p>
+                    <p class="jbox-font span-desc">将消息发送到指定的 channel</p>
                 </div>
-            {% endfor %}
-            <div id="edit_form" class="col-lg-8 col-lg-offset-2" style="padding: 10px;">
-                <h3 id="token_h3">webhook:api.jobx.com/{{ integration_id }}/{{ token }}</h3>
-                <button id="regenerate_token" class="btn btn-warning btn-middle" type="button">重新生成 token</button>
-                <h3><span class="label label-info" style="padding: 10px;">应用名</span></h3>
-                <input id="name" title="应用名" style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
-                       type="text" value="{{ name }}"/>
-                <h3><span class="label label-info" style="padding: 10px;">应用描述</span></h3>
-                <input id="description" title="应用描述"
-                       style="margin-top: 5px; width: 100%; height: 46px; font-size: large"
-                       type="text" value="{{ description }}"/>
-                <div class="dropdown" style="margin-top: 10px">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="channel_dropdown"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span id="drop_down_title">{{ channel }}</span>
-                        <span class="caret"></span>
-                    </button>
+                <div class="input-group">
+                    <input id="selected_channel" type="text" class="form-control" aria-label="..."
+                           placeholder="{{ channel }}">
                     <input id="input_hidding" type="hidden" value="{{ channel }}">
-                    <ul id="content" class="dropdown-menu">
-                        {% for channel in channels %}
-                            <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
-                        {% endfor %}
-                    </ul>
-                    <a class="btn btn-link" style="color: #2ab27b;" role="button" data-toggle="collapse"
-                       href="#channel_collapse"
-                       aria-expanded="false" aria-controls="channel_collapse">新建 Channel</a>
-                </div>
-                <div class="collapse" id="channel_collapse" style="margin-top: 20px">
-                    <input id="new_channel" class="input-lg" type="text"
-                           style="width: 60%; height: 46px; font-size: large"
-                           placeholder="输入 channel"/>
-                    <button id="create_channel" title="新建Channel" class="btn-lg btn-info" type="button">创建 Channel
-                    </button>
-                </div>
-                <form id="uploadform" method="post" enctype="multipart/form-data" style="margin-top: 10px">
-                    <label for="file">上传自定义集成标志</label>
-                    <input name="file" type="file">
-                    <div style="margin-top: 10px; margin-bottom: 20px">
-                        <img id="icon" src="/static/images/{{ icon }}" title="icon">
+                    <div class="input-group-btn">
+                        <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                        <ul id="content" class="dropdown-menu dropdown-menu-right">
+                            {% for channel in channels %}
+                                <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                            {% endfor %}
+                        </ul>
                     </div>
-                    <button id="upload" class="btn-lg" type="button">上传</button>
+                </div>
+                <div id="qrcode-content" class="column">
+                    <div id="qrcode"></div>
+                    <p id="qrcode-desc" class="jbox-font">手机扫一扫订阅该 channel</p>
+                </div>
+            </div>
+            <hr id="divider">
+            <div class="row">
+                <div class="column span">
+                    <p class="jbox-font span-title">集成名称</p>
+                    <p class="jbox-font span-desc">给你的集成设置名称</p>
+                </div>
+                <input id="name" class="input-lg input" title="应用名" type="text" value="{{ name }}"/>
+            </div>
+            <hr id="divider">
+            <div class="row">
+                <div class="column span">
+                    <p class="jbox-font span-title">集成描述</p>
+                    <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
+                </div>
+                <input id="description" class="input-lg input" title="应用描述" type="text" value="{{ description }}"/>
+            </div>
+            <hr id="divider">
+            <div class="row">
+                <div class="column span">
+                    <p class="jbox-font span-title">Webhook</p>
+                    <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
+                </div>
+                <p id="token" class="jbox-font">webhook:api.jobx.com/{{ integration_id }}/{{ token }}</p>
+            </div>
+            <div id="link-content">
+                <a id="check-api" class="jbox-font link">查看 API 说明</a>
+                <a id="regenerate" class="jbox-font link">重新生成</a>
+            </div>
+            <hr id="divider">
+            <div id="integration-content">
+                <div class="column span">
+                    <p class="jbox-font span-title">集成图标</p>
+                    <p class="jbox-font span-desc">选择一张图片作为集成图标</p>
+                </div>
+                <form id="uploadform" method="post" enctype="multipart/form-data">
+                    <div class="upload">
+                        <div class="jbox-font upload-content">上传图片</div>
+                        <input id="file" type="file" class="inputstyle">
+                    </div>
                 </form>
-                <p>Result Filename:&nbsp;<span id="resultFilename"> here</span></p>
-                <p>Result Filesize:&nbsp;<span id="resultFilesize">here</span></p>
-                <div style="margin-top: 10px">
-                    <input id="submit" type="submit" value="保存设置" class="btn-lg"
-                           style="position: absolute; left: 10px; background-color: #2ab27b; color: #ffffff;     border: 0px hidden; box-shadow:none;">
+                {% if icon %}
+
+                    <img id="icon" src="/static/images/{{ icon }}" title="icon">
+                {% else %}
+                    <img id="icon" src="/static/images/image.png" title="default">
+                {% endif %}
+            </div>
+            <hr id="divider">
+            <div class="row">
+                <input id="submit" type="submit" value="保存设置" class="jbox-font">
+                <button id="delete" type="button" value="删除集成" class="btn-lg jbox-font" data-toggle="modal"
+                    data-target="#deleteModal">删除集成</button>
+            </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">删除集成</h4>
+                </div>
+                <div class="modal-body">
+                    <p>确定删除该集成?</p>
+                    <input type="hidden" id="input_hidden">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" id="deleteBtn" data-loading-text="删除中" data-dismiss="modal"
+                            class="btn btn-danger">删除
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
+        </div>
+    </div>
     <script type="text/javascript">
         toastr.options = {
             "closeButton": false,
@@ -96,11 +145,33 @@
             "hideMethod": "fadeOut"
         };
 
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 145,
+            height: 145
+        });
+
         $(document).ready(function () {
             $('#name').val("{{ name }}");
             $('#description').val("{{ description }}");
+            console.log("{{ dev_key }}" + "-" + $('#input_hidding').val());
+            qrcode.makeCode("{{ dev_key }}" + "-" + $('#input_hidding').val());
             $("input[type='file']").change(function () {
                 previewImage(this);
+                event.preventDefault();
+                var formData = new FormData();
+                formData.append('file', $('#file')[0].files[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/auth/uploadajax',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json'
+                }).done(function (data, textStatus, jqXHR) {
+                    toastr.success('上传成功');
+                }).fail(function (data) {
+                    toastr.error('上传失败!');
+                });
             });
             $("#upload_area").find("a").click(function () {
                 document.edit_form.picpath.click();
@@ -148,7 +219,7 @@
                 url: "/api.jbox.jiguang.cn/v1/{{ integration_id }}/token",
                 success: function (data) {
                     if (data != undefined) {
-                        $('#token_h3').text("webhook:api.jobx.com/{{ integration_id }}/" + data['token']);
+                        $('#token').text("webhook:api.jobx.com/{{ integration_id }}/" + data['token']);
                         toastr.success("已重新生成 token");
                     }
                 },
@@ -170,7 +241,7 @@
                     if (data != undefined) {
                         if (data["created"]) {
                             toastr.success("创建成功");
-                            $('#content').append('<li id="' + new_channel + '" class="channel_class"><a>'
+                            $('#dropdown-content').append('<li id="' + new_channel + '" class="channel_class"><a>'
                                     + new_channel + '</a></li>');
                             bindClick();
                         }
@@ -191,7 +262,8 @@
                 $(this).bind('click', function () {
                     $('#drop_down_title').text(this.id);
                     $('#input_hidding').val(this.id);
-                    console.log($('#input_hidding').val())
+                    console.log("{{ dev_key }}" + "-" + $('#input_hidding').val());
+                    qrcode.makeCode("{{ dev_key }}" + "-" + $('#input_hidding').val());
                 })
             });
         }
@@ -250,24 +322,6 @@
             }
         }
 
-        $('#upload').click(function () {
-            event.preventDefault();
-            var form_data = new FormData($('#uploadform')[0]);
-            $.ajax({
-                type: 'POST',
-                url: '/auth/uploadajax',
-                data: form_data,
-                contentType: false,
-                processData: false,
-                dataType: 'json'
-            }).done(function (data, textStatus, jqXHR) {
-                toastr.success('上传成功');
-                $("#resultFilename").text(data['name']);
-                $("#resultFilesize").text(data['size']);
-            }).fail(function (data) {
-                toastr.error('上传失败!');
-            });
-        });
 
         $('#submit').click(function () {
             var name = $('#name').val();
@@ -289,6 +343,25 @@
                 },
                 dataType: "json"
             });
-        })
+        });
+
+    $('#deleteBtn').click(function () {
+            console.log('deleting');
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration_id }}",
+                success: function (data) {
+                    if (data['deleted']) {
+                        toastr.success("删除成功");
+                        window.location.href = "/auth/manage"
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("删除失败");
+                }
+            })
+        });
     </script>
 {% endblock %}

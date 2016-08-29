@@ -46,7 +46,7 @@ def edit_integration(integration_id):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     name = integration.name
     description = integration.description
-    channel = integration.channel
+    channel = integration.channel.channel
     icon = integration.icon
     token = integration.token
     channels = get_channel_list()
@@ -74,7 +74,7 @@ def qrcode():
 
 
 @auth.route('/uploadajax', methods=['POST'])
-def upldfile():
+def uploadfile():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -92,3 +92,10 @@ def get_channel_list():
         for channel in channels:
             channel_list.append(channel.channel)
         return channel_list
+
+
+@login_required
+@auth.route('/profile', methods=['GET'])
+def profile():
+    developer = Developer.query.filter_by(dev_key=current_user.dev_key).first()
+    return render_template('auth/profile.html', developer=developer)

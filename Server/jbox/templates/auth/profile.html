@@ -1,0 +1,97 @@
+{% extends "base_manage.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/qrcode.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}资料详情{% endblock %}
+
+{#{% block body %}#}
+{#    {{ super() }}#}
+{#    <body onload="drawQrcode()"></body>#}
+{#{% endblock %}#}
+
+{% block content %}
+    <div id="first-layer"></div>
+    <img id="profile-bg" src="/static/images/profile-bg.png">
+    <div id="second-layer">
+        <button id="edit" class="jbox-font btn-lg" type="button">编辑</button>
+        <img id="dev-avatar" src="/static/images/jbox-bear.png">
+        <p id="display-name" class="jbox-font">{{ developer.username }}</p>
+        {% if developer.description %}
+            <p id="dev-desc">{{ developer.description }}</p>
+        {% else %}
+            <p id="dev-desc">这个人很懒, 什么都没留下</p>
+        {% endif %}
+        <div id="dev-qrcode"></div>
+        <p id="qrcode-desc" class="jbox-font">扫一扫订阅所有 channel</p>
+    </div>
+    <div class="column">
+        <p id="channel-title" class="jbox-font">Channel 列表</p>
+        <p id="desc" class="jbox-font">扫一扫订阅指定 channel</p>
+        <table id="channel-table">
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        var qrcode = new QRCode(document.getElementById("dev-qrcode"), {
+            width: 201,
+            height: 201
+        });
+
+        $(document).ready(function () {
+            qrcode.makeCode("{{ developer.dev_key }}");
+            createTable();
+        });
+        var list = [];
+        {% for channel in developer.channels %}
+            list.push("{{ channel.channel }}");
+        {% endfor %}
+
+        function createTable() {
+            var table = $('#table');
+            var count = list.length;
+            if (count != 0) {
+                var row = count / 3 + 1;
+                for (var i = 1; i <= row; i++) {
+                    var tr = $('<tr></tr>');
+                    tr.appendTo(table);
+                    var id, qrcode;
+                    for (var j = 1; j <= 3 && j * i < count; j++) {
+                        id = i * j - 1;
+                        var td = $('<td class="channel-td" ><div id="' + list[id] + '"></div><p id="title + '
+                                + id + '">' + list[id] + '</p></td>');
+                        td.appendTo(tr);
+                        console.log(list[id]);
+                        qrcode = new QRCode(document.getElementById(list[id]), {
+                            width: 201,
+                            height: 201
+                        });
+                        qrcode.makeCode("{{ developer.dev_key }}" + "-" + list[id]);
+                    }
+                }
+            }
+        }
+
+        {#        function drawQrcode() {#}
+        {#            var qrcode;#}
+        {#            for (var i = 0; i < list.length; i++) {#}
+        {#                qrcode = new QRCode(document.getElementById(list[i]), {#}
+        {#                    width: 201,#}
+        {#                    height: 201#}
+        {#                });#}
+        {#                qrcode.makeCode("{{ developer.dev_key }}" + "-" + list[i]);#}
+        {#            }#}
+        {#        }#}
+    </script>
+{% endblock %}
+
+

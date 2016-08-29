@@ -16,6 +16,8 @@ class Developer(UserMixin, db.Model):
     platform_id = db.Column(db.String(40), unique=True)
     username = db.Column(db.String(150), index=True)
     confirmed = db.Column(db.Boolean, default=False)
+    description = db.Column(db.String(150))
+    avatar = db.Column(db.String(150))
     integrations = db.relationship('Integration', backref='developer')
     channels = db.relationship('Channel', primaryjoin='Developer.id==Channel.developer_id', backref='developer')
 

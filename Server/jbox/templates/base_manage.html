@@ -19,17 +19,15 @@
             </div>
         </div>
         <div class="manage-navigator-right">
+            <a id="app" class="jbox-font nav-font" href="{{ url_for('main.application') }}">极光宝盒 App</a>
+            <a id="api" class="jbox-font nav-font" href="{{ url_for('main.document') }}">Api 文档</a>
+            <a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">Guide</a>
             <button id="manage-btn" type="button" onclick="window.location.href='{{ url_for('auth.manage') }}'">管理
             </button>
             <div id="nav-divider"></div>
             <img id="avatar" src="/static/images/bear.png">
             <div class="dropdown">
-                <a id="dev_name" class="jbox-font dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="true">Devname</a>
-                <ul class="dropdown-menu" aria-labelledby="dev_name">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Action</a></li>
-                </ul>
+                <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">Devname</a>
             </div>
 
         </div>

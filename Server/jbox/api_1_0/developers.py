@@ -194,7 +194,7 @@ def delete_integration(dev_key, integration_id):
     if developer is not None:
         integration = Integration.query.filter_by(integration_id=integration_id).first()
         if integration is not None:
-            channel = Channel.query.filter_by(integration_id=integration.id).first()
+            channel = Channel.query.filter_by(id=integration.channel_id).first()
             integrations = channel.integrations
             # 如果这个 channel 只绑定了要删除的 integration, 删除这个 channel
             if len(integrations) == 1:

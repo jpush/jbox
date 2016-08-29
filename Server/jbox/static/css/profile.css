@@ -1,0 +1,95 @@
+#navbar {
+    background: #356081;
+}
+
+body {
+}
+
+#first-layer {
+    background: #7cc4ff;
+    height: 259px;
+}
+
+#second-layer {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    background: #0277bd;
+}
+
+#profile-bg {
+    position: absolute;
+    top: 136px;
+    left: 368px;
+}
+
+#edit {
+    background: rgba(100, 184, 103, 0.00);
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    font-size: 24px;
+    color: #FFFFFF;
+    padding: 10px 22px 10px 22px;
+    margin-top: 45px;
+    margin-right: 61px;
+    width: 133px;
+    align-self: flex-end;
+}
+
+#dev-avatar {
+    width: 164px;
+    height: 164px;
+    border-radius: 82px;
+}
+
+#display-name {
+    font-size: 36px;
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+#dev-desc {
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-top: 27px;
+}
+
+#dev-qrcode {
+    margin-top: 35px;
+    padding: 10px;
+    background: #FFFFFF;
+}
+
+#qrcode-desc {
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-top: 24px;
+    margin-bottom: 79px;
+}
+
+#channel-title {
+    margin-top: 64px;
+    font-size: 36px;
+    color: #595959;
+    align-self: center;
+}
+
+#desc {
+    margin-top: 37px;
+    font-size: 24px;
+    color: #595959;
+    align-self: center;
+}
+
+#channel-table {
+    margin-top: 62px;
+}
+
+.channel-td {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 48px 58px 48px;
+}
