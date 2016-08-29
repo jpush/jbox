@@ -2,7 +2,6 @@ body {
     background: url("../images/index-background.png") no-repeat;
     background-size: cover;
     background-color: #010808;
-    /*background-size: 1920px 1920px;*/
 }
 
 .content {
@@ -19,6 +18,7 @@ body {
 }
 
 #description {
+    display: table;
     font-size: 36px;
     color: #FFFFFF;
 }

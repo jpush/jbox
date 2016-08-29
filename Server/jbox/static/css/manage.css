@@ -1,3 +1,7 @@
+body {
+    background: #f9f9f9;
+}
+
 .manage-background {
     background: #a6d595;
     height: 366px;
@@ -12,11 +16,13 @@
 }
 
 #integration-title {
+    color: #5F5F5F;
+    font-size: 36px;
     align-self: center;
 }
 
 .create-integration {
-    background:#64b868;
+    background:#64B868;
     border-radius:5px;
     width:186px;
     height:48px;
@@ -26,6 +32,8 @@
     letter-spacing: 0;
     text-align: center;
     align-self: center;
+    border: 0px hidden;
+    box-shadow:none;
 }
 
 #table {
