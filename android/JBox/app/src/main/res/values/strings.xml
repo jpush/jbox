@@ -1,35 +1,14 @@
 <resources>
     <string name="app_name">极光宝盒</string>
 
-    <!-- login start -->
-    <string name="error_open_camera">打开相机错误</string>
-    <!-- login end -->
-
-    <!-- main start -->
-    <string name="message">消 息</string>
-    <string name="account">账 户</string>
-    <!-- main end -->
-
-    <string name="back">返 回</string>
-
-    <!-- channel start -->
-    <string name="channel_remove">删除</string>
-    <string name="channel_subscribe">订阅</string>
-    <!-- channel end -->
-
-    <!-- account start -->
-    <string name="account_account">账 户</string>
-    <string name="account_remove">删除</string>
-    <!-- account end -->
+    <!-- drawer start -->
+    <string name="drawer_channel">Channels</string>
+    <!-- drawer end -->
 
     <!-- http url start -->
     <string name="url_base">http://api.jbox.jiguang.cn</string>
     <string name="url_get_developers">http://api.jbox.jiguang.cn/developers/%s</string>
     <string name="url_get_channels">http://api.jbox.jiguang.cn/developers/%s/channels</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="channel">频 道</string>
     <!-- http url end -->
 
 </resources>

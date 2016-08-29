@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.jiguang.jbox.data.Message;
-import com.jiguang.jbox.data.source.ChannelsRepository;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import cn.jpush.android.api.JPushInterface;
 
 public class MyReceiver extends BroadcastReceiver {
 
@@ -26,9 +24,6 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(action)) {
-            onReceiveMessage(intent);
-        }
     }
 
     private void onReceiveMessage(Intent intent) {
@@ -45,7 +40,6 @@ public class MyReceiver extends BroadcastReceiver {
         msg.setTime(currentDate.toString());
 
         //TODO: 保存 msg 到本地，并刷新数据。
-        ChannelsRepository channelsRepository = ChannelsRepository.getInstance();
     }
 
 }

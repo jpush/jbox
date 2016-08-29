@@ -1,23 +1,31 @@
 package com.jiguang.jbox.main;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.widget.ListView;
 
 import com.jiguang.jbox.R;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    public static final String EXTRA_DEV_KEY = "DEV_KEY";
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    private ListView mMsgListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        mMsgListView = (ListView) findViewById(R.id.lv_msg);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+    public void onNavigationDrawerItemSelected(int position) {
 
+    }
 }

@@ -3,7 +3,6 @@ package com.jiguang.jbox;
 import android.app.Application;
 import android.content.Context;
 
-import cn.jpush.android.api.JPushInterface;
 
 public class AppApplication extends Application {
     private static Context context;
@@ -12,7 +11,7 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        JPushInterface.init(this);
+//        JPushInterface.init(this);
     }
 
     public static Context getContext() {

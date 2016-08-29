@@ -5,4 +5,10 @@
     <dimen name="account_top_height">162dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="widget_height">48dp</dimen>
+    <dimen name="navigation_drawer_width">240dp</dimen>
+
+    <!-- drawer start -->
+    <dimen name="drawer_channel">20sp</dimen>
+    <!-- drawer end -->
+
 </resources>
