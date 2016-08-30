@@ -25,6 +25,7 @@ DerivedData
 *.db
 *.xcuserstate
 project.xcworkspace
+*venv/
 
 # Android/IJ
 #
