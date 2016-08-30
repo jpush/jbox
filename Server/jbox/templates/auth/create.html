@@ -25,7 +25,7 @@
         <p id="title" class="jbox-font">自定义集成设置</p>
         <div id="edit_form">
             <div class="row">
-                <div class="column span">
+                <div class="column span description-div">
                     <p class="jbox-font span-title">绑定 channel</p>
                     <p class="jbox-font span-desc">将消息发送到指定的 channel</p>
                 </div>
@@ -51,27 +51,27 @@
             </div>
             <hr id="divider">
             <div class="row">
-                <div class="column span">
+                <div class="column span description-div">
                     <p class="jbox-font span-title">集成名称</p>
                     <p class="jbox-font span-desc">给你的集成设置名称</p>
                 </div>
-                <input id="name" class="input-lg input" title="应用名" type="text" value="{{ name }}"/>
+                <input id="name-input" class="description" title="应用名" type="text" value="{{ name }}"/>
             </div>
             <hr id="divider">
             <div class="row">
-                <div class="column span">
+                <div class="column span description-div">
                     <p class="jbox-font span-title">集成描述</p>
                     <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
                 </div>
-                <input id="description" class="input-lg input" title="应用描述" type="text" value="{{ description }}"/>
+                <input id="integration-input" class="description" title="应用描述" type="text" value="{{ description }}"/>
             </div>
             <hr id="divider">
             <div class="row">
-                <div class="column span">
+                <div class="column span description-div">
                     <p class="jbox-font span-title">Webhook</p>
                     <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
                 </div>
-                <p id="token" class="jbox-font">webhook:api.jobx.com/{{ integration_id }}/{{ token }}</p>
+                <input id="webhook" class="jbox-font description" value="webhook:api.jobx.com/{{ integration_id }}/{{ token }}"/>
             </div>
             <div id="link-content">
                 <a id="check-api" class="jbox-font link">查看 API 说明</a>
@@ -79,12 +79,12 @@
             </div>
             <hr id="divider">
             <div id="integration-content">
-                <div class="column span">
+                <div class="column span description-div">
                     <p class="jbox-font span-title">集成图标</p>
                     <p class="jbox-font span-desc">选择一张图片作为集成图标</p>
                 </div>
                 <form id="uploadform" method="post" enctype="multipart/form-data">
-                    <div class="upload">
+                    <div class="upload upload-btn">
                         <div class="jbox-font upload-content">上传图片</div>
                         <input id="file" type="file" class="inputstyle">
                     </div>

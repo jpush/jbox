@@ -46,6 +46,7 @@
     width: 234px;
     margin-top: 20px;
     margin-right: 49px;
+    border-radius: 5px;
 }
 
 #selected_channel {

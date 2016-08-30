@@ -77,13 +77,28 @@
     margin-left: 103px;
     margin-right: 77px;
     margin-top: 20px;
+
 }
 
-#description {
+.description {
     flex: 1;
     margin-left: 50px;
     margin-right: 77px;
     margin-top: 20px;
+    border-radius:5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #979797;
+    height: 47px;
+    padding: 10px;;
+}
+
+#integration-input {
+    margin-left: 30px;
+}
+
+#name-input {
+    margin-left: 30px;
 }
 
 #token {
@@ -91,16 +106,19 @@
     font-size: 20px;
     border: 1px solid #979797;
     border-radius: 5px;
-    word-wrap: break-word;
+    word-wrap: normal;
     word-break: normal;
     margin-left: 29px;
     margin-right: 77px;
     max-width: 813px;
 }
 
+#webhook {
+    margin-left: 30px;
+}
 #check-api {
     position: relative;
-    left: 50px;
+    margin-left: 34px;
 }
 
 #regenerate {
@@ -155,6 +173,10 @@
     font-weight: 800;
 }
 
+.upload-btn {
+    margin-left: 15px;
+}
+
 .inputstyle {
     width: 122px;
     height: 45px;
@@ -194,4 +216,7 @@
     box-shadow:none;
 }
 
+.description-div {
+    width: 280px;
+}
 
