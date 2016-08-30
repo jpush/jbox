@@ -40,7 +40,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@id/label_channel"
             android:layout_centerVertical="true"
-            android:onClick="editChannels"
             android:clickable="true"
             android:src="@drawable/ic_edit"
             />

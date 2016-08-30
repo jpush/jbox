@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
     android:paddingStart="16dp"
     android:paddingBottom="4dp"
     android:paddingTop="4dp"
@@ -16,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_remove"
+        android:layout_centerVertical="true"
         android:visibility="gone"
         />
 
@@ -24,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/iv_remove"
+        android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:textColor="#f3f3f3"
         tools:text="Github"
@@ -35,9 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:background="@drawable/badge"
+        android:layout_centerVertical="true"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textColor="@android:color/white"
+        android:visibility="invisible"
         tools:text="10"
         />
 

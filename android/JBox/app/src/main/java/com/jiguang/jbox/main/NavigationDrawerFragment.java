@@ -8,10 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,10 +20,11 @@ import com.jiguang.jbox.util.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * 侧滑界面。
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements View.OnClickListener {
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -55,6 +54,9 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.drawer_main, container, false);
 
+        ImageView ivEdit = (ImageView) v.findViewById(R.id.iv_edit);
+        ivEdit.setOnClickListener(this);
+
         List<Channel> channels = new ArrayList<>();
         channels.add(new Channel("channel 1"));
         channels.add(new Channel("channel 2"));
@@ -76,7 +78,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     void editChannels() {
-        mIsEditChannels = true;
+        mIsEditChannels = !mIsEditChannels;
         mChannelListAdapter.editChannels(mIsEditChannels);
     }
 
@@ -90,6 +92,16 @@ public class NavigationDrawerFragment extends Fragment {
         }
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_edit:
+                editChannels();
+                break;
+            default:
         }
     }
 
@@ -139,18 +151,25 @@ public class NavigationDrawerFragment extends Fragment {
 
             Channel channel = (Channel) getItem(position);
 
-            TextView tvChannelName = ViewHolder.get(convertView, R.id.tv_channel);
-            tvChannelName.setText(channel.getName());
-
-            ImageView ivRemove = ViewHolder.get(convertView, R.id.iv_edit);
+            ImageView ivRemove = ViewHolder.get(convertView, R.id.iv_remove);
             if (mIsEdited && ivRemove.getVisibility() == View.GONE) {
                 ivRemove.setVisibility(View.VISIBLE);
             } else if (!mIsEdited && ivRemove.getVisibility() == View.VISIBLE) {
                 ivRemove.setVisibility(View.GONE);
             }
 
-//            TextView tvUnread = ViewHolder.get(convertView, R.id.tv_unread_count);
-//            tvUnread.setText(channel.getUnReadMessageCount());
+            TextView tvChannelName = ViewHolder.get(convertView, R.id.tv_channel);
+            tvChannelName.setText(channel.getName());
+
+            TextView tvUnread = ViewHolder.get(convertView, R.id.tv_unread_count);
+            if (channel.getUnReadMessageCount() != 0 &&
+                    tvUnread.getVisibility() == View.INVISIBLE) {
+                tvUnread.setVisibility(View.VISIBLE);
+                tvUnread.setText(channel.getUnReadMessageCount());
+            } else if (channel.getUnReadMessageCount() == 0 &&
+                    tvUnread.getVisibility() == View.VISIBLE) {
+                tvUnread.setVisibility(View.INVISIBLE);
+            }
 
             return convertView;
         }
