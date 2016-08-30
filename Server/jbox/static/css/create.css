@@ -41,6 +41,7 @@
 .span-desc {
     font-size: 20px;
     color: #595959;
+    box-shadow:none;
 }
 
 .input-group {
@@ -175,6 +176,8 @@
     text-align: center;
     font-size: 24px;
     color: #FFFFFF;
+    border: 0px hidden;
+    box-shadow:none;
 }
 
 #submit:hover {
@@ -187,6 +190,8 @@
     padding: 13px 20px 13px 20px;
     font-size: 24px;
     color: #FFFFFF;
+    border: 0px hidden;
+    box-shadow:none;
 }
 
 
