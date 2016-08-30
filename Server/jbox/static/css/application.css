@@ -1,5 +1,7 @@
 body {
     background: url("../images/application-background.png") no-repeat;
+    -webkit-background-size: 100%;
+    background-size: 100%;
 }
 
 .content {
@@ -25,7 +27,7 @@ body {
 }
 
 #layer1 {
-    margin-top: 130px;
+    margin-top: 230px;
 }
 
 #cloud1x {
@@ -49,6 +51,7 @@ body {
 
 #download-title {
     font-size: 48px;
+    color: #FFFFFF;
     align-self: center;
     margin-left: 60px
 }
