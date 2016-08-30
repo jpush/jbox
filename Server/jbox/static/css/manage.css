@@ -3,9 +3,13 @@ body {
 }
 
 .manage-background {
+    display: flex;
+    flex-flow: row;
     background: #a6d595;
     height: 366px;
     width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 .content {
