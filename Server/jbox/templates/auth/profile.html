@@ -14,17 +14,12 @@
 
 {% block title %}资料详情{% endblock %}
 
-{#{% block body %}#}
-{#    {{ super() }}#}
-{#    <body onload="drawQrcode()"></body>#}
-{#{% endblock %}#}
-
 {% block content %}
     <div id="first-layer"></div>
     <img id="profile-bg" src="/static/images/profile-bg.png">
     <div id="second-layer">
         <button id="edit" class="jbox-font btn-lg" type="button">编辑</button>
-        <img id="dev-avatar" src="/static/images/jbox-bear.png">
+        <img id="dev-avatar" src="/static/images/jiguang-bear.png">
         <p id="display-name" class="jbox-font">{{ developer.username }}</p>
         {% if developer.description %}
             <p id="dev-desc">{{ developer.description }}</p>
@@ -38,15 +33,7 @@
         <p id="channel-title" class="jbox-font">Channel 列表</p>
         <p id="desc" class="jbox-font">扫一扫订阅指定 channel</p>
         <table id="channel-table">
-            {% for channel in developer.channels %}
-
-                <tr>
-                <td class="channel-td">
-
-                </td>
-                </tr>
-
-            {% endfor %}
+            <tbody></tbody>
         </table>
     </div>
 
@@ -66,40 +53,34 @@
         {% endfor %}
 
         function createTable() {
-            var table = $('#table');
+            var table = $('#channel-table');
             var count = list.length;
             if (count != 0) {
                 var row = count / 3 + 1;
                 for (var i = 1; i <= row; i++) {
                     var tr = $('<tr></tr>');
                     tr.appendTo(table);
-                    var id, qrcode;
-                    for (var j = 1; j <= 3 && j * i < count; j++) {
+                     var id;
+                    for (var j = 1; j <= 3 && j * i <= count; j++) {
                         id = i * j - 1;
-                        var td = $('<td class="channel-td" ><div id="' + list[id] + '"></div><p id="title + '
-                                + id + '">' + list[id] + '</p></td>');
-                        td.appendTo(tr);
+                        var td = $('<td ><div class="channel-td"><div id="channel' + id + '">' +
+                                '</div><p class="channel-title">' + list[id] + '</p></div></td>');
                         console.log(list[id]);
-                        qrcode = new QRCode(document.getElementById(list[id]), {
-                            width: 201,
-                            height: 201
-                        });
-                        qrcode.makeCode("{{ developer.dev_key }}" + "-" + list[id]);
+                        td.appendTo(tr);
                     }
                 }
             }
+            if (list != undefined) {
+                var qrcode;
+                for (i=0; i<list.length; i++) {
+                    qrcode = new QRCode(document.getElementById("channel" + i), {
+                            width: 201,
+                            height: 201
+                    });
+                    qrcode.makeCode("{{ developer.dev_key }}" + "-" + list[i]);
+                }
+            }
         }
-
-        {#        function drawQrcode() {#}
-        {#            var qrcode;#}
-        {#            for (var i = 0; i < list.length; i++) {#}
-        {#                qrcode = new QRCode(document.getElementById(list[i]), {#}
-        {#                    width: 201,#}
-        {#                    height: 201#}
-        {#                });#}
-        {#                qrcode.makeCode("{{ developer.dev_key }}" + "-" + list[i]);#}
-        {#            }#}
-        {#        }#}
     </script>
 {% endblock %}
 

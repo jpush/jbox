@@ -83,13 +83,23 @@ body {
 }
 
 #channel-table {
-    margin-top: 62px;
-}
-
-.channel-td {
+    margin: 62px 242px 191px 242px;
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
+}
+
+.channel-td {
     padding: 24px 48px 58px 48px;
+    box-shadow:0 0 2px 0 rgba(0,0,0,0.50);
+    text-align:center;
+    vertical-align:middle;
+    margin-right: 31px;
+}
+
+.channel-title {
+    margin-top: 24px;
+    font-size: 24px;
+    color: #595959;
 }
