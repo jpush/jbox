@@ -1,0 +1,159 @@
+{% extends "base_manage.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/setting.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/qrcode.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}设置{% endblock %}
+
+{% block content %}
+    <div class="column">
+        <p id="setting-title" class="jbox-font">设置</p>
+        <div id="setting-form" class="column">
+            <div class="row">
+                <div class="column span">
+                    <p id="avatar-title" class="jbox-font span-title">头像图标</p>
+                    <img id="setting-avatar" src="/static/images/jiguang-bear.png">
+                    <input id="resultFilename" type="hidden">
+                </div>
+                <div id="avatar-right" class="column">
+                    <form id="uploadform" method="post" enctype="multipart/form-data">
+                        <div class="upload upload-btn">
+                            <div class="jbox-font upload-content">上传图片</div>
+                            <input id="file" type="file" class="inputstyle">
+                        </div>
+                    </form>
+                    <p id="avatar-desc" class="jbox-font"> 选择一张图片作为你的头像</p>
+                </div>
+            </div>
+            <hr class="divider">
+            <div class="row">
+                <div class="column span">
+                    <p class="jbox-font span-title">开发者名称</p>
+                    <p class="jbox-font span-desc">给你的开发者账号设置名称</p>
+                </div>
+                <input id="name-input" class="description" title="开发者名称" type="text" value="{{ developer.username }}"/>
+            </div>
+            <hr class="divider">
+            <div class="row">
+                <div class="column span">
+                    <p class="jbox-font span-title">开发者描述</p>
+                    <p class="jbox-font span-desc">给你的开发者账号添加描述（选填）</p>
+                </div>
+                <input id="desc-input" class="description" title="开发者描述" type="text"
+                       value="{{ developer.description }}"/>
+            </div>
+            <hr class="divider">
+            <input id="submit" type="submit" value="保存设置" class="jbox-font">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#name-input').val("{{ developer.username }}");
+            $('#desc-input').val("{{ developer.description }}");
+            $("input[type='file']").change(function () {
+                previewImage(this);
+                event.preventDefault();
+                var formData = new FormData();
+                formData.append('file', $('#file')[0].files[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/auth/uploadajax',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json'
+                }).done(function (data, textStatus, jqXHR) {
+                    toastr.success('上传成功');
+                    $('#resultFilename').val(data['name']);
+                    console.log($('#resultFilename').val());
+                }).fail(function (data) {
+                    toastr.error('上传失败!');
+                });
+            });
+            $("#upload_area").find("a").click(function () {
+                document.edit_form.picpath.click();
+            });
+            if (!+[1,]) {
+                $('#upload_area').find("a").hide();
+                $("#upload_area").find("input[type='text']").hide();
+                $("#picpath").css({
+                    width: "240px",
+                    height: "20px",
+                    filter: "alpha(opacity=100)"
+                });
+            }
+        });
+
+        function previewImage(file) {
+            var porImg = $('#setting-avatar'),//首先获取大图片jquery对象
+                    viewImg = $('#view');//小图片jquery对象
+            //判断该浏览器是否为w3c标准，既非IE浏览器
+            if (file["files"] && file["files"][0]) {
+                //使用JavaScript的FileReader对象来读取本地数据，并且将数据结果赋值给image的src，具体该对象如何实现的还未深入研究
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    porImg.attr({src: evt.target.result});
+                    viewImg.attr({src: evt.target.result});
+                };
+                reader.readAsDataURL(file.files[0]);
+            }
+            //如果是IE浏览器，采用滤镜效果，进行显示，但特别注意的是该滤镜效果使用的对象是div对象，并非img对象，因此我们需要将原有的img对象
+            // remove同时生成新的div对象，并且赋值相应的class和id
+            else {
+                //创建需要滤镜显示的div的dom对象
+                var ieImageDom = document.createElement("div");
+                var proIeImageDom = document.createElement("div");
+                //设置对象的css属性和原有的img对象属性相同，添加相应的id属性值
+                $(ieImageDom).css({
+                    float: 'left',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    width: '100px',
+                    height: '100px'
+                }).attr({"id": "view"});
+                $(proIeImageDom).attr({"id": "setting-avatar"});
+                //删除原有img对象，append创建div的dom对象
+                porImg.parent().prepend(proIeImageDom);
+                porImg.remove();
+                viewImg.parent().append(ieImageDom);
+                viewImg.remove();
+                //采用滤镜效果生成图片预览
+                file.select();
+                path = document.selection.createRange().text;
+                $(ieImageDom).css({"filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")"});
+                $(proIeImageDom).css({"filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")"});
+            }
+        }
+
+        $('#submit').click(function () {
+            var name = $('#name-input').val();
+            var desc = $('#desc-input').val();
+            var path = $('#resultFilename').val();
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                url: "/api.jbox.jiguang.cn/v1/developers/{{ developer.dev_key }}",
+                data: JSON.stringify({name: name, desc: desc, avatar: path}),
+                success: function (data) {
+                    toastr.success("保存成功");
+                    window.location.href = '/auth/profile'
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("保存失败");
+                },
+                dataType: "json"
+            });
+        });
+    </script>
+{% endblock %}

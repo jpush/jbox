@@ -99,3 +99,10 @@ def get_channel_list():
 def profile():
     developer = Developer.query.filter_by(dev_key=current_user.dev_key).first()
     return render_template('auth/profile.html', developer=developer)
+
+
+@login_required
+@auth.route('/setting', methods=['GET', 'POST'])
+def setting():
+    developer = Developer.query.filter_by(dev_key=current_user.dev_key).first()
+    return render_template('auth/setting.html', developer=developer)

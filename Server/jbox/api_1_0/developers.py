@@ -57,6 +57,26 @@ def get_developer_info(dev_key):
                     'platform': developer.platform}), 200
 
 
+@api.route('/developers/<dev_key>', methods=['PUT'])
+def modify_developer(dev_key):
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is None:
+        abort(404)
+    if 'name' in request.json:
+        developer.username = request.json['name']
+    if 'desc' in request.json:
+        developer.description = request.json['desc']
+    if 'avatar' in request.json:
+        developer.avatar = request.json['avatar']
+    db.session.add(developer)
+    try:
+        db.session.commit()
+        return jsonify({'modified': True}), 200
+    except:
+        db.session.rollback()
+        abort(500)
+
+
 # 在dev_key 下创建一个 channel
 @api.route('/developers/<string:dev_key>/channels', methods=['POST'])
 def create_channel(dev_key):

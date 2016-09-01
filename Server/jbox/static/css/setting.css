@@ -1,0 +1,80 @@
+body {
+    background: #f9f9f9;
+}
+
+#setting-title {
+    font-size: 36px;
+    color: #464646;
+    margin-top: 40px;
+    margin-left: 357px;
+}
+
+#setting-form {
+    background:#ffffff;
+    box-shadow:0px 0px 1px 0px rgba(0,0,0,0.50);
+    margin: 41px 106px 69px 106px;
+    padding-bottom: 101px;
+    width: 1227px;
+    align-self: center;
+}
+
+.row {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.span {
+    margin-left: 51px;
+    width: 300px;
+}
+
+#avatar-title {
+    margin-top: 62px;
+}
+
+#setting-avatar {
+    width: 180px;
+    height: 135px;
+}
+
+#avatar-right {
+    margin-left: 46px;
+}
+
+#avatar-desc {
+    margin-top: 34px;
+    font-size: 20px;
+    color: #595959;
+}
+
+#name-input {
+    margin-left: 42px;
+}
+
+.description {
+    flex: 1;
+    margin-left: 50px;
+    margin-right: 77px;
+    margin-top: 20px;
+    border-radius:5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #979797;
+    height: 47px;
+    padding: 10px;;
+}
+
+#submit {
+    background: #64b868;
+    border-radius: 5px;
+    padding: 13px 20px 13px 20px;
+    text-align: center;
+    font-size: 24px;
+    color: #FFFFFF;
+    border: 0px hidden;
+    box-shadow:none;
+    width: 133px;
+    align-self: center;
+}

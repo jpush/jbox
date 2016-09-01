@@ -82,3 +82,56 @@
     flex-flow: column;
 }
 
+.span-title {
+    font-size: 24px;
+    color: #464646;
+}
+
+.span-desc {
+    font-size: 20px;
+    color: #595959;
+    box-shadow:none;
+}
+
+.divider {
+    margin: 42px 50px 64px 50px;
+}
+
+.upload {
+    float: left;
+    background: #FFFFFF;
+    border: 1px solid #979797;
+    border-radius: 5px;
+    width: 122px;
+    height: 45px;
+    position: relative;
+    margin-left: 41px;
+    margin-right: 108px;
+}
+
+.upload-content {
+    color: #595959;
+    font-size: 20px;
+    padding-top: 12px;
+    text-align: center;
+    font-weight: 800;
+}
+
+.upload-btn {
+    margin-left: 15px;
+}
+
+.inputstyle {
+    width: 122px;
+    height: 45px;
+    cursor: pointer;
+    font-size: 30px;
+    outline: medium none;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+

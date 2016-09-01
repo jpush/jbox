@@ -18,8 +18,14 @@
     <div id="first-layer"></div>
     <img id="profile-bg" src="/static/images/profile-bg.png">
     <div id="second-layer">
-        <button id="edit" class="jbox-font btn-lg" type="button">编辑</button>
-        <img id="dev-avatar" src="/static/images/jiguang-bear.png">
+        <button id="edit" class="jbox-font btn-lg" type="button"
+                onclick=window.location.href="{{ url_for('auth.setting') }}">编辑
+        </button>
+        {% if developer.avatar %}
+            <img id="dev-avatar" src="/static/images/{{ developer.avatar }}">
+        {% else %}
+            <img id="dev-avatar" src="/static/images/jiguang-bear.png">
+        {% endif %}
         <p id="display-name" class="jbox-font">{{ developer.username }}</p>
         {% if developer.description %}
             <p id="dev-desc">{{ developer.description }}</p>
@@ -60,7 +66,7 @@
                 for (var i = 1; i <= row; i++) {
                     var tr = $('<tr></tr>');
                     tr.appendTo(table);
-                     var id;
+                    var id;
                     for (var j = 1; j <= 3 && j * i <= count; j++) {
                         id = i * j - 1;
                         var td = $('<td ><div class="channel-td"><div id="channel' + id + '">' +
@@ -72,10 +78,10 @@
             }
             if (list != undefined) {
                 var qrcode;
-                for (i=0; i<list.length; i++) {
+                for (i = 0; i < list.length; i++) {
                     qrcode = new QRCode(document.getElementById("channel" + i), {
-                            width: 201,
-                            height: 201
+                        width: 201,
+                        height: 201
                     });
                     qrcode.makeCode("{{ developer.dev_key }}" + "-" + list[i]);
                 }
