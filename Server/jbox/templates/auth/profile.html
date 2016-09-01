@@ -56,6 +56,7 @@
         var list = [];
         {% for channel in developer.channels %}
             list.push("{{ channel.channel }}");
+            console.log("{{ channel.channel }}");
         {% endfor %}
 
         function createTable() {
@@ -67,11 +68,12 @@
                     var tr = $('<tr></tr>');
                     tr.appendTo(table);
                     var id;
-                    for (var j = 1; j <= 3 && j * i <= count; j++) {
-                        id = i * j - 1;
+                    for (var j = 1; j <= 3 && j + (i - 1)*3 <= count; j++) {
+                        id = (i - 1) * 3 + j - 1;
                         var td = $('<td ><div class="channel-td"><div id="channel' + id + '">' +
                                 '</div><p class="channel-title">' + list[id] + '</p></div></td>');
                         console.log(list[id]);
+                        console.log(id);
                         td.appendTo(tr);
                     }
                 }
