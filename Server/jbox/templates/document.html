@@ -1,52 +1,52 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/document.css') }}">
+{% endblock %}
+
 {% block title %}API 文档{% endblock %}
 
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
 {% block content %}
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="span8 col-lg-8">
-                <h2>incoming webhook</h2><br>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>
-                            API:
-                        </th>
-                        <th>
-                            用法:
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="success">
-                        <td>
-                            Create Channel
-                        </td>
-                        <td>
-                            /token/create
-                        </td>
-                    </tr>
-                    <tr class="alert-warning">
-                        <td>
-                            Send Notification
-                        </td>
-                        <td>
-                            staff
-                        </td>
-                    </tr>
-                    <tr class="alert-info">
-                        <td>
-                            Unsubscribe
-                        </td>
-                        <td>
-                            /token/unsubscribe
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="span4">
+            <div id="contentBody">
+                <h1 id="mainTitle">欢迎来带 JBox Api<h1><br>
+                <div id="content">
+                    <div class="subTitle">Base url:</div>
+                    <div class="codeBody" style="color:#70B1E7; font-size: 15px;">
+                            https://api.jbox.jiguang.cn
+                    </div>
+                    <div class="subTitle">
+                        1、发送消息<br>message向webhook url 发送 JSON payloads
+                    </div>
+                    <div class="apiTitle">POST  v1/message/{integration_id}/{token}</div>
+                    <div class="codeBody">Request Header:<br>POST /v1/message/{integration_id}/{token}<br>    Accept: application/json</div><br>
+                    <div class="requiredText">Request Body:</div>
+                    <div class="codeBody">
+                        {<br>
+                            "title": "今日头条",<br>
+                            "message": "英国脱欧"<br>
+                        }<br>
+                    </div>
+                    <div class="requiredText">Request Parameters:</div>
+                    <div class="codeBody">
+                        •	title：消息的标题，不能为空<br>
+	                    •	message：消息内容，不能为空<br>
+                    </div>
+                    <div class="exampletitle">Example Response:</div>
+                    <div class="requiredText">Response Header</div>
+                    <div class="codeBody">
+                        HTTP/1.1 200 OK    <br>
+                        Content-Type: application/json; charset=utf-8 <br>
+                    </div>
+                    <div class="requiredText">Response Data:</div>
+                    <div class="codeBody">	•	None</div>
+                </div>
             </div>
         </div>
     </div>
