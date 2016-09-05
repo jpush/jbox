@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.data.Channel;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -21,7 +20,7 @@ public class MainActivity extends Activity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mNavigationDrawerFragment.initData();
+//        mNavigationDrawerFragment.initData();
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
     }

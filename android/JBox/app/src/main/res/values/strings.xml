@@ -5,6 +5,12 @@
     <string name="drawer_channel">Channels</string>
     <!-- drawer end -->
 
+    <!-- channel start -->
+    <string name="channel_channel">频道</string>
+    <string name="channel_dev_description">这个地方填写的是 dev description</string>
+    <string name="channel_subscribe">订阅</string>
+    <!-- channel end -->
+
     <!-- http url start -->
     <string name="url_base">http://api.jbox.jiguang.cn</string>
     <string name="url_get_developers">http://api.jbox.jiguang.cn/developers/%s</string>

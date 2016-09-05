@@ -11,4 +11,14 @@
     <dimen name="drawer_channel">20sp</dimen>
     <!-- drawer end -->
 
+    <!-- sub channel start -->
+    <dimen name="sub_channel_head_height">132dp</dimen>
+
+    <dimen name="sub_channel_circle_width">48dp</dimen>
+    <dimen name="sub_channel_circle_height">48dp</dimen>
+
+    <dimen name="sub_channel_icon_width">36dp</dimen>
+    <dimen name="sub_channel_icon_height">36dp</dimen>
+    <!-- sub channel end -->
+
 </resources>
