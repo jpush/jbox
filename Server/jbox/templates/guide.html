@@ -2,16 +2,77 @@
 
 {% block title %}Guide{% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/guide.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
+
 {% block content %}
     <div class="col-lg-2">
 
     </div>
-    <div class="col-lg-6">
-        <h2>登录极光宝盒控制台账户</h2>
-        <br>
-        <h2>编译 -> 下载极光宝盒 app 并安装到手机</h2>
-        <br>
-        <h2>自己的服务器通过调用webhook api 发送通知请求</h2>
-        <br>
+    <div id="contentBody">
+        <div class="row-layer segment">
+            <button id="leftItem" class="segmentItem" onclick="setSegment">JBox Web</button>
+            <button id="rightItem" class="segmentItem">JBox APP</button>
+        </div>
+        <div id="webContent" class="content">
+            <div class="mainTitle">极光宝盒 Ｗeb 使用指导</div>
+            <div class="subTitle">下载安装极光宝盒 app</div>
+            <img src="/static/images/appPageImg.png">
+            <div class="subTitle">新建自定义集成</div>
+            <img src="/static/images/manageImg.png">
+
+            <div class="subTitle">新建集成后会获得二维码和 webhook url</div>
+            <img src="/static/images/channelPageImage.png">
+            <div class="description">需要提供该二维码给客户扫码</div>
+            <img src="/static/images/webhookImg.png">
+            <div class="description">使用 webhook api调用 send message api 给客户发送消息</div>
+        </div>
+
+        <div id="appContent" class="content">
+            <div class="mainTitle">极光宝盒 App 使用指导</div>
+            <div class="subTitle">添加channel</div>
+            <img src="/static/images/jboxAppAdd.png">
+            <div class="subTitle">可以扫描极光宝盒网页上的 频道、开发者二维码</div>
+            <img src="/static/images/jboxAppscan.png">
+            <div class="subTitle">如果扫描的是 channel 二维码，则会直接订阅该 channel，
+                                    如果扫描的是开发者二维码，则可以订阅开发者帐号下所有的
+                                    channal，可以订阅你感兴趣的 channel。
+                                    下图是扫描二维码后跳转的界面（开发者详情页面）
+            </div>
+            <img src="/static/images/jboxAppkeyPadge.png">
+            <div class="description">可以点击编辑按钮，删除已订阅的 channel</div>
+            <img src="/static/images/jboxAppToEdit.png">
+            <div class="description">点击如下按钮，可以跳转到开发者详情页面，
+                                    订阅需要订阅的channel
+            </div>
+            <img src="/static/images/jboxAppToAppkey.png">
+            <img src="/static/images/jboxAppkeyPadge.png">
+        </div>
     </div>
+
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $("#appContent").fadeOut();
+            $("#webContent").fadeIn();
+
+            $("#leftItem").click(function(){
+                $("#webContent").fadeIn();
+                $("#appContent").fadeOut();
+            });
+
+            $("#rightItem").click(function(){
+                $("#appContent").fadeIn();
+                $("#webContent").fadeOut();
+            });
+        });
+     </script>
 {% endblock %}

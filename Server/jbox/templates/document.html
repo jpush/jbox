@@ -11,6 +11,7 @@
     <div id="navigationbar"></div>
     {{ super() }}
 {% endblock %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="row-fluid">
@@ -25,12 +26,15 @@
                         1、发送消息<br>message向webhook url 发送 JSON payloads
                     </div>
                     <div class="apiTitle">POST  v1/message/{integration_id}/{token}</div>
-                    <div class="codeBody">Request Header:<br>POST /v1/message/{integration_id}/{token}<br>    Accept: application/json</div><br>
+                    <div class="codeBody">
+                        Request Header:<br>
+                        &nbsp&nbsp&nbsp&nbspPOST /v1/message/{integration_id}/{token}<br>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAccept: application/json</div><br>
                     <div class="requiredText">Request Body:</div>
                     <div class="codeBody">
                         {<br>
-                            "title": "今日头条",<br>
-                            "message": "英国脱欧"<br>
+                            &nbsp&nbsp&nbsp&nbsp"title": "今日头条",<br>
+                            &nbsp&nbsp&nbsp&nbsp"message": "英国脱欧"<br>
                         }<br>
                     </div>
                     <div class="requiredText">Request Parameters:</div>
