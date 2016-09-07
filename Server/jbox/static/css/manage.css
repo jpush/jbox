@@ -40,6 +40,16 @@ body {
     box-shadow:none;
 }
 
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    height: 106px;
+    background-color: #526A4A;
+    color: #000000;
+    z-index: 1000;
+}
+
 #table {
     align-self: center;
     width: 80%;

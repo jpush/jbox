@@ -6,7 +6,7 @@
     background-color: #000000;
     color: #000000;
     opacity:0.5;
-    z-index: 1000;
+    /*z-index: 1000;*/
 }
 
 #contentBody {
@@ -30,11 +30,12 @@
     padding-left: 70px;
     padding-right: 70px;
     max-width: 870px;
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    box-flex: 1;
-    -webkit-flex: 1 1 auto;
-    flex: 1 1 auto;
+
+    /*-webkit-box-flex: 1;*/
+    /*-moz-box-flex: 1;*/
+    /*box-flex: 1;*/
+    /*-webkit-flex: 1 1 auto;*/
+    /*flex: 1 1 auto;*/
 }
 
 .row-layer {
@@ -65,10 +66,20 @@
     border: 0px hidden;
     box-shadow:none;
 }
+.segmentItem.active {
+    background-color: #D7D7D7;
+    height: 80px;
+    box-shadow: #0f0f0f;
+}
 
 img {
     margin-top: 10px;
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
     max-width:100%;
+    text-align:center;
+    align-content: center;
+    horiz-align: center;
 }
 
 

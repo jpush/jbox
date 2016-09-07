@@ -135,3 +135,20 @@
     top: 0;
 }
 
+#dev_name {
+    margin-right: 23px;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+#avatar {
+    margin-right: 14px;
+}
+
+.manage-navigator-right {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 50px;
+}

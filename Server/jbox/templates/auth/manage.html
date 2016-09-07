@@ -1,4 +1,4 @@
-{% extends "base_manage.html" %}
+{% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
@@ -12,6 +12,11 @@
 {% endblock %}
 
 {% block title %}极光宝盒-管理集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
 
 {% block content %}
     <div class="manage-background">

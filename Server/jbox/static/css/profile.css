@@ -5,6 +5,16 @@
 body {
 }
 
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    height: 106px;
+    background-color: #3D617F;
+    color: #000000;
+    z-index: 1000;
+}
+
 #first-layer {
     background: #7cc4ff;
     height: 259px;
