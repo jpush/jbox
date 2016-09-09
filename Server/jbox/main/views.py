@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, session, redirect, url_for, flash
+from flask import render_template, session, redirect, url_for, flash, request
 from flask_login import login_user, current_user
 from . import main
 from .forms import UserForm, FakeUserForm
