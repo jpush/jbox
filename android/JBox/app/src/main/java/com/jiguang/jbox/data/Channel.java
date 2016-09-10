@@ -1,5 +1,9 @@
 package com.jiguang.jbox.data;
 
+import android.content.Context;
+
+import com.jiguang.jbox.AppApplication;
+
 import java.util.List;
 import java.util.Stack;
 import java.util.UUID;
@@ -86,4 +90,23 @@ public class Channel {
     public void setSubscribe(boolean subscribe) {
         isSubscribe = subscribe;
     }
+
+    /**
+     * 订阅 Channel
+     */
+    public void subscribe(Context context) {
+
+    }
+
+    /**
+     * 取消订阅
+     */
+    public void unSubscribe() {
+
+    }
+
+    public String getTag() {
+        return AppApplication.getAppKey() + mName;
+    }
+
 }

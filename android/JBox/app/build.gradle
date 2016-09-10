@@ -22,10 +22,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:support-v4:21.4.0'
     compile 'com.google.guava:guava:19.0'
@@ -36,4 +42,5 @@ dependencies {
     compile 'pub.devrel:easypermissions:0.1.9'
     compile 'com.android.support:appcompat-v7:21.4.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile files('libs/jpush-android-2.1.9.jar')
 }
