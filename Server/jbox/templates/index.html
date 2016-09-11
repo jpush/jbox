@@ -4,6 +4,7 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{#    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>#}
 {% endblock %}
 
 {% block title %}Index{% endblock %}
@@ -31,6 +32,7 @@
         <img id="jbox-bear" src="/static/images/jbox-bear.png">
     </div>
     <script type="text/javascript">
+        console.log(window.location.hash)
         console.log(window.location.hash)
     </script>
 {% endblock %}

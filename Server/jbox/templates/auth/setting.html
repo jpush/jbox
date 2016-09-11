@@ -1,4 +1,4 @@
-{% extends "base_manage.html" %}
+{% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
@@ -13,6 +13,12 @@
 {% endblock %}
 
 {% block title %}设置{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
+
 
 {% block content %}
     <div class="column">

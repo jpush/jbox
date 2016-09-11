@@ -1,7 +1,11 @@
-#navbar {
-    opacity: 0.5;
-    background: #000000;
-    border: 1px solid #979797;
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    height: 106px;
+    background-color: #7C7C7C;
+    color: #000000;
+    z-index: 1000;
 }
 
 #content {

@@ -17,16 +17,16 @@
             <a id="app" class="jbox-font nav-font" href="{{ url_for('main.application') }}">极光宝盒app</a>
             <a id="api" class="jbox-font nav-font" href="{{ url_for('main.document') }}">api文档</a>
             <a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">guide</a>
-            {% if current_user.is_authenticated %}
+            {% if 'qq_token' in session %}{# current_user.is_authenticated #}
                 <a id="manage" class="jbox-font" href="{{ url_for('auth.manage') }}">管理</a>
             {% endif %}
             <div id="nav-divider"></div>
-            {% if current_user.is_authenticated %}
+            {% if 'qq_token' in session %}{# current_user.is_authenticated #}
                 <img id="avatar" src="/static/images/bear.png">
                 <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">Devname</a>
-                <a class="jbox-font nav-font" href="{{ url_for('auth.logout') }}">登出</a>
+                <a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a>
             {% else %}
-                <a id="login" class="jbox-font" href="https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101348155&redirect_uri=http://jbox.jiguang.cn&scope=get_user_info">登录</a>
+                <a id="login" class="jbox-font" href="{{ url_for('main.login') }}">登录</a>
             {% endif %}
         </div>
     </div>
