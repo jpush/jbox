@@ -6,7 +6,6 @@ from .forms import UserForm, FakeUserForm
 from .. import db
 from ..models import Developer, Integration, generate_dev_key
 from flask_oauthlib.client import OAuth
-import pprint
 
 # QQ Oauth2
 QQ_APP_ID = "101348155"

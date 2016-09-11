@@ -1,9 +1,9 @@
-from flask import abort, Flask, json, jsonify, request, make_response
+from flask import abort, Flask, json, jsonify, request, make_response, session, redirect
 from flask_login import login_required
 from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
 from .authentication import auth
-
+from ..main.views import qq, update_qq_api_request_data
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
 @api.route('/developers', methods=['POST'])
@@ -114,7 +114,7 @@ def get_channels(dev_key):
 
 # 获取 dev_key 下的所有自定义集成的信息
 @api.route('/developers/<dev_key>/integrations', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def get_integrations(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
@@ -183,11 +183,15 @@ def create_integrations(dev_key):
 
 # PUT 修改 dev_key 下 所绑定的 integration
 @api.route('/developers/<dev_key>/<integration_id>', methods=['POST', 'PUT'])
-@login_required
+# @login_required
 def modificate_integration(dev_key, integration_id):
+    print("huangmin123")
     if not request.json or not 'channel' in request.json:
         abort(400)
     developer = get_developer_with_devkey(dev_key)
+    print("huangmin124")
+    print(developer)
+    print(request.json)
     integration = Integration.query.filter_by(developer_id=developer.id, integration_id=integration_id).first()
     if integration is None:
         abort(400)
@@ -208,7 +212,7 @@ def modificate_integration(dev_key, integration_id):
 
 
 @api.route('/developers/<dev_key>/<integration_id>', methods=['DELETE'])
-@login_required
+# @login_required
 def delete_integration(dev_key, integration_id):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is not None:
@@ -248,6 +252,18 @@ def get_developer_with_devkey(dev_key):
         abort(400)
     return developer
 
+def get_developer():
+    if 'qq_token' in session:
+        print(session)
+        data = update_qq_api_request_data()
+        print('')
+        print()
+        resp = qq.get('/user/get_user_info', data=data)
+
+    developer = Developer.query.filter_by(platform_id=data['openid']).first()
+    if developer is None:
+        return redirect(url_for('main.login'))
+    return developer
 
 # FIX: TOKEN
 # 重新生成 integration token   这个接口没有测试
@@ -265,3 +281,4 @@ def regenerate_integration_token(integration_id):
     except:
         db.session.rollback()
         abort(500)
+

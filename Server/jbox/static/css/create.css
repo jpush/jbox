@@ -61,13 +61,13 @@
     margin-left: 25px;
 }
 
-#name {
-    flex: 1;
-    margin-left: 103px;
-    margin-right: 77px;
-    margin-top: 20px;
+/*#name {*/
+    /*flex: 1;*/
+    /*margin-left: 103px;*/
+    /*margin-right: 77px;*/
+    /*margin-top: 20px;*/
 
-}
+/*}*/
 
 .description {
     flex: 1;
@@ -82,11 +82,11 @@
     padding: 10px;;
 }
 
-#integration-input {
+#description {
     margin-left: 30px;
 }
 
-#name-input {
+#name {
     margin-left: 30px;
 }
 
