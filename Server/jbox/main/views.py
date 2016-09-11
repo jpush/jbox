@@ -6,6 +6,7 @@ from .forms import UserForm, FakeUserForm
 from .. import db
 from ..models import Developer, Integration, generate_dev_key
 from flask_oauthlib.client import OAuth
+import pprint
 
 # QQ Oauth2
 QQ_APP_ID = "101348155"
@@ -100,6 +101,8 @@ def authorized():
     resp = qq.get('/user/get_user_info', {'access_token': session['qq_token'][0],
                                                  'openid': openid,
                                                  'oauth_consumer_key': QQ_APP_ID})
+
+    resp = eval(resp.data.decode())
     if isinstance(resp, dict):
         session['qq_openid'] = resp.get('openid')
         developer = Developer.query.filter_by(platform_id=resp.get('openid'),
@@ -112,6 +115,7 @@ def authorized():
                                   platform_id=resp.get('openid'),
                                   username='fadsf')#eval(resp.data.decode())['nickname']
             developer.insert_to_db()
+            print('huangmin create db')
 
     return redirect(url_for('auth.manage'))
 
