@@ -97,6 +97,9 @@ def authorized():
     respMe = qq.get('/oauth2.0/me', {'access_token': session['qq_token'][0]})
     openid = json_to_dict(respMe.data)['openid']
 
+    print('huangmin open id')
+    print(openid)
+
     resp = qq.get('/user/get_user_info', {'access_token': session['qq_token'][0],
                                                  'openid': openid,
                                                  'oauth_consumer_key': QQ_APP_ID})
@@ -104,15 +107,15 @@ def authorized():
     resp = eval(resp.data.decode())
     if isinstance(resp, dict):
         session['qq_openid'] = resp.get('openid')
-        developer = Developer.query.filter_by(platform_id=resp.get('openid'),
+        developer = Developer.query.filter_by(platform_id=openid,
                                               platform='qq').first()
 
         if developer is None:
             dev_key = generate_dev_key()
             developer = Developer(dev_key=dev_key,
                                   platform='qq',
-                                  platform_id=resp.get('openid'),
-                                  username='fadsf')#eval(resp.data.decode())['nickname']
+                                  platform_id=openid,
+                                  username=resp['nickname'])#
             developer.insert_to_db()
             print('huangmin create db')
 

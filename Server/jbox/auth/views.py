@@ -9,7 +9,7 @@ from ..models import Developer, Integration
 from ..main.forms import FakeUserForm
 from ..main.views import qq, update_qq_api_request_data
 from ..api_1_0.developers import get_channels, modificate_integration
-
+from ..main.views import QQ_APP_ID, update_qq_api_request_data, qq, json_to_dict
 UPLOAD_FOLDER = basedir + '/jbox/static/images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -98,20 +98,26 @@ def get_channel_list():
 
 def get_developer():
     if 'qq_token' in session:
-        print(session)
         data = update_qq_api_request_data()
-        print('')
-        print()
         resp = qq.get('/user/get_user_info', data=data)
-
-    developer = Developer.query.filter_by(platform_id=data['openid']).first()
+        respMe = qq.get('/oauth2.0/me', {'access_token': session['qq_token'][0]})
+        openid = json_to_dict(respMe.data)['openid']
+    developer = Developer.query.filter_by(platform_id=openid).first()
     if developer is None:
         return redirect(url_for('main.login'))
     return developer
 
+
 @auth.route('/profile', methods=['GET'])
 def profile():
     developer = get_developer()
+    platform = developer.platform
+    platform_id = developer.platform_id
+    username = developer.username
+    print('the developer detail')
+    print(platform)
+    print(platform_id)
+    print(username)
     return render_template('auth/profile.html', developer=developer)
 
 
