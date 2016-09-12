@@ -15,15 +15,24 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/widget_height"
-            android:title="Channel 1"
             android:background="@color/colorPrimary"
+            tools:title="Channel 1"
             />
 
         <ListView
             android:id="@+id/lv_msg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             tools:listitem="@layout/item_msg"
+            />
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/main_hint"
             />
 
     </LinearLayout>

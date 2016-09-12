@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">极光宝盒</string>
 
+    <!-- main start -->
+    <string name="main_hint">暂无消息</string>
+    <!-- main end -->
+
     <!-- drawer start -->
     <string name="drawer_channel">Channels</string>
     <!-- drawer end -->

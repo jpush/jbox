@@ -39,4 +39,5 @@ public class AppApplication extends Application {
     public static String getAppKey() {
         return APP_KEY;
     }
+
 }

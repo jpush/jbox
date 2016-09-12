@@ -1,6 +1,10 @@
 package com.jiguang.jbox.data;
 
+import java.util.UUID;
+
 public class Message {
+
+    private final String mId;
 
     private final String mTitle;
 
@@ -8,13 +12,24 @@ public class Message {
 
     private String mTime;
 
-    private String mChannel;
+    private String mChannelId;
 
     private String mDevKey;
 
     public Message(String title, String content) {
+        mId = UUID.randomUUID().toString();
         mTitle = title;
         mContent = content;
+    }
+
+    public Message(String id, String title, String content) {
+        mId = id;
+        mTitle = title;
+        mContent = content;
+    }
+
+    public String getId() {
+        return mId;
     }
 
     public String getTitle() {
@@ -33,12 +48,12 @@ public class Message {
         mTime = time;
     }
 
-    public String getChannel() {
-        return mChannel;
+    public String getChannelId() {
+        return mChannelId;
     }
 
-    public void setChannel(String channel) {
-        mChannel = channel;
+    public void setChannelId(String channelId) {
+        mChannelId = channelId;
     }
 
     public String getDevKey() {

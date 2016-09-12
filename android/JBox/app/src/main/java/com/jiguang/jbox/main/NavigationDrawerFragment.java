@@ -19,6 +19,7 @@ import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,6 +50,10 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         mCallbacks = (NavigationDrawerCallbacks) getActivity();
     }
 
+    public void initData(Map<String, List<Channel>> data) {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,14 +61,6 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
         ImageView ivEdit = (ImageView) v.findViewById(R.id.iv_edit);
         ivEdit.setOnClickListener(this);
-
-        List<Channel> channels = new ArrayList<>();
-        channels.add(new Channel("channel 1"));
-        channels.add(new Channel("channel 2"));
-        channels.add(new Channel("channel 3"));
-        channels.add(new Channel("channel 4"));
-
-        mChannelListAdapter = new DrawerListAdapter(getActivity(), new ArrayList<>(channels));
 
         mDrawerListView = (ListView) v.findViewById(R.id.lv_channel);
         mDrawerListView.setAdapter(mChannelListAdapter);
@@ -111,14 +108,11 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private static class DrawerListAdapter extends BaseAdapter {
 
-        private Context mContext;
-
         private List<Channel> mChannels;
 
         private boolean mIsEdited;
 
-        public DrawerListAdapter(Context context, List<Channel> channels) {
-            mContext = context;
+        public DrawerListAdapter(List<Channel> channels) {
             mChannels = channels;
         }
 
@@ -145,7 +139,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(mContext);
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
                 convertView = inflater.inflate(R.layout.item_channel, parent, false);
             }
 

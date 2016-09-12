@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.jiguang.jbox.data.Message;
+import com.jiguang.jbox.data.source.MessageDataSource;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -33,13 +34,13 @@ public class MyReceiver extends BroadcastReceiver {
         String channel = intent.getExtras().getString("channel");
 
         Message msg = new Message(title, content);
-        msg.setChannel(channel);
+        msg.setChannelId(channel);
         msg.setDevKey(devKey);
 
-        Date currentDate = new Date(System.currentTimeMillis());
-        msg.setTime(currentDate.toString());
+        msg.setTime(String.valueOf(System.currentTimeMillis()));
 
         //TODO: 保存 msg 到本地，并刷新数据。
+
     }
 
 }
