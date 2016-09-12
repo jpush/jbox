@@ -185,11 +185,9 @@ def create_integrations(dev_key):
 @api.route('/developers/<dev_key>/<integration_id>', methods=['POST', 'PUT'])
 # @login_required
 def modificate_integration(dev_key, integration_id):
-    print("huangmin123")
     if not request.json or not 'channel' in request.json:
         abort(400)
     developer = get_developer_with_devkey(dev_key)
-    print("huangmin124")
     print(developer)
     print(request.json)
     integration = Integration.query.filter_by(developer_id=developer.id, integration_id=integration_id).first()
