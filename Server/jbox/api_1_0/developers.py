@@ -1,9 +1,12 @@
-from flask import abort, Flask, json, jsonify, request, make_response, session, redirect
+import os
+from flask import abort, Flask, json, jsonify, request, make_response, session, redirect, url_for
 from flask_login import login_required
 from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
 from .authentication import auth
 from ..main.views import qq, update_qq_api_request_data
+from config import basedir
+
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
 @api.route('/developers', methods=['POST'])
@@ -17,7 +20,7 @@ def create_developer():
         developer = Developer(dev_key=dev_key,
                               platform=request.json['platform'],
                               platform_id=request.json['platform_id'],
-                              username=request.json['username'])
+                              username=request.json['dev_name'])
         developer.insert_to_db()
         return jsonify({'dev_key': developer.dev_key}), 201
     else:
@@ -30,9 +33,15 @@ def get_developer(platform, platform_id):
     developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
     if developer is None:
         abort(404)
+    if developer.avatar is None:
+        url = basedir + '/jbox/static/images/jiguang-bear.png'
+    else:
+        url = basedir + '/jbox/static/images/' + developer.avatar
     return jsonify({'dev_key': developer.dev_key,
                     'dev_name': developer.username,
-                    'platform': developer.platform}), 200
+                    'platform': developer.platform,
+                    'avatar': url,
+                    'description': developer.description}), 200
 
 
 # @api.route('/developers/<dev_key>/integrations', methods=['POST'])
@@ -52,9 +61,15 @@ def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(404)
+    if developer.avatar is None:
+        url = basedir + '/jbox/static/images/jiguang-bear.png'
+    else:
+        url = basedir + '/jbox/static/images/' + developer.avatar
     return jsonify({'dev_key': developer.dev_key,
                     'dev_name': developer.username,
-                    'platform': developer.platform}), 200
+                    'platform': developer.platform,
+                    'avatar': url,
+                    'description': developer.description}), 200
 
 
 @api.route('/developers/<dev_key>', methods=['PUT'])
@@ -125,13 +140,36 @@ def get_integrations(dev_key):
         abort(404)
     data_json = []
     for integration in integration_list:
+        if integration.icon is None:
+            url = basedir + '/jbox/static/images/image.png'
+        else:
+            url = basedir + '/jbox/static/images/' + integration.icon
         data_json.append({'name': integration.name,
                           'integration_id': integration.integration_id,
                           'description': integration.description,
-                          'icon': integration.icon,
+                          'icon': url,
                           'channel': integration.channel.channel,
                           'token': integration.token})
     return jsonify(data_json), 200
+
+
+# 获取某个自定义集成的信息
+@api.route('/developers/integrations/<integration_id>', methods=['GET'])
+def get_integration(integration_id):
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
+    if integration is None:
+        abort(404)
+    developer = Developer.query.filter_by(id=integration.developer_id).first()
+    if developer is None:
+        abort(404)
+    if integration.icon is None:
+        url = basedir + '/jbox/static/images/image.png'
+    else:
+        url = basedir + '/jbox/static/images/' + integration.icon
+    return jsonify({'name': integration.name,
+                    'description': integration.description,
+                    'icon': url,
+                    'channel': integration.channel.channel}), 200
 
 
 # 添加一个集成，并返回 integration_id ，如果 channel 已存在，直接绑定该 channel， 否则新建一个 channel
