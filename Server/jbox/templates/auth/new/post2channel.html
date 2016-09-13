@@ -1,4 +1,4 @@
-{% extends "base_manage.html" %}
+{% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for ('static', filename='js/')}}"></script>
 {% endblock %}
 
 {% block title %}极光宝盒-创建集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
 
 {% block content %}
     <div class="post2channel-bg">
@@ -23,9 +29,9 @@
                 <p id="title" class="jbox-font">推送到 Channel</p>
                 <p id="description" class="jbox-font">从选择一个 channel 开始, 接下来集成的应用的消息将会推送到这个 channel。</p>
             </div>
-            <div class="column">
+            <div id="input_div" class="column">
                 <div class="input-group">
-                    <input id="selected_channel" type="text" class="form-control" aria-label="..."
+                    <input type="text" class="form-control" aria-label="..."
                            placeholder="选择一个 channel 或者输入一个新的 channel">
                     <div class="input-group-btn">
                         <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"

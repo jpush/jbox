@@ -1,5 +1,11 @@
-#navbar {
-    background: #3B3849;
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    height: 106px;
+    background-color: #3B3849;
+    color: #000000;
+    z-index: 1000;
 }
 
 .post2channel-bg {
@@ -38,6 +44,12 @@
     font-size: 24px;
     margin-top: 34px;
     color: #464646;
+    min-width: 200px;
+}
+
+#input_div {
+    margin-left: 200px;
+    margin-top: 34px;
 }
 
 #description {
@@ -49,12 +61,7 @@
     border-radius: 5px;
 }
 
-#selected_channel {
-    margin-top: 77px;
-}
-
 #show_channels {
-    margin-top: 77px;
     margin-right: 45px;
 }
 

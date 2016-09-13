@@ -23,7 +23,14 @@
             <div id="nav-divider"></div>
             {% if 'qq_token' in session %}{# current_user.is_authenticated #}
                 <img id="avatar" src="/static/images/bear.png">
-                <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">Devname</a>
+                <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">
+                    {% if developer %}
+                        {{ developer.username }}
+                    {% else %}
+                        Devname
+                    {% endif %}
+
+                </a>
                 <a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a>
             {% else %}
                 <a id="login" class="jbox-font" href="{{ url_for('main.login') }}">登录</a>

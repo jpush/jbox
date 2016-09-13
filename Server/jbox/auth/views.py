@@ -1,15 +1,10 @@
-import sys, os
-import requests
-from flask import json, jsonify, render_template, redirect, request, url_for, flash, session, send_from_directory
+import os
+from flask import json, jsonify, render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
-from wtforms import Form
 from . import auth
 from config import basedir
 from ..models import Developer, Integration
-from ..main.forms import FakeUserForm
-from ..main.views import qq, update_qq_api_request_data
-from ..api_1_0.developers import get_channels, modificate_integration
-from ..main.views import QQ_APP_ID, update_qq_api_request_data, qq, json_to_dict
+from ..main.views import update_qq_api_request_data, qq, json_to_dict
 UPLOAD_FOLDER = basedir + '/jbox/static/images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -31,7 +26,7 @@ def manage():
     developer = get_developer()
     print(developer)
     integrations = developer.integrations
-    return render_template('auth/manage.html', integrations=integrations, dev_key=developer.dev_key)
+    return render_template('auth/manage.html', **locals())
     # return render_template('index.html')
 
 
@@ -61,13 +56,15 @@ def edit_integration(integration_id):
 def post_to_channel():
     developer = get_developer()
     dev_key = developer.dev_key
-    return render_template('auth/new/post2channel.html', dev_key=dev_key, channels=get_channel_list())
+    channels = get_channel_list()
+    return render_template('auth/new/post2channel.html', **locals())
 
 
 @auth.route('/new/channel', methods=['GET'])
 def new_channel():
     developer = get_developer()
-    return render_template('auth/new/channel.html', dev_key=developer.dev_key)
+    dev_key = developer.dev_key
+    return render_template('auth/new/channel.html', **locals())
 
 
 @auth.route('/qrcode', methods=['GET'])
@@ -96,6 +93,7 @@ def get_channel_list():
             channel_list.append(channel.channel)
         return channel_list
 
+
 def get_developer():
     if 'qq_token' in session:
         data = update_qq_api_request_data()
@@ -116,5 +114,5 @@ def profile():
 
 @auth.route('/setting', methods=['GET', 'POST'])
 def setting():
-    developer =get_developer()
+    developer = get_developer()
     return render_template('auth/setting.html', developer=developer)
