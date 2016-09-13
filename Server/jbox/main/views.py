@@ -76,7 +76,7 @@ def login():
 @main.route('/logout')
 def logout():
     session.pop('qq_token', None)
-    return redirect(url_for('main.get_user_info'))
+    return redirect(url_for('main.index'))
 
 
 @main.route('/login/authorized')
@@ -100,6 +100,7 @@ def authorized():
                                                  'oauth_consumer_key': QQ_APP_ID})
 
     resp = eval(resp.data.decode())
+    developer = None
     if isinstance(resp, dict):
         session['qq_openid'] = resp.get('openid')
         developer = Developer.query.filter_by(platform_id=openid,
@@ -112,7 +113,9 @@ def authorized():
                                   platform_id=openid,
                                   username=resp['nickname'])
             developer.insert_to_db()
-        return redirect(url_for('auth.manage'), developer=developer)
+    if developer is None:
+        developer = get_developer()
+    return redirect(url_for('auth.manage', developer=developer))
 
 
 @qq.tokengetter
