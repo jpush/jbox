@@ -1,5 +1,12 @@
-#navbar {
-    background: #3B3849;
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    height: 106px;
+    background-color: #000000;
+    color: #000000;
+    z-index: 1000;
+    opacity:0.5;
 }
 
 #contentBody {
@@ -65,8 +72,7 @@
     box-shadow: #0f0f0f;
 }
 
-img {
-    margin-top: 10px;
+.img {
     /*margin-left: auto;*/
     /*margin-right: auto;*/
     max-width:100%;
@@ -88,6 +94,7 @@ img {
 .subTitle {
     color: #464646;
     margin-top: 20px;
+    margin-bottom: 10px;
     margin-left: 76px;
     font-size: 24px;
 }

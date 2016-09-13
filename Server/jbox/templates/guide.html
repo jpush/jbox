@@ -10,6 +10,10 @@
     <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
 {% endblock %}
 
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
 
 {% block content %}
     <div class="col-lg-2">
@@ -43,9 +47,9 @@
             <p style="text-align: center"><img src="/static/images/jboxAppscan.png"></p>
 
             <div class="subTitle">如果扫描的是 channel 二维码，则会直接订阅该 channel，
-                                    如果扫描的是开发者二维码，则可以订阅开发者帐号下所有的
-                                    channal，可以订阅你感兴趣的 channel。
-                                    下图是扫描二维码后跳转的界面（开发者详情页面）
+                如果扫描的是开发者二维码，则可以订阅开发者帐号下所有的
+                channal，可以订阅你感兴趣的 channel。
+                下图是扫描二维码后跳转的界面（开发者详情页面）
             </div>
             <p style="text-align: center"><img src="/static/images/jboxAppkeyPadge.png"></p>
 
@@ -53,31 +57,31 @@
             <p style="text-align: center"><img src="/static/images/jboxAppToEdit.png"></p>
 
             <div class="subTitle">点击如下按钮，可以跳转到开发者详情页面，
-                                    订阅需要订阅的channel
+                订阅需要订阅的channel
             </div>
             <p style="text-align: center"><img src="/static/images/jboxAppToAppkey.png"></p>
             <p style="text-align: center"><img src="/static/images/jboxAppkeyPadge.png"></p>
         </div>
     </div>
 
-     <script type="text/javascript">
-        $(document).ready(function(){
+    <script type="text/javascript">
+        $(document).ready(function () {
             $("#appContent").fadeOut();
             $("#webContent").fadeIn();
             $("#leftItem").toggleClass('active');
-            $("#leftItem").click(function(){
+            $("#leftItem").click(function () {
                 $("#webContent").fadeIn();
                 $("#appContent").fadeOut();
                 $("#rightItem").toggleClass('active');
                 $("#leftItem").toggleClass('active');
             });
 
-            $("#rightItem").click(function(){
+            $("#rightItem").click(function () {
                 $("#appContent").fadeIn();
                 $("#webContent").fadeOut();
                 $("#rightItem").toggleClass('active');
                 $("#leftItem").toggleClass('active');
             });
         });
-     </script>
+    </script>
 {% endblock %}
