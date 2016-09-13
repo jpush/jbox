@@ -229,8 +229,6 @@ def modificate_integration(dev_key, integration_id):
     if not request.json or not 'channel' in request.json:
         abort(400)
     developer = get_developer_with_devkey(dev_key)
-    print(developer)
-    print(request.json)
     integration = Integration.query.filter_by(developer_id=developer.id, integration_id=integration_id).first()
     if integration is None:
         abort(400)
