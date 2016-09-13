@@ -111,13 +111,6 @@ def get_developer():
 @auth.route('/profile', methods=['GET'])
 def profile():
     developer = get_developer()
-    platform = developer.platform
-    platform_id = developer.platform_id
-    username = developer.username
-    print('the developer detail')
-    print(platform)
-    print(platform_id)
-    print(username)
     return render_template('auth/profile.html', developer=developer)
 
 

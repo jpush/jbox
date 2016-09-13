@@ -97,7 +97,6 @@ def authorized():
     respMe = qq.get('/oauth2.0/me', {'access_token': session['qq_token'][0]})
     openid = json_to_dict(respMe.data)['openid']
 
-    print('huangmin open id')
     print(openid)
 
     resp = qq.get('/user/get_user_info', {'access_token': session['qq_token'][0],
@@ -117,7 +116,6 @@ def authorized():
                                   platform_id=openid,
                                   username=resp['nickname'])#
             developer.insert_to_db()
-            print('huangmin create db')
 
     return redirect(url_for('auth.manage'))
 
