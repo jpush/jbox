@@ -5,7 +5,8 @@ from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
 from .authentication import auth
 from ..main.views import qq, update_qq_api_request_data
-from config import basedir
+
+baseurl = 'jobx.jiguang.cn'
 
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
@@ -34,14 +35,14 @@ def get_developer(platform, platform_id):
     if developer is None:
         abort(404)
     if developer.avatar is None:
-        url = basedir + '/jbox/static/images/jiguang-bear.png'
+        url = baseurl + '/static/images/jiguang-bear.png'
     else:
-        url = basedir + '/jbox/static/images/' + developer.avatar
+        url = baseurl + '/static/images/' + developer.avatar
     return jsonify({'dev_key': developer.dev_key,
                     'dev_name': developer.username,
                     'platform': developer.platform,
                     'avatar': url,
-                    'description': developer.description}), 200
+                    'desc': developer.description}), 200
 
 
 # @api.route('/developers/<dev_key>/integrations', methods=['POST'])
@@ -62,14 +63,14 @@ def get_developer_info(dev_key):
     if developer is None:
         abort(404)
     if developer.avatar is None:
-        url = basedir + '/jbox/static/images/jiguang-bear.png'
+        url = baseurl + '/static/images/jiguang-bear.png'
     else:
-        url = basedir + '/jbox/static/images/' + developer.avatar
+        url = baseurl + '/static/images/' + developer.avatar
     return jsonify({'dev_key': developer.dev_key,
                     'dev_name': developer.username,
                     'platform': developer.platform,
                     'avatar': url,
-                    'description': developer.description}), 200
+                    'desc': developer.description}), 200
 
 
 @api.route('/developers/<dev_key>', methods=['PUT'])
@@ -141,12 +142,12 @@ def get_integrations(dev_key):
     data_json = []
     for integration in integration_list:
         if integration.icon is None:
-            url = basedir + '/jbox/static/images/image.png'
+            url = baseurl + '/static/images/image.png'
         else:
-            url = basedir + '/jbox/static/images/' + integration.icon
+            url = baseurl + '/static/images/' + integration.icon
         data_json.append({'name': integration.name,
                           'integration_id': integration.integration_id,
-                          'description': integration.description,
+                          'desc': integration.description,
                           'icon': url,
                           'channel': integration.channel.channel,
                           'token': integration.token})
@@ -163,11 +164,11 @@ def get_integration(integration_id):
     if developer is None:
         abort(404)
     if integration.icon is None:
-        url = basedir + '/jbox/static/images/image.png'
+        url = baseurl + '/static/images/image.png'
     else:
-        url = basedir + '/jbox/static/images/' + integration.icon
+        url = baseurl + '/static/images/' + integration.icon
     return jsonify({'name': integration.name,
-                    'description': integration.description,
+                    'desc': integration.description,
                     'icon': url,
                     'channel': integration.channel.channel}), 200
 
