@@ -31,7 +31,7 @@
             </div>
             <div id="input_div" class="column">
                 <div class="input-group">
-                    <input type="text" class="form-control" aria-label="..."
+                    <input id="selected_channel" type="text" class="form-control" aria-label="..."
                            placeholder="选择一个 channel 或者输入一个新的 channel">
                     <div class="input-group-btn">
                         <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
@@ -106,8 +106,8 @@
         });
 
         $('#create_integration_btn').click(function () {
-            console.log('create integration');
             var channel = $('#selected_channel').val();
+            console.log('create integration, channel: ' +　channel);
             if (channel != '') {
                 $.ajax({
                     type: "POST",

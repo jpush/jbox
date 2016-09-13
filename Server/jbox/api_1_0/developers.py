@@ -177,9 +177,11 @@ def get_integration(integration_id):
 @api.route('/developers/<dev_key>/integrations', methods=['POST'])
 def create_integrations(dev_key):
     if not request.json or not 'channel' in request.json:
+        print("request json error")
         abort(400)
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
+        print("developer not found")
         abort(400)
     # channel_list = Channel.query.filter_by(developer_id=developer.id).all()
     channel_list = developer.channels
@@ -289,18 +291,6 @@ def get_developer_with_devkey(dev_key):
         abort(400)
     return developer
 
-def get_developer():
-    if 'qq_token' in session:
-        print(session)
-        data = update_qq_api_request_data()
-        print('')
-        print()
-        resp = qq.get('/user/get_user_info', data=data)
-
-    developer = Developer.query.filter_by(platform_id=data['openid']).first()
-    if developer is None:
-        return redirect(url_for('main.login'))
-    return developer
 
 # FIX: TOKEN
 # 重新生成 integration token   这个接口没有测试
