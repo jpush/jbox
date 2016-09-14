@@ -95,15 +95,16 @@ def get_channel_list():
 
 
 def get_developer():
-    if 'qq_token' in session:
-        data = update_qq_api_request_data()
-        resp = qq.get('/user/get_user_info', data=data)
+    if 'openid' in session:
+        developer = Developer.query.filter_by(platform_id=session['openid']).first()
+        return developer
+    elif 'qq_token' in session:
         respMe = qq.get('/oauth2.0/me', {'access_token': session['qq_token'][0]})
         openid = json_to_dict(respMe.data)['openid']
-    developer = Developer.query.filter_by(platform_id=openid).first()
-    if developer is None:
-        return redirect(url_for('main.login'))
-    return developer
+        session['openid'] = openid
+        developer = Developer.query.filter_by(platform_id=openid).first()
+        return developer
+    return None
 
 
 @auth.route('/profile', methods=['GET'])

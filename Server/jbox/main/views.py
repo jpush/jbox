@@ -125,7 +125,8 @@ def get_qq_oauth_token():
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    developer = get_developer()
+    return render_template('index.html', developer=developer)
 
 
 # @main.route('/login', methods=['GET', 'POST'])
@@ -165,11 +166,13 @@ def application():
 
 
 def get_developer():
-    if 'qq_token' in session:
-        data = update_qq_api_request_data()
+    if 'openid' in session:
+        developer = Developer.query.filter_by(platform_id=session['openid']).first()
+        return developer
+    elif 'qq_token' in session:
         respMe = qq.get('/oauth2.0/me', {'access_token': session['qq_token'][0]})
         openid = json_to_dict(respMe.data)['openid']
-    developer = Developer.query.filter_by(platform_id=openid).first()
-    if developer is None:
-        return redirect(url_for('main.login'))
-    return developer
+        session['openid'] = openid
+        developer = Developer.query.filter_by(platform_id=openid).first()
+        return developer
+    return None
