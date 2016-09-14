@@ -40,6 +40,10 @@ body {
     box-shadow:none;
 }
 
+.create-integration:hover {
+    background: #3f7d3f;
+}
+
 #navigationbar {
     margin-left: 0;
     margin-right: 0;

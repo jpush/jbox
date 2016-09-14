@@ -109,10 +109,15 @@
     margin-right: 108px;
 }
 
+.upload:hover {
+    background: #41dfef;
+    border: 1px solid #ffec4f;
+}
+
 .upload-content {
     color: #595959;
     font-size: 20px;
-    padding-top: 12px;
+    padding-top: 10px;
     text-align: center;
     font-weight: 800;
 }

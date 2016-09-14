@@ -80,3 +80,7 @@
     border: 0px hidden;
     box-shadow:none;
 }
+
+#create_integration_btn:hover {
+    background: #3f7d3f;
+}

@@ -47,6 +47,10 @@ body {
     align-self: flex-end;
 }
 
+#edit:hover {
+    background: #83caff;
+}
+
 #dev-avatar {
     width: 164px;
     height: 164px;

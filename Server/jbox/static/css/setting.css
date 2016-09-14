@@ -46,7 +46,7 @@ body {
 
 #setting-avatar {
     width: 180px;
-    height: 135px;
+    height: 180px;
 }
 
 #avatar-right {
@@ -87,4 +87,8 @@ body {
     box-shadow:none;
     width: 133px;
     align-self: center;
+}
+
+#submit:hover {
+    background: #3f7d3f;
 }

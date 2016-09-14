@@ -16,12 +16,17 @@ def create_developer():
         abort(400)
     developer = Developer.query.filter_by(platform_id=request.json['platform_id'],
                                           platform=request.json['platform']).first()
+    if 'desc' in request.json:
+        desc = request.json['desc']
+    else:
+        desc = 'null'
     if developer is None:
         dev_key = generate_dev_key()
         developer = Developer(dev_key=dev_key,
                               platform=request.json['platform'],
                               platform_id=request.json['platform_id'],
-                              username=request.json['dev_name'])
+                              username=request.json['dev_name'],
+                              description=desc)
         developer.insert_to_db()
         return jsonify({'dev_key': developer.dev_key}), 201
     else:
@@ -38,11 +43,15 @@ def get_developer(platform, platform_id):
         url = baseurl + '/static/images/jiguang-bear.png'
     else:
         url = baseurl + '/static/images/' + developer.avatar
+    if developer.description is None:
+        desc = 'null'
+    else:
+        desc = developer.description
     return jsonify({'dev_key': developer.dev_key,
                     'dev_name': developer.username,
                     'platform': developer.platform,
                     'avatar': url,
-                    'desc': developer.description}), 200
+                    'desc': desc}), 200
 
 
 # @api.route('/developers/<dev_key>/integrations', methods=['POST'])
@@ -66,11 +75,15 @@ def get_developer_info(dev_key):
         url = baseurl + '/static/images/jiguang-bear.png'
     else:
         url = baseurl + '/static/images/' + developer.avatar
+    if developer.description is None:
+        desc = 'null'
+    else:
+        desc = developer.description
     return jsonify({'dev_key': developer.dev_key,
                     'dev_name': developer.username,
                     'platform': developer.platform,
                     'avatar': url,
-                    'desc': developer.description}), 200
+                    'desc': desc}), 200
 
 
 @api.route('/developers/<dev_key>', methods=['PUT'])
@@ -145,9 +158,13 @@ def get_integrations(dev_key):
             url = baseurl + '/static/images/image.png'
         else:
             url = baseurl + '/static/images/' + integration.icon
+        if integration.description is None:
+            desc = 'null'
+        else:
+            desc = integration.description
         data_json.append({'name': integration.name,
                           'integration_id': integration.integration_id,
-                          'desc': integration.description,
+                          'desc': desc,
                           'icon': url,
                           'channel': integration.channel.channel,
                           'token': integration.token})
@@ -167,8 +184,12 @@ def get_integration(integration_id):
         url = baseurl + '/static/images/image.png'
     else:
         url = baseurl + '/static/images/' + integration.icon
+    if integration.description is None:
+        desc = 'null'
+    else:
+        desc = integration.description
     return jsonify({'name': integration.name,
-                    'desc': integration.description,
+                    'desc': desc,
                     'icon': url,
                     'channel': integration.channel.channel}), 200
 
@@ -191,7 +212,8 @@ def create_integrations(dev_key):
                 new_integration_id = generate_integration_id()
                 new_integration = Integration(developer=developer,
                                               integration_id=new_integration_id,
-                                              channel=channel)
+                                              channel=channel,
+                                              description='null')
                 new_integration.insert_to_db()
                 token = new_integration.generate_auth_token(3600000000)
                 new_integration.token = token.decode('utf-8')
@@ -209,7 +231,8 @@ def create_integrations(dev_key):
         new_integration_id = generate_integration_id()
         new_integration = Integration(developer=developer,
                                       integration_id=new_integration_id,
-                                      channel=new_channel)
+                                      channel=new_channel,
+                                      description='null')
         new_integration.insert_to_db()
         token = new_integration.generate_auth_token(3600000000)
         new_integration.token = token.decode('utf-8')

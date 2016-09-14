@@ -167,6 +167,10 @@
     box-shadow:none;
 }
 
+#delete:hover {
+    background: #aa2c2b;
+}
+
 .description-div {
     width: 280px;
 }

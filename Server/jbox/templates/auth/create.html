@@ -79,7 +79,7 @@
                 <input id="webhook" class="jbox-font description" value="jbox.jiguang.cn:80/api.jbox.jiguang.cn/v1/message/{{ integration_id }}/{{ token }}"/>
             </div>
             <div id="link-content">
-                <a id="check-api" class="jbox-font link">查看 API 说明</a>
+                <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
                 <a id="regenerate" class="jbox-font link">重新生成</a>
             </div>
             <hr class="divider">
