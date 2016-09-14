@@ -4,32 +4,24 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
 
-import java.util.UUID;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Developer {
 
-    private final String mId;
+    private final String mDevKey;      // 用户验证通过后生成的 dev_key，作为唯一标识。
 
     private final String mDevName;     // 在第三方平台下的 username。
 
-    private final String mDevKey;      // 用户验证通过后生成的 dev_key。
-
     private final String mPlatform;    // 第三方登录平台。
 
-    private String mHeadStr;           // Username 的首字母。
+    private String mDesc;               // 用户描述。
 
-    public Developer(@NonNull String devName, @NonNull String devKey, @NonNull String platform) {
-        mId = UUID.randomUUID().toString();
-        mDevName = checkNotNull(devName);
+    private String mAvatarPath;         // 头像路径。
+
+    public Developer(@NonNull String devKey, @NonNull String devName, @NonNull String platform) {
         mDevKey = checkNotNull(devKey);
+        mDevName = checkNotNull(devName);
         mPlatform = checkNotNull(platform);
-        mHeadStr = devName.substring(0, 1);
-    }
-
-    public String getId() {
-        return mId;
     }
 
     public String getDevName() {
@@ -42,10 +34,6 @@ public class Developer {
 
     public String getPlatform() {
         return mPlatform;
-    }
-
-    public String getHeadStr() {
-        return mHeadStr;
     }
 
     @Override
@@ -70,5 +58,21 @@ public class Developer {
     @Override
     public String toString() {
         return "Developer: " + mDevName;
+    }
+
+    public String getDesc() {
+        return mDesc;
+    }
+
+    public void setDesc(String desc) {
+        mDesc = desc;
+    }
+
+    public String getAvatarPath() {
+        return mAvatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        mAvatarPath = avatarPath;
     }
 }

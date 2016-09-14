@@ -14,6 +14,8 @@ public class Channel {
 
     private final String mName;
 
+    private String mIconPath;
+
     private String mDescription;
 
     private String mDevKey;
@@ -28,6 +30,11 @@ public class Channel {
 
     public Channel(String name) {
         mId = UUID.randomUUID().toString();
+        mName = name;
+    }
+
+    public Channel(String id, String name) {
+        mId = id;
         mName = name;
     }
 
@@ -109,4 +116,11 @@ public class Channel {
         return AppApplication.getAppKey() + mName;
     }
 
+    public String getIconPath() {
+        return mIconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.mIconPath = iconPath;
+    }
 }

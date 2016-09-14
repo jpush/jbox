@@ -5,9 +5,20 @@
     <string name="main_hint">暂无消息</string>
     <!-- main end -->
 
+    <!-- topbar start -->
+    <string name="top_back">返回</string>
+    <!-- topbar end -->
+
     <!-- drawer start -->
     <string name="drawer_channel">Channels</string>
     <!-- drawer end -->
+
+    <!-- scan start -->
+    <string name="scan_title">二维码</string>
+    <string name="scan_back">返回</string>
+    <string name="scan_photo">相册</string>
+    <string name="scan_hint">扫一扫添加 Channel</string>
+    <!-- scan end -->
 
     <!-- channel start -->
     <string name="channel_channel">频道</string>

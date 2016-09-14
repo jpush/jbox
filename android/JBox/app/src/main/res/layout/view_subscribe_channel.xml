@@ -13,7 +13,7 @@
         android:layout_height="@dimen/sub_channel_circle_height"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        tools:src="@drawable/ic_launcher"
+        tools:src="@drawable/default_avatar"
         />
 
     <TextView

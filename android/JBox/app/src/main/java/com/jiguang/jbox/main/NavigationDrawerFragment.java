@@ -3,12 +3,14 @@ package com.jiguang.jbox.main;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +19,6 @@ import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.util.ViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +66,9 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         mDrawerListView = (ListView) v.findViewById(R.id.lv_channel);
         mDrawerListView.setAdapter(mChannelListAdapter);
 
+        ImageButton btnAddChannel = (ImageButton) v.findViewById(R.id.btn_add_channel);
+        btnAddChannel.setOnClickListener(this);
+
         return v;
     }
 
@@ -97,6 +101,10 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         switch (view.getId()) {
             case R.id.iv_edit:
                 editChannels();
+                break;
+            case R.id.btn_add_channel:
+                // 进入二维码扫描界面。
+                startActivity(new Intent(getActivity(), ScanActivity.class));
                 break;
             default:
         }

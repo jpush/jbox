@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="TopBar">
+        <attr name="tbTitle" format="string"/>
+        <attr name="right" format="string"/>
+        <attr name="showBack" format="boolean"/>
+        <attr name="showRight" format="boolean"/>
+    </declare-styleable>
+</resources>
