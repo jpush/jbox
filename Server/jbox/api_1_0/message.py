@@ -27,7 +27,7 @@ def send_message(integration_id, token):
     push = _jpush.create_push()
     _jpush.set_logging("DEBUG")
     push.audience = jpush.audience(
-        jpush.tag(developer.dev_key + integration.channel)
+        jpush.tag(developer.dev_key + integration.channel.channel)
     )
     # push.audience = jpush.all_
     # push.notification = jpush.notification(alert=request.json['title'],extras={'title': request.json['title'],
