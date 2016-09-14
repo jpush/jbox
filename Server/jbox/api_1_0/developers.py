@@ -19,7 +19,7 @@ def create_developer():
     if 'desc' in request.json:
         desc = request.json['desc']
     else:
-        desc = 'null'
+        desc = ''
     if developer is None:
         dev_key = generate_dev_key()
         developer = Developer(dev_key=dev_key,
@@ -40,11 +40,11 @@ def get_developer(platform, platform_id):
     if developer is None:
         abort(404)
     if developer.avatar is None:
-        url = baseurl + '/static/images/jiguang-bear.png'
+        url = ''
     else:
         url = baseurl + '/static/images/' + developer.avatar
     if developer.description is None:
-        desc = 'null'
+        desc = ''
     else:
         desc = developer.description
     return jsonify({'dev_key': developer.dev_key,
@@ -72,11 +72,11 @@ def get_developer_info(dev_key):
     if developer is None:
         abort(404)
     if developer.avatar is None:
-        url = baseurl + '/static/images/jiguang-bear.png'
+        url = ''
     else:
         url = baseurl + '/static/images/' + developer.avatar
     if developer.description is None:
-        desc = 'null'
+        desc = ''
     else:
         desc = developer.description
     return jsonify({'dev_key': developer.dev_key,
@@ -155,11 +155,11 @@ def get_integrations(dev_key):
     data_json = []
     for integration in integration_list:
         if integration.icon is None:
-            url = baseurl + '/static/images/image.png'
+            url = ''
         else:
             url = baseurl + '/static/images/' + integration.icon
         if integration.description is None:
-            desc = 'null'
+            desc = ''
         else:
             desc = integration.description
         data_json.append({'name': integration.name,
@@ -181,11 +181,11 @@ def get_integration(integration_id):
     if developer is None:
         abort(404)
     if integration.icon is None:
-        url = baseurl + '/static/images/image.png'
+        url = ''
     else:
         url = baseurl + '/static/images/' + integration.icon
     if integration.description is None:
-        desc = 'null'
+        desc = ''
     else:
         desc = integration.description
     return jsonify({'name': integration.name,
@@ -213,7 +213,7 @@ def create_integrations(dev_key):
                 new_integration = Integration(developer=developer,
                                               integration_id=new_integration_id,
                                               channel=channel,
-                                              description='null')
+                                              description='')
                 new_integration.insert_to_db()
                 token = new_integration.generate_auth_token(3600000000)
                 new_integration.token = token.decode('utf-8')
@@ -232,7 +232,7 @@ def create_integrations(dev_key):
         new_integration = Integration(developer=developer,
                                       integration_id=new_integration_id,
                                       channel=new_channel,
-                                      description='null')
+                                      description='')
         new_integration.insert_to_db()
         token = new_integration.generate_auth_token(3600000000)
         new_integration.token = token.decode('utf-8')
