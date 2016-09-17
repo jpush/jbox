@@ -20,6 +20,8 @@ public class Channel {
 
     private String mDevKey;
 
+    private String mDevName;
+
     private int unReadMessageCount; // 未读消息数。
 
     private Stack<Message> mMessages;
@@ -122,5 +124,13 @@ public class Channel {
 
     public void setIconPath(String iconPath) {
         this.mIconPath = iconPath;
+    }
+
+    public String getDevName() {
+        return mDevName;
+    }
+
+    public void setDevName(String devName) {
+        mDevName = devName;
     }
 }

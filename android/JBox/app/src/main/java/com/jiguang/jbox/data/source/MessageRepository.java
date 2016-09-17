@@ -37,18 +37,22 @@ public class MessageRepository implements MessageDataSource {
     }
 
     @Override
-    public void getMessages(@NonNull final String channelId, @NonNull final LoadMessagesCallback callback) {
-        checkNotNull(channelId);
+    public void getMessages(@NonNull final String devKey, @NonNull final String channelName,
+                            @NonNull final LoadMessagesCallback callback) {
+        checkNotNull(devKey);
+        checkNotNull(channelName);
 
-        if (mCachedMessages != null && mCachedMessages.containsKey(channelId) && !mCacheIsDirty) {
-            callback.onMessagesLoaded(mCachedMessages.get(channelId));
+        final String mapKey = devKey + channelName;
+
+        if (mCachedMessages != null && mCachedMessages.containsKey(mapKey) && !mCacheIsDirty) {
+            callback.onMessagesLoaded(mCachedMessages.get(channelName));
             return;
         }
 
-        mMessagesLocalDataSource.getMessages(channelId, new LoadMessagesCallback() {
+        mMessagesLocalDataSource.getMessages(devKey, channelName, new LoadMessagesCallback() {
             @Override
             public void onMessagesLoaded(List<Message> messages) {
-                refreshCache(channelId, messages);
+                refreshCache(devKey, channelName, messages);
                 callback.onMessagesLoaded(messages);
             }
 
@@ -64,29 +68,34 @@ public class MessageRepository implements MessageDataSource {
         checkNotNull(message);
         mMessagesLocalDataSource.saveMessage(message);
 
-        String channelId = message.getChannelId();
+        String channelName = message.getChannelName();
 
         if (mCachedMessages == null) {
             mCachedMessages = new LinkedHashMap<>();
         }
-        if (!mCachedMessages.containsKey(channelId)) {
-            mCachedMessages.put(channelId, new ArrayList<Message>());
+        if (!mCachedMessages.containsKey(channelName)) {
+            mCachedMessages.put(channelName, new ArrayList<Message>());
         }
-        mCachedMessages.get(channelId).add(message);
+        mCachedMessages.get(channelName).add(message);
     }
 
     @Override
-    public void refreshMessages(@NonNull String channelId) {
+    public void refreshMessages(@NonNull String devKey, @NonNull String channelName) {
 
     }
 
-    private void refreshCache(String channelId, List<Message> msgs) {
+
+    private void refreshCache(String devKey, String channelName, List<Message> msgs) {
         if (mCachedMessages == null) {
             mCachedMessages = new LinkedHashMap<>();
         }
-        mCachedMessages.get(channelId).clear();
-        mCachedMessages.remove(channelId);
-        mCachedMessages.put(channelId, msgs);
+        String mapKey = devKey + channelName;
+
+        if (mCachedMessages.get(mapKey) != null && !mCachedMessages.get(mapKey).isEmpty()) {
+            mCachedMessages.get(mapKey).clear();
+            mCachedMessages.remove(mapKey);
+        }
+        mCachedMessages.put(mapKey, msgs);
         mCacheIsDirty = false;
     }
 

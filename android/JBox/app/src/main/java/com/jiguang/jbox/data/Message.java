@@ -12,7 +12,7 @@ public class Message {
 
     private String mTime;
 
-    private String mChannelId;
+    private String mChannelName;
 
     private String mDevKey;
 
@@ -48,12 +48,12 @@ public class Message {
         mTime = time;
     }
 
-    public String getChannelId() {
-        return mChannelId;
+    public String getChannelName() {
+        return mChannelName;
     }
 
-    public void setChannelId(String channelId) {
-        mChannelId = channelId;
+    public void setChannelName(String channelName) {
+        mChannelName = channelName;
     }
 
     public String getDevKey() {

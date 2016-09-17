@@ -36,33 +36,34 @@ public class MessagesLocalDataSource implements MessageDataSource {
     }
 
     @Override
-    public void getMessages(@NonNull String channelId, @NonNull LoadMessagesCallback callback) {
+    public void getMessages(@NonNull String devKey, @NonNull String channelName,
+                            @NonNull LoadMessagesCallback callback) {
         List<Message> messages = new ArrayList<>();
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID,
-                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_ID,
+                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_NAME,
+                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_DEV_KEY,
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE,
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT,
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME
         };
 
-        String selection = MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_ID + " = ?";
+        String selection = MessagesPersistenceContract.MessageEntry.COLUMN_NAME_DEV_KEY +
+                " = ? AND " + MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_NAME +
+                " = ?";
 
-        String[] selectionArgs = {channelId};
+        String[] selectionArgs = {devKey, channelName};
 
         Cursor c = db.query(MessagesPersistenceContract.MessageEntry.TABLE_NAME, projection,
                 selection, selectionArgs, null, null, null);
 
-        Message msg = null;
-
+        Message msg;
         if (c != null && c.getCount() > 0) {
             c.moveToNext();
             String id = c.getString(c.getColumnIndexOrThrow(
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID));
-            String cId = c.getString(c.getColumnIndexOrThrow(
-                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_ID));
             String title = c.getString(c.getColumnIndexOrThrow(
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE));
             String content = c.getString(c.getColumnIndexOrThrow(
@@ -71,7 +72,8 @@ public class MessagesLocalDataSource implements MessageDataSource {
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME));
 
             msg = new Message(id, title, content);
-            msg.setChannelId(cId);
+            msg.setChannelName(channelName);
+            msg.setDevKey(devKey);
             msg.setTime(time);
 
             messages.add(msg);
@@ -96,7 +98,9 @@ public class MessagesLocalDataSource implements MessageDataSource {
 
         ContentValues values = new ContentValues();
         values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID, message.getId());
-        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_ID, message.getChannelId());
+        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_DEV_KEY, message.getDevKey());
+        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_NAME,
+                message.getChannelName());
         values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE, message.getTitle());
         values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT, message.getContent());
         values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME, message.getTime());
@@ -107,8 +111,9 @@ public class MessagesLocalDataSource implements MessageDataSource {
     }
 
     @Override
-    public void refreshMessages(@NonNull String channelId) {
+    public void refreshMessages(@NonNull String devKey, @NonNull String channelName) {
 
     }
+
 
 }

@@ -3,44 +3,40 @@ package com.jiguang.jbox.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.jiguang.jbox.data.Message;
-import com.jiguang.jbox.data.source.MessageDataSource;
+import com.jiguang.jbox.data.source.MessageRepository;
+import com.jiguang.jbox.data.source.local.MessagesLocalDataSource;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import cn.jpush.android.api.JPushInterface;
 
 
 public class MyReceiver extends BroadcastReceiver {
 
-    private static final List<String> IGNORED_EXTRAS_KEYS =
-            Arrays.asList(
-                    "cn.jpush.android.TITLE",
-                    "cn.jpush.android.MESSAGE",
-                    "cn.jpush.android.APPKEY",
-                    "cn.jpush.android.NOTIFICATION_CONTENT_TITLE"
-            );
-
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        if (action.equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
+            onReceiveMessage(context, intent.getBundleExtra(JPushInterface.EXTRA_MESSAGE));
+        }
     }
 
-    private void onReceiveMessage(Intent intent) {
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-        String devKey = intent.getExtras().getString("dev_key");
-        String channel = intent.getExtras().getString("channel");
+    private void onReceiveMessage(Context context, Bundle bundle) {
+        String title = bundle.getString("title");
+        String content = bundle.getString("content");
+        String devKey = bundle.getString("dev_key");
+        String channel = bundle.getString("channel");
 
         Message msg = new Message(title, content);
-        msg.setChannelId(channel);
+        msg.setChannelName(channel);
         msg.setDevKey(devKey);
-
         msg.setTime(String.valueOf(System.currentTimeMillis()));
 
-        //TODO: 保存 msg 到本地，并刷新数据。
-
+        // 保存 msg 到本地，并刷新数据。
+        MessagesLocalDataSource localDataSource = MessagesLocalDataSource.getInstance(context);
+        MessageRepository repository = MessageRepository.getInstance(localDataSource);
+        repository.saveMessage(msg);
     }
 
 }

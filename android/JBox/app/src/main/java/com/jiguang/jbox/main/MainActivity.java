@@ -25,6 +25,8 @@ import java.util.List;
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MessagesContract.View {
 
+    private Toolbar mTopBar;
+
     private TextView mTvHint;
 
     private ListView mMsgListView;
@@ -41,17 +43,13 @@ public class MainActivity extends Activity
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // TODO:测试
-        toolbar.setTitle("Channel 1");
+        mTopBar = (Toolbar) findViewById(R.id.toolbar);
 
         mTvHint = (TextView) findViewById(R.id.tv_hint);
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
         mAdapter = new MessageListAdapter(new ArrayList<Message>(0));
         mMsgListView.setAdapter(mAdapter);
-
-        initPresenter("channel1");
     }
 
     @Override
@@ -85,11 +83,10 @@ public class MainActivity extends Activity
 
     }
 
-    private void initPresenter(String channelId) {
+    private void initPresenter() {
         MessageDataSource localDataSource = MessagesLocalDataSource.getInstance(this);
         MessageRepository repository = MessageRepository.getInstance(localDataSource);
         mMessagesPresenter = new MessagesPresenter(repository, this);
-        mMessagesPresenter.setChannelId(channelId);
     }
 
     private static class MessageListAdapter extends BaseAdapter {

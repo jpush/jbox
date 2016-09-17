@@ -22,11 +22,9 @@ public class MessagesContract {
 
     interface Presenter extends BasePresenter {
 
-        void loadMessages(boolean forceUpdate);
+        void loadMessages(String devKey, String channelName, boolean forceUpdate);
 
         void saveMessage(@NonNull Message msg);
-
-        void setChannelId(@NonNull String channelId);
     }
 
 }

@@ -22,9 +22,11 @@ public interface MessageDataSource {
         void onDataNotAvailable();
     }
 
-    void getMessages(@NonNull String channelId, @NonNull LoadMessagesCallback callback);
+    void getMessages(@NonNull String devKey, @NonNull String channelName,
+                     @NonNull LoadMessagesCallback callback);
 
     void saveMessage(@NonNull Message message);
 
-    void refreshMessages(@NonNull String channelId);
+    void refreshMessages(@NonNull String devKey, @NonNull String channelName);
+
 }

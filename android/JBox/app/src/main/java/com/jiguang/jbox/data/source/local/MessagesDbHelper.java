@@ -18,7 +18,7 @@ public class MessagesDbHelper extends SQLiteOpenHelper {
                     MessagesPersistenceContract.MessageEntry._ID + TEXT_TYPE + " PRIMARY KEY," +
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT + TEXT_TYPE + COMMA_SEP +
-                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME + TEXT_TYPE + COMMA_SEP +
+                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME + TEXT_TYPE +
                     " )";
 
     public MessagesDbHelper(Context context) {

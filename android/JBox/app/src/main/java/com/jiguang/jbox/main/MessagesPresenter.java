@@ -1,7 +1,6 @@
 package com.jiguang.jbox.main;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.data.source.MessageDataSource;
@@ -20,8 +19,6 @@ public class MessagesPresenter implements MessagesContract.Presenter {
 
     private final MessagesContract.View mMessagesView;
 
-    private String mChannelId;
-
     private boolean mFirstLoaded = true;
 
     public MessagesPresenter(@NonNull MessageRepository repository,
@@ -33,13 +30,14 @@ public class MessagesPresenter implements MessagesContract.Presenter {
     }
 
     @Override
-    public void loadMessages(boolean forceUpdate) {
-        loadMessages(mChannelId, forceUpdate || mFirstLoaded, false);
+    public void loadMessages(String devKey, String channelName, boolean forceUpdate) {
+        loadMessages(devKey, channelName, forceUpdate || mFirstLoaded, false);
         mFirstLoaded = false;
     }
 
-    private void loadMessages(String channelId, boolean forceUpdate, boolean showLoadingUI) {
-        mRepository.getMessages(channelId, new MessageDataSource.LoadMessagesCallback() {
+    private void loadMessages(String devKey, String channelName, boolean forceUpdate,
+                              boolean showLoadingUI) {
+        mRepository.getMessages(devKey, channelName, new MessageDataSource.LoadMessagesCallback() {
             @Override
             public void onMessagesLoaded(List<Message> messages) {
                 if (!mMessagesView.isActive()) {
@@ -64,15 +62,8 @@ public class MessagesPresenter implements MessagesContract.Presenter {
     }
 
     @Override
-    public void setChannelId(@NonNull String channelId) {
-        mChannelId = checkNotNull(channelId);
-    }
-
-    @Override
     public void start() {
-        if (TextUtils.isEmpty(mChannelId)) {
-            loadMessages(false);
-        }
+
     }
 
 }

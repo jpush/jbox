@@ -22,7 +22,7 @@ public class DeveloperDbHelper extends SQLiteOpenHelper {
                     DevEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     DevEntry.COLUMN_NAME_DESC + TEXT_TYPE + COMMA_SEP +
                     DevEntry.COLUMN_NAME_PLATFORM + TEXT_TYPE + COMMA_SEP +
-                    DevEntry.COLUMN_NAME_AVATAR + TEXT_TYPE + COMMA_SEP +
+                    DevEntry.COLUMN_NAME_AVATAR + TEXT_TYPE +
                     " )";
 
     public DeveloperDbHelper(Context context) {

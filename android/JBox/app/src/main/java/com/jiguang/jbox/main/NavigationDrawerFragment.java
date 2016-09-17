@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,14 +20,15 @@ import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.util.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * 侧滑界面。
  */
-public class NavigationDrawerFragment extends Fragment implements View.OnClickListener {
+public class NavigationDrawerFragment extends Fragment implements View.OnClickListener,
+        AdapterView.OnItemClickListener {
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -51,8 +53,10 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         mCallbacks = (NavigationDrawerCallbacks) getActivity();
     }
 
-    public void initData(Map<String, List<Channel>> data) {
-
+    public void initData(List<Channel> data) {
+        if (mChannelListAdapter != null) {
+            mChannelListAdapter.replaceData(data);
+        }
     }
 
     @Override
@@ -64,7 +68,9 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         ivEdit.setOnClickListener(this);
 
         mDrawerListView = (ListView) v.findViewById(R.id.lv_channel);
+        mChannelListAdapter = new DrawerListAdapter(new ArrayList<Channel>());
         mDrawerListView.setAdapter(mChannelListAdapter);
+        mDrawerListView.setOnItemClickListener(this);
 
         ImageButton btnAddChannel = (ImageButton) v.findViewById(R.id.btn_add_channel);
         btnAddChannel.setOnClickListener(this);
@@ -110,6 +116,11 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        selectItem(i);
+    }
+
     public interface NavigationDrawerCallbacks {
         void onNavigationDrawerItemSelected(int position);
     }
@@ -126,6 +137,11 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
         public void editChannels(boolean isEdited) {
             mIsEdited = isEdited;
+            notifyDataSetChanged();
+        }
+
+        public void replaceData(List<Channel> channels) {
+            mChannels = channels;
             notifyDataSetChanged();
         }
 
@@ -164,12 +180,16 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
             tvChannelName.setText(channel.getName());
 
             TextView tvUnread = ViewHolder.get(convertView, R.id.tv_unread_count);
+
             if (channel.getUnReadMessageCount() != 0 &&
                     tvUnread.getVisibility() == View.INVISIBLE) {
+
                 tvUnread.setVisibility(View.VISIBLE);
                 tvUnread.setText(channel.getUnReadMessageCount());
+
             } else if (channel.getUnReadMessageCount() == 0 &&
                     tvUnread.getVisibility() == View.VISIBLE) {
+
                 tvUnread.setVisibility(View.INVISIBLE);
             }
 
