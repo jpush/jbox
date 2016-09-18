@@ -6,7 +6,7 @@ from ..models import Developer, db, Channel, Integration, generate_dev_key, gene
 from .authentication import auth
 from ..main.views import qq, update_qq_api_request_data
 
-baseurl = 'jobx.jiguang.cn'
+baseurl = 'jbox.jiguang.cn'
 
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
@@ -40,7 +40,7 @@ def get_developer(platform, platform_id):
     if developer is None:
         abort(404)
     if developer.avatar is None:
-        url = ''
+        url = baseurl + '/static/images/jiguang-bear.png'
     else:
         url = baseurl + '/static/images/' + developer.avatar
     if developer.description is None:
@@ -72,7 +72,7 @@ def get_developer_info(dev_key):
     if developer is None:
         abort(404)
     if developer.avatar is None:
-        url = ''
+        url = baseurl + '/static/images/jiguang-bear.png'
     else:
         url = baseurl + '/static/images/' + developer.avatar
     if developer.description is None:
@@ -155,7 +155,7 @@ def get_integrations(dev_key):
     data_json = []
     for integration in integration_list:
         if integration.icon is None:
-            url = ''
+            url = baseurl + '/static/images/image.png'
         else:
             url = baseurl + '/static/images/' + integration.icon
         if integration.description is None:
@@ -181,7 +181,7 @@ def get_integration(integration_id):
     if developer is None:
         abort(404)
     if integration.icon is None:
-        url = ''
+        url = baseurl + '/static/images/image.png'
     else:
         url = baseurl + '/static/images/' + integration.icon
     if integration.description is None:
