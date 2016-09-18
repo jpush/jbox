@@ -27,7 +27,7 @@ def send_message(integration_id, token):
     push = _jpush.create_push()
     _jpush.set_logging("DEBUG")
     push.audience = jpush.audience(
-        jpush.tag(developer.dev_key + integration.channel.channel)
+        jpush.tag(developer.dev_key + '_' + integration.channel.channel)
     )
     # push.audience = jpush.all_
     # push.notification = jpush.notification(alert=request.json['title'],extras={'title': request.json['title'],
@@ -38,9 +38,13 @@ def send_message(integration_id, token):
                                                              'message': request.json['message']})
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
     push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
+    print('huangmin')
+    print(developer.dev_key)
+    print(integration.channel)
     push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
-                                 extras={'dev_key': developer.dev_key, 'channel': integration.channel,
-                                         'integration_id': integration.integration_id, 'datetime': int(time.time())})
+                                 extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
+                                         'datetime': int(time.time())})
+
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
     push.platform = jpush.all_
     try:
