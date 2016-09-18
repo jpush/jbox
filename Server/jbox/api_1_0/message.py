@@ -23,7 +23,7 @@ def send_message(integration_id, token):
     if developer is None:
         abort(404)
 
-    _jpush = jpush.JPush(u'3cb70ee7f6d54320c30656c3', u'5d63266f2d0eb9dccf3361f9')
+    _jpush = jpush.JPush(u'abcacdf406411fa656ee11c3', u'682acd395df807d97e24eb50')
     push = _jpush.create_push()
     _jpush.set_logging("DEBUG")
     push.audience = jpush.audience(
