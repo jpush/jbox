@@ -18,8 +18,11 @@ import android.widget.Toast;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.source.ChannelDataSource;
+import com.jiguang.jbox.data.source.ChannelRepository;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
 import com.jiguang.jbox.data.source.DeveloperRepository;
+import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
 import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
 import com.jiguang.jbox.data.source.remote.DeveloperRemoteDataSource;
 import com.jiguang.jbox.util.ViewHolder;
@@ -36,6 +39,12 @@ public class ChannelActivity extends Activity {
     public static final String EXTRA_DEV_KEY = "dev_key";
 
     private ListView mListView;
+
+    private SubChannelListAdapter mListAdapter;
+
+    private ChannelRepository mChannelRepository;
+
+    private List<Channel> mChannels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +89,29 @@ public class ChannelActivity extends Activity {
 
         mListView.addHeaderView(headView);
 
-        // TODO: 获取 channel 信息。
+        // 获取 channel 信息。
+        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(this);
+        mChannelRepository = ChannelRepository.getInstance(channelLocalDataSource);
+        mChannelRepository.getChannels(devKey, new ChannelDataSource.LoadChannelsCallback() {
+            @Override
+            public void onChannelsLoaded(List<Channel> channels) {
+                mListAdapter = new SubChannelListAdapter(channels);
+                mListView.setAdapter(mListAdapter);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // TODO: 将数据保存到数据库中。
+
     }
 
     private static class SubChannelListAdapter extends BaseAdapter {
@@ -123,9 +154,11 @@ public class ChannelActivity extends Activity {
             ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
 
             TextView tvChannel = ViewHolder.get(convertView, R.id.tv_channel);
+            tvChannel.setText(channel.getName());
 
             CheckBox cbIsSubscribe = ViewHolder.get(convertView, R.id.cb_isSubscribe);
-
+            cbIsSubscribe.setChecked(channel.isSubscribe());
+//            cbIsSubscribe.setOnCheckedChangeListener();
 
             return convertView;
         }

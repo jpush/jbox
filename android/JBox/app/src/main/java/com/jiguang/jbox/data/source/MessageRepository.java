@@ -32,7 +32,7 @@ public class MessageRepository implements MessageDataSource {
         return INSTANCE;
     }
 
-    public static void destoryInstance() {
+    public static void destroyInstance() {
         INSTANCE = null;
     }
 

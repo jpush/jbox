@@ -13,14 +13,21 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.jiguang.jbox.R;
+import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.Message;
+import com.jiguang.jbox.data.source.ChannelDataSource;
+import com.jiguang.jbox.data.source.ChannelRepository;
 import com.jiguang.jbox.data.source.MessageDataSource;
 import com.jiguang.jbox.data.source.MessageRepository;
+import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
 import com.jiguang.jbox.data.source.local.MessagesLocalDataSource;
 import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MessagesContract.View {
@@ -35,13 +42,40 @@ public class MainActivity extends Activity
 
     private MessagesPresenter mMessagesPresenter;
 
+    private List<Developer> mDevList;
+
+    private List<Channel> mChannelList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment)
+        final NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        // init data.
+        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(this);
+        ChannelRepository channelRepository = ChannelRepository.getInstance(channelLocalDataSource);
+        channelRepository.getChannels(true, new ChannelDataSource.LoadChannelsCallback() {
+            @Override
+            public void onChannelsLoaded(List<Channel> channels) {
+                mChannelList = channels;
+                navigationDrawerFragment.initData(channels);
+                if (channels != null && !channels.isEmpty()) {
+
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mChannelList = new ArrayList<>();
+            }
+        });
+
+        MessagesLocalDataSource msgLocalDataSource = MessagesLocalDataSource.getInstance(this);
+        MessageRepository msgRepository = MessageRepository.getInstance(msgLocalDataSource);
+        mMessagesPresenter = new MessagesPresenter(msgRepository, this);
 
         mTopBar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -50,17 +84,27 @@ public class MainActivity extends Activity
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
         mAdapter = new MessageListAdapter(new ArrayList<Message>(0));
         mMsgListView.setAdapter(mAdapter);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mMessagesPresenter.start(); // 初始化数据。
+        JPushInterface.onPause(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onResume(this);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
+        if (mChannelList != null) {
+            mTopBar.setTitle(mChannelList.get(position).getName());
+        }
     }
 
     @Override

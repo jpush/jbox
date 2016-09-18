@@ -25,6 +25,7 @@
         app:qrcv_cornerColor="@color/colorPrimary"
         app:qrcv_qrCodeTipText="@string/scan_hint"
         app:qrcv_isTipTextBelowRect="true"
+        app:qrcv_isShowDefaultScanLineDrawable="false"
         />
 
 

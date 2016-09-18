@@ -61,22 +61,23 @@ public class MessagesLocalDataSource implements MessageDataSource {
 
         Message msg;
         if (c != null && c.getCount() > 0) {
-            c.moveToNext();
-            String id = c.getString(c.getColumnIndexOrThrow(
-                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID));
-            String title = c.getString(c.getColumnIndexOrThrow(
-                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE));
-            String content = c.getString(c.getColumnIndexOrThrow(
-                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT));
-            String time = c.getString(c.getColumnIndexOrThrow(
-                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME));
+            while (c.moveToNext()) {
+                String id = c.getString(c.getColumnIndexOrThrow(
+                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID));
+                String title = c.getString(c.getColumnIndexOrThrow(
+                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE));
+                String content = c.getString(c.getColumnIndexOrThrow(
+                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT));
+                String time = c.getString(c.getColumnIndexOrThrow(
+                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME));
 
-            msg = new Message(id, title, content);
-            msg.setChannelName(channelName);
-            msg.setDevKey(devKey);
-            msg.setTime(time);
+                msg = new Message(id, title, content);
+                msg.setChannelName(channelName);
+                msg.setDevKey(devKey);
+                msg.setTime(time);
 
-            messages.add(msg);
+                messages.add(msg);
+            }
         }
         if (c != null) {
             c.close();

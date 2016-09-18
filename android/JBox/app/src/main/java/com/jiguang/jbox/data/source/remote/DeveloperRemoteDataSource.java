@@ -38,7 +38,22 @@ public class DeveloperRemoteDataSource implements DeveloperDataSource {
     }
 
     @Override
+    public void getDevelopers(@NonNull LoadDevsCallback callback) {
+
+    }
+
+    @Override
     public void saveDeveloper(@NonNull Developer dev) {
+
+    }
+
+    @Override
+    public void updateDeveloper(@NonNull Developer dev) {
+
+    }
+
+    @Override
+    public void refresh() {
 
     }
 

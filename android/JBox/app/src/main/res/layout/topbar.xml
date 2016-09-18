@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:layout_centerInParent="true"
+        android:textSize="16sp"
         />
 
     <TextView

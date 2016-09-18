@@ -78,6 +78,11 @@ public class DeveloperLocalDataSource implements DeveloperDataSource {
     }
 
     @Override
+    public void getDevelopers(@NonNull LoadDevsCallback callback) {
+
+    }
+
+    @Override
     public void saveDeveloper(@NonNull Developer dev) {
         checkNotNull(dev);
 
@@ -93,6 +98,16 @@ public class DeveloperLocalDataSource implements DeveloperDataSource {
         db.insert(DevEntry.TABLE_NAME, null, values);
 
         db.close();
+    }
+
+    @Override
+    public void updateDeveloper(@NonNull Developer dev) {
+
+    }
+
+    @Override
+    public void refresh() {
+
     }
 
 

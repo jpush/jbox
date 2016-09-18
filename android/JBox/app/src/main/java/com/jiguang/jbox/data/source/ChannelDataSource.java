@@ -11,14 +11,14 @@ public interface ChannelDataSource {
 
     interface LoadChannelsCallback {
 
-        void onMessagesLoaded(List<Channel> messages);
+        void onChannelsLoaded(List<Channel> channels);
 
         void onDataNotAvailable();
     }
 
     interface GetChannelCallback {
 
-        void onMessageLoaded(Channel msg);
+        void onChannelLoaded(Channel channel);
 
         void onDataNotAvailable();
     }
@@ -28,20 +28,28 @@ public interface ChannelDataSource {
      *
      * @param isSubscribe 是否订阅。
      */
-    void getChannels(String devKey, boolean isSubscribe);
+    void getChannels(String devKey, boolean isSubscribe, LoadChannelsCallback callback);
 
     /**
      * 取得所有的 Channel。
      */
-    void getChannels(String devKey);
+    void getChannels(String devKey, LoadChannelsCallback callback);
+
+    void getChannels(LoadChannelsCallback callback);
+
+    void getChannels(boolean isSubscribe, LoadChannelsCallback callback);
 
     /**
      * 将订阅的 Channel 保存到本地数据库中。
-     *
-     * @param channel
      */
     void saveChannel(Channel channel);
 
-    void saveChannels(String devKey, List<Channel> channels);
+    void saveChannels(List<Channel> channels);
+
+    void updateChannel(Channel channel);
+
+    void updateChannels(List<Channel> channels);
+
+    void refresh();
 
 }

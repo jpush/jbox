@@ -18,6 +18,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
 
     <application
         android:name=".AppApplication"
@@ -123,7 +125,10 @@
 
         <activity android:name=".channel.ChannelActivity">
         </activity>
-        <activity android:name=".main.ScanActivity">
+
+        <activity
+            android:name=".main.ScanActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
