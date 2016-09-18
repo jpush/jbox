@@ -167,7 +167,7 @@
                 formData.append('file', $('#file')[0].files[0]);
                 $.ajax({
                     type: 'POST',
-                    url: '/auth/uploadajax',
+                    url: '/auth/upload/{{ integration_id }}',
                     data: formData,
                     contentType: false,
                     processData: false,

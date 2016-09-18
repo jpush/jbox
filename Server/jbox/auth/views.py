@@ -1,4 +1,5 @@
 import os
+import uuid
 from flask import json, jsonify, render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
 from . import auth
@@ -73,15 +74,36 @@ def qrcode():
     return render_template('auth/qrcode.html', dev_key=developer.dev_key)
 
 
-@auth.route('/uploadajax', methods=['POST'])
-def uploadfile():
+@auth.route('/upload/avatar/<dev_key>', methods=['POST'])
+def upload_avatar(dev_key):
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            filename = file.filename
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
-            file_size = os.path.getsize(os.path.join(UPLOAD_FOLDER, filename))
-            return jsonify(name=filename, size=file_size)
+            developer = Developer.query.filter_by(dev_key=dev_key).first()
+            if developer is not None:
+                path = os.path.join(UPLOAD_FOLDER, developer.avatar)
+                if os.path.exists(path) and os.path.isfile(path):
+                    os.remove(path)
+                file_type = file.filename.rsplit('.', 1)[1]
+                filename = generate_file_name(developer.dev_key, file_type)
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+                return jsonify(name=filename)
+
+
+@auth.route('/upload/<integration_id>', methods=['POST'])
+def upload_icon(integration_id):
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            integration = Integration.query.filter_by(integration_id=integration_id).first()
+            if integration is not None:
+                path = os.path.join(UPLOAD_FOLDER, integration.icon)
+                if os.path.exists(path) and os.path.isfile(path):
+                    os.remove(path)
+                file_type = file.filename.rsplit('.', 1)[1]
+                filename = generate_file_name(integration.integration_id, file_type)
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+                return jsonify(name=filename)
 
 
 def get_channel_list():
@@ -113,3 +135,7 @@ def profile():
 def setting():
     developer = get_developer()
     return render_template('auth/setting.html', developer=developer)
+
+
+def generate_file_name(id, file_type):
+    return uuid.uuid3(uuid.NAMESPACE_DNS, id).__str__() + '.' + file_type

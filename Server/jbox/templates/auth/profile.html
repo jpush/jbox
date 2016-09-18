@@ -20,8 +20,9 @@
 {% endblock %}
 
 {% block content %}
-    <div id="first-layer"></div>
-    <img id="profile-bg" src="/static/images/profile-bg.png">
+    <div id="first-layer">
+        <img id="profile-bg" src="/static/images/profile-bg.png">
+    </div>
     <div id="second-layer">
         <button id="edit" class="jbox-font btn-lg" type="button"
                 onclick=window.location.href="{{ url_for('auth.setting') }}">编辑

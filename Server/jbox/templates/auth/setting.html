@@ -27,7 +27,11 @@
             <div class="row">
                 <div class="column span">
                     <p id="avatar-title" class="jbox-font span-title">头像图标</p>
-                    <img id="setting-avatar" src="/static/images/jiguang-bear.png">
+                    {% if developer.avatar %}
+                        <img id="setting-avatar" src="/static/images/{{ developer.avatar }}">
+                    {% else %}
+                        <img id="setting-avatar" src="/static/images/jiguang-bear.png">
+                    {% endif %}
                     <input id="resultFilename" type="hidden">
                 </div>
                 <div id="avatar-right" class="column">
@@ -73,7 +77,7 @@
                 formData.append('file', $('#file')[0].files[0]);
                 $.ajax({
                     type: 'POST',
-                    url: '/auth/uploadajax',
+                    url: '/auth/upload/avatar/{{ developer.dev_key }}',
                     data: formData,
                     contentType: false,
                     processData: false,

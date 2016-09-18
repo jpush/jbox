@@ -18,6 +18,7 @@ body {
 #first-layer {
     background: #7cc4ff;
     height: 259px;
+    position: relative;
 }
 
 #second-layer {
@@ -30,7 +31,7 @@ body {
 
 #profile-bg {
     position: absolute;
-    top: 136px;
+    top: 30px;
     left: 368px;
 }
 
