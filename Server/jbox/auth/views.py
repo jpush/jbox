@@ -95,13 +95,9 @@ def get_channel_list():
 
 
 def get_developer():
-    if 'openid' in session:
-        developer = Developer.query.filter_by(platform_id=session['openid']).first()
-        return developer
-    elif 'qq_token' in session:
+    if 'qq_token' in session:
         respMe = qq.get('/oauth2.0/me', {'access_token': session['qq_token'][0]})
         openid = json_to_dict(respMe.data)['openid']
-        session['openid'] = openid
         developer = Developer.query.filter_by(platform_id=openid).first()
         return developer
     return None

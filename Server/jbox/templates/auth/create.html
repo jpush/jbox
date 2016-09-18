@@ -158,8 +158,8 @@
         $(document).ready(function () {
             $('#name').val("{{ name }}");
             $('#description').val("{{ description }}");
-            console.log("{{ dev_key }}" + "-" + $('#input_hidding').val());
-            qrcode.makeCode("{{ dev_key }}" + "-" + $('#input_hidding').val());
+            console.log("{{ dev_key }}" + "_" + $('#input_hidding').val());
+            qrcode.makeCode("{{ dev_key }}" + "_" + $('#input_hidding').val());
             $("input[type='file']").change(function () {
                 previewImage(this);
                 event.preventDefault();
@@ -269,8 +269,8 @@
                 $(this).bind('click', function () {
                     $('#drop_down_title').text(this.id);
                     $('#input_hidding').val(this.id);
-                    console.log("{{ dev_key }}" + "-" + $('#input_hidding').val());
-                    qrcode.makeCode("{{ dev_key }}" + "-" + $('#input_hidding').val());
+                    console.log("{{ dev_key }}" + "_" + $('#input_hidding').val());
+                    qrcode.makeCode("{{ dev_key }}" + "_" + $('#input_hidding').val());
                 })
             });
         }
