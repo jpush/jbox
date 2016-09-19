@@ -60,7 +60,7 @@
                     <p class="jbox-font span-title">集成名称</p>
                     <p class="jbox-font span-desc">给你的集成设置名称</p>
                 </div>
-                <input id="name" class="description" title="应用名" type="text" value="{{ name }}"/>
+                <input id="name" class="description" title="应用名" type="text" value="{{ integration.name }}"/>
             </div>
             <hr class="divider">
             <div class="row">
@@ -68,7 +68,7 @@
                     <p class="jbox-font span-title">集成描述</p>
                     <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
                 </div>
-                <input id="description" class="description" title="应用描述" type="text" value="{{ description }}"/>
+                <input id="description" class="description" title="应用描述" type="text" value="{{ integration.description }}"/>
             </div>
             <hr class="divider">
             <div class="row">
@@ -76,7 +76,8 @@
                     <p class="jbox-font span-title">Webhook</p>
                     <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
                 </div>
-                <input id="webhook" class="jbox-font description" value="jbox.jiguang.cn:80/api.jbox.jiguang.cn/v1/message/{{ integration_id }}/{{ token }}"/>
+                <input id="webhook" class="jbox-font description"
+                       value="jbox.jiguang.cn:80/api.jbox.jiguang.cn/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
             </div>
             <div id="link-content">
                 <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
@@ -94,8 +95,8 @@
                         <input id="file" type="file" class="inputstyle">
                     </div>
                 </form>
-                {% if icon %}
-                    <img id="icon" src="/static/images/{{ icon }}" title="icon">
+                {% if integration.icon %}
+                    <img id="icon" src="/static/images/{{ integration.icon }}" title="icon">
                 {% else %}
                     <img id="icon" src="/static/images/image.png" title="default">
                 {% endif %}
@@ -156,8 +157,8 @@
         });
 
         $(document).ready(function () {
-            $('#name').val("{{ name }}");
-            $('#description').val("{{ description }}");
+            $('#name').val("{{ integration.name }}");
+            $('#description').val("{{ integration.description }}");
             console.log("{{ dev_key }}" + "_" + $('#input_hidding').val());
             qrcode.makeCode("{{ dev_key }}" + "_" + $('#input_hidding').val());
             $("input[type='file']").change(function () {
@@ -167,7 +168,7 @@
                 formData.append('file', $('#file')[0].files[0]);
                 $.ajax({
                     type: 'POST',
-                    url: '/auth/upload/{{ integration_id }}',
+                    url: '/auth/upload/{{ integration.integration_id }}',
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -223,10 +224,10 @@
             $.ajax({
                 type: "PUT",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/{{ integration_id }}/token",
+                url: "/api.jbox.jiguang.cn/v1/{{ integration.integration_id }}/token",
                 success: function (data) {
                     if (data != undefined) {
-                        $('#token').text("webhook:api.jobx.com/{{ integration_id }}/" + data['token']);
+                        $('#token').text("webhook:api.jobx.com/{{ integration.integration_id }}/" + data['token']);
                         toastr.success("已重新生成 token");
                     }
                 },
@@ -333,12 +334,12 @@
         $('#submit').click(function () {
             var name = $('#name').val();
             var desc = $('#description').val();
-            var path = $('#resultFilename').text();
+            var path = $('#resultFilename').val();
             var channel = $('#input_hidding').val();
             $.ajax({
                 type: "PUT",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration_id }}",
+                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
                 data: JSON.stringify({name: name, description: desc, icon: path, channel: channel}),
                 success: function (data) {
                     toastr.success("保存成功");
@@ -357,7 +358,7 @@
             $.ajax({
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration_id }}",
+                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
                 success: function (data) {
                     if (data['deleted']) {
                         toastr.success("删除成功");

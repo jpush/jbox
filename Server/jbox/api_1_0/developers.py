@@ -5,8 +5,9 @@ from . import api
 from ..models import Developer, db, Channel, Integration, generate_dev_key, generate_integration_id
 from .authentication import auth
 from ..main.views import qq, update_qq_api_request_data
+from config import basedir
 
-baseurl = 'jbox.jiguang.cn'
+baseurl = 'jbox.jiguang.cn:80'
 
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
@@ -39,7 +40,7 @@ def get_developer(platform, platform_id):
     developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
     if developer is None:
         abort(404)
-    if developer.avatar is None:
+    if developer.avatar is None or len(developer.avatar) == 0:
         url = baseurl + '/static/images/jiguang-bear.png'
     else:
         url = baseurl + '/static/images/' + developer.avatar
@@ -71,7 +72,7 @@ def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
         abort(404)
-    if developer.avatar is None:
+    if developer.avatar is None or len(developer.avatar) == 0:
         url = baseurl + '/static/images/jiguang-bear.png'
     else:
         url = baseurl + '/static/images/' + developer.avatar
@@ -154,7 +155,7 @@ def get_integrations(dev_key):
         abort(404)
     data_json = []
     for integration in integration_list:
-        if integration.icon is None:
+        if integration.icon is None or len(integration.icon) == 0:
             url = baseurl + '/static/images/image.png'
         else:
             url = baseurl + '/static/images/' + integration.icon
@@ -180,7 +181,7 @@ def get_integration(integration_id):
     developer = Developer.query.filter_by(id=integration.developer_id).first()
     if developer is None:
         abort(404)
-    if integration.icon is None:
+    if integration.icon is None or len(integration.icon) == 0:
         url = baseurl + '/static/images/image.png'
     else:
         url = baseurl + '/static/images/' + integration.icon
@@ -246,7 +247,7 @@ def create_integrations(dev_key):
 
 
 # PUT 修改 dev_key 下 所绑定的 integration
-@api.route('/developers/<dev_key>/<integration_id>', methods=['POST', 'PUT'])
+@api.route('/developers/<dev_key>/<integration_id>', methods=['PUT'])
 # @login_required
 def modificate_integration(dev_key, integration_id):
     if not request.json or not 'channel' in request.json:
@@ -284,6 +285,10 @@ def delete_integration(dev_key, integration_id):
             if len(integrations) == 1:
                 db.session.delete(channel)
             try:
+                if integration.icon is not None:
+                    path = basedir + '/jbox/static/images/' + integration.icon
+                    if os.path.exists(path) and os.path.isfile(path):
+                        os.remove(path)
                 db.session.delete(integration)
                 db.session.commit()
                 return jsonify({'deleted': True}), 200

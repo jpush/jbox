@@ -43,11 +43,7 @@ def create_integration(integration_id, token, channel):
 def edit_integration(integration_id):
     developer = get_developer()
     integration = Integration.query.filter_by(integration_id=integration_id).first()
-    name = integration.name
-    description = integration.description
     channel = integration.channel.channel
-    icon = integration.icon
-    token = integration.token
     channels = get_channel_list()
     dev_key = developer.dev_key
     return render_template('auth/create.html', **locals())
@@ -80,7 +76,7 @@ def upload_avatar(dev_key):
         file = request.files['file']
         if file and allowed_file(file.filename):
             developer = Developer.query.filter_by(dev_key=dev_key).first()
-            if developer is not None:
+            if developer is not None and developer.avatar is not None:
                 path = os.path.join(UPLOAD_FOLDER, developer.avatar)
                 if os.path.exists(path) and os.path.isfile(path):
                     os.remove(path)
@@ -96,7 +92,7 @@ def upload_icon(integration_id):
         file = request.files['file']
         if file and allowed_file(file.filename):
             integration = Integration.query.filter_by(integration_id=integration_id).first()
-            if integration is not None:
+            if integration is not None and integration.icon is not None:
                 path = os.path.join(UPLOAD_FOLDER, integration.icon)
                 if os.path.exists(path) and os.path.isfile(path):
                     os.remove(path)
