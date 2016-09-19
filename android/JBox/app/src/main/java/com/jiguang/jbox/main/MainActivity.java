@@ -2,7 +2,10 @@ package com.jiguang.jbox.main;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.text.format.DateUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +33,7 @@ import java.util.List;
 import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MessagesContract.View {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private Toolbar mTopBar;
 
@@ -40,7 +43,7 @@ public class MainActivity extends Activity
 
     private MessageListAdapter mAdapter;
 
-    private MessagesPresenter mMessagesPresenter;
+    private MessageRepository mMessagesRepository;
 
     private List<Developer> mDevList;
 
@@ -63,6 +66,7 @@ public class MainActivity extends Activity
                 mChannelList = channels;
                 navigationDrawerFragment.initData(channels);
                 if (channels != null && !channels.isEmpty()) {
+                    // TODO: 初始化数据。
 
                 }
             }
@@ -74,64 +78,48 @@ public class MainActivity extends Activity
         });
 
         MessagesLocalDataSource msgLocalDataSource = MessagesLocalDataSource.getInstance(this);
-        MessageRepository msgRepository = MessageRepository.getInstance(msgLocalDataSource);
-        mMessagesPresenter = new MessagesPresenter(msgRepository, this);
+        mMessagesRepository = MessageRepository.getInstance(msgLocalDataSource);
 
         mTopBar = (Toolbar) findViewById(R.id.toolbar);
+        mTopBar.setNavigationIcon(R.drawable.ic_navigation);
+
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mTopBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         mTvHint = (TextView) findViewById(R.id.tv_hint);
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
         mAdapter = new MessageListAdapter(new ArrayList<Message>(0));
         mMsgListView.setAdapter(mAdapter);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mMessagesPresenter.start(); // 初始化数据。
-        JPushInterface.onPause(this);
+        JPushInterface.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        JPushInterface.onResume(this);
+        JPushInterface.onPause(this);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         if (mChannelList != null) {
-            mTopBar.setTitle(mChannelList.get(position).getName());
+            Channel channel = mChannelList.get(position);
+            mTopBar.setTitle(channel.getName());
+            // TODO:加载 message 数据。
+
         }
     }
 
-    @Override
-    public void showMessages(List<Message> messages) {
-        if (messages != null && !messages.isEmpty()) {
-            mAdapter.replaceData(messages);
-
-            mTvHint.setVisibility(View.GONE);
-            mMsgListView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public boolean isActive() {
-        return false;
-    }
-
-    @Override
-    public void setPresenter(Object presenter) {
-
-    }
-
-    private void initPresenter() {
-        MessageDataSource localDataSource = MessagesLocalDataSource.getInstance(this);
-        MessageRepository repository = MessageRepository.getInstance(localDataSource);
-        mMessagesPresenter = new MessagesPresenter(repository, this);
-    }
 
     private static class MessageListAdapter extends BaseAdapter {
 

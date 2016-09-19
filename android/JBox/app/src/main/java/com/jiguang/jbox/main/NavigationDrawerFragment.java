@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.jiguang.jbox.R;
@@ -33,12 +34,19 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
     private NavigationDrawerCallbacks mCallbacks;
 
     private DrawerLayout mDrawerLayout;
+
+    private SearchView mSearchView;
+
     private ListView mDrawerListView;
+
     private DrawerListAdapter mChannelListAdapter;
+
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
+
     private boolean mFromSavedInstanceState;
+
     private boolean mUserLearnedDrawer;
 
     private boolean mIsEditChannels = false;
@@ -63,6 +71,12 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.drawer_main, container, false);
+        mFragmentContainerView = v;
+
+        mDrawerLayout = (DrawerLayout) v.findViewById(R.id.drawer_layout);
+
+        // TODO：搜索功能。
+        mSearchView = (SearchView) v.findViewById(R.id.search_view);
 
         ImageView ivEdit = (ImageView) v.findViewById(R.id.iv_edit);
         ivEdit.setOnClickListener(this);

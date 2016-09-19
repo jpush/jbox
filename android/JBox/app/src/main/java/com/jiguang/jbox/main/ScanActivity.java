@@ -43,13 +43,13 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     REQUEST_CODE_PERMISSION_CAMERA);
+            mScanView.startCamera();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mScanView.startCamera();
     }
 
     @Override

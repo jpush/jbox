@@ -16,8 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/widget_height"
             android:background="@color/colorPrimary"
-            tools:title="Channel 1"
-            />
+            tools:title="Channel 1">
+
+        </Toolbar>
 
         <ListView
             android:id="@+id/lv_msg"
