@@ -33,6 +33,7 @@ def manage():
 
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>', methods=['GET', 'POST'])
 def create_integration(integration_id, token, channel):
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
     channels = get_channel_list()
     developer = get_developer()
     dev_key = developer.dev_key
