@@ -30,9 +30,7 @@ body {
 }
 
 #profile-bg {
-    position: absolute;
-    top: 30px;
-    left: 368px;
+    margin-top: 30px;
 }
 
 #edit {
