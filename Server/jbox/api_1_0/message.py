@@ -38,9 +38,6 @@ def send_message(integration_id, token):
                                                              'message': request.json['message']})
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
     push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
-    print('huangmin')
-    print(developer.dev_key)
-    print(integration.channel)
     push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
                                          'datetime': int(time.time())})

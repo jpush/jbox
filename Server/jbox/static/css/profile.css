@@ -56,6 +56,7 @@ body {
     width: 164px;
     height: 164px;
     border-radius: 82px;
+    z-index: 1000;
 }
 
 #display-name {
