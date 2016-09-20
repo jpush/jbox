@@ -41,7 +41,7 @@
                             <input id="file" type="file" class="inputstyle">
                         </div>
                     </form>
-                    <p id="avatar-desc" class="jbox-font"> 选择一张图片作为你的头像</p>
+                    <p id="avatar-desc" class="jbox-font"> 选择一张图片作为你的头像(不超过2M)</p>
                 </div>
             </div>
             <hr class="divider">
@@ -70,11 +70,19 @@
         $(document).ready(function () {
             $('#name-input').val("{{ developer.username }}");
             $('#desc-input').val("{{ developer.description }}");
+
+
+
             $("input[type='file']").change(function () {
+                var formData = new FormData();
+                var file = $('#file')[0].files[0];
+                formData.append('file', file);
+                if (file.size > 2048000) {
+                    alert("图片大小超过2M，请重新上传");
+                    return false;
+                }
                 previewImage(this);
                 event.preventDefault();
-                var formData = new FormData();
-                formData.append('file', $('#file')[0].files[0]);
                 $.ajax({
                     type: 'POST',
                     url: '/auth/upload/avatar/{{ developer.dev_key }}',

@@ -44,6 +44,7 @@ body {
     margin-right: 61px;
     width: 133px;
     align-self: flex-end;
+    z-index: 1000;
 }
 
 #edit:hover {

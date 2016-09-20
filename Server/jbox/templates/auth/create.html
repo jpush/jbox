@@ -87,7 +87,7 @@
             <div id="integration-content">
                 <div class="column span description-div">
                     <p class="jbox-font span-title">集成图标</p>
-                    <p class="jbox-font span-desc">选择一张图片作为集成图标</p>
+                    <p class="jbox-font span-desc">选择一张图片作为集成图标(不超过2M)</p>
                 </div>
                 <form id="uploadform" method="post" enctype="multipart/form-data">
                     <div class="upload upload-btn">
@@ -162,10 +162,15 @@
             console.log("{{ dev_key }}" + "_" + $('#input_hidding').val());
             qrcode.makeCode("{{ dev_key }}" + "_" + $('#input_hidding').val());
             $("input[type='file']").change(function () {
+                var formData = new FormData();
+                var file = $('#file')[0].files[0];
+                formData.append('file', file);
+                if (file.size > 2048000) {
+                    alert("图片大小超过2M，请重新上传");
+                    return false;
+                }
                 previewImage(this);
                 event.preventDefault();
-                var formData = new FormData();
-                formData.append('file', $('#file')[0].files[0]);
                 $.ajax({
                     type: 'POST',
                     url: '/auth/upload/{{ integration.integration_id }}',
