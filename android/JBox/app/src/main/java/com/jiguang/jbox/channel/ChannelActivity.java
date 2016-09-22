@@ -26,8 +26,11 @@ import com.jiguang.jbox.data.source.DeveloperRepository;
 import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
 import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
 import com.jiguang.jbox.data.source.remote.DeveloperRemoteDataSource;
+import com.jiguang.jbox.util.HttpUtil;
 import com.jiguang.jbox.util.ViewHolder;
+import com.jiguang.jbox.view.TopBar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,14 +54,22 @@ public class ChannelActivity extends Activity {
 
     private List<Channel> mChannels;
 
-    private Set<String> mTags;  // 订阅 Channel 的 tag
+    private Set<String> mTags = new HashSet<>();  // 订阅 Channel 的 tag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel);
 
-        String devKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
+        final String devKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
+
+        TopBar topBar = (TopBar) findViewById(R.id.topBar);
+        topBar.setLeftClick(new View.OnClickListener() {    // 顶部栏返回事件。
+            @Override
+            public void onClick(View view) {
+                onBack();
+            }
+        });
 
         mListView = (ListView) findViewById(R.id.lv_channel);
 
@@ -71,6 +82,7 @@ public class ChannelActivity extends Activity {
         final View headView = getLayoutInflater().inflate(
                 R.layout.view_subscribe_channel, mListView, false);
 
+        // 初始化开发者信息。
         devRepository.getDeveloper(devKey, new DeveloperDataSource.LoadDevCallback() {
             @Override
             public void onDevLoaded(Developer dev) {
@@ -96,7 +108,9 @@ public class ChannelActivity extends Activity {
 
         mListView.addHeaderView(headView);
 
-        // 获取 channel 信息。
+        // 服务器端的 Channel 列表,要和本地数据库中的做对比。
+        final List<String> remoteChannels = HttpUtil.getInstance().requestChannels(devKey);
+
         ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(this);
         mChannelRepository = ChannelRepository.getInstance(channelLocalDataSource);
 
@@ -110,21 +124,39 @@ public class ChannelActivity extends Activity {
         mChannelRepository.getChannels(devKey, new ChannelDataSource.LoadChannelsCallback() {
             @Override
             public void onChannelsLoaded(List<Channel> channels) {
-                for (Channel channel : channels) {
-                    if (channel.isSubscribe()) {
-                        mTags.add(channel.getDevKey() + "_" + channel.getName());
+                if (remoteChannels != null) {
+                    // 从本地获取的 Channel, 将订阅状态配置到服务器获取的 Channel。
+                    mChannels = new ArrayList<Channel>();
+
+                    for (int i = 0; i < remoteChannels.size(); i++) {
+                        String channelName = remoteChannels.get(i);
+                        if (remoteChannels.contains(channelName)) {
+                            mChannels.add(channels.get(i));
+
+                        } else {
+                            Channel channel = new Channel(channelName);
+                            channel.setDevKey(devKey);
+                            mChannels.add(channel);
+                        }
                     }
+                } else {
+                    // 如果为 null,代表网络请求错误。
+                    mChannels = channels;
                 }
-                mListAdapter = new SubChannelListAdapter(channels, channelCheckedListener);
-                mListView.setAdapter(mListAdapter);
             }
 
             @Override
             public void onDataNotAvailable() {
-
+                // 如果本地还没有数据,就直接使用从服务器获取的数据。
+                mChannels = new ArrayList<>();
+                for (String channelName : remoteChannels) {
+                    mChannels.add(new Channel(channelName));
+                }
             }
         });
 
+        mListAdapter = new SubChannelListAdapter(mChannels, channelCheckedListener);
+        mListView.setAdapter(mListAdapter);
     }
 
     @Override
@@ -135,26 +167,31 @@ public class ChannelActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        onBack();   // 当点击回退键,保存数据,并打上 tag。
+    }
 
-        mTags = new HashSet<>();
+    /**
+     * 将数据保存到数据库中，并打上 JPush TAG。
+     */
+    private void onBack() {
         for (Channel c : mChannels) {
-           if (c.isSubscribe()) {
-               mTags.add(c.getDevKey() + "_" + c.getName());
-           }
+            if (c.isSubscribe()) {
+                mTags.add(c.getDevKey() + "_" + c.getName());
+            }
         }
 
-        // TODO: 将数据保存到数据库中，并打上 TAG。
         if (!mTags.isEmpty()) {
             JPushInterface.setTags(this, mTags, new TagAliasCallback() {
                 @Override
                 public void gotResult(int result, String desc, Set<String> set) {
                     if (result == 0) {
                         Toast.makeText(getApplicationContext(), "订阅成功", Toast.LENGTH_SHORT).show();
-                        // TODO：将数据保存到数据库中。
-
+                        // 将数据保存到数据库中。
+                        mChannelRepository.saveChannels(mChannels);
                     } else {
                         Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
                     }
+                    finish();
                 }
             });
         }

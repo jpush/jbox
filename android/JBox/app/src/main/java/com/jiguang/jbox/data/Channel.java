@@ -40,6 +40,10 @@ public class Channel {
         mName = name;
     }
 
+    public void setId(String id) {
+        mId = id;
+    }
+
     public String getId() {
         return mId;
     }

@@ -85,7 +85,7 @@ public class ChannelRepository implements ChannelDataSource {
 
                 @Override
                 public void onDataNotAvailable() {
-                    callback.onDataNotAvailable();
+                    callback.onDataNotAvailable();  // 如果查询结果为空,会走这个回调。
                 }
             });
         }

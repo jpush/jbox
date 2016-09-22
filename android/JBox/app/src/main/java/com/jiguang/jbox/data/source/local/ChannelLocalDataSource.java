@@ -246,6 +246,17 @@ public class ChannelLocalDataSource implements ChannelDataSource {
     public void saveChannels(List<Channel> channels) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
+        if (channels == null || channels.isEmpty()) {
+            return;
+        }
+
+        // 先删掉已存在的数据。
+        String devKey = channels.get(0).getDevKey();
+
+        String whereClaus = ChannelEntry.COLUMN_NAME_DEV_KEY + " = ?";
+
+        db.delete(ChannelEntry.TABLE_NAME, whereClaus, new String[]{devKey});
+
         ContentValues value = null;
         for (Channel channel : channels) {
             value = new ContentValues();
@@ -301,6 +312,20 @@ public class ChannelLocalDataSource implements ChannelDataSource {
         }
 
         db.close();
+    }
+
+    @Override
+    public void deleteChannels(String devKey) {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        String whereClause = ChannelEntry.COLUMN_NAME_DEV_KEY + " = ?";
+
+        db.delete(ChannelEntry.TABLE_NAME, whereClause, new String[]{devKey});
+    }
+
+    @Override
+    public void deleteAllChannels() {
+
     }
 
     @Override

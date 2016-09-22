@@ -9,7 +9,6 @@ import android.text.TextUtils;
 
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 
 import org.json.JSONArray;
@@ -28,6 +27,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static android.content.ContentValues.TAG;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class HttpUtil {
@@ -79,7 +79,12 @@ public class HttpUtil {
         return null;
     }
 
-    public List<Channel> requestChannels(String devKey) {
+    /**
+     * 返回查询到的 Channel 名称。
+     * @param devKey
+     * @return Channel 名称列表。
+     */
+    public List<String> requestChannels(String devKey) {
         Resources resources = AppApplication.getContext().getResources();
         String url = String.format(resources.getString(R.string.url_get_channels), devKey);
 
@@ -89,15 +94,15 @@ public class HttpUtil {
             if (response.isSuccessful()) {
                 String body = response.body().string();
                 JSONArray jsonArr = new JSONArray(body);
-                List<Channel> channels = new ArrayList<>();
+                List<String> channels = new ArrayList<>();
                 for (int i = 0; i < jsonArr.length(); i++) {
                     String channelName = jsonArr.getString(i);
-                    Channel channel = new Channel(channelName);
-                    channels.add(channel);
+                    channels.add(channelName);
                 }
                 return channels;
             } else {
-                throw new IOException("Unexpected code " + response);
+                LogUtil.LOGE(TAG, "Unexpected code " + response);
+                return null;
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();

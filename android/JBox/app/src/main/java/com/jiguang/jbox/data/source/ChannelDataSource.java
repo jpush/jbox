@@ -50,6 +50,10 @@ public interface ChannelDataSource {
 
     void updateChannels(List<Channel> channels);
 
+    void deleteChannels(String devKey);
+
+    void deleteAllChannels();
+
     void refresh();
 
 }
