@@ -5,9 +5,10 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/post2channel.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for ('static', filename='js/')}}"></script>
+    <script type="text/javascript" src="{{ url_for ('static', filename='js/jquery-ui.js') }}"></script>
 {% endblock %}
 
 {% block title %}极光宝盒-创建集成{% endblock %}
@@ -82,7 +83,7 @@
         $(function () {
             $('#selected_channel').autocomplete({
                 maxHeight: 400,
-                lookup: list,
+                source: list,
                 onSelect: function (suggestion) {
                     $(this).val(suggestion.value);
                 }
@@ -107,7 +108,7 @@
 
         $('#create_integration_btn').click(function () {
             var channel = $('#selected_channel').val();
-            console.log('create integration, channel: ' +　channel);
+            console.log('create integration, channel: ' + channel);
             if (channel != '') {
                 $.ajax({
                     type: "POST",
