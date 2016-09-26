@@ -44,6 +44,7 @@ def send_message(integration_id, token):
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
     push.platform = jpush.all_
+
     try:
         response = push.send()
         print(response)
@@ -56,8 +57,7 @@ def send_message(integration_id, token):
     except common.JPushFailure:
         print("JPushFailure")
         response = common.JPushFailure.response
-        return jsonify({'error': 'JPush failed, please read the code and refer code document',
-                        'error_code': response.status_code}), 500
+        return jsonify({'error': 'JPush failed, please read the code and refer code document'}), 500
     except:
         print("Exception")
     return jsonify({}), 200
