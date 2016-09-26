@@ -214,7 +214,8 @@ def create_integrations(dev_key):
                 new_integration = Integration(developer=developer,
                                               integration_id=new_integration_id,
                                               channel=channel,
-                                              description='')
+                                              description='',
+                                              icon='')
                 new_integration.insert_to_db()
                 token = new_integration.generate_auth_token(3600000000)
                 new_integration.token = token.decode('utf-8')
@@ -233,7 +234,8 @@ def create_integrations(dev_key):
         new_integration = Integration(developer=developer,
                                       integration_id=new_integration_id,
                                       channel=new_channel,
-                                      description='')
+                                      description='',
+                                      icon='')
         new_integration.insert_to_db()
         token = new_integration.generate_auth_token(3600000000)
         new_integration.token = token.decode('utf-8')
