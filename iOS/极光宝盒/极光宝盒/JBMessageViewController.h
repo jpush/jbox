@@ -11,4 +11,6 @@
 
 @interface JBMessageViewController : UIViewController
 @property(nonatomic, retain)JBChannel *channel;
+@property(nonatomic, assign)BOOL isSlideOut;
+-(void)slide;
 @end

@@ -2,4 +2,5 @@ target '极光宝盒' do
     pod 'AFNetworking'
     pod 'MJRefresh'
     pod 'FMDB'
+    pod 'SDWebImage'
 end

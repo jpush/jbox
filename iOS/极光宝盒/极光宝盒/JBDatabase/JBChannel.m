@@ -9,5 +9,7 @@
 #import "JBChannel.h"
 
 @implementation JBChannel
-
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key{
+    
+}
 @end

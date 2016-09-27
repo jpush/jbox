@@ -9,8 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "JBChannel.h"
 #import "JBMessage.h"
+#import "JBDevkey.h"
 
 @interface JBDatabase : NSObject
+
++(void)insertDevkey:(JBDevkey*)devkey;
++(void)updateDevkey:(JBDevkey*)devkey;
++(NSMutableArray*)getDevkeys;
++(BOOL)devkeyInDatabase:(NSString*)devkey;
++(JBDevkey*)getDevkeyInfoWithDevkey:(NSString*)devkeyStr;
 
 +(void)createChannels:(NSArray*)channels;
 +(void)insertMessages:(NSArray*)mArray;
@@ -19,12 +26,13 @@
 +(NSMutableArray*)getUnreadMessagesFromChannel:(JBChannel*)channel;
 +(void)setAllMessagesReadWithChannel:(JBChannel*)channel;
 
-+(void)updateChannelDatabase;
 +(void)insertChannel:(JBChannel*)channel;
-+(NSMutableArray*)getAllChannels;
 +(NSMutableArray*)getAllSubscribedChannels;
 +(NSMutableArray*)getChannelsFromDevkey:(NSString*)devkey;
++(void)checkAndDeleteChannelsFromDevkey:(NSString*)devkey newChannels:(NSArray*)newChannels;
 +(void)updateChannel:(JBChannel*)channel;
 +(void)deleteChannel:(JBChannel*)channel;
+
++(NSMutableArray*)getSortedDevkeyAndChannel;
 
 @end

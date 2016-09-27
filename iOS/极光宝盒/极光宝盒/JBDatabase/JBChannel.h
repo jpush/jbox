@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface JBChannel : NSObject
-@property(nonatomic, retain)NSString *devkey;
-@property(nonatomic, retain)NSString *name;
-@property(nonatomic, retain)NSString *isTag;// 0/1
+@property(nonatomic, retain)NSString *icon;
+@property(nonatomic, retain)NSString *dev_key;
+@property(nonatomic, retain)NSString *name;//channel 字段
+@property(nonatomic, retain)NSString *isSubscribed;// 0/1
 @end

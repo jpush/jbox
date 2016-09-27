@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JBMessageViewController">
@@ -16,49 +17,45 @@
             <rect key="frame" x="0.0" y="64" width="375" height="603"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yTF-bS-ag1">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="159"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="message_bg" translatesAutoresizingMaskIntoConstraints="NO" id="oQd-NP-CW0">
-                            <rect key="frame" x="95" y="0.0" width="280" height="159"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="159" id="Fxn-Xv-1Vp"/>
-                            </constraints>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="oQd-NP-CW0" secondAttribute="trailing" id="EaX-jt-Cca"/>
-                        <constraint firstItem="oQd-NP-CW0" firstAttribute="top" secondItem="yTF-bS-ag1" secondAttribute="top" id="L2X-PG-jhj"/>
-                        <constraint firstAttribute="height" constant="159" id="M9b-hp-VF6"/>
-                        <constraint firstAttribute="bottom" secondItem="oQd-NP-CW0" secondAttribute="bottom" id="QT9-Ka-39B"/>
-                    </constraints>
-                </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3zW-qA-IY1">
-                    <rect key="frame" x="0.0" y="159" width="375" height="444"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="603" id="Lsk-5M-49Q"/>
+                        <constraint firstAttribute="width" constant="375" id="Srw-zk-v62"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Lsk-5M-49Q"/>
+                            <exclude reference="Srw-zk-v62"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="kYs-8k-yvB"/>
                         <outlet property="delegate" destination="-1" id="Izv-4f-mAy"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="3zW-qA-IY1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="3Wg-OS-z5M"/>
-                <constraint firstItem="yTF-bS-ag1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="BC8-Vf-8dt"/>
-                <constraint firstItem="yTF-bS-ag1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Gtd-Dy-p20"/>
-                <constraint firstAttribute="trailing" secondItem="3zW-qA-IY1" secondAttribute="trailing" id="PoP-tp-hua"/>
-                <constraint firstItem="3zW-qA-IY1" firstAttribute="top" secondItem="yTF-bS-ag1" secondAttribute="bottom" id="gSx-rY-gPZ"/>
-                <constraint firstAttribute="trailing" secondItem="yTF-bS-ag1" secondAttribute="trailing" id="hcK-9g-cS7"/>
-                <constraint firstAttribute="bottom" secondItem="3zW-qA-IY1" secondAttribute="bottom" id="waE-7v-Kkc"/>
+                <constraint firstAttribute="bottom" secondItem="3zW-qA-IY1" secondAttribute="bottom" id="26n-vy-tb3"/>
+                <constraint firstAttribute="trailing" secondItem="3zW-qA-IY1" secondAttribute="trailing" id="2Gw-tN-6EN"/>
+                <constraint firstAttribute="trailing" secondItem="3zW-qA-IY1" secondAttribute="trailing" id="4X1-gc-bn7"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5Zg-bA-aPE"/>
+                <constraint firstAttribute="bottom" secondItem="3zW-qA-IY1" secondAttribute="bottom" id="9DM-ex-qiQ"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Djl-7i-qrM"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="e4r-oQ-Vrg"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="jKM-cO-CBm"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="336.5" y="384.5"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="26n-vy-tb3"/>
+                    <exclude reference="4X1-gc-bn7"/>
+                    <exclude reference="5Zg-bA-aPE"/>
+                    <exclude reference="Djl-7i-qrM"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="706.5" y="362.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="message_bg" width="280" height="145"/>
-    </resources>
 </document>

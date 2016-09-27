@@ -16,11 +16,20 @@
 
 
 #import "UIColor+Hex.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 static NSString *CellReuseIdentifier = @"cell";
-static NSString *JBChannelTableViewControllerShouldUpdate = @"JBChannelTableViewControllerShouldUpdate";
-static NSString *JBMessageViewControllerShouldUpdate = @"JBMessageViewControllerShouldUpdate";
+static NSString *JBSlideViewShouldUpdate = @"JBSlideViewShouldUpdate";
 
+static NSString *JBChannelMessagesReaded = @"JBChannelMessagesReaded";
+
+static NSString *JBSlideTableViewCellShouldUpdate = @"JBSlideTableViewCellShouldUpdate";
+
+
+#define JBSharedNavigationController ((UINavigationController*)[[UIApplication sharedApplication] keyWindow].rootViewController)
+
+#define UIScreenWidth [UIScreen mainScreen].bounds.size.width
+#define UIScreenHeight [UIScreen mainScreen].bounds.size.height
 
 #define WEAK_SELF(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 

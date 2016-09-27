@@ -10,7 +10,7 @@
 #import <AFNetworking.h>
 #import "JBDatabase.h"
 
-NSString *const base_url = @"http://192.168.8.235:8888/api.jbox.jiguang.cn/v1/developers/";
+NSString *const base_url = @"http://jbox.jiguang.cn:80/api.jbox.jiguang.cn/v1/developers/";
 
 #define IsReachable [AFNetworkReachabilityManager sharedManager].isReachable
 #define StrBy(a,b) [NSString stringWithFormat:@"%@%@", a, b]
@@ -28,36 +28,40 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 
 //获取 developer 信息
 +(void)getDevInfoWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
-    [JBNetwork GET:devkey paramtes:devkey complete:^(id responseObject) {
+    [JBNetwork GET:devkey paramtes:nil complete:^(id responseObject) {
         complete(responseObject);
     }];
 }
 
 //获取 devkey 下的 channel 列表
 +(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
-    [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+    [JBNetwork GET:StrBy(devkey, @"/integrations") paramtes:nil complete:^(id responseObject) {
+        NSArray *downloadChannels = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSMutableArray *downloadChannelNames = [NSMutableArray array];
+        for (NSDictionary *dict in downloadChannels) {
+            [downloadChannelNames addObject:dict[@"channel"]];
+        }
         //把数据库里有，但是下载没有的数据删掉
-        NSArray *downloadChannels = dict[@"channels"];
         NSArray *storedChannels = [JBDatabase getChannelsFromDevkey:devkey];
         NSMutableArray *storedChannelNames = [NSMutableArray array];
         for (JBChannel *channel in storedChannels) {
             [storedChannelNames addObject:channel.name];
         }
-        [storedChannelNames removeObjectsInArray:downloadChannels];
+        [storedChannelNames removeObjectsInArray:downloadChannelNames];
         for (NSString *name in storedChannelNames) {
             JBChannel *channel = [JBChannel new];
             channel.name = name;
-            channel.devkey = devkey;
+            channel.dev_key = devkey;
             [JBDatabase deleteChannel:channel];
         }
 
         NSMutableArray *channels = [NSMutableArray array];
-        for (NSString *name in dict[@"channels"]) {
+        for (NSDictionary *dict in downloadChannels) {
             JBChannel *channel = [JBChannel new];
-            channel.name = name;
-            channel.isTag = @"1";
-            channel.devkey = devkey;
+            channel.name       = dict[@"channel"];
+            channel.icon       = dict[@"icon"];
+            channel.isSubscribed = @"0";
+            channel.dev_key    = devkey;
             [channels addObject:channel];
         }
         [JBDatabase createChannels:channels];
@@ -109,7 +113,7 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
     NSString *authValue = [NSString stringWithFormat:@"Basic %@", [authData base64EncodedStringWithOptions:0]];
 
     [requestSerializer setValue:authValue forHTTPHeaderField:@"Authorization"];
-    [requestSerializer setValue:@"hVkbyLdeA7K0Cm9BUgY6" forHTTPHeaderField:@"dev_key"];
+//    [requestSerializer setValue:@"hVkbyLdeA7K0Cm9BUgY6" forHTTPHeaderField:@"dev_key"];
     [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
     NSString *requestUrlStr = [NSString stringWithFormat:@"%@%@",base_url,urlStr];
