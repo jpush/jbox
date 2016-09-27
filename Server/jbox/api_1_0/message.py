@@ -61,3 +61,20 @@ def send_message(integration_id, token):
     except:
         print("Exception")
     return jsonify({}), 200
+
+
+@api.route('jbox.jiguang.cn/plugins/github/<integration_id>', methods=['POST'])
+def send_github_msg(integration_id):
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
+    if integration is None:
+        abort(404)
+    developer = Developer.query.filter_by(id=integration.developer_id).first()
+    if developer is None:
+        abort(404)
+
+    _jpush = jpush.JPush(u'abcacdf406411fa656ee11c3', u'682acd395df807d97e24eb50')
+    push = _jpush.create_push()
+    _jpush.set_logging("DEBUG")
+    push.audience = jpush.audience(
+        jpush.tag(developer.dev_key + '_' + integration.channel.channel)
+    )

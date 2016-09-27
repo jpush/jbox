@@ -1,13 +1,32 @@
 import os
 import uuid
-from flask import json, jsonify, render_template, redirect, request, url_for, flash, session
+from flask import Flask, json, jsonify, render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_oauthlib.client import OAuth
 from . import auth
 from config import basedir
-from ..models import Developer, Integration
+from ..models import db, Channel, Developer, Integration, generate_integration_id
 from ..main.views import update_qq_api_request_data, qq, json_to_dict
+
+app = Flask(__name__)
+app.debug = True
+app.secret_key = 'development'
+oauth = OAuth(app)
+
 UPLOAD_FOLDER = basedir + '/jbox/static/images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+GITHUB_CLIENT_ID = "c293cc8df7ff97e14237"
+GITHUB_CLIENT_SECRET = "b9eb46397fa59c4415a7a741d6f5490896ab710f"
+
+github = oauth.remote_app(
+    'github',
+    consumer_key=GITHUB_CLIENT_ID,
+    consumer_secret=GITHUB_CLIENT_SECRET,
+    base_url='https://api.github.com/',
+    request_token_url=None,
+    access_token_url='https://github.com/login/oauth/access_token',
+    authorize_url='https://github.com/login/oauth/authorize'
+)
 
 
 def allowed_file(filename):
@@ -31,7 +50,8 @@ def manage():
     # return render_template('index.html')
 
 
-@auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>', methods=['GET', 'POST'])
+@auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>',
+            methods=['GET', 'POST'])
 def create_integration(integration_id, token, channel):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     channels = get_channel_list()
@@ -136,3 +156,57 @@ def setting():
 
 def generate_file_name(id, file_type):
     return uuid.uuid3(uuid.NAMESPACE_DNS, id).__str__() + '.' + file_type
+
+
+@auth.route('/github/authorize')
+def authorize_github():
+    return github.authorize(callback=url_for('auth.new_github_integration', _external=True))
+
+
+@auth.route('/github/integrations', methods=['GET', 'POST'])
+def new_github_integration():
+    resp = github.authorized_response()
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error_reason'],
+            request.args['error_description']
+        )
+    session['github_token'] = (resp['access_token'], '')
+    token = session['github_token'][0]
+    new_integration_id = generate_integration_id()
+    developer = get_developer()
+    channel = 'github'
+    github_channel = Channel.query.filter_by(developer=developer, channel=channel).first()
+    if github_channel is None:
+        github_channel = Channel(developer=developer, channel=channel)
+        db.session.add(github_channel)
+        db.session.commit()
+    integration = Integration(developer=developer,
+                              integration_id=new_integration_id,
+                              channel=github_channel,
+                              description='',
+                              icon='',
+                              token=token)
+    db.session.add(integration)
+    db.session.commit()
+    # POST create webhook
+    # respMe = github.get('https://api.github.com/user', {'access_token': session['github_token'][0]})
+    resp = github.post('https://api.github.com/repos/KenChoi1992/jchat-android/hooks',
+                       {'data': jsonify({"name": "web", "active": True,
+                                     "events": [
+                                         "push",
+                                         "pull_request"
+                                     ],
+                                     "config": {
+                                         "url": "http://jbox.jiguang.cn/plugins/github/webhook",
+                                         "content_type": "json"
+                                     }}), 'content_type': "json", 'access_token': session['github_token'][0]})
+    print(resp.data)
+    # email = respMe.data['email']
+    # print("email:" + email)
+    return redirect(url_for('auth.edit_integration', integration_id=new_integration_id))
+
+
+@github.tokengetter
+def get_github_oauth_token():
+    return session.get('github_token')

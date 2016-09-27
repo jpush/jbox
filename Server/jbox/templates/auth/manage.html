@@ -27,6 +27,11 @@
         <button class="create-integration"
                 onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>新建自定义集成
         </button>
+        <div>
+            <a class="btn" href="{{ url_for('auth.authorize_github') }}">
+                Authenticate your GitHub account
+            </a>
+        </div>
 
         <table id="table" class="table">
             <thead>
