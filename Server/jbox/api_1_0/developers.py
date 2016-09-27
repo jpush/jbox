@@ -71,7 +71,9 @@ def get_developer(platform, platform_id):
 def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
-        abort(404)
+        print("can not fint this developer in in devkey" + dev_key)
+        return jsonify({'error':'can not find this developer'})
+        # abort(404)
     if developer.avatar is None or len(developer.avatar) == 0:
         url = baseurl + '/static/images/jiguang-bear.png'
     else:
