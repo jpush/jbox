@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_sub_channel_head"
+    android:paddingBottom="16dp"
     android:minHeight="@dimen/sub_channel_head_height">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -13,7 +14,7 @@
         android:layout_height="@dimen/sub_channel_circle_height"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        tools:src="@drawable/default_avatar"
+        android:src="@drawable/default_avatar"
         />
 
     <TextView
@@ -29,7 +30,7 @@
         />
 
     <TextView
-        android:id="@+id/tv_description"
+        android:id="@+id/tv_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_name"
@@ -37,7 +38,7 @@
         android:layout_marginTop="16dp"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        tools:text="@string/channel_dev_description"
+        android:text="@string/channel_dev_description"
         />
 
 

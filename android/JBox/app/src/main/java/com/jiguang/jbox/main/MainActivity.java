@@ -37,8 +37,6 @@ public class MainActivity extends Activity
 
     private Toolbar mTopBar;
 
-    private TextView mTvHint;
-
     private ListView mMsgListView;
 
     private MessageListAdapter mAdapter;
@@ -66,8 +64,8 @@ public class MainActivity extends Activity
                 mChannelList = channels;
                 navigationDrawerFragment.initData(channels);
                 if (channels != null && !channels.isEmpty()) {
-                    // TODO: 初始化数据。
-
+                    // 初始化侧边栏 Channel 列表数据。
+                    navigationDrawerFragment.initData(channels);
                 }
             }
 
@@ -91,11 +89,13 @@ public class MainActivity extends Activity
             }
         });
 
-        mTvHint = (TextView) findViewById(R.id.tv_hint);
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
         mAdapter = new MessageListAdapter(new ArrayList<Message>(0));
         mMsgListView.setAdapter(mAdapter);
+
+        View emptyView = findViewById(R.id.tv_hint);
+        mMsgListView.setEmptyView(emptyView);
     }
 
     @Override
@@ -115,8 +115,19 @@ public class MainActivity extends Activity
         if (mChannelList != null) {
             Channel channel = mChannelList.get(position);
             mTopBar.setTitle(channel.getName());
-            // TODO:加载 message 数据。
+            // 加载指定 Channel 的 message 数据。
+            mMessagesRepository.getMessages(channel.getDevKey(), channel.getName(),
+                    new MessageDataSource.LoadMessagesCallback() {
+                        @Override
+                        public void onMessagesLoaded(List<Message> messages) {
+                            mAdapter.replaceData(messages);
+                        }
 
+                        @Override
+                        public void onDataNotAvailable() {
+
+                        }
+                    });
         }
     }
 

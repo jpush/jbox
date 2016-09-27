@@ -21,9 +21,16 @@
         android:id="@+id/lv_channel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         tools:listitem="@layout/item_subscribe_channel"
+        />
+
+    <TextView
+        android:id="@+id/tv_hint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/channel_no_hint"
+        android:visibility="gone"
         />
 
 </LinearLayout>

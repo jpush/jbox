@@ -10,14 +10,11 @@ import com.jiguang.jbox.util.LogUtil;
 
 public class AppApplication extends Application {
 
-    private static Context context;
-
     private static String APP_KEY;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
 //        JPushInterface.init(this);
 
         if (APP_KEY == null) {
@@ -30,10 +27,6 @@ public class AppApplication extends Application {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static Context getContext() {
-        return context;
     }
 
     public static String getAppKey() {

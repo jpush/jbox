@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.channel.ChannelActivity;
+import com.jiguang.jbox.util.LogUtil;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 
@@ -43,13 +44,14 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     REQUEST_CODE_PERMISSION_CAMERA);
-            mScanView.startCamera();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mScanView.startCamera();
+        mScanView.startSpot();
     }
 
     @Override
@@ -66,13 +68,20 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        if (!TextUtils.isEmpty(result)) {
+        LogUtil.LOGI("ScanActivity", "devKey: " + result);
+        if (TextUtils.isEmpty(result)) {
+            return;
+        }
+
+        if (result.contains("_")) { // 扫描的是 channel，马上订阅。
+
+        } else {
             // 扫描二维码返回 devKey，再请求 developer 信息。
             Intent intent = new Intent(this, ChannelActivity.class);
             intent.putExtra(ChannelActivity.EXTRA_DEV_KEY, result);
             startActivity(intent);
-            finish();
         }
+        finish();
     }
 
     @Override

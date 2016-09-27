@@ -22,14 +22,15 @@
 
     <!-- channel start -->
     <string name="channel_channel">频道</string>
-    <string name="channel_dev_description">这个地方填写的是 dev description</string>
+    <string name="channel_dev_description">这个人很懒，什么都没留下</string>
     <string name="channel_subscribe">订阅</string>
     <!-- channel end -->
 
     <!-- http url start -->
     <string name="url_base">http://api.jbox.jiguang.cn</string>
-    <string name="url_get_developers">http://api.jbox.jiguang.cn/developers/%s</string>
-    <string name="url_get_channels">http://api.jbox.jiguang.cn/developers/%s/channels</string>
+    <string name="url_get_developers">http://jbox.jiguang.cn/api.jbox.jiguang.cn/v1/developers/%s</string>
+    <string name="url_get_channels">http://jbox.jiguang.cn/api.jbox.jiguang.cn/v1/developers/%s/channels</string>
+    <string name="channel_no_hint">没有可订阅 Channel</string>
     <!-- http url end -->
 
 </resources>

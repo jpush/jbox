@@ -1,5 +1,6 @@
 package com.jiguang.jbox.data.source.remote;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.jiguang.jbox.data.Developer;
@@ -12,29 +13,31 @@ public class DeveloperRemoteDataSource implements DeveloperDataSource {
 
     private static DeveloperRemoteDataSource INSTANCE;
 
-    public static DeveloperRemoteDataSource getInstance() {
+    private Context mContext;
+
+    public static DeveloperRemoteDataSource getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new DeveloperRemoteDataSource();
+            INSTANCE = new DeveloperRemoteDataSource(context);
         }
         return INSTANCE;
     }
 
+    private DeveloperRemoteDataSource(Context context) {
+        mContext = context;
+    }
+
     /**
      * 从服务器获取 developer 信息。
+     *
      * @param devKey：扫描二维码后获得。
      * @param callback：回调事件。
      */
     @Override
-    public void getDeveloper(@NonNull String devKey, @NonNull LoadDevCallback callback) {
+    public void getDeveloper(@NonNull final String devKey, @NonNull final LoadDevCallback callback) {
         checkNotNull(devKey);
         checkNotNull(callback);
 
-        Developer dev = HttpUtil.getInstance().requestDevelopers(devKey);
-        if (dev != null) {
-            callback.onDevLoaded(dev);
-        } else {
-            callback.onDataNotAvailable();
-        }
+        HttpUtil.getInstance(mContext).requestDevelopers(devKey, callback);
     }
 
     @Override

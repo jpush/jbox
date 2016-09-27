@@ -75,20 +75,18 @@ public class ChannelRepository implements ChannelDataSource {
             return;
         }
 
-        if (mCacheIsDirty) {
-            mLocalDataSource.getChannels(devKey, new LoadChannelsCallback() {
-                @Override
-                public void onChannelsLoaded(List<Channel> channels) {
-                    refreshCache(channels);
-                    callback.onChannelsLoaded(channels);
-                }
+        mLocalDataSource.getChannels(devKey, new LoadChannelsCallback() {
+            @Override
+            public void onChannelsLoaded(List<Channel> channels) {
+                refreshCache(channels);
+                callback.onChannelsLoaded(channels);
+            }
 
-                @Override
-                public void onDataNotAvailable() {
-                    callback.onDataNotAvailable();  // 如果查询结果为空,会走这个回调。
-                }
-            });
-        }
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
     }
 
     @Override
@@ -109,6 +107,7 @@ public class ChannelRepository implements ChannelDataSource {
 
     /**
      * 要保证 channels 中的所有 channel 有相同的 dev_key。
+     *
      * @param channels
      */
     @Override
@@ -138,6 +137,16 @@ public class ChannelRepository implements ChannelDataSource {
     public void updateChannels(@NonNull List<Channel> channels) {
         checkNotNull(channels);
         mLocalDataSource.updateChannels(channels);
+    }
+
+    @Override
+    public void deleteChannels(String devKey) {
+        mLocalDataSource.deleteChannels(devKey);
+    }
+
+    @Override
+    public void deleteAllChannels() {
+        mLocalDataSource.deleteAllChannels();
     }
 
     @Override

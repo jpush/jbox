@@ -325,7 +325,11 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
     @Override
     public void deleteAllChannels() {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
+        db.delete(ChannelEntry.TABLE_NAME, null, null);
+
+        db.close();
     }
 
     @Override

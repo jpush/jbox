@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.ChannelRepository;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
@@ -27,6 +29,7 @@ import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
 import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
 import com.jiguang.jbox.data.source.remote.DeveloperRemoteDataSource;
 import com.jiguang.jbox.util.HttpUtil;
+import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.util.ViewHolder;
 import com.jiguang.jbox.view.TopBar;
 
@@ -43,8 +46,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 扫描二维码后的 channel 展示界面。
  */
 public class ChannelActivity extends Activity {
+    private final String TAG = "ChannelActivity";
 
     public static final String EXTRA_DEV_KEY = "dev_key";
+
+    private static final int MSG_DEV_UPDATE = 0;
 
     private ListView mListView;
 
@@ -52,9 +58,16 @@ public class ChannelActivity extends Activity {
 
     private ChannelRepository mChannelRepository;
 
-    private List<Channel> mChannels;
+    private List<Channel> mChannels = new ArrayList<>();
 
     private Set<String> mTags = new HashSet<>();  // 订阅 Channel 的 tag
+
+    private Handler mHandler;
+
+    // head view.
+    private TextView mTvDevName;
+    private TextView mTvDevDesc;
+    private CircleImageView mIvAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +75,7 @@ public class ChannelActivity extends Activity {
         setContentView(R.layout.activity_channel);
 
         final String devKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
+        LogUtil.LOGI(TAG, "devKey: " + devKey);
 
         TopBar topBar = (TopBar) findViewById(R.id.topBar);
         topBar.setLeftClick(new View.OnClickListener() {    // 顶部栏返回事件。
@@ -73,46 +87,42 @@ public class ChannelActivity extends Activity {
 
         mListView = (ListView) findViewById(R.id.lv_channel);
 
+        mHandler = new MyHandler();
+
         DeveloperLocalDataSource devLocalDataSource = DeveloperLocalDataSource.getInstance(this);
-        DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance();
+        DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance(this);
 
         DeveloperRepository devRepository = DeveloperRepository.getInstance(devLocalDataSource,
                 devRemoteDataSource);
 
+        // Init head view.
         final View headView = getLayoutInflater().inflate(
-                R.layout.view_subscribe_channel, mListView, false);
+                R.layout.view_subscribe_channel, null, false);
+        mIvAvatar = (CircleImageView) headView.findViewById(R.id.iv_dev_icon);
+        mTvDevName = (TextView) headView.findViewById(R.id.tv_name);
+        mTvDevDesc = (TextView) headView.findViewById(R.id.tv_desc);
 
         // 初始化开发者信息。
-        devRepository.getDeveloper(devKey, new DeveloperDataSource.LoadDevCallback() {
+        devRemoteDataSource.getDeveloper(devKey, new DeveloperDataSource.LoadDevCallback() {
             @Override
             public void onDevLoaded(Developer dev) {
-                if (!TextUtils.isEmpty(dev.getAvatarPath())) {
-                    CircleImageView ivAvatar = (CircleImageView) headView.findViewById(R.id.iv_dev_icon);
-                    Bitmap avatarBitmap = BitmapFactory.decodeFile(dev.getAvatarPath());
-                    ivAvatar.setImageBitmap(avatarBitmap);
-                }
-
-                TextView tvDevName = (TextView) headView.findViewById(R.id.tv_devname);
-                tvDevName.setText(dev.getDevName());
-
-                TextView tvDevDesc = (TextView) headView.findViewById(R.id.tv_description);
-                tvDevDesc.setText(dev.getDesc());
+                android.os.Message msg = new android.os.Message();
+                msg.what = MSG_DEV_UPDATE;
+                Bundle bundle = new Bundle();
+                bundle.putString("devName", dev.getDevName());
+                bundle.putString("desc", dev.getDesc());
+                bundle.putString("avatarPath", dev.getAvatarPath());
+                msg.setData(bundle);
+                mHandler.sendMessage(msg);
             }
 
             @Override
             public void onDataNotAvailable() {
                 Toast.makeText(getApplicationContext(), "获取 developer 信息出错。",
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
-
-        mListView.addHeaderView(headView);
-
-        // 服务器端的 Channel 列表,要和本地数据库中的做对比。
-        final List<String> remoteChannels = HttpUtil.getInstance().requestChannels(devKey);
-
-        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(this);
-        mChannelRepository = ChannelRepository.getInstance(channelLocalDataSource);
 
         final OnChannelCheckedListener channelCheckedListener = new OnChannelCheckedListener() {
             @Override
@@ -121,18 +131,21 @@ public class ChannelActivity extends Activity {
             }
         };
 
+//       服务器端的 Channel 列表,要和本地数据库中的做对比。
+        final List<String> remoteChannels = HttpUtil.getInstance(this).requestChannels(devKey);
+
+        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(this);
+        mChannelRepository = ChannelRepository.getInstance(channelLocalDataSource);
+
         mChannelRepository.getChannels(devKey, new ChannelDataSource.LoadChannelsCallback() {
             @Override
             public void onChannelsLoaded(List<Channel> channels) {
                 if (remoteChannels != null) {
                     // 从本地获取的 Channel, 将订阅状态配置到服务器获取的 Channel。
-                    mChannels = new ArrayList<Channel>();
-
                     for (int i = 0; i < remoteChannels.size(); i++) {
                         String channelName = remoteChannels.get(i);
                         if (remoteChannels.contains(channelName)) {
                             mChannels.add(channels.get(i));
-
                         } else {
                             Channel channel = new Channel(channelName);
                             channel.setDevKey(devKey);
@@ -141,7 +154,7 @@ public class ChannelActivity extends Activity {
                     }
                 } else {
                     // 如果为 null,代表网络请求错误。
-                    mChannels = channels;
+                    Toast.makeText(getApplicationContext(), "网络请求错误", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -155,6 +168,8 @@ public class ChannelActivity extends Activity {
             }
         });
 
+        mListView.addHeaderView(headView);
+        mListView.setEmptyView(findViewById(R.id.tv_hint));
         mListAdapter = new SubChannelListAdapter(mChannels, channelCheckedListener);
         mListView.setAdapter(mListAdapter);
     }
@@ -263,6 +278,35 @@ public class ChannelActivity extends Activity {
             });
 
             return convertView;
+        }
+    }
+
+    private class MyHandler extends Handler {
+
+        public MyHandler() {
+            super();
+        }
+
+        @Override
+        public void dispatchMessage(android.os.Message msg) {
+            // 更新 UI
+            switch (msg.what) {
+                case ChannelActivity.MSG_DEV_UPDATE:    // 更新 head view 数据
+                    Bundle data = msg.getData();
+
+                    mTvDevName.setText(data.getString("devName"));
+
+                    if (!TextUtils.isEmpty(data.getString("desc"))) {
+                        mTvDevDesc.setText(data.getString("desc"));
+                    }
+
+                    if (!TextUtils.isEmpty(data.getString("avatarPath"))) {
+                        Bitmap avatarBitmap = BitmapFactory.decodeFile(data.getString("avatarPath"));
+                        mIvAvatar.setImageBitmap(avatarBitmap);
+                    }
+                    break;
+                default:
+            }
         }
     }
 }
