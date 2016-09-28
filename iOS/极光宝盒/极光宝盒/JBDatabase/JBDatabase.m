@@ -148,6 +148,8 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
             message.channel = [set stringForColumn:@"channel"];
             message.time    = [set stringForColumn:@"time"];
             message.read    = [set stringForColumn:@"read"];
+            message.icon    = [set stringForColumn:@"icon"];
+            message.integation_name = [set stringForColumn:@"integation_name"];
             [modelArray addObject:message];
         }
         [JBSharedDatabase close];

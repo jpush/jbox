@@ -85,7 +85,7 @@
         return;
     }
     CGRect scanFram = CGRectMake(80/375.0*UIScreenWidth, 60/667.0*UIScreenHeight, UIScreenWidth - 2 * 80/375.0*UIScreenWidth, UIScreenWidth - 2 * 80/375.0*UIScreenWidth);
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(scanFram.origin.x, scanFram.origin.y + scanFram.size.height + 50, scanFram.size.width, 30)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(scanFram.origin.x, scanFram.origin.y + scanFram.size.height + 80, scanFram.size.width, 30)];
     label.text = @"扫一扫添加 channel";
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont systemFontOfSize:17];

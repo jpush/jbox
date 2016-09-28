@@ -15,12 +15,14 @@
                 <frame key="frameInset" width="320" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFv-RF-eYu">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFv-RF-eYu">
+                        <frame key="frameInset" minX="74" minY="7" width="33.5" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="content" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XFq-GH-ayx">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="content" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XFq-GH-ayx">
+                        <frame key="frameInset" minX="74" minY="34.5" width="235" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="cNv-Fg-JQI"/>
                         </constraints>
@@ -70,7 +72,7 @@
                 <outlet property="time_label" destination="MwC-rV-Wfv" id="xL6-gO-upU"/>
                 <outlet property="title_label" destination="VFv-RF-eYu" id="Hvh-4h-rKw"/>
             </connections>
-            <point key="canvasLocation" x="-216" y="154"/>
+            <point key="canvasLocation" x="-47" y="189"/>
         </tableViewCell>
     </objects>
 </document>

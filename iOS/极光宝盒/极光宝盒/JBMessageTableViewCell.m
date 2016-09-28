@@ -45,11 +45,13 @@
     [formatter setDateFormat:@"HH:mm"];
     NSString *time = [formatter stringFromDate:date];
     self.time_label.text    = time;
-    if ([message.icon isEqualToString:@""]) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.icon_imageView.frame.size.width, self.icon_imageView.frame.size.height)];
-        label.text = [message.content substringToIndex:1];
-        label.textColor = [UIColor blackColor];
+    if ([message.icon isEqualToString:@""] || !message.icon) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 45, 45)];
+        label.text = [message.integation_name substringToIndex:1];
+        label.textColor = [UIColor whiteColor];
         label.font = [UIFont systemFontOfSize:36];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.backgroundColor = [UIColor colorWithHexString:@"424242"];
         [self.icon_imageView addSubview:label];
     }else{
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@",message.icon]];
