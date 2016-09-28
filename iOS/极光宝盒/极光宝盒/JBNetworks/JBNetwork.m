@@ -26,21 +26,16 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 
 #pragma mark - public
 
-//获取 developer 信息
 +(void)getDevInfoWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
     [JBNetwork GET:devkey paramtes:nil complete:^(id responseObject) {
         complete(responseObject);
     }];
 }
 
-//获取 devkey 下的 channel 列表
 +(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
-    [JBNetwork GET:StrBy(devkey, @"/integrations") paramtes:nil complete:^(id responseObject) {
-        NSArray *downloadChannels = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        NSMutableArray *downloadChannelNames = [NSMutableArray array];
-        for (NSDictionary *dict in downloadChannels) {
-            [downloadChannelNames addObject:dict[@"channel"]];
-        }
+    [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        NSMutableArray *downloadChannelNames = dict[@"channels"];
         //把数据库里有，但是下载没有的数据删掉
         NSArray *storedChannels = [JBDatabase getChannelsFromDevkey:devkey];
         NSMutableArray *storedChannelNames = [NSMutableArray array];
@@ -56,12 +51,11 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
         }
 
         NSMutableArray *channels = [NSMutableArray array];
-        for (NSDictionary *dict in downloadChannels) {
-            JBChannel *channel = [JBChannel new];
-            channel.name       = dict[@"channel"];
-            channel.icon       = dict[@"icon"];
+        for (NSString *name in downloadChannelNames) {
+            JBChannel *channel   = [JBChannel new];
+            channel.name         = name;
             channel.isSubscribed = @"0";
-            channel.dev_key    = devkey;
+            channel.dev_key      = devkey;
             [channels addObject:channel];
         }
         [JBDatabase createChannels:channels];

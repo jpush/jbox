@@ -48,6 +48,8 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(back)];
 
     self.automaticallyAdjustsScrollViewInsets = NO;
+
+    self.title = @"订阅频道";
 }
 
 -(void)back{
@@ -73,16 +75,17 @@
         [weakSelf updateUIWithDevkey:devkey];
 
         [JBNetwork getChannelsWithDevkey:realDevkey complete:^(id responseObject) {
-            NSArray *channels = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
 
-            [JBDatabase checkAndDeleteChannelsFromDevkey:realDevkey newChannels:channels];
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+            NSArray *channelNames = dict[@"channels"];
 
-            for (NSDictionary *dict in channels) {
+            [JBDatabase checkAndDeleteChannelsFromDevkey:realDevkey newChannelNames:channelNames];
+
+            for (NSString *name in channelNames) {
                 JBChannel *channel = [JBChannel new];
-                [channel setValuesForKeysWithDictionary:dict];
                 channel.dev_key       = realDevkey;
                 channel.isSubscribed  = @"0";
-                channel.name          = dict[@"channel"];
+                channel.name          = name;
                 [JBDatabase insertChannel:channel];
             }
             weakSelf.channels = [JBDatabase getChannelsFromDevkey:realDevkey];
@@ -91,8 +94,8 @@
 }
 
 -(void)updateUIWithDevkey:(JBDevkey*)devkey{
-    self.devname_label.text     = devkey.dev_name;
-    self.desc_label.text        = devkey.desc;
+    self.devname_label.text = devkey.dev_name;
+    self.desc_label.text    = [devkey.desc isEqualToString:@""] ? @"这个人很懒什么都没有留下" : devkey.desc;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@",devkey.avatar]];
 
     [self.avatar_imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"devname_defaultAvatar"]];

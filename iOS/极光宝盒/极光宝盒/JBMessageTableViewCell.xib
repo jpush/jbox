@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dwQ-9r-3K0" id="1b9-0n-LmH">
-                <frame key="frameInset" width="320" height="59.5"/>
+                <frame key="frameInset" width="320" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFv-RF-eYu">
@@ -51,7 +51,6 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                 </subviews>
-                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="XFq-GH-ayx" firstAttribute="leading" secondItem="O2q-EL-KH9" secondAttribute="trailing" constant="18" id="5ia-bK-HzC"/>
                     <constraint firstItem="O2q-EL-KH9" firstAttribute="top" secondItem="VFv-RF-eYu" secondAttribute="top" id="BFI-cn-C6T"/>
@@ -71,7 +70,7 @@
                 <outlet property="time_label" destination="MwC-rV-Wfv" id="xL6-gO-upU"/>
                 <outlet property="title_label" destination="VFv-RF-eYu" id="Hvh-4h-rKw"/>
             </connections>
-            <point key="canvasLocation" x="98" y="269"/>
+            <point key="canvasLocation" x="-216" y="154"/>
         </tableViewCell>
     </objects>
 </document>

@@ -10,14 +10,8 @@
 
 @interface JBNetwork : NSObject
 
-//获取 developer 信息
 +(void)getDevInfoWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete;
 
-//获取 devkey 下的 channel 列表
-
 +(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete;
-
-//获取 devkey 下的所有自定义应用的 appid
-//+(void)getAppidWithDevkey:(NSString*)devkey complete:(void (^)(NSDictionary* devInfo))complete;
 
 @end

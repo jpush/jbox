@@ -71,7 +71,9 @@
     message.devkey     = dict[@"extras"][@"dev_key"];
     message.channel    = dict[@"extras"][@"channel"];
     message.time       = dict[@"extras"][@"datetime"];
+    message.icon       = dict[@"extras"][@"icon"];
     message.read       = @"0";
+    message.integation_name = dict[@"extras"][@"integation_name"];
     [JBDatabase insertMessages:@[message]];
     [self.message_tableView reloadData];
     [self updateData];
@@ -91,6 +93,9 @@
 }
 
 -(void)slideAnimate{
+    //收起键盘
+    [self.slideView searchBarCancelButtonClicked:_slideView.searchBar];
+
     WEAK_SELF(weakSelf);
     if (self.isSlideOut) {
         [UIView animateWithDuration:0.25 animations:^{

@@ -108,7 +108,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 
 +(void)createChannel:(JBChannel*)channel{
     if ([JBSharedDatabase open]) {
-        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (id integer PRIMARY KEY AUTOINCREMENT,title text ,message text ,devkey text ,channel text, time text, read text)", JBTableName(channel.dev_key, channel.name)];
+        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (id integer PRIMARY KEY AUTOINCREMENT,title text ,message text ,devkey text ,channel text, time text, read text, icon text, integation_name text)", JBTableName(channel.dev_key, channel.name)];
         BOOL result = [JBSharedDatabase executeUpdate:sqlCreateTable];
         if (result) {
 
@@ -126,7 +126,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 +(void)insertMessages:(NSArray*)mArray{
     if ([JBSharedDatabase open]) {
         for (JBMessage *message in mArray) {
-            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (title,message,devkey,channel,time,read) values ('%@','%@','%@','%@','%@', '%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.channel, message.time, message.read];
+            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (title,message,devkey,channel,time,read,icon,integation_name) values ('%@','%@','%@','%@','%@', '%@', '%@', '%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.channel, message.time, message.read, message.icon, message.integation_name];
             BOOL result = [JBSharedDatabase executeUpdate:sqlInsertTable];
             if (result) {
             }
@@ -228,7 +228,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 
 +(void)insertChannel:(JBChannel*)channel{
     if ([JBSharedChannelDatabase open]) {
-        NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (dev_key,name,isSubscribed,icon) values ('%@','%@','%@','%@')",JBTableName(JBChannelTableName, channel.dev_key), channel.dev_key, channel.name, channel.isSubscribed, channel.icon];
+        NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (dev_key,name,isSubscribed) values ('%@','%@','%@')",JBTableName(JBChannelTableName, channel.dev_key), channel.dev_key, channel.name, channel.isSubscribed];
         BOOL result = [JBSharedChannelDatabase executeUpdate:sqlInsertTable];
         if (result) {
         }
@@ -266,7 +266,6 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
             channel.dev_key      = [set stringForColumn:@"dev_key"];
             channel.name         = [set stringForColumn:@"name"];
             channel.isSubscribed = [set stringForColumn:@"isSubscribed"];
-            channel.icon         = [set stringForColumn:@"icon"];
             [modelArray addObject:channel];
         }
         [JBSharedChannelDatabase close];
@@ -274,13 +273,8 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
     return modelArray;
 }
 
-+(void)checkAndDeleteChannelsFromDevkey:(NSString*)devkey newChannels:(NSArray*)newChannels{
++(void)checkAndDeleteChannelsFromDevkey:(NSString*)devkey newChannelNames:(NSArray*)newChannelNames{
     NSMutableArray *originChannels  = [JBDatabase getChannelsFromDevkey:devkey];
-    NSMutableArray *newChannelNames = [NSMutableArray array];
-    for (NSDictionary *dict in newChannels) {
-        [newChannelNames addObject:dict[@"channel"]];
-    }
-
     for (JBChannel *channel in originChannels) {
         BOOL inNew = NO;
         for (NSString *name in newChannelNames) {
@@ -292,7 +286,6 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
             [JBDatabase deleteChannel:channel];
         }
     }
-
 }
 
 +(void)updateChannel:(JBChannel*)channel{
@@ -314,10 +307,6 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
                     [[NSNotificationCenter defaultCenter] postNotificationName:JBSlideViewShouldUpdate object:nil];
                 }];
             }];
-
-            NSString *sqlInsertTable1 = [NSString stringWithFormat:@"UPDATE '%@' SET icon = '%@' WHERE name = '%@'",JBTableName(JBChannelTableName, channel.dev_key), channel.icon,channel.name];
-            BOOL result1 = [JBSharedChannelDatabase executeUpdate:sqlInsertTable1];
-
         }
         [JBSharedChannelDatabase close];
     }

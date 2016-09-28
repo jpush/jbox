@@ -29,7 +29,7 @@
 +(void)insertChannel:(JBChannel*)channel;
 +(NSMutableArray*)getAllSubscribedChannels;
 +(NSMutableArray*)getChannelsFromDevkey:(NSString*)devkey;
-+(void)checkAndDeleteChannelsFromDevkey:(NSString*)devkey newChannels:(NSArray*)newChannels;
++(void)checkAndDeleteChannelsFromDevkey:(NSString*)devkey newChannelNames:(NSArray*)newChannelNames;
 +(void)updateChannel:(JBChannel*)channel;
 +(void)deleteChannel:(JBChannel*)channel;
 

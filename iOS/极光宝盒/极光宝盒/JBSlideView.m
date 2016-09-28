@@ -16,7 +16,6 @@
 
 @interface JBSlideView ()<UISearchBarDelegate>
 
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 - (IBAction)editBtnPressed:(UIButton *)sender;
 - (IBAction)scanBtnPressed:(UIButton *)sender;
@@ -41,6 +40,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shouldUpdate) name:JBSlideViewShouldUpdate object:nil];
 
     self.isEditing = NO;
+
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
+    tap.cancelsTouchesInView = NO;
+    [self.channel_tableView addGestureRecognizer:tap];
+}
+
+-(void)tap{
+    [self searchBarCancelButtonClicked:_searchBar];
 }
 
 -(void)shouldUpdate{

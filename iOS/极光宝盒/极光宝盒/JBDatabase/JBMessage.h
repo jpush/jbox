@@ -15,4 +15,6 @@
 @property(nonatomic, retain)NSString *channel;
 @property(nonatomic, retain)NSString *time;
 @property(nonatomic, retain)NSString *read;
+@property(nonatomic, retain)NSString *icon;
+@property(nonatomic, retain)NSString *integation_name;
 @end
