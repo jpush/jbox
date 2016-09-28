@@ -29,10 +29,11 @@
                     <p id="avatar-title" class="jbox-font span-title">头像图标</p>
                     {% if developer.avatar %}
                         <img id="setting-avatar" src="/static/images/{{ developer.avatar }}">
+                        <input id="resultFilename" value="{{ developer.avatar }}" type="hidden">
                     {% else %}
                         <img id="setting-avatar" src="/static/images/jiguang-bear.png">
+                        <input id="resultFilename"  type="hidden">
                     {% endif %}
-                    <input id="resultFilename" value="{{ developer.avatar }}" type="hidden">
                 </div>
                 <div id="avatar-right" class="column">
                     <form id="uploadform" method="post" enctype="multipart/form-data">
