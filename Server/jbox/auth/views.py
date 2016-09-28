@@ -192,15 +192,7 @@ def new_github_integration():
     # POST create webhook
     # respMe = github.get('https://api.github.com/user', {'access_token': session['github_token'][0]})
     resp = github.post('https://api.github.com/repos/KenChoi1992/jchat-android/hooks',
-                       {'data': jsonify({"name": "web", "active": True,
-                                     "events": [
-                                         "push",
-                                         "pull_request"
-                                     ],
-                                     "config": {
-                                         "url": "http://jbox.jiguang.cn/plugins/github/webhook",
-                                         "content_type": "json"
-                                     }}), 'content_type': "json", 'access_token': session['github_token'][0]})
+                       {'access_token': token}, data=update_github_request_data())
     print(resp.data)
     # email = respMe.data['email']
     # print("email:" + email)
@@ -210,3 +202,21 @@ def new_github_integration():
 @github.tokengetter
 def get_github_oauth_token():
     return session.get('github_token')
+
+
+def update_github_request_data(data={}):
+    '''Update some required parameters for OAuth2.0 API calls'''
+    defaults = {
+        "name": "web",
+        "active": True,
+        "events": [
+            "push",
+            "pull_request"
+        ],
+        "config": {
+            "url": "http://jbox.jiguang.cn/plugins/github/webhook",
+            "content_type": "json"
+        }
+    }
+    defaults.update(data)
+    return defaults

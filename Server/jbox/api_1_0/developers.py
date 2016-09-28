@@ -41,7 +41,7 @@ def get_developer(platform, platform_id):
     if developer is None:
         abort(404)
     if developer.avatar is None or len(developer.avatar) == 0:
-        url = baseurl + '/static/images/jiguang-bear.png'
+        url = ''
     else:
         url = baseurl + '/static/images/' + developer.avatar
     if developer.description is None:
@@ -75,7 +75,7 @@ def get_developer_info(dev_key):
         return jsonify({'error':'can not find this developer'})
         # abort(404)
     if developer.avatar is None or len(developer.avatar) == 0:
-        url = baseurl + '/static/images/jiguang-bear.png'
+        url = ''
     else:
         url = baseurl + '/static/images/' + developer.avatar
     if developer.description is None:
@@ -158,7 +158,7 @@ def get_integrations(dev_key):
     data_json = []
     for integration in integration_list:
         if integration.icon is None or len(integration.icon) == 0:
-            url = baseurl + '/static/images/image.png'
+            url = ''
         else:
             url = baseurl + '/static/images/' + integration.icon
         if integration.description is None:
@@ -184,7 +184,7 @@ def get_integration(integration_id):
     if developer is None:
         abort(404)
     if integration.icon is None or len(integration.icon) == 0:
-        url = baseurl + '/static/images/image.png'
+        url = ''
     else:
         url = baseurl + '/static/images/' + integration.icon
     if integration.description is None:
