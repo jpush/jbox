@@ -4,8 +4,7 @@ from . import api
 from ..models import Developer, Integration
 import jpush
 from jpush import common
-import os
-from ..auth.views import UPLOAD_FOLDER
+from  .developers import baseurl
 
 @api.route('/message/<integration_id>/<token>', methods=['POST'])
 def send_message(integration_id, token):
@@ -38,12 +37,16 @@ def send_message(integration_id, token):
     ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title'],
                                                              'message': request.json['message']})
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
-    path = os.path.join(UPLOAD_FOLDER, integration.icon)
+    print(integration.icon)
+    if integration.icon is None or len(integration.icon) == 0:
+        url = ''
+    else:
+        url = baseurl + '/static/images/' + integration.icon
     push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
     push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
                                          'datetime': int(time.time()),
-                                         'icon': path,
+                                         'icon': url,
                                          'integation_name': integration.name})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
