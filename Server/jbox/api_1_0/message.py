@@ -38,7 +38,7 @@ def send_message(integration_id, token):
     ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title'],
                                                              'message': request.json['message']})
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
-    path = os.path.join(UPLOAD_FOLDER, developer.avatar)
+    path = os.path.join(UPLOAD_FOLDER, integration.icon)
     push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
     push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
