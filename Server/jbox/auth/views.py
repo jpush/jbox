@@ -1,4 +1,5 @@
 import os
+import requests
 import uuid
 from flask import Flask, json, jsonify, render_template, redirect, request, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
@@ -191,8 +192,21 @@ def new_github_integration():
     db.session.commit()
     # POST create webhook
     # respMe = github.get('https://api.github.com/user', {'access_token': session['github_token'][0]})
-    resp = github.post('https://api.github.com/repos/KenChoi1992/jchat-android/hooks',
-                       {'access_token': token}, data=update_github_request_data())
+    data = {"name": "web",
+            "active": True,
+            "events": [
+                "push",
+                "pull_request"
+            ],
+            "config": {
+                "url": "http://jbox.jiguang.cn/plugins/github/webhook",
+                "content_type": "json"
+            }}
+    print(type(data))
+    resp = github.request('https://api.github.com/repos/KenChoi1992/jchat-android/hooks',
+                          {'data': data}, {'headers': None},
+                          {'format': 'json'}, {'method': 'POST'},
+                          {'content_type': 'json'}, {'access_token': token})
     print(resp.data)
     # email = respMe.data['email']
     # print("email:" + email)
@@ -202,21 +216,3 @@ def new_github_integration():
 @github.tokengetter
 def get_github_oauth_token():
     return session.get('github_token')
-
-
-def update_github_request_data(data={}):
-    '''Update some required parameters for OAuth2.0 API calls'''
-    defaults = {
-        "name": "web",
-        "active": True,
-        "events": [
-            "push",
-            "pull_request"
-        ],
-        "config": {
-            "url": "http://jbox.jiguang.cn/plugins/github/webhook",
-            "content_type": "json"
-        }
-    }
-    defaults.update(data)
-    return defaults

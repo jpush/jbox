@@ -32,7 +32,7 @@
                     {% else %}
                         <img id="setting-avatar" src="/static/images/jiguang-bear.png">
                     {% endif %}
-                    <input id="resultFilename" type="hidden">
+                    <input id="resultFilename" value="{{ developer.avatar }}" type="hidden">
                 </div>
                 <div id="avatar-right" class="column">
                     <form id="uploadform" method="post" enctype="multipart/form-data">
