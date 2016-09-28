@@ -40,7 +40,9 @@ def send_message(integration_id, token):
     push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
     push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
-                                         'datetime': int(time.time())})
+                                         'datetime': int(time.time()),
+                                         'icon': integration.icon,
+                                         'integation_name'integration.name})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
     push.platform = jpush.all_

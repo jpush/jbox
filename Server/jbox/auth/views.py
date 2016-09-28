@@ -191,8 +191,25 @@ def new_github_integration():
     db.session.commit()
     # POST create webhook
     # respMe = github.get('https://api.github.com/user', {'access_token': session['github_token'][0]})
+<<<<<<< HEAD
     resp = github.post('https://api.github.com/repos/KenChoi1992/jchat-android/hooks',
                        {'access_token': token}, data=update_github_request_data())
+=======
+    resp = github.post('https://api.github.com/repos/huangminlinux/demo/hooks',
+                       {'data': jsonify({"name": "web", "active": True,
+                                     "events": [
+                                         "push",
+                                         "pull_request"
+                                     ],
+                                     "config": {
+                                         "url": "http://jbox.jiguang.cn/plugins/github/webhook",
+                                         "content_type": "json"
+                                     }}),
+                        'content_type': "json",
+                        'access_token': session['github_token'][0]},
+                       session['github_token'][0])
+    print('huangmin')
+>>>>>>> adjust send message
     print(resp.data)
     # email = respMe.data['email']
     # print("email:" + email)
