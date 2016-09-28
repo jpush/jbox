@@ -12,5 +12,6 @@
 @interface JBMessageViewController : UIViewController
 @property(nonatomic, retain)JBChannel *channel;
 @property(nonatomic, assign)BOOL isSlideOut;
--(void)slide;
+-(void)slide:(UIGestureRecognizer*)gesture;
+@property (weak, nonatomic) IBOutlet UITableView *message_tableView;
 @end

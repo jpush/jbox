@@ -12,6 +12,7 @@
 @interface JBSlideTableViewCell : UITableViewCell
 
 @property(nonatomic,retain)JBChannel *channel;
--(void)becomeEditing;
+-(void)becomeToEditing;
+-(void)endToEditing;
 
 @end

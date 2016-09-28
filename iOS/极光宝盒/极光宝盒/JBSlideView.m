@@ -14,13 +14,12 @@
 #import "JBDatabase.h"
 #import "JBMessageViewController.h"
 
-@interface JBSlideView ()<UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@interface JBSlideView ()<UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 - (IBAction)editBtnPressed:(UIButton *)sender;
 - (IBAction)scanBtnPressed:(UIButton *)sender;
-@property (weak, nonatomic) IBOutlet UITableView *channel_tableView;
 
 @property(nonatomic, retain)NSMutableArray *tableViewDataArray;
 
@@ -41,6 +40,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shouldUpdate) name:JBSlideViewShouldUpdate object:nil];
 
+    self.isEditing = NO;
 }
 
 -(void)shouldUpdate{
@@ -97,6 +97,7 @@
         if ([view isKindOfClass:NSClassFromString(@"UINavigationButton")]) {
             UIButton *btn = (UIButton*)view;
             [btn setTitle:@"取消" forState:UIControlStateNormal];
+            [btn setTintColor:[UIColor whiteColor]];
         }
     }
     return YES;
@@ -108,7 +109,8 @@
 }
 
 - (IBAction)editBtnPressed:(UIButton *)sender {
-
+    self.isEditing = !self.isEditing;
+    [self.channel_tableView reloadData];
 }
 
 - (IBAction)scanBtnPressed:(UIButton *)sender {
@@ -117,7 +119,7 @@
         if ([con isKindOfClass:[JBMessageViewController class]]) {
             JBMessageViewController *mVC = (JBMessageViewController*)con;
             mVC.isSlideOut = YES;
-            [mVC slide];
+            [mVC slide:nil];
         }
     }
     JBScanViewController *scan  = [JBScanViewController new];
@@ -159,6 +161,9 @@
         cell = [[NSBundle mainBundle] loadNibNamed:@"JBSlideTableViewCell" owner:nil options:nil].lastObject;
     }
     cell.channel = ((NSArray*)[(NSDictionary*)self.tableViewDataArray[indexPath.section] allValues].lastObject)[indexPath.row];
+
+    self.isEditing ? [cell becomeToEditing] : [cell endToEditing];
+    
     return cell;
 }
 
@@ -172,7 +177,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     JBMessageViewController *vc = (JBMessageViewController*)JBSharedNavigationController.viewControllers[0];
-    [vc slide];
+    [vc slide:nil];
     JBSlideTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     vc.channel = cell.channel;
 }

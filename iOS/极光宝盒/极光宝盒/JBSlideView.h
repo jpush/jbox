@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JBSlideView : UIView
+@interface JBSlideView : UIView <UITableViewDelegate, UITableViewDataSource>
 -(void)shouldUpdate;
+@property (weak, nonatomic) IBOutlet UITableView *channel_tableView;
+@property(nonatomic, assign)BOOL isEditing;
+
 @end

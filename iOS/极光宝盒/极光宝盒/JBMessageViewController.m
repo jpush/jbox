@@ -20,7 +20,6 @@
 
 @interface JBMessageViewController ()<UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *message_tableView;
 @property(nonatomic ,retain)NSArray *messageArray;
 @property(nonatomic, assign)BOOL appeared;
 @property(nonatomic, retain)JBSlideView *slideView;
@@ -37,7 +36,7 @@
     //bar
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"message_btn"] style:UIBarButtonItemStylePlain target:self action:@selector(slide)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"message_btn"] style:UIBarButtonItemStylePlain target:self action:@selector(slide:)];
 
     //slide
     self.slideView = [[NSBundle mainBundle] loadNibNamed:@"JBSlideView" owner:nil options:nil][0];
@@ -58,6 +57,10 @@
         [weakSelf.message_tableView.mj_header endRefreshing];
     }];
 
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(slide:)];
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slide:)];
+    [self.view addGestureRecognizer:tap];
+    [self.view addGestureRecognizer:swipe];
 }
 
 -(void)didReceiveMessage:(NSNotification*)noti{
@@ -76,7 +79,18 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:JBSlideTableViewCellShouldUpdate object:nil];
 }
 
--(void)slide{
+-(void)slide:(UIGestureRecognizer*)gesture{
+    if ([gesture isKindOfClass:[UISwipeGestureRecognizer class]]) {
+        UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)gesture;
+        if (swipe.direction == UISwipeGestureRecognizerDirectionLeft && self.isSlideOut) {
+            [self slideAnimate];
+        }
+    }else{
+        [self slideAnimate];
+    }
+}
+
+-(void)slideAnimate{
     WEAK_SELF(weakSelf);
     if (self.isSlideOut) {
         [UIView animateWithDuration:0.25 animations:^{

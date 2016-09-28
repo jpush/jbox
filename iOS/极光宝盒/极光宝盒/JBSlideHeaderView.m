@@ -42,7 +42,7 @@
     JBDevManageViewController *controller = [[JBDevManageViewController alloc] initWithNibName:@"JBDevManageViewController" bundle:[NSBundle mainBundle]];
     controller.scanedDevkey = self.devkey.dev_key;
     JBMessageViewController *vc = ((UINavigationController*)[[UIApplication sharedApplication] keyWindow].rootViewController).viewControllers[0];
-    [vc slide];
+    [vc slide:nil];
     [(UINavigationController*)[[UIApplication sharedApplication] keyWindow].rootViewController pushViewController:controller animated:YES];
 }
 
