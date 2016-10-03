@@ -16,6 +16,13 @@ public interface ChannelDataSource {
         void onDataNotAvailable();
     }
 
+    interface LoadChannelsNameCallback {
+
+        void onChannelsNameLoaded(List<String> channels);
+
+        void onDataNotAvailable();
+    }
+
     interface GetChannelCallback {
 
         void onChannelLoaded(Channel channel);

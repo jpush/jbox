@@ -11,9 +11,9 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Base64;
 
-import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
 
 import org.json.JSONArray;
@@ -23,11 +23,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Call;
@@ -114,14 +112,15 @@ public class HttpUtil {
     }
 
     /**
-     * 返回查询到的 Channel 名称。
+     * 返回查询到的 Channel 名称列表。
      *
      * @param devKey
      * @return Channel 名称列表。
      */
-    public List<String> requestChannels(String devKey) {
+    public void requestChannels(String devKey,
+                                final ChannelDataSource.LoadChannelsNameCallback callback) {
         if (TextUtils.isEmpty(devKey)) {
-            return null;
+            return;
         }
 
         Resources resources = mContext.getResources();
@@ -133,35 +132,36 @@ public class HttpUtil {
                 .url(url)
                 .build();
 
-        try {
-            mHttpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-
-                }
-            });
-            if (response.isSuccessful()) {
-                String body = response.body().string();
-                JSONArray jsonArr = new JSONArray(body);
-                List<String> channels = new ArrayList<>();
-                for (int i = 0; i < jsonArr.length(); i++) {
-                    String channelName = jsonArr.getString(i);
-                    channels.add(channelName);
-                }
-                return channels;
-            } else {
-                LogUtil.LOGE(TAG, "Unexpected code " + response);
-                return null;
+        mHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onDataNotAvailable();
             }
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    if (response.isSuccessful()) {
+                        String body = response.body().string();
+
+                        JSONArray jsonArr = new JSONArray(body);
+                        List<String> channels = new ArrayList<>();
+
+                        for (int i = 0; i < jsonArr.length(); i++) {
+                            String channelName = jsonArr.getString(i);
+                            channels.add(channelName);
+                        }
+
+                        callback.onChannelsNameLoaded(channels);
+                    } else {
+                        LogUtil.LOGE(TAG, "Unexpected code " + response);
+                        callback.onDataNotAvailable();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private String getAvatarFromServer(@NonNull final String url, @NonNull String fileName) {

@@ -28,7 +28,7 @@ public class Channel {
 
     private Developer mDeveloper;
 
-    private boolean isSubscribe;
+    private boolean isSubscribe = false;    // 默认为未订阅。
 
     public Channel(String name) {
         mId = UUID.randomUUID().toString();

@@ -4,17 +4,22 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.channel.ChannelActivity;
 import com.jiguang.jbox.util.LogUtil;
+import com.jiguang.jbox.view.TopBar;
 
+import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
+import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 
 
 /**
@@ -23,6 +28,7 @@ import cn.bingoogolapple.qrcode.core.QRCodeView;
 public class ScanActivity extends Activity implements QRCodeView.Delegate {
 
     private static final int REQUEST_CODE_PERMISSION_CAMERA = 0;
+    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 1;
 
     private QRCodeView mScanView;
 
@@ -30,6 +36,16 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+
+        TopBar topBar = (TopBar) findViewById(R.id.topBar);
+        topBar.setRightClick(new View.OnClickListener() {   // 打开相册,并选择图片扫描二维码。
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(BGAPhotoPickerActivity.newIntent(
+                        getApplicationContext(), null, 1, null, false),
+                        REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY);
+            }
+        });
 
         mScanView = (QRCodeView) findViewById(R.id.scanview);
         mScanView.setDelegate(this);
@@ -89,4 +105,32 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
         Toast.makeText(this, "打开相机出错", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mScanView.showScanRect();
+
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
+            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
+
+            // TODO: 有内存泄漏风险。
+            new AsyncTask<Void, Void, String>() {
+
+                @Override
+                protected String doInBackground(Void... params) {
+                    return QRCodeDecoder.syncDecodeQRCode(picturePath);
+                }
+
+                @Override
+                protected void onPostExecute(String result) {
+                    if (TextUtils.isEmpty(result)) {
+                        Toast.makeText(ScanActivity.this, "未发现二维码", Toast.LENGTH_SHORT).show();
+                    } else {
+                        onScanQRCodeSuccess(result);
+                    }
+                }
+            }.execute();
+        }
+    }
 }
