@@ -161,7 +161,7 @@
             $.ajax({
                 type: "PUT",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/developers/{{ developer.dev_key }}",
+                url: "/v1/developers/{{ developer.dev_key }}",
                 data: JSON.stringify({name: name, desc: desc, avatar: path}),
                 success: function (data) {
                     toastr.success("保存成功");

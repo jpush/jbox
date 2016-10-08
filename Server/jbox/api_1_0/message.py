@@ -70,7 +70,7 @@ def send_message(integration_id, token):
     return jsonify({}), 200
 
 
-@api.route('jbox.jiguang.cn/plugins/github/<integration_id>', methods=['POST'])
+@api.route('/plugins/github/<integration_id>', methods=['POST'])
 def send_github_msg(integration_id):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:

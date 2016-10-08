@@ -113,7 +113,7 @@
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "../../api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/integrations",
+                    url: "../../v1/developers/{{ dev_key }}/integrations",
                     data: JSON.stringify({channel: channel}),
                     success: function (data) {
                         if (data != undefined) {

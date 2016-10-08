@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 import random, string
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app
+from itsdangerous import SignatureExpired, BadSignature, TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app, g
+from passlib.apps import custom_app_context as pwd_context
+from flask_httpauth import HTTPBasicAuth
 from sqlalchemy.exc import IntegrityError
 from jbox import db
 from flask_login import UserMixin
 from . import login_manager
+
+httpauth = HTTPBasicAuth()
 
 
 class Developer(UserMixin, db.Model):
@@ -24,21 +28,24 @@ class Developer(UserMixin, db.Model):
     def __repr__(self):
         return '<Developer %r>' % self.dev_key
 
+    def verify_developer(self, platform_id):
+        return pwd_context.verify(platform_id, self.platform_id)
+
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
-    def confirm(self, token):
+    @staticmethod
+    def confirm(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
-        except:
-            return False
-        if data.get('confirm') != self.id:
-            return False
-        self.confirmed = True
-        db.session.add(self)
-        return True
+        except SignatureExpired:
+            return None
+        except BadSignature:
+            return None
+        developer = Developer.query.get(data['confirm'])
+        return developer
 
     def insert_to_db(self):
         db.session.add(self)
@@ -84,6 +91,17 @@ def request_loader(request):
     platform_id = request.form.get("platform_id")
     developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
     return developer
+
+
+@httpauth.verify_password
+def verify_developer(platform_or_token, platform_id):
+    developer = Developer.confirm(platform_or_token)
+    if not developer:
+        developer = Developer.query.filter_by(platform=platform_or_token, platform_id=platform_id).first()
+        if not developer:
+            return False
+    g.developer = developer
+    return True
 
 
 class Integration(db.Model):

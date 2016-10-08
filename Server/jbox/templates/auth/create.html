@@ -77,7 +77,7 @@
                     <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
                 </div>
                 <input id="webhook" class="jbox-font description"
-                       value="jbox.jiguang.cn:80/api.jbox.jiguang.cn/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
+                       value="jbox.jiguang.cn:80/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
             </div>
             <div id="link-content">
                 <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
@@ -229,7 +229,7 @@
             $.ajax({
                 type: "PUT",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/{{ integration.integration_id }}/token",
+                url: "/v1/{{ integration.integration_id }}/token",
                 success: function (data) {
                     if (data != undefined) {
                         $('#token').text("webhook:api.jobx.com/{{ integration.integration_id }}/" + data['token']);
@@ -248,7 +248,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/channels",
+                url: "/v1/developers/{{ dev_key }}/channels",
                 data: JSON.stringify({channel: new_channel}),
                 success: function (data) {
                     if (data != undefined) {
@@ -344,7 +344,7 @@
             $.ajax({
                 type: "PUT",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
+                url: "/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
                 data: JSON.stringify({name: name, description: desc, icon: path, channel: channel}),
                 success: function (data) {
                     toastr.success("保存成功");
@@ -363,7 +363,7 @@
             $.ajax({
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
-                url: "/api.jbox.jiguang.cn/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
+                url: "/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
                 success: function (data) {
                     if (data['deleted']) {
                         toastr.success("删除成功");

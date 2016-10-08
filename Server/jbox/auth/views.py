@@ -2,7 +2,7 @@ import os
 import requests
 import uuid
 from flask import Flask, json, jsonify, render_template, redirect, request, url_for, flash, session
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_httpauth import HTTPAuth
 from flask_oauthlib.client import OAuth
 from . import auth
 from config import basedir
@@ -32,14 +32,6 @@ github = oauth.remote_app(
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-
-@auth.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out.')
-    return render_template('index.html')
 
 
 @auth.route('/manage', methods=['GET', 'POST'])
@@ -174,6 +166,8 @@ def new_github_integration():
         )
     session['github_token'] = (resp['access_token'], '')
     token = session['github_token'][0]
+    me = github.get('user')
+    print(jsonify(me.data))
     new_integration_id = generate_integration_id()
     developer = get_developer()
     channel = 'github'
@@ -192,7 +186,7 @@ def new_github_integration():
     db.session.commit()
     # POST create webhook
     # respMe = github.get('https://api.github.com/user', {'access_token': session['github_token'][0]})
-    data = {"name": "web",
+    data_dict = {"name": "web",
             "active": True,
             "events": [
                 "push",
@@ -202,12 +196,24 @@ def new_github_integration():
                 "url": "http://jbox.jiguang.cn/plugins/github/webhook",
                 "content_type": "json"
             }}
-    print(type(data))
-    resp = github.request('https://api.github.com/repos/KenChoi1992/jchat-android/hooks',
-                          {'data': data}, {'headers': None},
-                          {'format': 'json'}, {'method': 'POST'},
-                          {'content_type': 'json'}, {'access_token': token})
-    print(resp.data)
+    print(token)
+    # response = github.post('https://api.github.com/repos/KenChoi1992/jchat-android/hooks', data=data_dict,
+    #                        headers=None, format='json')
+    # print(response.data)
+    import requests
+
+    url = "https://api.github.com/repos/KenChoi1992/jchat-android/hooks"
+
+    payload = "{\r\n  \"name\": \"web\",\r\n  \"active\": true,\r\n  \"events\": [\r\n    \"push\",\r\n    \"pull_request\"\r\n  ],\r\n  \"config\": {\r\n    \"url\": \"http://jbox.jiguang.cn/plugins/github/webhook\",\r\n    \"content_type\": \"json\"\r\n  }\r\n}"
+    headers = {
+        'Authorization': "Basic S2VuQ2hvaTE5OTI6Y3lnMTk5Mg==",
+        'Content-Type': "application/json",
+        'Accept': "application/vnd.github.damage-preview"
+    }
+
+    response = requests.request("POST", url, data=payload, headers=headers)
+
+    print(response.text)
     # email = respMe.data['email']
     # print("email:" + email)
     return redirect(url_for('auth.edit_integration', integration_id=new_integration_id))
