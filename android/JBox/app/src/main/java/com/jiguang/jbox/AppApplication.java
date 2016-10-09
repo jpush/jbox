@@ -12,9 +12,13 @@ public class AppApplication extends Application {
 
     private static String APP_KEY;
 
+    private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        mContext = getApplicationContext();
+
 //        JPushInterface.init(this);
 
         if (APP_KEY == null) {
@@ -31,6 +35,10 @@ public class AppApplication extends Application {
 
     public static String getAppKey() {
         return APP_KEY;
+    }
+
+    public static Context getAppContext() {
+        return mContext;
     }
 
 }

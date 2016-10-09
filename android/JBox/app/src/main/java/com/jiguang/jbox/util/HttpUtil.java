@@ -10,11 +10,17 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.view.View;
+import android.widget.Toast;
 
+import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +29,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,23 +48,20 @@ public class HttpUtil {
 
     private OkHttpClient mHttpClient;
 
-    private Context mContext;
-
-    public static HttpUtil getInstance(Context context) {
+    public static HttpUtil getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new HttpUtil(context);
+            INSTANCE = new HttpUtil();
         }
         return INSTANCE;
     }
 
-    private HttpUtil(Context context) {
+    private HttpUtil() {
         mHttpClient = new OkHttpClient();
-        mContext = context;
     }
 
     // 请求开发者数据。
-    public void requestDevelopers(String devKey, final DeveloperDataSource.LoadDevCallback callback) {
-        final Resources resources = mContext.getResources();
+    public void requestDeveloper(final String devKey, final DeveloperDataSource.LoadDevCallback callback) {
+        final Resources resources = AppApplication.getAppContext().getResources();
         String url = String.format(resources.getString(R.string.url_get_developers), devKey);
 
         try {
@@ -91,9 +93,26 @@ public class HttpUtil {
 
                             // 从服务器下载头像。
                             if (!TextUtils.isEmpty(json.getString("avatar"))) {
-//                                String avatar = getAvatarFromServer(json.getString("avatar"),
-//                                        json.getString("dev_key"));
-//                                dev.setAvatarPath(avatar);
+                                String url = "http://" + json.getString("avatar");
+                                String fileName = "avatar_" + devKey + ".png";
+
+                                ImageLoader imgLoader = ImageLoader.getInstance();
+                                Bitmap avatarBitmap = imgLoader.loadImageSync(url);
+
+                                String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                        "/jbox/avatar/";
+                                File dir = new File(dirPath);
+                                if (!dir.exists()) {
+                                    dir.mkdirs();
+                                }
+                                File avatarFile = new File(dir, fileName);
+                                FileOutputStream out = new FileOutputStream(avatarFile);
+                                avatarBitmap.compress(Bitmap.CompressFormat.PNG, 85,out);
+
+                                out.flush();
+                                out.close();
+
+                                dev.setAvatarPath(avatarFile.getAbsolutePath());
                             }
 
                             callback.onDevLoaded(dev);
@@ -123,7 +142,7 @@ public class HttpUtil {
             return;
         }
 
-        Resources resources = mContext.getResources();
+        Resources resources = AppApplication.getAppContext().getResources();
         String url = String.format(resources.getString(R.string.url_get_channels), devKey);
 
         byte[] devKeyBase64 = Base64.decode(devKey, Base64.DEFAULT);
@@ -144,9 +163,10 @@ public class HttpUtil {
                     if (response.isSuccessful()) {
                         String body = response.body().string();
 
-                        JSONArray jsonArr = new JSONArray(body);
+                        JSONObject channelsJson = new JSONObject(body);
                         List<String> channels = new ArrayList<>();
 
+                        JSONArray jsonArr = channelsJson.getJSONArray("channels");
                         for (int i = 0; i < jsonArr.length(); i++) {
                             String channelName = jsonArr.getString(i);
                             channels.add(channelName);
@@ -162,35 +182,6 @@ public class HttpUtil {
                 }
             }
         });
-    }
-
-    private String getAvatarFromServer(@NonNull final String url, @NonNull String fileName) {
-        checkNotNull(url);
-        checkNotNull(fileName);
-
-        try {
-            URL u = new URL(url);
-            Bitmap bitmap = BitmapFactory.decodeStream(u.openConnection().getInputStream());
-
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                    "/JBox/avatar";
-
-            File dir = new File(filePath);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            File file = new File(dir, "avatar_" + fileName + ".png");
-            FileOutputStream fos = new FileOutputStream(file);
-
-            bitmap.compress(Bitmap.CompressFormat.PNG, 85, fos);
-            fos.flush();
-            fos.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private static boolean isNetworkAvailable(Context context) {

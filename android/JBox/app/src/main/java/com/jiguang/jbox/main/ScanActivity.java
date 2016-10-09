@@ -47,7 +47,7 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             }
         });
 
-        mScanView = (QRCodeView) findViewById(R.id.scanview);
+        mScanView = (QRCodeView) findViewById(R.id.scanView);
         mScanView.setDelegate(this);
     }
 

@@ -1,8 +1,9 @@
 package com.jiguang.jbox.data.source.local;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.jiguang.jbox.AppApplication;
 
 import static com.jiguang.jbox.data.source.local.DeveloperPersistenceContract.DevEntry;
 
@@ -10,7 +11,7 @@ public class DeveloperDbHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "JBox.db";
+    private static final String DATABASE_NAME = "JBox.db";
 
     private static final String TEXT_TYPE = " TEXT";
 
@@ -25,8 +26,8 @@ public class DeveloperDbHelper extends SQLiteOpenHelper {
                     DevEntry.COLUMN_NAME_AVATAR + TEXT_TYPE +
                     " )";
 
-    public DeveloperDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    DeveloperDbHelper() {
+        super(AppApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.data.source.MessageRepository;
 import com.jiguang.jbox.data.source.local.MessagesLocalDataSource;
+import com.jiguang.jbox.main.MainActivity;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -33,10 +34,12 @@ public class MyReceiver extends BroadcastReceiver {
         msg.setDevKey(devKey);
         msg.setTime(String.valueOf(System.currentTimeMillis()));
 
-        // 保存 msg 到本地，并刷新数据。
-        MessagesLocalDataSource localDataSource = MessagesLocalDataSource.getInstance(context);
+        // 保存 msg 到本地，并刷新页面数据。
+        MessagesLocalDataSource localDataSource = MessagesLocalDataSource.getInstance();
         MessageRepository repository = MessageRepository.getInstance(localDataSource);
         repository.saveMessage(msg);
+
+
     }
 
 }

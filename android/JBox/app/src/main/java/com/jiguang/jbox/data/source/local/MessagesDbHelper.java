@@ -1,8 +1,9 @@
 package com.jiguang.jbox.data.source.local;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.jiguang.jbox.AppApplication;
 
 public class MessagesDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
@@ -21,8 +22,8 @@ public class MessagesDbHelper extends SQLiteOpenHelper {
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME + TEXT_TYPE +
                     " )";
 
-    public MessagesDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public MessagesDbHelper() {
+        super(AppApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

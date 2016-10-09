@@ -56,9 +56,11 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
         Cursor c = db.query(ChannelEntry.TABLE_NAME, projection, selection, selectionArgs, null,
                 null, null);
+
+        List<Channel> channels = null;
+
         if (c != null && c.getCount() > 0) {
-            List<Channel> channels = new ArrayList<>();
-            Channel channel = null;
+            channels = new ArrayList<>();
             while (c.moveToNext()) {
                 String id = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_ID));
                 String name = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_NAME));
@@ -68,7 +70,7 @@ public class ChannelLocalDataSource implements ChannelDataSource {
                 boolean subscribe = c.getInt(c.getColumnIndexOrThrow(
                         ChannelEntry.COLUMN_NAME_IS_SUBSCRIBE)) == 1;
 
-                channel = new Channel(id, name);
+                Channel channel = new Channel(id, name);
                 channel.setDevKey(devKey);
                 channel.setIconPath(icon);
                 channel.setUnReadMessageCount(unreadCount);
@@ -76,11 +78,14 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
                 channels.add(channel);
             }
-            if (!channels.isEmpty()) {
-                callback.onChannelsLoaded(channels);
-            } else {
-                callback.onDataNotAvailable();
-            }
+
+            c.close();
+        }
+
+        if (channels != null) {
+            callback.onChannelsLoaded(channels);
+        } else {
+            callback.onDataNotAvailable();
         }
     }
 
@@ -104,9 +109,12 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
         Cursor c = db.query(ChannelEntry.TABLE_NAME, projection, selection, selectionArgs, null,
                 null, null);
+
+        List<Channel> channels = null;
+
         if (c != null && c.getCount() > 0) {
-            List<Channel> channels = new ArrayList<>();
-            Channel channel = null;
+            channels = new ArrayList<>();
+
             while (c.moveToNext()) {
                 String id = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_ID));
                 String name = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_NAME));
@@ -116,7 +124,7 @@ public class ChannelLocalDataSource implements ChannelDataSource {
                 boolean isSubscribe = c.getInt(c.getColumnIndexOrThrow(
                         ChannelEntry.COLUMN_NAME_IS_SUBSCRIBE)) == 1;
 
-                channel = new Channel(id, name);
+                Channel channel = new Channel(id, name);
                 channel.setDevKey(devKey);
                 channel.setIconPath(icon);
                 channel.setUnReadMessageCount(unreadCount);
@@ -124,11 +132,14 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
                 channels.add(channel);
             }
-            if (!channels.isEmpty()) {
-                callback.onChannelsLoaded(channels);
-            } else {
-                callback.onDataNotAvailable();
-            }
+
+            c.close();
+        }
+
+        if (channels != null) {
+            callback.onChannelsLoaded(channels);
+        } else {
+            callback.onDataNotAvailable();
         }
     }
 
@@ -149,9 +160,9 @@ public class ChannelLocalDataSource implements ChannelDataSource {
                 ChannelEntry.COLUMN_NAME_DEV_KEY, null, null);
 
         List<Channel> channels = null;
+
         if (c != null && c.getCount() > 0) {
             channels = new ArrayList<>();
-            Channel channel = null;
             while (c.moveToNext()) {
                 String id = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_ID));
                 String name = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_NAME));
@@ -163,7 +174,7 @@ public class ChannelLocalDataSource implements ChannelDataSource {
                 boolean isSubscribe = c.getInt(c.getColumnIndexOrThrow(
                         ChannelEntry.COLUMN_NAME_IS_SUBSCRIBE)) == 1;
 
-                channel = new Channel(id, name);
+                Channel channel = new Channel(id, name);
                 channel.setDevKey(devKey);
                 channel.setIconPath(icon);
                 channel.setUnReadMessageCount(unreadCount);
@@ -171,7 +182,10 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
                 channels.add(channel);
             }
+
+            c.close();
         }
+
         if (channels != null) {
             callback.onChannelsLoaded(channels);
         } else {
@@ -198,9 +212,9 @@ public class ChannelLocalDataSource implements ChannelDataSource {
                 new String[]{isSubscribeStr}, ChannelEntry.COLUMN_NAME_DEV_KEY, null, null);
 
         List<Channel> channels = null;
+
         if (c != null && c.getCount() > 0) {
             channels = new ArrayList<>();
-            Channel channel = null;
             while (c.moveToNext()) {
                 String id = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_ID));
                 String name = c.getString(c.getColumnIndexOrThrow(ChannelEntry.COLUMN_NAME_NAME));
@@ -210,7 +224,7 @@ public class ChannelLocalDataSource implements ChannelDataSource {
                 int unreadCount = c.getInt(c.getColumnIndexOrThrow(
                         ChannelEntry.COLUMN_NAME_UNREAD));
 
-                channel = new Channel(id, name);
+                Channel channel = new Channel(id, name);
                 channel.setDevKey(devKey);
                 channel.setIconPath(icon);
                 channel.setUnReadMessageCount(unreadCount);
@@ -218,7 +232,10 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
                 channels.add(channel);
             }
+
+            c.close();
         }
+
         if (channels != null) {
             callback.onChannelsLoaded(channels);
         } else {
@@ -257,7 +274,7 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
         db.delete(ChannelEntry.TABLE_NAME, whereClaus, new String[]{devKey});
 
-        ContentValues value = null;
+        ContentValues value;
         for (Channel channel : channels) {
             value = new ContentValues();
             value.put(ChannelEntry.COLUMN_NAME_ID, channel.getId());
@@ -295,9 +312,9 @@ public class ChannelLocalDataSource implements ChannelDataSource {
     public void updateChannels(List<Channel> channels) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        ContentValues value = null;
+        ContentValues value;
         String selection = ChannelEntry.COLUMN_NAME_ID + " = ?";
-        String[] selectionArgs = null;
+        String[] selectionArgs;
 
         for (Channel channel : channels) {
             selectionArgs = new String[]{channel.getId()};

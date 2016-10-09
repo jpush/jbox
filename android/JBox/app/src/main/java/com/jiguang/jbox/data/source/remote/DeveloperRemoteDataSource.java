@@ -1,6 +1,5 @@
 package com.jiguang.jbox.data.source.remote;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.jiguang.jbox.data.Developer;
@@ -13,18 +12,14 @@ public class DeveloperRemoteDataSource implements DeveloperDataSource {
 
     private static DeveloperRemoteDataSource INSTANCE;
 
-    private Context mContext;
-
-    public static DeveloperRemoteDataSource getInstance(Context context) {
+    public static DeveloperRemoteDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new DeveloperRemoteDataSource(context);
+            INSTANCE = new DeveloperRemoteDataSource();
         }
         return INSTANCE;
     }
 
-    private DeveloperRemoteDataSource(Context context) {
-        mContext = context;
-    }
+    private DeveloperRemoteDataSource() {}
 
     /**
      * 从服务器获取 developer 信息。
@@ -37,7 +32,7 @@ public class DeveloperRemoteDataSource implements DeveloperDataSource {
         checkNotNull(devKey);
         checkNotNull(callback);
 
-        HttpUtil.getInstance(mContext).requestDevelopers(devKey, callback);
+        HttpUtil.getInstance().requestDeveloper(devKey, callback);
     }
 
     @Override

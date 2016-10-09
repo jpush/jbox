@@ -145,16 +145,16 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
         private boolean mIsEdited;
 
-        public DrawerListAdapter(List<Channel> channels) {
+        DrawerListAdapter(List<Channel> channels) {
             mChannels = channels;
         }
 
-        public void editChannels(boolean isEdited) {
+        void editChannels(boolean isEdited) {
             mIsEdited = isEdited;
             notifyDataSetChanged();
         }
 
-        public void replaceData(List<Channel> channels) {
+        void replaceData(List<Channel> channels) {
             mChannels = channels;
             notifyDataSetChanged();
         }

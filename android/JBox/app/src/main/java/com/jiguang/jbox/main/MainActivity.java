@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.format.DateUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +74,7 @@ public class MainActivity extends Activity
             }
         });
 
-        MessagesLocalDataSource msgLocalDataSource = MessagesLocalDataSource.getInstance(this);
+        MessagesLocalDataSource msgLocalDataSource = MessagesLocalDataSource.getInstance();
         mMessagesRepository = MessageRepository.getInstance(msgLocalDataSource);
 
         mTopBar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,7 +87,6 @@ public class MainActivity extends Activity
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
         mAdapter = new MessageListAdapter(new ArrayList<Message>(0));
@@ -136,13 +134,20 @@ public class MainActivity extends Activity
 
         private List<Message> mMessages;
 
-        public MessageListAdapter(List<Message> list) {
+        MessageListAdapter(List<Message> list) {
             mMessages = list;
         }
 
-        public void replaceData(List<Message> list) {
+        void replaceData(List<Message> list) {
             if (list != null && !list.isEmpty()) {
                 mMessages = list;
+                notifyDataSetChanged();
+            }
+        }
+
+        public void addMessage(Message msg) {
+            if (mMessages != null) {
+                mMessages.add(0, msg);
                 notifyDataSetChanged();
             }
         }
@@ -189,5 +194,6 @@ public class MainActivity extends Activity
             return convertView;
         }
     }
+
 
 }

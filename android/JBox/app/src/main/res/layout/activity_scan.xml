@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.jiguang.jbox.main.ScanActivity">
 
     <com.jiguang.jbox.view.TopBar
-        android:id="@+id/topbar"
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_height"
         app:tbTitle="@string/scan_title"
@@ -18,10 +19,9 @@
         />
 
     <cn.bingoogolapple.qrcode.zxing.ZXingView
-        android:id="@+id/scanview"
+        android:id="@+id/scanView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topbar"
         app:qrcv_cornerColor="@color/colorPrimary"
         app:qrcv_qrCodeTipText="@string/scan_hint"
         app:qrcv_isTipTextBelowRect="true"
@@ -29,4 +29,4 @@
         />
 
 
-</RelativeLayout>
+</LinearLayout>

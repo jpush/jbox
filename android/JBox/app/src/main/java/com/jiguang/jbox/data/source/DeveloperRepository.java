@@ -33,15 +33,18 @@ public class DeveloperRepository implements DeveloperDataSource {
 
     @Override
     public void getDeveloper(@NonNull final String devKey, @NonNull final LoadDevCallback callback) {
-        if (mCachedDevelopers != null && !mCacheIsDirty) {
-            for (Developer dev : mCachedDevelopers) {
-                if (dev.getDevKey().equals(devKey)) {
-                    callback.onDevLoaded(dev);
-                    return;
-                }
+        // TODO：先从本地获取数据，判断是直接用，还是需要再从服务器获取。
+        mLocalDataSource.getDeveloper(devKey, new LoadDevCallback() {
+            @Override
+            public void onDevLoaded(Developer dev) {
+
             }
-            return;
-        }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
 
         if (mCacheIsDirty) {
             // 先从本地获取，如果没有再从服务器获取。
@@ -84,7 +87,9 @@ public class DeveloperRepository implements DeveloperDataSource {
 
     @Override
     public void saveDeveloper(@NonNull Developer dev) {
-        mCachedDevelopers.add(dev);
+        if (!mCachedDevelopers.contains(dev)) {
+            mCachedDevelopers.add(dev);
+        }
         mLocalDataSource.saveDeveloper(dev);
     }
 

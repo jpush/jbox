@@ -1,7 +1,6 @@
 package com.jiguang.jbox.data.source.local;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -18,13 +17,13 @@ public class DeveloperLocalDataSource implements DeveloperDataSource {
 
     private DeveloperDbHelper mDbHelper;
 
-    private DeveloperLocalDataSource(Context context) {
-        mDbHelper = new DeveloperDbHelper(context);
+    private DeveloperLocalDataSource() {
+        mDbHelper = new DeveloperDbHelper();
     }
 
-    public static DeveloperLocalDataSource getInstance(Context context) {
+    public static DeveloperLocalDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new DeveloperLocalDataSource(context);
+            INSTANCE = new DeveloperLocalDataSource();
         }
         return INSTANCE;
     }

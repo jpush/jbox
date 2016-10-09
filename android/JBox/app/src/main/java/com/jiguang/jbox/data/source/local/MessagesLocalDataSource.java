@@ -1,7 +1,6 @@
 package com.jiguang.jbox.data.source.local;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -23,14 +22,13 @@ public class MessagesLocalDataSource implements MessageDataSource {
 
     private MessagesDbHelper mDbHelper;
 
-    private MessagesLocalDataSource(@NonNull Context context) {
-        checkNotNull(context);
-        mDbHelper = new MessagesDbHelper(context);
+    private MessagesLocalDataSource() {
+        mDbHelper = new MessagesDbHelper();
     }
 
-    public static MessagesLocalDataSource getInstance(@NonNull Context context) {
+    public static MessagesLocalDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new MessagesLocalDataSource(context);
+            INSTANCE = new MessagesLocalDataSource();
         }
         return INSTANCE;
     }

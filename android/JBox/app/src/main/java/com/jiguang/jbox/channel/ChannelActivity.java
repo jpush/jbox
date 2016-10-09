@@ -21,12 +21,15 @@ import android.widget.Toast;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.ChannelRepository;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
 import com.jiguang.jbox.data.source.DeveloperRepository;
+import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
 import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
 import com.jiguang.jbox.data.source.remote.DeveloperRemoteDataSource;
 import com.jiguang.jbox.main.MainActivity;
+import com.jiguang.jbox.util.HttpUtil;
 import com.jiguang.jbox.util.ViewHolder;
 import com.jiguang.jbox.view.TopBar;
 
@@ -76,9 +79,9 @@ public class ChannelActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel);
 
-        mHandler = new MyHandler();
-
         final String devKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
+
+        mHandler = new MyHandler();
 
         TopBar topBar = (TopBar) findViewById(R.id.topBar);
         topBar.setLeftClick(new View.OnClickListener() {    // 顶部栏返回事件。
@@ -89,29 +92,31 @@ public class ChannelActivity extends Activity {
         });
 
         mListView = (ListView) findViewById(R.id.lv_channel);
+
+        // Init head view.
+        View headView = getLayoutInflater().inflate(
+                R.layout.view_subscribe_channel, mListView, false);
+        mIvAvatar = (CircleImageView) headView.findViewById(R.id.iv_dev_icon);
+        mTvDevName = (TextView) headView.findViewById(R.id.tv_name);
+        mTvDevDesc = (TextView) headView.findViewById(R.id.tv_desc);
+        mListView.addHeaderView(headView);
+
         mListAdapter = new SubChannelListAdapter(mChannels, new OnChannelCheckedListener() {
             @Override
             public void onChannelChecked(int position, boolean isChecked) {
                 mChannels.get(position).setSubscribe(isChecked);
             }
         });
-
-        // Init head view.
-        final View headView = getLayoutInflater().inflate(
-                R.layout.view_subscribe_channel, null, false);
-        mIvAvatar = (CircleImageView) headView.findViewById(R.id.iv_dev_icon);
-        mTvDevName = (TextView) headView.findViewById(R.id.tv_name);
-        mTvDevDesc = (TextView) headView.findViewById(R.id.tv_desc);
-
-        mListView.addHeaderView(headView);
-        mListView.setEmptyView(findViewById(R.id.tv_hint));
         mListView.setAdapter(mListAdapter);
 
-        DeveloperLocalDataSource devLocalDataSource = DeveloperLocalDataSource.getInstance(this);
-        DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance(this);
+        View emptyView = findViewById(R.id.tv_hint);
+//        mListView.setEmptyView(emptyView);
 
-        final DeveloperRepository devRepository = DeveloperRepository.getInstance(devLocalDataSource,
-                devRemoteDataSource);
+        DeveloperLocalDataSource devLocalDataSource = DeveloperLocalDataSource.getInstance();
+        DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance();
+
+        final DeveloperRepository devRepository = DeveloperRepository.getInstance(
+                devLocalDataSource, devRemoteDataSource);
 
         // 初始化开发者信息。
         devRemoteDataSource.getDeveloper(devKey, new DeveloperDataSource.LoadDevCallback() {
@@ -119,7 +124,7 @@ public class ChannelActivity extends Activity {
             public void onDevLoaded(Developer dev) {
                 mDevName = dev.getDevName();
 
-                devRepository.saveDeveloper(dev);
+//                devRepository.saveDeveloper(dev);
 
                 android.os.Message msg = new android.os.Message();
                 msg.what = MSG_DEV_UPDATE;
@@ -157,41 +162,41 @@ public class ChannelActivity extends Activity {
 //        });
 
         // 服务器端的 Channel 列表,要和本地数据库中的做对比。
-//        HttpUtil.getInstance(this).requestChannels(devKey,
-//                new ChannelDataSource.LoadChannelsNameCallback() {
-//                    @Override
-//                    public void onChannelsNameLoaded(List<String> channels) {
-//                        if (mLocalChannels == null || mLocalChannels.isEmpty()) {
-//                            // 直接用服务器数据。
-//                            for (String name : channels) {
-//                                Channel channel = new Channel(name);
-//                                channel.setDevKey(devKey);
-//                                mChannels.add(channel);
-//                            }
-//                        } else {
-//                            // 将本地数据和服务器数据做对比。
-//                            for (String name : channels) {
-//                                Channel channel = new Channel(name);
-//                                channel.setDevKey(devKey);
-//
-//                                for (Channel c : mLocalChannels) {
-//                                    if (name.equals(c.getName()) && c.isSubscribe()) {
-//                                        channel.setSubscribe(true);
-//                                    }
-//                                }
-//
-//                                mChannels.add(channel);
-//                            }
-//                        }
-//                        mListAdapter.replaceData(mChannels);
-//                        mChannelRepository.saveChannels(mChannels); // 更新本地数据库
-//                    }
-//
-//                    @Override
-//                    public void onDataNotAvailable() {
-//                        Toast.makeText(getApplicationContext(), "网络请求错误", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+        HttpUtil.getInstance().requestChannels(devKey,
+                new ChannelDataSource.LoadChannelsNameCallback() {
+                    @Override
+                    public void onChannelsNameLoaded(List<String> channels) {
+                        if (mLocalChannels == null || mLocalChannels.isEmpty()) {
+                            // 直接用服务器数据。
+                            for (String name : channels) {
+                                Channel channel = new Channel(name);
+                                channel.setDevKey(devKey);
+                                mChannels.add(channel);
+                            }
+                        } else {
+                            // 将本地数据和服务器数据做对比。
+                            for (String name : channels) {
+                                Channel channel = new Channel(name);
+                                channel.setDevKey(devKey);
+
+                                for (Channel c : mLocalChannels) {
+                                    if (name.equals(c.getName()) && c.isSubscribe()) {
+                                        channel.setSubscribe(true);
+                                    }
+                                }
+
+                                mChannels.add(channel);
+                            }
+                        }
+                        mListAdapter.replaceData(mChannels);
+                        mChannelRepository.saveChannels(mChannels); // 更新本地数据库
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        Toast.makeText(getApplicationContext(), "网络请求错误", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -253,7 +258,7 @@ public class ChannelActivity extends Activity {
 
         private OnChannelCheckedListener mChannelCheckedListener;
 
-        public SubChannelListAdapter(List<Channel> channels, OnChannelCheckedListener listener) {
+        SubChannelListAdapter(List<Channel> channels, OnChannelCheckedListener listener) {
             mChannels = channels;
             mChannelCheckedListener = listener;
         }
@@ -305,9 +310,10 @@ public class ChannelActivity extends Activity {
         }
     }
 
+    // TODO: 改进内存泄漏风险。
     private class MyHandler extends Handler {
 
-        public MyHandler() {
+        MyHandler() {
             super();
         }
 
