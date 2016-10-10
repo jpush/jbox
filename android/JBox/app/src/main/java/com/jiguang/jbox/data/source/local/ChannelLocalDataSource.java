@@ -1,7 +1,6 @@
 package com.jiguang.jbox.data.source.local;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -24,13 +23,13 @@ public class ChannelLocalDataSource implements ChannelDataSource {
 
     private ChannelDbHelper mDbHelper;
 
-    private ChannelLocalDataSource(Context context) {
-        mDbHelper = new ChannelDbHelper(context);
+    private ChannelLocalDataSource() {
+        mDbHelper = new ChannelDbHelper();
     }
 
-    public static ChannelLocalDataSource getInstance(Context context) {
+    public static ChannelLocalDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new ChannelLocalDataSource(context);
+            INSTANCE = new ChannelLocalDataSource();
         }
         return INSTANCE;
     }

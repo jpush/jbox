@@ -1,11 +1,15 @@
 package com.jiguang.jbox.channel;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +17,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
@@ -112,6 +116,13 @@ public class ChannelActivity extends Activity {
         View emptyView = findViewById(R.id.tv_hint);
 //        mListView.setEmptyView(emptyView);
 
+        // 申请外部存储访问权限。
+        if (ContextCompat.checkSelfPermission(AppApplication.getAppContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        }
+
         DeveloperLocalDataSource devLocalDataSource = DeveloperLocalDataSource.getInstance();
         DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance();
 
@@ -145,8 +156,8 @@ public class ChannelActivity extends Activity {
         });
 
         // 初始化 Channel 列表数据。
-//        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(this);
-//        mChannelRepository = ChannelRepository.getInstance(channelLocalDataSource);
+        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance();
+        mChannelRepository = ChannelRepository.getInstance(channelLocalDataSource);
 //
 //        mChannelRepository.getChannels(devKey, new ChannelDataSource.LoadChannelsCallback() {
 //            @Override
@@ -263,9 +274,8 @@ public class ChannelActivity extends Activity {
             mChannelCheckedListener = listener;
         }
 
-        public void replaceData(List<Channel> channels) {
+        void replaceData(List<Channel> channels) {
             mChannels = channels;
-            notifyDataSetChanged();
         }
 
         @Override
@@ -291,11 +301,13 @@ public class ChannelActivity extends Activity {
             }
 
             Channel channel = getItem(i);
+            String name = channel.getName();
 
-            ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
+            TextView tvHead = ViewHolder.get(convertView, R.id.tv_head);
+            tvHead.setText(name.substring(0, 1).toUpperCase());
 
             TextView tvChannel = ViewHolder.get(convertView, R.id.tv_channel);
-            tvChannel.setText(channel.getName());
+            tvChannel.setText(name);
 
             CheckBox cbIsSubscribe = ViewHolder.get(convertView, R.id.cb_isSubscribe);
             cbIsSubscribe.setChecked(channel.isSubscribe());
@@ -326,14 +338,17 @@ public class ChannelActivity extends Activity {
 
                     mTvDevName.setText(data.getString("devName"));
 
+                    if (!TextUtils.isEmpty(data.getString("avatarPath"))) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(data.getString("avatarPath"));
+                        bitmap = Bitmap.createScaledBitmap(bitmap, mIvAvatar.getWidth(),
+                                mIvAvatar.getHeight(), true);
+                        mIvAvatar.setImageBitmap(bitmap);
+                    }
+
                     if (!TextUtils.isEmpty(data.getString("desc"))) {
                         mTvDevDesc.setText(data.getString("desc"));
                     }
 
-                    if (!TextUtils.isEmpty(data.getString("avatarPath"))) {
-                        Bitmap avatarBitmap = BitmapFactory.decodeFile(data.getString("avatarPath"));
-                        mIvAvatar.setImageBitmap(avatarBitmap);
-                    }
                     break;
                 default:
             }

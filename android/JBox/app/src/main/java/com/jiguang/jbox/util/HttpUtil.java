@@ -1,17 +1,18 @@
 package com.jiguang.jbox.util;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
-import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.view.View;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
@@ -19,8 +20,7 @@ import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +29,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static android.content.ContentValues.TAG;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class HttpUtil {
 
@@ -94,25 +92,33 @@ public class HttpUtil {
                             // 从服务器下载头像。
                             if (!TextUtils.isEmpty(json.getString("avatar"))) {
                                 String url = "http://" + json.getString("avatar");
-                                String fileName = "avatar_" + devKey + ".png";
 
                                 ImageLoader imgLoader = ImageLoader.getInstance();
-                                Bitmap avatarBitmap = imgLoader.loadImageSync(url);
+                                ImageLoaderConfiguration config = new ImageLoaderConfiguration
+                                        .Builder(AppApplication.getAppContext())
+                                        .build();
+                                imgLoader.init(config);
 
-                                String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                                        "/jbox/avatar/";
-                                File dir = new File(dirPath);
-                                if (!dir.exists()) {
-                                    dir.mkdirs();
+                                Bitmap bitmap = imgLoader.loadImageSync(url);
+                                if (bitmap != null) {
+                                    String dirPath = Environment.getExternalStorageDirectory()
+                                            .getAbsolutePath() + "/jbox/avatar";
+                                    File dir = new File(dirPath);
+                                    if (!dir.exists()) {
+                                        dir.mkdirs();
+                                    }
+
+                                    String fileName = "avatar_" + devKey + ".jpg";
+                                    File avatarFile = new File(dir, fileName);
+
+                                    FileOutputStream out = new FileOutputStream(avatarFile);
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
+
+                                    dev.setAvatarPath(avatarFile.getAbsolutePath());
+
+                                    out.flush();
+                                    out.close();
                                 }
-                                File avatarFile = new File(dir, fileName);
-                                FileOutputStream out = new FileOutputStream(avatarFile);
-                                avatarBitmap.compress(Bitmap.CompressFormat.PNG, 85,out);
-
-                                out.flush();
-                                out.close();
-
-                                dev.setAvatarPath(avatarFile.getAbsolutePath());
                             }
 
                             callback.onDevLoaded(dev);
@@ -133,8 +139,7 @@ public class HttpUtil {
     /**
      * 返回查询到的 Channel 名称列表。
      *
-     * @param devKey
-     * @return Channel 名称列表。
+     * @param devKey 目标开发者的 dev key。
      */
     public void requestChannels(String devKey,
                                 final ChannelDataSource.LoadChannelsNameCallback callback) {

@@ -151,12 +151,12 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
         void editChannels(boolean isEdited) {
             mIsEdited = isEdited;
-            notifyDataSetChanged();
+//            notifyDataSetChanged();
         }
 
         void replaceData(List<Channel> channels) {
             mChannels = channels;
-            notifyDataSetChanged();
+//            notifyDataSetChanged();
         }
 
         @Override

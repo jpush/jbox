@@ -123,8 +123,8 @@ public class ChannelRepository implements ChannelDataSource {
             if (mCacheChannels.containsKey(devKey)) {
                 mCacheChannels.get(devKey).addAll(channels);
             }
+            mLocalDataSource.saveChannels(channels);
         }
-        mLocalDataSource.saveChannels(channels);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.jiguang.jbox.data.source.local;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.jiguang.jbox.AppApplication;
 
 import static com.jiguang.jbox.data.source.local.ChannelPersistenceContract.ChannelEntry;
 
@@ -30,8 +31,8 @@ public class ChannelDbHelper extends SQLiteOpenHelper {
                     ChannelEntry.COLUMN_NAME_IS_SUBSCRIBE + BOOLEAN_TYPE +
                     " )";
 
-    public ChannelDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public ChannelDbHelper() {
+        super(AppApplication.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

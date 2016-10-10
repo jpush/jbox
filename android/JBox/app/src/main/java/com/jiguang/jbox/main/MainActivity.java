@@ -1,6 +1,9 @@
 package com.jiguang.jbox.main;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -46,33 +49,15 @@ public class MainActivity extends Activity
 
     private List<Channel> mChannelList;
 
+    private NavigationDrawerFragment mDrawerFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        // init data.
-        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance(this);
-        ChannelRepository channelRepository = ChannelRepository.getInstance(channelLocalDataSource);
-        channelRepository.getChannels(true, new ChannelDataSource.LoadChannelsCallback() {
-            @Override
-            public void onChannelsLoaded(List<Channel> channels) {
-                mChannelList = channels;
-                navigationDrawerFragment.initData(channels);
-                if (channels != null && !channels.isEmpty()) {
-                    // 初始化侧边栏 Channel 列表数据。
-                    navigationDrawerFragment.initData(channels);
-                }
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                mChannelList = new ArrayList<>();
-            }
-        });
+        mDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(
+                R.id.navigation_drawer);
 
         MessagesLocalDataSource msgLocalDataSource = MessagesLocalDataSource.getInstance();
         mMessagesRepository = MessageRepository.getInstance(msgLocalDataSource);
@@ -100,6 +85,26 @@ public class MainActivity extends Activity
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
+
+        // init data.
+        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance();
+        ChannelRepository channelRepository = ChannelRepository.getInstance(channelLocalDataSource);
+        channelRepository.getChannels(true, new ChannelDataSource.LoadChannelsCallback() {
+            @Override
+            public void onChannelsLoaded(List<Channel> channels) {
+                mChannelList = channels;
+                mDrawerFragment.initData(channels);
+//                if (channels != null && !channels.isEmpty()) {
+//                    // 初始化侧边栏 Channel 列表数据。
+//                    mDrawerFragment.initData(channels);
+//                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mChannelList = new ArrayList<>();
+            }
+        });
     }
 
     @Override
@@ -195,5 +200,33 @@ public class MainActivity extends Activity
         }
     }
 
+
+    public class MyReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
+                Bundle bundle = intent.getBundleExtra(JPushInterface.EXTRA_MESSAGE);
+
+                String title = bundle.getString("title");
+                String content = bundle.getString("content");
+                String devKey = bundle.getString("dev_key");
+                String channel = bundle.getString("channel");
+
+                Message msg = new Message(title, content);
+                msg.setChannelName(channel);
+                msg.setDevKey(devKey);
+                msg.setTime(String.valueOf(System.currentTimeMillis()));
+
+                // 保存 msg 到本地，并刷新页面数据。
+                MessagesLocalDataSource localDataSource = MessagesLocalDataSource.getInstance();
+                MessageRepository repository = MessageRepository.getInstance(localDataSource);
+                repository.saveMessage(msg);
+
+                // 提醒 MainActivity 界面更新。
+                mAdapter.addMessage(msg);
+            }
+        }
+    }
 
 }
