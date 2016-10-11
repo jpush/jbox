@@ -41,8 +41,6 @@ public class MessagesLocalDataSource implements MessageDataSource {
 
         String[] projection = {
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID,
-                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_NAME,
-                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_DEV_KEY,
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE,
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT,
                 MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME

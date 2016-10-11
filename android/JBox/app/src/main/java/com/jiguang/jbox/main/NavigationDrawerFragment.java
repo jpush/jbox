@@ -43,12 +43,6 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
-
-    private boolean mFromSavedInstanceState;
-
-    private boolean mUserLearnedDrawer;
-
     private boolean mIsEditChannels = false;
 
     public NavigationDrawerFragment() {
@@ -104,7 +98,6 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
     }
 
     private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }

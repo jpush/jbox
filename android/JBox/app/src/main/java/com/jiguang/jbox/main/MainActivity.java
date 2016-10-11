@@ -94,10 +94,6 @@ public class MainActivity extends Activity
             public void onChannelsLoaded(List<Channel> channels) {
                 mChannelList = channels;
                 mDrawerFragment.initData(channels);
-//                if (channels != null && !channels.isEmpty()) {
-//                    // 初始化侧边栏 Channel 列表数据。
-//                    mDrawerFragment.initData(channels);
-//                }
             }
 
             @Override

@@ -16,7 +16,10 @@ public class MessagesDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + MessagesPersistenceContract.MessageEntry.TABLE_NAME + " (" +
-                    MessagesPersistenceContract.MessageEntry._ID + TEXT_TYPE + " PRIMARY KEY," +
+                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID + TEXT_TYPE + " PRIMARY KEY," +
+                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_NAME + TEXT_TYPE + COMMA_SEP +
+                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_DEV_KEY + TEXT_TYPE + COMMA_SEP +
+                    MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT + TEXT_TYPE + COMMA_SEP +
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT + TEXT_TYPE + COMMA_SEP +
                     MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME + TEXT_TYPE +
