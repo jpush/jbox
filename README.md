@@ -1,9 +1,10 @@
+#JBox
 <p align="center">
     <a href="http://jbox.jiguang.cn/" target="_blank">
         <img src="https://github.com/jpush/jbox/blob/dev/ReadmeResource/Boxinbear%401x.png" alt="JBox" width=300/>
     </a>
 </p>
-#JBox
+
 [JBox](http://jbox.jiguang.cn/) 是一个能够接收你订阅消息的盒子，只需要简单配置就可以在 iOS、android 端接收你关注的消息。
 
 本项目包含JBox iOS、android 和服务端的全套源代码。
