@@ -12,10 +12,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.channel.ChannelActivity;
+import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.util.AppUtil;
 import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.view.TopBar;
+
+import java.util.List;
 
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
@@ -37,6 +43,13 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
+        // 请求拍照权限。
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    REQUEST_CODE_PERMISSION_CAMERA);
+        }
+
         TopBar topBar = (TopBar) findViewById(R.id.topBar);
         topBar.setRightClick(new View.OnClickListener() {   // 打开相册,并选择图片扫描二维码。
             @Override
@@ -49,18 +62,6 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
 
         mScanView = (QRCodeView) findViewById(R.id.scanView);
         mScanView.setDelegate(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // 请求拍照权限。
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                    REQUEST_CODE_PERMISSION_CAMERA);
-        }
     }
 
     @Override
@@ -90,7 +91,29 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
         }
 
         if (result.contains("_")) { // 扫描的是 channel，马上订阅。
+            String[] str = result.split("_");
+            String devKey = str[0];
+            String channel = str[1];
 
+            Channel c = new Select().from(Channel.class)
+                    .where("DevKey = ? AND Name = ?")
+                    .executeSingle();
+
+            if (c == null) {    // 本地不存在，进行订阅。
+                c = new Channel();
+                c.devKey = devKey;
+                c.name = channel;
+                c.save();
+
+                AppUtil.setTags();
+            } else if (!c.isSubscribe) {
+                new Update(Channel.class)
+                        .set("IsSubscribe = ?", true)
+                        .where("DevKey = ? AND Name = ?", c.devKey, c.name)
+                        .execute();
+                AppUtil.setTags();
+            }
+            finish();
         } else {
             // 扫描二维码返回 devKey，再请求 developer 信息。
             Intent intent = new Intent(this, ChannelActivity.class);

@@ -35,6 +35,7 @@ public class Channel extends Model {
         this.devKey = devKey;
         this.name = name;
         this.iconPath = iconPath;
+        this.desc = desc;
         this.unreadCount = unreadCount;
         this.isSubscribe = isSubscribe;
     }

@@ -59,7 +59,6 @@ public class ChannelActivity extends Activity {
     public static final String EXTRA_DEV_KEY = "dev_key";
 
     private static final int MSG_DEV_UPDATE = 0;
-    private static final int MSG_CHANNEL_UPDATE = 1;
 
     private ListView mListView;
 
@@ -116,7 +115,7 @@ public class ChannelActivity extends Activity {
         mListView.setAdapter(mListAdapter);
 
         View emptyView = findViewById(R.id.tv_hint);
-//        mListView.setEmptyView(emptyView);
+        mListView.setEmptyView(emptyView);
 
         // 申请外部存储访问权限。
         if (ContextCompat.checkSelfPermission(AppApplication.getAppContext(),
@@ -238,9 +237,6 @@ public class ChannelActivity extends Activity {
 
         /**
          * 根据 Channel 的选择状态来判断是否订阅。
-         *
-         * @param position
-         * @param isChecked
          */
         void onChannelChecked(int position, boolean isChecked);
     }
@@ -337,4 +333,5 @@ public class ChannelActivity extends Activity {
             }
         }
     }
+
 }
