@@ -36,4 +36,4 @@ JBox 直接使用极光推送服务，能够保证消息快速、稳定的送达
 
 
 ##社区
-如果使用 JBox 遇到问题，不妨在 [极光社区](https://community.jiguang.cn) 提出你的疑惑
+如果使用 JBox 遇到问题，不妨在 [极光社区](https://community.jiguang.cn) 提出你的疑惑。
