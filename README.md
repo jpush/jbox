@@ -21,8 +21,9 @@
 ####使用极光推送服务
 JBox 直接使用极光推送服务，能够保证消息快速、稳定的送达手机设备。
 
-###快速上手
+###产品使用
 [产品使用指导](http://jbox.jiguang.cn/guide) 能够帮助你快速使用JBox
+[App下载](http://jbox.jiguang.cn/application) 点击获取 JBox app
 
 ###文档
 [接口文档](http://jbox.jiguang.cn/document) 介绍自定义集成需要对接的 API
