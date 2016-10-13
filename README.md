@@ -1,11 +1,11 @@
-#JBox
+#JBox —— 极光宝盒
 <p align="center">
     <a href="http://jbox.jiguang.cn/" target="_blank">
         <img src="https://github.com/jpush/jbox/blob/dev/ReadmeResource/Boxinbear%401x.png" alt="JBox" width=300/>
     </a>
 </p>
 
-[JBox](http://jbox.jiguang.cn/) 是一个能够接收你订阅消息的盒子，只需要简单配置就可以在 iOS、android 端接收你关注的消息。
+[JBox](http://jbox.jiguang.cn/) 是一个能够接收你订阅消息的盒子，只需要简单配置就可以在 iOS、Android 端接收你关注的消息。
 
 本项目包含JBox iOS、android 和服务端的全套源代码。
 
@@ -26,14 +26,14 @@ JBox 直接使用极光推送服务，能够保证消息快速、稳定的送达
 
 
 ##产品使用
-[产品使用指导](http://jbox.jiguang.cn/guide) 能够帮助你快速使用JBox
+[产品使用指导](http://jbox.jiguang.cn/guide) 能够帮助你快速使用 JBox。
 
-[App下载](http://jbox.jiguang.cn/application) 点击获取 JBox app
+[App下载](http://jbox.jiguang.cn/application) 点击获取 JBox app。
 
 
 ##文档
-[接口文档](http://jbox.jiguang.cn/document) 介绍自定义集成需要对接的 API
+[接口文档](http://jbox.jiguang.cn/document) 介绍自定义集成需要对接的 API。
 
 
 ##社区
-如果使用 JBox 遇到问题，不妨在 [极光社区](https://community.jiguang.cn)提出你的疑惑
+如果使用 JBox 遇到问题，不妨在 [极光社区](https://community.jiguang.cn) 提出你的疑惑
