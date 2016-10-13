@@ -21,6 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
@@ -61,8 +65,6 @@ public class ChannelActivity extends Activity {
 
     private SubChannelListAdapter mListAdapter;
 
-    private ChannelRepository mChannelRepository;
-
     private List<Channel> mChannels = new ArrayList<>();
 
     private List<Channel> mLocalChannels;
@@ -76,14 +78,14 @@ public class ChannelActivity extends Activity {
     private TextView mTvDevDesc;
     private CircleImageView mIvAvatar;
 
-    private String mDevName;
+    private String mDevKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel);
 
-        final String devKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
+        mDevKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
 
         mHandler = new MyHandler();
 
@@ -108,7 +110,7 @@ public class ChannelActivity extends Activity {
         mListAdapter = new SubChannelListAdapter(mChannels, new OnChannelCheckedListener() {
             @Override
             public void onChannelChecked(int position, boolean isChecked) {
-                mChannels.get(position).setSubscribe(isChecked);
+                mChannels.get(position).isSubscribe = isChecked;
             }
         });
         mListView.setAdapter(mListAdapter);
@@ -123,26 +125,22 @@ public class ChannelActivity extends Activity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
         }
 
-        DeveloperLocalDataSource devLocalDataSource = DeveloperLocalDataSource.getInstance();
+        final DeveloperLocalDataSource devLocalDataSource = DeveloperLocalDataSource.getInstance();
         DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance();
 
-        final DeveloperRepository devRepository = DeveloperRepository.getInstance(
-                devLocalDataSource, devRemoteDataSource);
 
         // 初始化开发者信息。
-        devRemoteDataSource.getDeveloper(devKey, new DeveloperDataSource.LoadDevCallback() {
+        devRemoteDataSource.load(mDevKey, new DeveloperDataSource.LoadDevCallback() {
             @Override
             public void onDevLoaded(Developer dev) {
-                mDevName = dev.getDevName();
-
-//                devRepository.saveDeveloper(dev);
+                devLocalDataSource.save(dev);
 
                 android.os.Message msg = new android.os.Message();
                 msg.what = MSG_DEV_UPDATE;
                 Bundle bundle = new Bundle();
-                bundle.putString("devName", dev.getDevName());
-                bundle.putString("desc", dev.getDesc());
-                bundle.putString("avatarPath", dev.getAvatarPath());
+                bundle.putString("devName", dev.name);
+                bundle.putString("desc", dev.desc);
+                bundle.putString("avatarPath", dev.avatarPath);
                 msg.setData(bundle);
                 mHandler.sendMessage(msg);
             }
@@ -155,59 +153,39 @@ public class ChannelActivity extends Activity {
             }
         });
 
-        // 初始化 Channel 列表数据。
-        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance();
-        mChannelRepository = ChannelRepository.getInstance(channelLocalDataSource);
-//
-//        mChannelRepository.getChannels(devKey, new ChannelDataSource.LoadChannelsCallback() {
-//            @Override
-//            public void onChannelsLoaded(List<Channel> channels) {
-//                mLocalChannels = channels;
-//            }
-//
-//            @Override
-//            public void onDataNotAvailable() {
-//                // 本地没有数据。
-//                mLocalChannels = new ArrayList<>();
-//            }
-//        });
+        // 从本地数据库中进行查询。
+        mLocalChannels = new Select().from(Channel.class).where("DevKey = ?", mDevKey).execute();
 
-        // 服务器端的 Channel 列表,要和本地数据库中的做对比。
-        HttpUtil.getInstance().requestChannels(devKey,
-                new ChannelDataSource.LoadChannelsNameCallback() {
-                    @Override
-                    public void onChannelsNameLoaded(List<String> channels) {
-                        if (mLocalChannels == null || mLocalChannels.isEmpty()) {
-                            // 直接用服务器数据。
-                            for (String name : channels) {
-                                Channel channel = new Channel(name);
-                                channel.setDevKey(devKey);
-                                mChannels.add(channel);
-                            }
-                        } else {
-                            // 将本地数据和服务器数据做对比。
-                            for (String name : channels) {
-                                Channel channel = new Channel(name);
-                                channel.setDevKey(devKey);
+        if (!HttpUtil.isNetworkAvailable()) {
+            mListAdapter.replaceData(mLocalChannels);
+        } else {
+            // 服务器端的 Channel 列表,要和本地数据库中的做对比。
+            HttpUtil.getInstance().requestChannels(mDevKey,
+                    new ChannelDataSource.LoadChannelsCallback() {
+                        @Override
+                        public void onChannelsLoaded(List<Channel> channels) {
+                            mChannels = channels;
 
-                                for (Channel c : mLocalChannels) {
-                                    if (name.equals(c.getName()) && c.isSubscribe()) {
-                                        channel.setSubscribe(true);
+                            if (mLocalChannels != null) {
+                                // 将本地数据和服务器数据做对比，同步订阅状态。
+                                for (Channel channel : mChannels) {
+                                    for (Channel localChannel : mLocalChannels) {
+                                        if (localChannel.name.equals(channel.name)) {
+                                            channel.isSubscribe = localChannel.isSubscribe;
+                                        }
                                     }
                                 }
-
-                                mChannels.add(channel);
                             }
-                        }
-                        mListAdapter.replaceData(mChannels);
-                        mChannelRepository.saveChannels(mChannels); // 更新本地数据库
-                    }
 
-                    @Override
-                    public void onDataNotAvailable() {
-                        Toast.makeText(getApplicationContext(), "网络请求错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            mListAdapter.replaceData(mChannels);
+                        }
+
+                        @Override
+                        public void onDataNotAvailable() {
+                            Toast.makeText(getApplicationContext(), "网络请求错误", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
 
     }
 
@@ -226,10 +204,15 @@ public class ChannelActivity extends Activity {
      * 将数据保存到数据库中，并打上 JPush TAG。
      */
     private void onBack() {
+        new Delete().from(Channel.class)
+                .where("DevKey = ?", mDevKey)
+                .execute();
+
         for (Channel c : mChannels) {
-            if (c.isSubscribe()) {
-                mTags.add(c.getDevKey() + "_" + c.getName());
+            if (c.isSubscribe) {
+                mTags.add(c.devKey + "_" + c.name);
             }
+            c.save();
         }
 
         if (!mTags.isEmpty()) {
@@ -239,7 +222,6 @@ public class ChannelActivity extends Activity {
                     if (result == 0) {
                         Toast.makeText(getApplicationContext(), "订阅成功", Toast.LENGTH_SHORT).show();
                         // 将数据保存到数据库中。
-                        mChannelRepository.saveChannels(mChannels);
                     } else {
                         Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
                     }
@@ -276,6 +258,7 @@ public class ChannelActivity extends Activity {
 
         void replaceData(List<Channel> channels) {
             mChannels = channels;
+//            notifyDataSetChanged();
         }
 
         @Override
@@ -301,7 +284,7 @@ public class ChannelActivity extends Activity {
             }
 
             Channel channel = getItem(i);
-            String name = channel.getName();
+            String name = channel.name;
 
             TextView tvHead = ViewHolder.get(convertView, R.id.tv_head);
             tvHead.setText(name.substring(0, 1).toUpperCase());
@@ -310,7 +293,7 @@ public class ChannelActivity extends Activity {
             tvChannel.setText(name);
 
             CheckBox cbIsSubscribe = ViewHolder.get(convertView, R.id.cb_isSubscribe);
-            cbIsSubscribe.setChecked(channel.isSubscribe());
+            cbIsSubscribe.setChecked(channel.isSubscribe);
             cbIsSubscribe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

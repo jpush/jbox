@@ -22,13 +22,13 @@ public interface DeveloperDataSource {
         void onDataNotAvailable();
     }
 
-    void getDeveloper(@NonNull String devKey, @NonNull LoadDevCallback callback);
+    void load(@NonNull String devKey, @NonNull LoadDevCallback callback);
 
-    void getDevelopers(@NonNull LoadDevsCallback callback);
+    void load(@NonNull LoadDevsCallback callback);
 
-    void saveDeveloper(@NonNull Developer dev);
+    void save(@NonNull Developer dev);
 
-    void updateDeveloper(@NonNull Developer dev);
+    void update(@NonNull Developer dev);
 
-    void refresh();
+    void delete(@NonNull String devKey);
 }

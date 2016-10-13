@@ -1,140 +1,42 @@
 package com.jiguang.jbox.data;
 
-import android.content.Context;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
-import com.jiguang.jbox.AppApplication;
+@Table(name = "Channel")
+public class Channel extends Model {
 
-import java.util.List;
-import java.util.Stack;
-import java.util.UUID;
+    @Column(name = "DevKey")
+    public String devKey;
 
-public class Channel {
+    @Column(name = "Name")
+    public String name;
 
-    private String mId;
+    @Column(name = "IconPath")
+    public String iconPath;
 
-    private final String mName;
+    @Column(name = "Desc")
+    public String desc;
 
-    private String mIconPath;
+    @Column(name = "UnreadCount")
+    public int unreadCount; // 未读消息数。
 
-    private String mDescription;
+    @Column(name = "IsSubscribe")
+    public boolean isSubscribe;    // 默认为未订阅。
 
-    private String mDevKey;
-
-    private String mDevName;
-
-    private int unReadMessageCount; // 未读消息数。
-
-    private Stack<Message> mMessages;
-
-    private Developer mDeveloper;
-
-    private boolean isSubscribe = false;    // 默认为未订阅。
-
-    public Channel(String name) {
-        mId = UUID.randomUUID().toString();
-        mName = name;
+    public Channel() {
+        super();
     }
 
-    public Channel(String id, String name) {
-        mId = id;
-        mName = name;
+    public Channel(String devKey, String name, String iconPath, String desc,
+                   int unreadCount, boolean isSubscribe) {
+        super();
+        this.devKey = devKey;
+        this.name = name;
+        this.iconPath = iconPath;
+        this.unreadCount = unreadCount;
+        this.isSubscribe = isSubscribe;
     }
 
-    public void setId(String id) {
-        mId = id;
-    }
-
-    public String getId() {
-        return mId;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public void setDescription(String description) {
-        mDescription = description;
-    }
-
-    public String getDescription() {
-        return mDescription;
-    }
-
-    public Message getLatestMessage() {
-        return mMessages.pop();
-    }
-
-    public int getUnReadMessageCount() {
-        return unReadMessageCount;
-    }
-
-    public void setUnReadMessageCount(int unReadMessageCount) {
-        this.unReadMessageCount = unReadMessageCount;
-    }
-
-    public List<Message> getMessages() {
-        return mMessages;
-    }
-
-    public void setMessages(Stack<Message> messages) {
-        mMessages = messages;
-    }
-
-    public String getDevKey() {
-        return mDevKey;
-    }
-
-    public void setDevKey(String devKey) {
-        mDevKey = devKey;
-    }
-
-    public Developer getDeveloper() {
-        return mDeveloper;
-    }
-
-    public void setDeveloper(Developer developer) {
-        mDeveloper = developer;
-    }
-
-    public boolean isSubscribe() {
-        return isSubscribe;
-    }
-
-    public void setSubscribe(boolean subscribe) {
-        isSubscribe = subscribe;
-    }
-
-    /**
-     * 订阅 Channel
-     */
-    public void subscribe(Context context) {
-
-    }
-
-    /**
-     * 取消订阅
-     */
-    public void unSubscribe() {
-
-    }
-
-    public String getTag() {
-        return AppApplication.getAppKey() + mName;
-    }
-
-    public String getIconPath() {
-        return mIconPath;
-    }
-
-    public void setIconPath(String iconPath) {
-        this.mIconPath = iconPath;
-    }
-
-    public String getDevName() {
-        return mDevName;
-    }
-
-    public void setDevName(String devName) {
-        mDevName = devName;
-    }
 }

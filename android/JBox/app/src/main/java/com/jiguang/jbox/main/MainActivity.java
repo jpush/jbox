@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
@@ -43,11 +45,15 @@ public class MainActivity extends Activity
 
     private MessageListAdapter mAdapter;
 
-    private MessageRepository mMessagesRepository;
-
     private List<Developer> mDevList;
 
+    private String mCurrentDevKey;
+
     private List<Channel> mChannelList;
+
+    private String mCurrentChannelName;
+
+    private List<Message> mMessages;
 
     private NavigationDrawerFragment mDrawerFragment;
 
@@ -58,9 +64,6 @@ public class MainActivity extends Activity
 
         mDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(
                 R.id.navigation_drawer);
-
-        MessagesLocalDataSource msgLocalDataSource = MessagesLocalDataSource.getInstance();
-        mMessagesRepository = MessageRepository.getInstance(msgLocalDataSource);
 
         mTopBar = (Toolbar) findViewById(R.id.toolbar);
         mTopBar.setNavigationIcon(R.drawable.ic_navigation);
@@ -79,6 +82,8 @@ public class MainActivity extends Activity
 
         View emptyView = findViewById(R.id.tv_hint);
         mMsgListView.setEmptyView(emptyView);
+
+//        onNavigationDrawerItemSelected(0);
     }
 
     @Override
@@ -86,21 +91,8 @@ public class MainActivity extends Activity
         super.onResume();
         JPushInterface.onResume(this);
 
-        // init data.
-        ChannelLocalDataSource channelLocalDataSource = ChannelLocalDataSource.getInstance();
-        ChannelRepository channelRepository = ChannelRepository.getInstance(channelLocalDataSource);
-        channelRepository.getChannels(true, new ChannelDataSource.LoadChannelsCallback() {
-            @Override
-            public void onChannelsLoaded(List<Channel> channels) {
-                mChannelList = channels;
-                mDrawerFragment.initData(channels);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                mChannelList = new ArrayList<>();
-            }
-        });
+        initData();
+        mDrawerFragment.initData(mChannelList);
     }
 
     @Override
@@ -109,24 +101,36 @@ public class MainActivity extends Activity
         JPushInterface.onPause(this);
     }
 
+    /**
+     * 侧边栏 Channel 点击事件。
+     */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         if (mChannelList != null) {
             Channel channel = mChannelList.get(position);
-            mTopBar.setTitle(channel.getName());
-            // 加载指定 Channel 的 message 数据。
-            mMessagesRepository.getMessages(channel.getDevKey(), channel.getName(),
-                    new MessageDataSource.LoadMessagesCallback() {
-                        @Override
-                        public void onMessagesLoaded(List<Message> messages) {
-                            mAdapter.replaceData(messages);
-                        }
 
-                        @Override
-                        public void onDataNotAvailable() {
+            mCurrentChannelName = channel.name;
+            mCurrentDevKey = channel.devKey;
 
-                        }
-                    });
+            mTopBar.setTitle(channel.name);
+
+            mMessages = new Select().from(Message.class)
+                    .where("DevKey = ? AND Channel = ?", channel.devKey, channel.name)
+                    .execute();
+
+            mAdapter.replaceData(mMessages);
+        }
+    }
+
+    private void initData() {
+        mDevList = new Select().from(Developer.class).execute();
+
+        if (mDevList != null && !mDevList.isEmpty()) {
+            String devKey = mDevList.get(0).key;
+
+            mChannelList = new Select().from(Channel.class)
+                    .where("DevKey = ? AND IsSubscribe = ?", devKey, true)
+                    .execute();
         }
     }
 
@@ -142,14 +146,12 @@ public class MainActivity extends Activity
         void replaceData(List<Message> list) {
             if (list != null && !list.isEmpty()) {
                 mMessages = list;
-                notifyDataSetChanged();
             }
         }
 
-        public void addMessage(Message msg) {
+        void addMessage(Message msg) {
             if (mMessages != null) {
                 mMessages.add(0, msg);
-                notifyDataSetChanged();
             }
         }
 
@@ -180,16 +182,16 @@ public class MainActivity extends Activity
             ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
 
             TextView tvTitle = ViewHolder.get(convertView, R.id.tv_title);
-            tvTitle.setText(msg.getTitle());
+            tvTitle.setText(msg.title);
 
             TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
-            tvContent.setText(msg.getContent());
+            tvContent.setText(msg.content);
 
-            TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
-
-            long timeMillis = Long.parseLong(msg.getTime());
+            long timeMillis = msg.time;
             String formatTime = DateUtils.formatDateTime(parent.getContext(), timeMillis,
                     DateUtils.FORMAT_SHOW_TIME);
+
+            TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
             tvTime.setText(formatTime);
 
             return convertView;
@@ -197,6 +199,9 @@ public class MainActivity extends Activity
     }
 
 
+    /**
+     * 收到消息的监听器。
+     */
     public class MyReceiver extends BroadcastReceiver {
 
         @Override
@@ -209,18 +214,30 @@ public class MainActivity extends Activity
                 String devKey = bundle.getString("dev_key");
                 String channel = bundle.getString("channel");
 
-                Message msg = new Message(title, content);
-                msg.setChannelName(channel);
-                msg.setDevKey(devKey);
-                msg.setTime(String.valueOf(System.currentTimeMillis()));
-
                 // 保存 msg 到本地，并刷新页面数据。
-                MessagesLocalDataSource localDataSource = MessagesLocalDataSource.getInstance();
-                MessageRepository repository = MessageRepository.getInstance(localDataSource);
-                repository.saveMessage(msg);
+                Message msg = new Message();
+                msg.devKey = devKey;
+                msg.title = title;
+                msg.content = content;
+                msg.channelName = channel;
+                msg.time = System.currentTimeMillis();
+                msg.save();
 
-                // 提醒 MainActivity 界面更新。
-                mAdapter.addMessage(msg);
+                // 如果收到的是当前 Channel 的消息就更新界面，否则。
+                if (mCurrentDevKey.equals(devKey) && mCurrentChannelName.equals(channel)) {
+                    mAdapter.addMessage(msg);
+                } else {
+                    Channel c = new Select().from(Channel.class)
+                            .where("DevKey = ? AND ChannelName = ?", devKey, channel)
+                            .executeSingle();
+
+                    if (c != null) {
+                        new Update(Channel.class)
+                                .set("UnreadCount = ? AND ", c.unreadCount + 1)
+                                .where("DevKey = ? AND ChannelName = ?", devKey, channel)
+                                .execute();
+                    }
+                }
             }
         }
     }

@@ -1,21 +1,17 @@
 package com.jiguang.jbox.util;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
+import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
@@ -85,9 +81,12 @@ public class HttpUtil {
 
                         try {
                             JSONObject json = new JSONObject(body);
-                            Developer dev = new Developer(json.getString("dev_key"),
-                                    json.getString("dev_name"), json.getString("platform"));
-                            dev.setDesc(json.getString("desc"));
+
+                            Developer dev = new Developer();
+                            dev.key = devKey;
+                            dev.name = json.getString("dev_name");
+                            dev.platform = json.getString("platform");
+                            dev.desc = json.getString("desc");
 
                             // 从服务器下载头像。
                             if (!TextUtils.isEmpty(json.getString("avatar"))) {
@@ -114,7 +113,7 @@ public class HttpUtil {
                                     FileOutputStream out = new FileOutputStream(avatarFile);
                                     bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
 
-                                    dev.setAvatarPath(avatarFile.getAbsolutePath());
+                                    dev.avatarPath = avatarFile.getAbsolutePath();
 
                                     out.flush();
                                     out.close();
@@ -141,8 +140,7 @@ public class HttpUtil {
      *
      * @param devKey 目标开发者的 dev key。
      */
-    public void requestChannels(String devKey,
-                                final ChannelDataSource.LoadChannelsNameCallback callback) {
+    public void requestChannels(final String devKey, final ChannelDataSource.LoadChannelsCallback callback) {
         if (TextUtils.isEmpty(devKey)) {
             return;
         }
@@ -168,16 +166,21 @@ public class HttpUtil {
                     if (response.isSuccessful()) {
                         String body = response.body().string();
 
-                        JSONObject channelsJson = new JSONObject(body);
-                        List<String> channels = new ArrayList<>();
+                        LogUtil.LOGI(TAG, body);
 
+                        JSONObject channelsJson = new JSONObject(body);
                         JSONArray jsonArr = channelsJson.getJSONArray("channels");
+
+                        List<Channel> channels = new ArrayList<>();
+
                         for (int i = 0; i < jsonArr.length(); i++) {
-                            String channelName = jsonArr.getString(i);
-                            channels.add(channelName);
+                            Channel c = new Channel();
+                            c.devKey = devKey;
+                            c.name = jsonArr.getString(i);
+                            channels.add(c);
                         }
 
-                        callback.onChannelsNameLoaded(channels);
+                        callback.onChannelsLoaded(channels);
                     } else {
                         LogUtil.LOGE(TAG, "Unexpected code " + response);
                         callback.onDataNotAvailable();
@@ -189,9 +192,9 @@ public class HttpUtil {
         });
     }
 
-    private static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) AppApplication.getAppContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }

@@ -21,38 +21,30 @@ public class DeveloperRemoteDataSource implements DeveloperDataSource {
 
     private DeveloperRemoteDataSource() {}
 
-    /**
-     * 从服务器获取 developer 信息。
-     *
-     * @param devKey：扫描二维码后获得。
-     * @param callback：回调事件。
-     */
-    @Override
-    public void getDeveloper(@NonNull final String devKey, @NonNull final LoadDevCallback callback) {
-        checkNotNull(devKey);
-        checkNotNull(callback);
 
+    @Override
+    public void load(@NonNull String devKey, @NonNull LoadDevCallback callback) {
+        checkNotNull(devKey);
         HttpUtil.getInstance().requestDeveloper(devKey, callback);
     }
 
     @Override
-    public void getDevelopers(@NonNull LoadDevsCallback callback) {
+    public void load(@NonNull LoadDevsCallback callback) {
 
     }
 
     @Override
-    public void saveDeveloper(@NonNull Developer dev) {
+    public void save(@NonNull Developer dev) {
 
     }
 
     @Override
-    public void updateDeveloper(@NonNull Developer dev) {
+    public void update(@NonNull Developer dev) {
 
     }
 
     @Override
-    public void refresh() {
+    public void delete(@NonNull String devKey) {
 
     }
-
 }

@@ -124,6 +124,17 @@
             android:value="3c45c66373e42299b14c3457"/>
         <!-- JPush end -->
 
+        <!-- database start -->
+
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="JBox.db"/>
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1"/>
+
+        <!-- database end -->
+
         <activity android:name=".channel.ChannelActivity">
         </activity>
 

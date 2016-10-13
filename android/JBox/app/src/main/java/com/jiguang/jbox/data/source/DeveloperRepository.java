@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.jiguang.jbox.data.Developer;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DeveloperRepository implements DeveloperDataSource {
 
@@ -13,14 +16,16 @@ public class DeveloperRepository implements DeveloperDataSource {
     private DeveloperDataSource mLocalDataSource;
     private DeveloperDataSource mRemoteDataSource;
 
-    List<Developer> mCachedDevelopers;
+    List<Developer> mCachedDevs;
 
-    boolean mCacheIsDirty = false;
+    private boolean mIsNeedRefresh = false;
 
     private DeveloperRepository(DeveloperDataSource localDataSource,
                                 DeveloperDataSource remoteDataSource) {
         mLocalDataSource = localDataSource;
         mRemoteDataSource = remoteDataSource;
+
+        mCachedDevs = new ArrayList<>();
     }
 
     public static DeveloperRepository getInstance(DeveloperDataSource localDataSource,
@@ -31,49 +36,48 @@ public class DeveloperRepository implements DeveloperDataSource {
         return INSTANCE;
     }
 
+
     @Override
-    public void getDeveloper(@NonNull final String devKey, @NonNull final LoadDevCallback callback) {
-        // TODO：先从本地获取数据，判断是直接用，还是需要再从服务器获取。
-        mLocalDataSource.getDeveloper(devKey, new LoadDevCallback() {
-            @Override
-            public void onDevLoaded(Developer dev) {
+    public void load(@NonNull String devKey, @NonNull final LoadDevCallback callback) {
+        checkNotNull(devKey);
+        checkNotNull(callback);
 
+        if (!mIsNeedRefresh) {
+            for (int i = 0; i < mCachedDevs.size(); i++) {
+                Developer dev = mCachedDevs.get(i);
+                if (dev.key.equals(devKey)) {
+                    callback.onDevLoaded(dev);
+                    return;
+                }
             }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
-
-        if (mCacheIsDirty) {
-            // 先从本地获取，如果没有再从服务器获取。
-            mLocalDataSource.getDeveloper(devKey, new LoadDevCallback() {
+        } else {
+            mLocalDataSource.load(devKey, new LoadDevCallback() {
                 @Override
                 public void onDevLoaded(Developer dev) {
+
                     callback.onDevLoaded(dev);
                 }
 
                 @Override
                 public void onDataNotAvailable() {
-                    mRemoteDataSource.getDeveloper(devKey, callback);
+                    callback.onDataNotAvailable();
                 }
             });
         }
     }
 
     @Override
-    public void getDevelopers(@NonNull final LoadDevsCallback callback) {
-        if (mCachedDevelopers != null && !mCacheIsDirty) {
-            callback.onDevsLoaded(mCachedDevelopers);
-            return;
-        }
+    public void load(@NonNull final LoadDevsCallback callback) {
+        checkNotNull(callback);
 
-        if (mCacheIsDirty) {
-            mLocalDataSource.getDevelopers(new LoadDevsCallback() {
+        if (!mIsNeedRefresh) {
+            callback.onDevsLoaded(mCachedDevs);
+        } else {
+            mLocalDataSource.load(new LoadDevsCallback() {
                 @Override
                 public void onDevsLoaded(List<Developer> devList) {
-                    refreshCache(devList);
+                    mCachedDevs = devList;
+
                     callback.onDevsLoaded(devList);
                 }
 
@@ -86,31 +90,36 @@ public class DeveloperRepository implements DeveloperDataSource {
     }
 
     @Override
-    public void saveDeveloper(@NonNull Developer dev) {
-        if (!mCachedDevelopers.contains(dev)) {
-            mCachedDevelopers.add(dev);
-        }
-        mLocalDataSource.saveDeveloper(dev);
+    public void save(@NonNull Developer dev) {
+        checkNotNull(dev);
+
+        mCachedDevs.add(dev);
+        mLocalDataSource.save(dev);
     }
 
     @Override
-    public void updateDeveloper(@NonNull Developer dev) {
-        mLocalDataSource.updateDeveloper(dev);
+    public void update(@NonNull Developer dev) {
+        checkNotNull(dev);
+
+        if (mCachedDevs.contains(dev)) {
+            mCachedDevs.remove(dev);
+        }
+
+        mCachedDevs.add(dev);
+        mLocalDataSource.update(dev);
     }
 
     @Override
-    public void refresh() {
-        mCacheIsDirty = true;
-    }
+    public void delete(@NonNull String devKey) {
+        checkNotNull(devKey);
 
-    private void refreshCache(List<Developer> developers) {
-        if (mCachedDevelopers == null) {
-            mCachedDevelopers = developers;
-        } else {
-            mCachedDevelopers.clear();
-            mCachedDevelopers = developers;
+        for (int i = 0; i < mCachedDevs.size(); i++) {
+            if (mCachedDevs.get(i).key.equals(devKey)) {
+                mCachedDevs.remove(i);
+            }
         }
-        mCacheIsDirty = false;
+
+        mLocalDataSource.delete(devKey);
     }
 
 }

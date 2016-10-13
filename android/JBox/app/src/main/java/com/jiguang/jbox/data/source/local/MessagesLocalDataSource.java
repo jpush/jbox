@@ -1,14 +1,13 @@
 package com.jiguang.jbox.data.source.local;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.data.source.MessageDataSource;
 
-import java.util.ArrayList;
+import java.nio.channels.Selector;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -20,11 +19,6 @@ public class MessagesLocalDataSource implements MessageDataSource {
 
     private static MessagesLocalDataSource INSTANCE;
 
-    private MessagesDbHelper mDbHelper;
-
-    private MessagesLocalDataSource() {
-        mDbHelper = new MessagesDbHelper();
-    }
 
     public static MessagesLocalDataSource getInstance() {
         if (INSTANCE == null) {
@@ -33,84 +27,40 @@ public class MessagesLocalDataSource implements MessageDataSource {
         return INSTANCE;
     }
 
+
     @Override
-    public void getMessages(@NonNull String devKey, @NonNull String channelName,
-                            @NonNull LoadMessagesCallback callback) {
-        List<Message> messages = new ArrayList<>();
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+    public void load(@NonNull String devKey, @NonNull String channelName,
+                     @NonNull LoadMessagesCallback callback) {
+        checkNotNull(devKey);
+        checkNotNull(channelName);
+        checkNotNull(callback);
 
-        String[] projection = {
-                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID,
-                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE,
-                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT,
-                MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME
-        };
+        List<Message> messages = new Select().from(Message.class)
+                .where("DevKey = ? AND ChannelName = ?", devKey, channelName)
+                .execute();
 
-        String selection = MessagesPersistenceContract.MessageEntry.COLUMN_NAME_DEV_KEY +
-                " = ? AND " + MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_NAME +
-                " = ?";
-
-        String[] selectionArgs = {devKey, channelName};
-
-        Cursor c = db.query(MessagesPersistenceContract.MessageEntry.TABLE_NAME, projection,
-                selection, selectionArgs, null, null, null);
-
-        Message msg;
-        if (c != null && c.getCount() > 0) {
-            while (c.moveToNext()) {
-                String id = c.getString(c.getColumnIndexOrThrow(
-                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID));
-                String title = c.getString(c.getColumnIndexOrThrow(
-                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE));
-                String content = c.getString(c.getColumnIndexOrThrow(
-                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT));
-                String time = c.getString(c.getColumnIndexOrThrow(
-                        MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME));
-
-                msg = new Message(id, title, content);
-                msg.setChannelName(channelName);
-                msg.setDevKey(devKey);
-                msg.setTime(time);
-
-                messages.add(msg);
-            }
-        }
-        if (c != null) {
-            c.close();
-        }
-
-        db.close();
-
-        if (messages.isEmpty()) {
-            callback.onDataNotAvailable();
-        } else {
+        if (messages != null) {
             callback.onMessagesLoaded(messages);
+        } else {
+            callback.onDataNotAvailable();
         }
     }
 
     @Override
-    public void saveMessage(@NonNull Message message) {
+    public void save(@NonNull Message message) {
         checkNotNull(message);
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_ID, message.getId());
-        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_DEV_KEY, message.getDevKey());
-        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CHANNEL_NAME,
-                message.getChannelName());
-        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TITLE, message.getTitle());
-        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_CONTENT, message.getContent());
-        values.put(MessagesPersistenceContract.MessageEntry.COLUMN_NAME_TIME, message.getTime());
-
-        db.insert(MessagesPersistenceContract.MessageEntry.TABLE_NAME, null, values);
-
-        db.close();
+        message.save();
     }
 
     @Override
-    public void refreshMessages(@NonNull String devKey, @NonNull String channelName) {
+    public void delete(@NonNull String devKey, @NonNull String channelName) {
+        checkNotNull(devKey);
+        checkNotNull(channelName);
 
+        new Delete().from(Message.class)
+                .where("DevKey = ? AND ChannelName = ?", devKey, channelName)
+                .execute();
     }
-
 
 }

@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.jiguang.jbox.data.Message;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,14 +15,15 @@ public class MessageRepository implements MessageDataSource {
 
     private static MessageRepository INSTANCE = null;
 
-    private MessageDataSource mMessagesLocalDataSource;
+    private MessageDataSource mLocalDataSource;
 
-    Map<String, List<Message>> mCachedMessages;
+    Map<String, List<Message>> mCachedMessages; // key: devKey_channelName, value: message list.
 
-    boolean mCacheIsDirty = false;
+    private boolean isCacheDirty = false;
 
     private MessageRepository(MessageDataSource localDataSource) {
-        mMessagesLocalDataSource = localDataSource;
+        mLocalDataSource = localDataSource;
+        mCachedMessages = new HashMap<>();
     }
 
     public static MessageRepository getInstance(MessageDataSource localDataSource) {
@@ -36,23 +37,25 @@ public class MessageRepository implements MessageDataSource {
         INSTANCE = null;
     }
 
+
     @Override
-    public void getMessages(@NonNull final String devKey, @NonNull final String channelName,
-                            @NonNull final LoadMessagesCallback callback) {
-        checkNotNull(devKey);
-        checkNotNull(channelName);
+    public void load(@NonNull String devKey, @NonNull String channelName,
+                     @NonNull final LoadMessagesCallback callback) {
+        final String key = devKey + "_" + channelName;
 
-        final String mapKey = devKey + channelName;
-
-        if (mCachedMessages != null && mCachedMessages.containsKey(mapKey) && !mCacheIsDirty) {
-            callback.onMessagesLoaded(mCachedMessages.get(channelName));
+        if (mCachedMessages.containsKey(key) && !isCacheDirty) {
+            callback.onMessagesLoaded(mCachedMessages.get(key));
             return;
         }
 
-        mMessagesLocalDataSource.getMessages(devKey, channelName, new LoadMessagesCallback() {
+        mLocalDataSource.load(devKey, channelName, new LoadMessagesCallback() {
             @Override
             public void onMessagesLoaded(List<Message> messages) {
-                refreshCache(devKey, channelName, messages);
+                if (mCachedMessages.containsKey(key)) {
+                    mCachedMessages.remove(key);
+                }
+                mCachedMessages.put(key, messages);
+
                 callback.onMessagesLoaded(messages);
             }
 
@@ -64,39 +67,29 @@ public class MessageRepository implements MessageDataSource {
     }
 
     @Override
-    public void saveMessage(@NonNull Message message) {
+    public void save(@NonNull Message message) {
         checkNotNull(message);
-        mMessagesLocalDataSource.saveMessage(message);
 
-        String channelName = message.getChannelName();
+        String key = message.devKey + "_" + message.channelName;
 
-        if (mCachedMessages == null) {
-            mCachedMessages = new LinkedHashMap<>();
+        if (mCachedMessages.containsKey(key)) {
+            mCachedMessages.get(key).add(0, message);
+        } else {
+            List<Message> msgList = new ArrayList<>();
+            msgList.add(message);
+            mCachedMessages.put(key, msgList);
         }
-        if (!mCachedMessages.containsKey(channelName)) {
-            mCachedMessages.put(channelName, new ArrayList<Message>());
-        }
-        mCachedMessages.get(channelName).add(message);
+
+        mLocalDataSource.save(message);
     }
 
     @Override
-    public void refreshMessages(@NonNull String devKey, @NonNull String channelName) {
-
-    }
-
-
-    private void refreshCache(String devKey, String channelName, List<Message> msgs) {
-        if (mCachedMessages == null) {
-            mCachedMessages = new LinkedHashMap<>();
+    public void delete(@NonNull String devKey, @NonNull String channelName) {
+        String key = devKey + "_" + channelName;
+        if (mCachedMessages.containsKey(key)) {
+            mCachedMessages.remove(key);
         }
-        String mapKey = devKey + channelName;
-
-        if (mCachedMessages.get(mapKey) != null && !mCachedMessages.get(mapKey).isEmpty()) {
-            mCachedMessages.get(mapKey).clear();
-            mCachedMessages.remove(mapKey);
-        }
-        mCachedMessages.put(mapKey, msgs);
-        mCacheIsDirty = false;
+        mLocalDataSource.delete(devKey, channelName);
     }
 
 }

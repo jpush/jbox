@@ -1,11 +1,13 @@
 package com.jiguang.jbox;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 
-import com.jiguang.jbox.util.LogUtil;
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
+import com.activeandroid.app.Application;
+import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.Message;
 
 
 public class AppApplication extends Application {
@@ -21,16 +23,19 @@ public class AppApplication extends Application {
 
 //        JPushInterface.init(this);
 
-        if (APP_KEY == null) {
-            try {
-                ApplicationInfo appInfo = getPackageManager().getApplicationInfo(
-                        this.getPackageName(), PackageManager.GET_META_DATA);
-                APP_KEY = appInfo.metaData.getString("JPUSH_APPKEY");
-                LogUtil.LOGI("AppApplication", APP_KEY);
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+//        Configuration.Builder builder = new Configuration.Builder(this);
+//        builder.addModelClass(Channel.class);
+//        builder.addModelClass(Developer.class);
+//        builder.addModelClass(Message.class);
+//        ActiveAndroid.initialize(builder.create());
+
+        ActiveAndroid.initialize(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        ActiveAndroid.dispose();
     }
 
     public static String getAppKey() {

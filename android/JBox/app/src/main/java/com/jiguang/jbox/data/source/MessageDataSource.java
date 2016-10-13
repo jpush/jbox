@@ -15,18 +15,11 @@ public interface MessageDataSource {
         void onDataNotAvailable();
     }
 
-    interface GetMessageCallback {
-
-        void onMessageLoaded(Message msg);
-
-        void onDataNotAvailable();
-    }
-
-    void getMessages(@NonNull String devKey, @NonNull String channelName,
+    void load(@NonNull String devKey, @NonNull String channelName,
                      @NonNull LoadMessagesCallback callback);
 
-    void saveMessage(@NonNull Message message);
+    void save(@NonNull Message message);
 
-    void refreshMessages(@NonNull String devKey, @NonNull String channelName);
+    void delete(@NonNull String devKey, @NonNull String channelName);
 
 }

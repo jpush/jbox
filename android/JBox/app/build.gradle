@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.3'
@@ -49,6 +55,8 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 
     compile files('libs/jpush-android-2.1.9.jar')
 }

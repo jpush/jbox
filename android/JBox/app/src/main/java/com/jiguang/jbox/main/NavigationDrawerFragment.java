@@ -39,7 +39,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private ListView mDrawerListView;
 
-    private DrawerListAdapter mChannelListAdapter;
+    private DrawerListAdapter mDrawerListAdapter;
 
     private View mFragmentContainerView;
 
@@ -56,8 +56,8 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
     }
 
     public void initData(List<Channel> data) {
-        if (mChannelListAdapter != null) {
-            mChannelListAdapter.replaceData(data);
+        if (mDrawerListAdapter != null && data != null) {
+            mDrawerListAdapter.replaceData(data);
         }
     }
 
@@ -76,8 +76,10 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         ivEdit.setOnClickListener(this);
 
         mDrawerListView = (ListView) v.findViewById(R.id.lv_channel);
-        mChannelListAdapter = new DrawerListAdapter(new ArrayList<Channel>());
-        mDrawerListView.setAdapter(mChannelListAdapter);
+
+        mDrawerListAdapter = new DrawerListAdapter(new ArrayList<Channel>());
+
+        mDrawerListView.setAdapter(mDrawerListAdapter);
         mDrawerListView.setOnItemClickListener(this);
 
         ImageButton btnAddChannel = (ImageButton) v.findViewById(R.id.btn_add_channel);
@@ -94,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     void editChannels() {
         mIsEditChannels = !mIsEditChannels;
-        mChannelListAdapter.editChannels(mIsEditChannels);
+        mDrawerListAdapter.editChannels(mIsEditChannels);
     }
 
     private void selectItem(int position) {
@@ -144,12 +146,10 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
         void editChannels(boolean isEdited) {
             mIsEdited = isEdited;
-//            notifyDataSetChanged();
         }
 
         void replaceData(List<Channel> channels) {
             mChannels = channels;
-//            notifyDataSetChanged();
         }
 
         @Override
@@ -184,19 +184,15 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
             }
 
             TextView tvChannelName = ViewHolder.get(convertView, R.id.tv_channel);
-            tvChannelName.setText(channel.getName());
+            tvChannelName.setText(channel.name);
 
             TextView tvUnread = ViewHolder.get(convertView, R.id.tv_unread_count);
 
-            if (channel.getUnReadMessageCount() != 0 &&
-                    tvUnread.getVisibility() == View.INVISIBLE) {
-
+            if (channel.unreadCount != 0 && tvUnread.getVisibility() == View.INVISIBLE) {
                 tvUnread.setVisibility(View.VISIBLE);
-                tvUnread.setText(channel.getUnReadMessageCount());
+                tvUnread.setText(channel.unreadCount);
 
-            } else if (channel.getUnReadMessageCount() == 0 &&
-                    tvUnread.getVisibility() == View.VISIBLE) {
-
+            } else if (channel.unreadCount == 0 && tvUnread.getVisibility() == View.VISIBLE) {
                 tvUnread.setVisibility(View.INVISIBLE);
             }
 

@@ -1,66 +1,38 @@
 package com.jiguang.jbox.data;
 
-import java.util.UUID;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
-public class Message {
+@Table(name = "Message")
+public class Message extends Model {
 
-    private final String mId;
+    @Column(name = "Title")
+    public String title;
 
-    private final String mTitle;
+    @Column(name = "Content")
+    public String content;
 
-    private final String mContent;
+    @Column(name = "Time")
+    public long time;
 
-    private String mTime;
+    @Column(name = "DevKey")
+    public String devKey;
 
-    private String mChannelName;
+    @Column(name = "Channel")
+    public String channelName;
 
-    private String mDevKey;
-
-    public Message(String title, String content) {
-        mId = UUID.randomUUID().toString();
-        mTitle = title;
-        mContent = content;
+    public Message() {
+        super();
     }
 
-    public Message(String id, String title, String content) {
-        mId = id;
-        mTitle = title;
-        mContent = content;
+    public Message(String devKey, String channelName, String title, String content, long time) {
+        super();
+        this.devKey = devKey;
+        this.channelName = channelName;
+        this.title = title;
+        this.content = content;
+        this.time = time;
     }
 
-    public String getId() {
-        return mId;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public String getContent() {
-        return mContent;
-    }
-
-    public String getTime() {
-        return mTime;
-    }
-
-    public void setTime(String time) {
-        mTime = time;
-    }
-
-    public String getChannelName() {
-        return mChannelName;
-    }
-
-    public void setChannelName(String channelName) {
-        mChannelName = channelName;
-    }
-
-    public String getDevKey() {
-        return mDevKey;
-    }
-
-    public void setDevKey(String devKey) {
-        mDevKey = devKey;
-    }
 }
