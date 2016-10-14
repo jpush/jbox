@@ -25,6 +25,9 @@
 JBox 直接使用极光推送服务，能够保证消息快速、稳定的送达手机设备。
 
 
+##JBox流程
+![image](https://github.com/jpush/jbox/blob/dev/ReadmeResource/jbox流程图.png)
+
 ##产品使用
 [产品使用指导](http://jbox.jiguang.cn/guide) 能够帮助你快速使用 JBox。
 
