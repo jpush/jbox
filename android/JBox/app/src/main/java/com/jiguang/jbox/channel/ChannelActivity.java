@@ -3,13 +3,10 @@ package com.jiguang.jbox.channel;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,23 +18,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
-import com.activeandroid.query.Update;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
-import com.jiguang.jbox.data.source.ChannelRepository;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
-import com.jiguang.jbox.data.source.DeveloperRepository;
-import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
-import com.jiguang.jbox.data.source.local.DeveloperLocalDataSource;
 import com.jiguang.jbox.data.source.remote.DeveloperRemoteDataSource;
 import com.jiguang.jbox.main.MainActivity;
 import com.jiguang.jbox.util.HttpUtil;
+import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.util.ViewHolder;
 import com.jiguang.jbox.view.TopBar;
 
@@ -60,8 +52,6 @@ public class ChannelActivity extends Activity {
 
     private static final int MSG_DEV_UPDATE = 0;
 
-    private ListView mListView;
-
     private SubChannelListAdapter mListAdapter;
 
     private List<Channel> mChannels = new ArrayList<>();
@@ -76,6 +66,8 @@ public class ChannelActivity extends Activity {
     private TextView mTvDevName;
     private TextView mTvDevDesc;
     private CircleImageView mIvAvatar;
+
+    private Developer mDeveloper;
 
     private String mDevKey;
 
@@ -96,15 +88,15 @@ public class ChannelActivity extends Activity {
             }
         });
 
-        mListView = (ListView) findViewById(R.id.lv_channel);
+        ListView listView = (ListView) findViewById(R.id.lv_channel);
 
         // Init head view.
         View headView = getLayoutInflater().inflate(
-                R.layout.view_subscribe_channel, mListView, false);
+                R.layout.view_subscribe_channel, listView, false);
         mIvAvatar = (CircleImageView) headView.findViewById(R.id.iv_dev_icon);
         mTvDevName = (TextView) headView.findViewById(R.id.tv_name);
         mTvDevDesc = (TextView) headView.findViewById(R.id.tv_desc);
-        mListView.addHeaderView(headView);
+        listView.addHeaderView(headView);
 
         mListAdapter = new SubChannelListAdapter(mChannels, new OnChannelCheckedListener() {
             @Override
@@ -112,27 +104,23 @@ public class ChannelActivity extends Activity {
                 mChannels.get(position).isSubscribe = isChecked;
             }
         });
-        mListView.setAdapter(mListAdapter);
+        listView.setAdapter(mListAdapter);
 
         View emptyView = findViewById(R.id.tv_hint);
-        mListView.setEmptyView(emptyView);
+//        mListView.setEmptyView(emptyView);
 
         // 申请外部存储访问权限。
-        if (ContextCompat.checkSelfPermission(AppApplication.getAppContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        if (!PermissionUtil.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            PermissionUtil.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, 1);
         }
 
-        final DeveloperLocalDataSource devLocalDataSource = DeveloperLocalDataSource.getInstance();
         DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance();
 
-
         // 初始化开发者信息。
-        devRemoteDataSource.load(mDevKey, new DeveloperDataSource.LoadDevCallback() {
+        HttpUtil.getInstance().requestDeveloper(mDevKey, new DeveloperDataSource.LoadDevCallback() {
             @Override
             public void onDevLoaded(Developer dev) {
-                devLocalDataSource.save(dev);
+                mDeveloper = dev;
 
                 android.os.Message msg = new android.os.Message();
                 msg.what = MSG_DEV_UPDATE;
@@ -203,9 +191,7 @@ public class ChannelActivity extends Activity {
      * 将数据保存到数据库中，并打上 JPush TAG。
      */
     private void onBack() {
-        new Delete().from(Channel.class)
-                .where("DevKey = ?", mDevKey)
-                .execute();
+        new Delete().from(Channel.class).where("DevKey = ?", mDevKey).execute();
 
         for (Channel c : mChannels) {
             if (c.isSubscribe) {
@@ -226,6 +212,8 @@ public class ChannelActivity extends Activity {
                     }
                 }
             });
+
+            AppApplication.shouldUpdateData = true;
         }
 
         Intent intent = new Intent(this, MainActivity.class);

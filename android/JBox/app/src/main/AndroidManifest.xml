@@ -121,7 +121,7 @@
             android:value="developer-default"/>
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="3c45c66373e42299b14c3457"/>
+            android:value="1c29cb5814072b5b1f8ef829"/>
         <!-- JPush end -->
 
         <!-- database start -->

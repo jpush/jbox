@@ -6,26 +6,32 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import com.activeandroid.query.Update;
+import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.channel.ChannelActivity;
 import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.source.DeveloperDataSource;
 import com.jiguang.jbox.util.AppUtil;
+import com.jiguang.jbox.util.HttpUtil;
 import com.jiguang.jbox.util.LogUtil;
+import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.view.TopBar;
 
-import java.util.List;
+import java.util.Set;
 
 import cn.bingoogolapple.photopicker.activity.BGAPhotoPickerActivity;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
+import cn.jpush.android.api.TagAliasCallback;
+
+import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 
 /**
@@ -33,22 +39,22 @@ import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
  */
 public class ScanActivity extends Activity implements QRCodeView.Delegate {
 
-    private static final int REQUEST_CODE_PERMISSION_CAMERA = 0;
-    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 1;
+    private static final int PERMISSION_REQUEST_CAMERA = 0;
+    private static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+
+    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 2;
 
     private QRCodeView mScanView;
+
+    private String mDevKey;
+    private String mChannel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        // 请求拍照权限。
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                    REQUEST_CODE_PERMISSION_CAMERA);
-        }
+        requestPermission();
 
         TopBar topBar = (TopBar) findViewById(R.id.topBar);
         topBar.setRightClick(new View.OnClickListener() {   // 打开相册,并选择图片扫描二维码。
@@ -66,9 +72,11 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
 
     @Override
     protected void onResume() {
+        if (PermissionUtil.hasPermission(this, Manifest.permission.CAMERA)) {
+            mScanView.startCamera();
+            mScanView.startSpot();
+        }
         super.onResume();
-        mScanView.startCamera();
-        mScanView.startSpot();
     }
 
     @Override
@@ -86,34 +94,24 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
     @Override
     public void onScanQRCodeSuccess(String result) {
         LogUtil.LOGI("ScanActivity", "devKey: " + result);
+
         if (TextUtils.isEmpty(result)) {
+            return;
+        }
+
+        if (!PermissionUtil.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(this, "该功能必须要允许相应权限", Toast.LENGTH_SHORT).show();
+            PermissionUtil.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
             return;
         }
 
         if (result.contains("_")) { // 扫描的是 channel，马上订阅。
             String[] str = result.split("_");
-            String devKey = str[0];
-            String channel = str[1];
+            mDevKey = str[0];
+            mChannel = str[1];
 
-            Channel c = new Select().from(Channel.class)
-                    .where("DevKey = ? AND Name = ?")
-                    .executeSingle();
-
-            if (c == null) {    // 本地不存在，进行订阅。
-                c = new Channel();
-                c.devKey = devKey;
-                c.name = channel;
-                c.save();
-
-                AppUtil.setTags();
-            } else if (!c.isSubscribe) {
-                new Update(Channel.class)
-                        .set("IsSubscribe = ?", true)
-                        .where("DevKey = ? AND Name = ?", c.devKey, c.name)
-                        .execute();
-                AppUtil.setTags();
-            }
-            finish();
+            saveData();
         } else {
             // 扫描二维码返回 devKey，再请求 developer 信息。
             Intent intent = new Intent(this, ChannelActivity.class);
@@ -156,4 +154,109 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             }.execute();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CAMERA:
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mScanView.startCamera();
+                    mScanView.startSpot();
+                }
+                return;
+            case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (!mDevKey.isEmpty() && !mChannel.isEmpty()) {
+                        saveData();
+                    }
+                }
+                return;
+            default:
+        }
+    }
+
+    /**
+     * 请求拍照权限和写外部存储的权限。
+     */
+    private void requestPermission() {
+        if (PermissionUtil.hasPermission(this, Manifest.permission.CAMERA)) {
+            PermissionUtil.requestPermission(this, Manifest.permission.CAMERA, PERMISSION_REQUEST_CAMERA);
+        }
+
+        if (PermissionUtil.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            PermissionUtil.requestPermission(this, Manifest.permission.CAMERA,
+                    PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+    private void saveData() {
+        Developer dev = new Select().from(Developer.class)
+                .where("Key = ?", mDevKey)
+                .executeSingle();
+
+        if (dev == null) {  // 还没有关注这个开发者。
+            HttpUtil.getInstance().requestDeveloper(mDevKey,
+                    new DeveloperDataSource.LoadDevCallback() {
+                        @Override
+                        public void onDevLoaded(Developer dev) {
+                            if (dev != null) {
+                                // 保存到本地数据库中。
+                                dev.save();
+                            }
+                        }
+
+                        @Override
+                        public void onDataNotAvailable() {
+                            Toast.makeText(AppApplication.getAppContext(), "二维码失效，订阅失败。",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
+        Channel c = new Select().from(Channel.class)
+                .where("DevKey = ? AND Name = ?", mDevKey, mChannel)
+                .executeSingle();
+
+        if (c == null) {    // 本地不存在，进行订阅。
+            c = new Channel();
+            c.devKey = mDevKey;
+            c.name = mChannel;
+            c.isSubscribe = true;
+            c.save();
+
+            AppUtil.setTags(new TagAliasCallback() {
+                @Override
+                public void gotResult(int status, String desc, Set<String> set) {
+                    if (status == 0) {
+                        Toast.makeText(ScanActivity.this, "订阅成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        LogUtil.LOGI(TAG, desc);
+                    }
+                }
+            });
+
+        } else if (!c.isSubscribe) {
+            new Update(Channel.class)
+                    .set("IsSubscribe = ?", true)
+                    .where("DevKey = ? AND Name = ?", c.devKey, c.name)
+                    .execute();
+
+            AppUtil.setTags(new TagAliasCallback() {
+                @Override
+                public void gotResult(int status, String desc, Set<String> set) {
+                    if (status == 0) {
+                        Toast.makeText(ScanActivity.this, "订阅成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ScanActivity.this, "订阅失败，请检查网络", Toast.LENGTH_SHORT).show();
+                        LogUtil.LOGI(TAG, desc);
+                    }
+                }
+            });
+        }
+
+        AppApplication.shouldUpdateData = true;
+    }
+
 }

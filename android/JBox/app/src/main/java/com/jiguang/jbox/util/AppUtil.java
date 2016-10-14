@@ -1,14 +1,11 @@
 package com.jiguang.jbox.util;
 
 
-import android.widget.Toast;
-
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +18,7 @@ public class AppUtil {
     /**
      * 打上 tag。
      */
-    public static void setTags() {
+    public static void setTags(final TagAliasCallback callback) {
         List<Developer> devs = new Select().from(Developer.class).execute();
 
         if (devs == null) {
@@ -38,17 +35,7 @@ public class AppUtil {
             }
         }
 
-        JPushInterface.setTags(AppApplication.getAppContext(), tags, new TagAliasCallback() {
-            @Override
-            public void gotResult(int status, String desc, Set<String> set) {
-                if (status == 0) {
-                    Toast.makeText(AppApplication.getAppContext(), "订阅成功", Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    LogUtil.LOGI("JBox", desc);
-                }
-            }
-        });
+        JPushInterface.setTags(AppApplication.getAppContext(), tags, callback);
     }
 
 }

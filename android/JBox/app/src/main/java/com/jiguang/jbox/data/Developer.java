@@ -1,12 +1,8 @@
 package com.jiguang.jbox.data;
 
-import android.support.annotation.NonNull;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 @Table(name = "Developer")
 public class Developer extends Model {
@@ -26,17 +22,29 @@ public class Developer extends Model {
     @Column(name = "AvatarPath")
     public String avatarPath;         // 头像路径。
 
+    @Column(name="AvatarUrl")   // 头像 url。
+    public String avatarUrl;
+
     public Developer() {
         super();
     }
 
-    public Developer(@NonNull String devKey, @NonNull String devName, @NonNull String platform,
-                     String desc, String path) {
-        super();
-        this.key = checkNotNull(devKey);
-        this.name = checkNotNull(devName);
-        this.platform = checkNotNull(platform);
-        this.desc = desc;
-        this.avatarPath = path;
+    @Override
+    public boolean equals(Object obj) {
+        Developer objDev = (Developer) obj;
+
+        if (!objDev.key.equals(key)) {
+            return false;
+        } else if (!objDev.name.equals(name)) {
+            return false;
+        } else if (!objDev.platform.equals(platform)) {
+            return false;
+        } else if (!objDev.desc.equals(desc)) {
+            return false;
+        } else if (!objDev.avatarUrl.equals(avatarUrl)) {
+            return false;
+        }
+
+        return true;
     }
 }

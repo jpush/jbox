@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
@@ -87,10 +88,15 @@ public class HttpUtil {
                             dev.name = json.getString("dev_name");
                             dev.platform = json.getString("platform");
                             dev.desc = json.getString("desc");
+                            dev.avatarUrl = json.getString("avatar");
 
-                            // 从服务器下载头像。
-                            if (!TextUtils.isEmpty(json.getString("avatar"))) {
-                                String url = "http://" + json.getString("avatar");
+                            Developer localDev = new Select().from(Developer.class)
+                                    .where("Key = ?", devKey)
+                                    .executeSingle();
+
+                            if (localDev == null || !localDev.avatarUrl.equals(dev.avatarUrl)) {
+                                // url 不一致从服务器下载头像。
+                                String url = "http://" + dev.avatarUrl;
 
                                 ImageLoader imgLoader = ImageLoader.getInstance();
                                 ImageLoaderConfiguration config = new ImageLoaderConfiguration
@@ -119,6 +125,11 @@ public class HttpUtil {
                                     out.close();
                                 }
                             }
+
+                            if (localDev != null && !localDev.equals(dev)) {
+                                localDev.delete();
+                            }
+                            dev.save();
 
                             callback.onDevLoaded(dev);
                         } catch (JSONException e) {
@@ -177,6 +188,7 @@ public class HttpUtil {
                             Channel c = new Channel();
                             c.devKey = devKey;
                             c.name = jsonArr.getString(i);
+                            c.isSubscribe = true;
                             channels.add(c);
                         }
 

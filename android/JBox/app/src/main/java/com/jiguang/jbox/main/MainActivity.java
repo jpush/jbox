@@ -19,22 +19,20 @@ import android.widget.Toolbar;
 
 import com.activeandroid.query.Select;
 import com.activeandroid.query.Update;
+import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.Message;
-import com.jiguang.jbox.data.source.ChannelDataSource;
-import com.jiguang.jbox.data.source.ChannelRepository;
-import com.jiguang.jbox.data.source.MessageDataSource;
-import com.jiguang.jbox.data.source.MessageRepository;
-import com.jiguang.jbox.data.source.local.ChannelLocalDataSource;
-import com.jiguang.jbox.data.source.local.MessagesLocalDataSource;
+import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+
+import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -48,6 +46,8 @@ public class MainActivity extends Activity
     private List<Developer> mDevList;
 
     private String mCurrentDevKey;
+
+    private int mCurrentDev;
 
     private List<Channel> mChannelList;
 
@@ -91,8 +91,10 @@ public class MainActivity extends Activity
         super.onResume();
         JPushInterface.onResume(this);
 
-        initData();
-        mDrawerFragment.initData(mChannelList);
+        if (AppApplication.shouldUpdateData) {
+            initData();
+            AppApplication.shouldUpdateData = false;
+        }
     }
 
     @Override
@@ -126,11 +128,12 @@ public class MainActivity extends Activity
         mDevList = new Select().from(Developer.class).execute();
 
         if (mDevList != null && !mDevList.isEmpty()) {
-            String devKey = mDevList.get(0).key;
+            String devKey = mDevList.get(mCurrentDev).key;
 
             mChannelList = new Select().from(Channel.class)
                     .where("DevKey = ? AND IsSubscribe = ?", devKey, true)
                     .execute();
+            mDrawerFragment.initData(mChannelList);
         }
     }
 
@@ -208,6 +211,8 @@ public class MainActivity extends Activity
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
                 Bundle bundle = intent.getBundleExtra(JPushInterface.EXTRA_MESSAGE);
+
+                LogUtil.LOGI(TAG, bundle.toString());
 
                 String title = bundle.getString("title");
                 String content = bundle.getString("content");

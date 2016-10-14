@@ -150,6 +150,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
         void replaceData(List<Channel> channels) {
             mChannels = channels;
+            notifyDataSetChanged();
         }
 
         @Override
