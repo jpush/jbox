@@ -12,10 +12,10 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_height"
-        app:tbTitle="@string/scan_title"
+        app:topbar_title="@string/scan_title"
         app:right="@string/scan_photo"
-        app:showBack="true"
-        app:showRight="true"
+        app:show_left="true"
+        app:show_right="true"
         />
 
     <cn.bingoogolapple.qrcode.zxing.ZXingView

@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                tools:context="com.jiguang.jbox.main.NavigationDrawerFragment">
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_height"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_channels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_view"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="#7F000000">
+
+        <TextView
+            android:id="@+id/label_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/drawer_channel"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/drawer_channel"
+            />
+
+        <ImageView
+            android:id="@+id/iv_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/label_channel"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_edit"
+            />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_channel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_channels"
+        android:divider="@android:color/transparent"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        />
+
+</RelativeLayout>

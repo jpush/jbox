@@ -1,0 +1,101 @@
+package com.jiguang.jbox.main;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.activeandroid.query.Select;
+import com.jiguang.jbox.AppApplication;
+import com.jiguang.jbox.R;
+import com.jiguang.jbox.data.Channel;
+
+import java.util.List;
+
+/**
+ * 侧边栏 Channel list.
+ */
+public class ChannelListFragment extends Fragment {
+    private OnListFragmentInteractionListener mListener;
+    private List<Channel> mChannels;
+
+    private RecyclerView mRecyclerView;
+    private ChannelDrawerRecyclerViewAdapter mAdapter;
+
+    public ChannelListFragment() {
+        if (!TextUtils.isEmpty(AppApplication.currentDevKey)) {
+            mChannels = new Select().from(Channel.class)
+                    .where("DevKey=? AND IsSubscribe=?", AppApplication.currentDevKey, true)
+                    .execute();
+
+            if (mChannels != null && !mChannels.isEmpty()) {
+                AppApplication.currentChannelName = mChannels.get(0).name;
+            }
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static ChannelListFragment newInstance(int columnCount) {
+        ChannelListFragment fragment = new ChannelListFragment();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_drawer_channel, container, false);
+
+        // Set the adapter
+        Context context = view.getContext();
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_channel);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mAdapter = new ChannelDrawerRecyclerViewAdapter(mChannels, mListener);
+        mRecyclerView.setAdapter(mAdapter);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public void updateData(String devKey) {
+        mChannels = new Select().from(Channel.class)
+                .where("DevKey=? AND IsSubscribe=?", devKey, true)
+                .execute();
+        mAdapter = new ChannelDrawerRecyclerViewAdapter(mChannels, mListener);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    public interface OnListFragmentInteractionListener {
+        void onListItemClick(Channel channel);
+    }
+}

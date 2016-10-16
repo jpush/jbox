@@ -1,22 +1,24 @@
 package com.jiguang.jbox.main;
 
 
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.util.ViewHolder;
@@ -28,8 +30,9 @@ import java.util.List;
 /**
  * 侧滑界面。
  */
-public class NavigationDrawerFragment extends Fragment implements View.OnClickListener,
-        AdapterView.OnItemClickListener {
+public class NavigationDrawerFragment extends Fragment
+        implements DeveloperListFragment.OnListFragmentInteractionListener {
+    private final String TAG = "NavigationDrawerFragment";
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -45,6 +48,12 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private boolean mIsEditChannels = false;
 
+    private ImageView mIvCircleFirst;
+    private ImageView mIvCircleSecond;
+
+    private DeveloperListFragment mDevListFragment;
+    private ChannelListFragment mChannelListFragment;
+
     public NavigationDrawerFragment() {
         // Required empty public constructor
     }
@@ -52,38 +61,61 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallbacks = (NavigationDrawerCallbacks) getActivity();
-    }
-
-    public void initData(List<Channel> data) {
-        if (mDrawerListAdapter != null && data != null) {
-            mDrawerListAdapter.replaceData(data);
-        }
+//        mCallbacks = (NavigationDrawerCallbacks) getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.drawer_main, container, false);
-        mFragmentContainerView = v;
 
-        mDrawerLayout = (DrawerLayout) v.findViewById(R.id.drawer_layout);
+        mIvCircleFirst = (ImageView) v.findViewById(R.id.iv_circle_first);
+        mIvCircleFirst.setSelected(true);
+        mIvCircleSecond = (ImageView) v.findViewById(R.id.iv_circle_second);
 
-        // TODO：搜索功能。
-        mSearchView = (SearchView) v.findViewById(R.id.search_view);
+        List<android.support.v4.app.Fragment> fragmentList = new ArrayList<>();
 
-        ImageView ivEdit = (ImageView) v.findViewById(R.id.iv_edit);
-        ivEdit.setOnClickListener(this);
+        mDevListFragment = new DeveloperListFragment();
+        mDevListFragment.setListener(this);
+        fragmentList.add(mDevListFragment);
 
-        mDrawerListView = (ListView) v.findViewById(R.id.lv_channel);
+        mChannelListFragment = new ChannelListFragment();
+        fragmentList.add(mChannelListFragment);
 
-        mDrawerListAdapter = new DrawerListAdapter(new ArrayList<Channel>());
+        FragmentManager fm = getActivity().getSupportFragmentManager();
 
-        mDrawerListView.setAdapter(mDrawerListAdapter);
-        mDrawerListView.setOnItemClickListener(this);
+        ViewPager viewPager = (ViewPager) v.findViewById(R.id.viewPager);
+        viewPager.setAdapter(new MyViewPagerAdapter(fm, fragmentList));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        ImageButton btnAddChannel = (ImageButton) v.findViewById(R.id.btn_add_channel);
-        btnAddChannel.setOnClickListener(this);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    mIvCircleFirst.setSelected(true);
+                    mIvCircleSecond.setSelected(false);
+                } else {
+                    mIvCircleFirst.setSelected(false);
+                    mIvCircleSecond.setSelected(true);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
         return v;
     }
@@ -94,44 +126,44 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
         mCallbacks = null;
     }
 
+    @Override
+    public void onDevListItemClick(String devKey) {
+        mChannelListFragment.updateData(devKey);
+    }
+
+    public void updateData() {
+        mDevListFragment.updateData();
+        mChannelListFragment.updateData(AppApplication.currentDevKey);
+    }
+
+
+    static class MyViewPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> mFragmentList;
+
+        MyViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            mFragmentList = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+    }
+
     void editChannels() {
         mIsEditChannels = !mIsEditChannels;
         mDrawerListAdapter.editChannels(mIsEditChannels);
     }
 
-    private void selectItem(int position) {
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_edit:
-                editChannels();
-                break;
-            case R.id.btn_add_channel:
-                // 进入二维码扫描界面。
-                startActivity(new Intent(getActivity(), ScanActivity.class));
-                break;
-            default:
-        }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        selectItem(i);
-    }
-
     public interface NavigationDrawerCallbacks {
-        void onNavigationDrawerItemSelected(int position);
+        void onDrawerChannelListItemSelected(Channel channel);
     }
 
     private static class DrawerListAdapter extends BaseAdapter {

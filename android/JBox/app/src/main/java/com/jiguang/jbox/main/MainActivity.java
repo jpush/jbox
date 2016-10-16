@@ -1,14 +1,14 @@
 package com.jiguang.jbox.main;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -26,18 +26,18 @@ import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.util.ViewHolder;
+import com.jiguang.jbox.view.TopBar;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
-import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
+public class MainActivity extends FragmentActivity
+        implements ChannelListFragment.OnListFragmentInteractionListener {
+    private final String TAG = "MainActivity";
 
-public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
-    private Toolbar mTopBar;
+    private TopBar mTopBar;
 
     private ListView mMsgListView;
 
@@ -53,31 +53,38 @@ public class MainActivity extends Activity
 
     private String mCurrentChannelName;
 
-    private List<Message> mMessages;
+    private HashMap<String, List<Message>> mMessages;
 
     private NavigationDrawerFragment mDrawerFragment;
+
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(
+        mDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(
                 R.id.navigation_drawer);
 
-        mTopBar = (Toolbar) findViewById(R.id.toolbar);
-        mTopBar.setNavigationIcon(R.drawable.ic_navigation);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mTopBar.setNavigationOnClickListener(new View.OnClickListener() {
+        mTopBar = (TopBar) findViewById(R.id.topBar);
+        mTopBar.setTitle(AppApplication.currentChannelName);
+        mTopBar.setLeftClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
+                mDrawerLayout.openDrawer(mDrawerFragment.getView());
             }
         });
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
-        mAdapter = new MessageListAdapter(new ArrayList<Message>(0));
+
+        List<Message> messages = new Select().from(Message.class)
+                .where("DevKey=? AND Channel=?", AppApplication.currentDevKey,
+                        AppApplication.currentChannelName)
+                .execute();
+        mAdapter = new MessageListAdapter(messages);
         mMsgListView.setAdapter(mAdapter);
 
         View emptyView = findViewById(R.id.tv_hint);
@@ -92,7 +99,7 @@ public class MainActivity extends Activity
         JPushInterface.onResume(this);
 
         if (AppApplication.shouldUpdateData) {
-            initData();
+            mDrawerFragment.updateData();
             AppApplication.shouldUpdateData = false;
         }
     }
@@ -103,43 +110,21 @@ public class MainActivity extends Activity
         JPushInterface.onPause(this);
     }
 
-    /**
-     * 侧边栏 Channel 点击事件。
-     */
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        if (mChannelList != null) {
-            Channel channel = mChannelList.get(position);
+    public void onListItemClick(Channel channel) {
+        mTopBar.setTitle(channel.name);
 
-            mCurrentChannelName = channel.name;
-            mCurrentDevKey = channel.devKey;
+        List<Message> messages = new Select().from(Message.class)
+                .where("DevKey=? AND Channel=?", AppApplication.currentDevKey,
+                        AppApplication.currentChannelName)
+                .execute();
+        mAdapter.replaceData(messages);
 
-            mTopBar.setTitle(channel.name);
-
-            mMessages = new Select().from(Message.class)
-                    .where("DevKey = ? AND Channel = ?", channel.devKey, channel.name)
-                    .execute();
-
-            mAdapter.replaceData(mMessages);
-        }
-    }
-
-    private void initData() {
-        mDevList = new Select().from(Developer.class).execute();
-
-        if (mDevList != null && !mDevList.isEmpty()) {
-            String devKey = mDevList.get(mCurrentDev).key;
-
-            mChannelList = new Select().from(Channel.class)
-                    .where("DevKey = ? AND IsSubscribe = ?", devKey, true)
-                    .execute();
-            mDrawerFragment.initData(mChannelList);
-        }
+        mDrawerLayout.closeDrawers();
     }
 
 
     private static class MessageListAdapter extends BaseAdapter {
-
         private List<Message> mMessages;
 
         MessageListAdapter(List<Message> list) {
@@ -206,7 +191,6 @@ public class MainActivity extends Activity
      * 收到消息的监听器。
      */
     public class MyReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {

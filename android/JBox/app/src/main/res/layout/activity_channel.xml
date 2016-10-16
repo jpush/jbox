@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_height"
         android:background="@color/colorPrimary"
-        app:tbTitle="@string/channel_channel"
-        app:showBack="true"
+        app:topbar_title="@string/channel_channel"
+        app:show_left="true"
         />
 
     <ListView

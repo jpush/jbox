@@ -14,8 +14,8 @@ import com.jiguang.jbox.R;
 
 public class TopBar extends FrameLayout {
 
-    private TextView mTvBack;
     private TextView mTvTitle;
+    private TextView mTvLeft;
     private TextView mTvRight;
 
     public TopBar(Context context) {
@@ -29,15 +29,21 @@ public class TopBar extends FrameLayout {
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.TopBar, 0, 0);
 
-        String title = a.getString(R.styleable.TopBar_tbTitle);
+        String title = a.getString(R.styleable.TopBar_topbar_title);
         String rightText = a.getString(R.styleable.TopBar_right);
-        boolean isShowBack = a.getBoolean(R.styleable.TopBar_showBack, false);
-        boolean isShowRight = a.getBoolean(R.styleable.TopBar_showRight, false);
+        boolean isShowLeft = a.getBoolean(R.styleable.TopBar_show_left, false);
+        boolean isShowRight = a.getBoolean(R.styleable.TopBar_show_right, false);
+        int bgLeft = a.getResourceId(R.styleable.TopBar_background_left, 0);
 
-        mTvBack = (TextView) findViewById(R.id.tv_back);
-        if (isShowBack) {
-            mTvBack.setVisibility(View.VISIBLE);
-            mTvBack.setOnClickListener(new OnClickListener() {
+        mTvLeft = (TextView) findViewById(R.id.tv_left);
+        if (bgLeft != 0) {
+            mTvLeft.setBackgroundResource(bgLeft);
+            mTvLeft.setText("");
+        }
+
+        if (isShowLeft) {
+            mTvLeft.setVisibility(View.VISIBLE);
+            mTvLeft.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((Activity) getContext()).finish();
@@ -75,7 +81,7 @@ public class TopBar extends FrameLayout {
     }
 
     public void setLeftClick(OnClickListener listener) {
-        mTvBack.setOnClickListener(listener);
+        mTvLeft.setOnClickListener(listener);
     }
 
 }

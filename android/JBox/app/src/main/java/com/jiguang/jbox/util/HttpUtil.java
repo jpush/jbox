@@ -94,6 +94,11 @@ public class HttpUtil {
                                     .where("Key = ?", devKey)
                                     .executeSingle();
 
+                            if (localDev != null && localDev.equals(dev)) {
+                                callback.onDevLoaded(localDev);
+                                return;
+                            }
+
                             if (localDev == null || !localDev.avatarUrl.equals(dev.avatarUrl)) {
                                 // url 不一致从服务器下载头像。
                                 String url = "http://" + dev.avatarUrl;
@@ -124,12 +129,12 @@ public class HttpUtil {
                                     out.flush();
                                     out.close();
                                 }
-                            }
 
-                            if (localDev != null && !localDev.equals(dev)) {
-                                localDev.delete();
+                                if (localDev != null) {
+                                    localDev.delete();
+                                }
+                                dev.save();
                             }
-                            dev.save();
 
                             callback.onDevLoaded(dev);
                         } catch (JSONException e) {

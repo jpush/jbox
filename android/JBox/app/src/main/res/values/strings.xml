@@ -31,6 +31,9 @@
     <string name="url_get_developers">http://jbox.jiguang.cn/api.jbox.jiguang.cn/v1/developers/%s</string>
     <string name="url_get_channels">http://jbox.jiguang.cn/api.jbox.jiguang.cn/v1/developers/%s/channels</string>
     <string name="channel_no_hint">没有可订阅 Channel</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- http url end -->
 
 </resources>

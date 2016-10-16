@@ -238,10 +238,8 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             });
 
         } else if (!c.isSubscribe) {
-            new Update(Channel.class)
-                    .set("IsSubscribe = ?", true)
-                    .where("DevKey = ? AND Name = ?", c.devKey, c.name)
-                    .execute();
+            c.isSubscribe = true;
+            c.save();
 
             AppUtil.setTags(new TagAliasCallback() {
                 @Override

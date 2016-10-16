@@ -114,8 +114,6 @@ public class ChannelActivity extends Activity {
             PermissionUtil.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, 1);
         }
 
-        DeveloperRemoteDataSource devRemoteDataSource = DeveloperRemoteDataSource.getInstance();
-
         // 初始化开发者信息。
         HttpUtil.getInstance().requestDeveloper(mDevKey, new DeveloperDataSource.LoadDevCallback() {
             @Override

@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.app.Application;
+import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.data.Developer;
 
 
 public class AppApplication extends Application {
@@ -12,7 +14,10 @@ public class AppApplication extends Application {
 
     private static Context mContext;
 
-    public static boolean shouldUpdateData = true;
+    public static boolean shouldUpdateData = false;
+
+    public static String currentDevKey;
+    public static String currentChannelName = "";
 
     @Override
     public void onCreate() {
