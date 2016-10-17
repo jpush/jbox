@@ -23,9 +23,12 @@ body {
     color: #5F5F5F;
     font-size: 36px;
     align-self: center;
+    margin-top: 31px;
 }
 
 .create-integration {
+    margin-top: 31px;
+    margin-bottom: 39px;
     background:#64B868;
     border-radius:5px;
     width:186px;
@@ -80,4 +83,35 @@ body {
     word-break: normal;
     font-size: 14px;
     color: #595959;
+}
+
+#tp-table {
+    margin: 62px 242px 191px 242px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tp-content {
+    background: #ffffff;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.50);
+    width: 232px;
+    height: 247px;
+    margin-right: 60px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.tp-content-icon {
+    width: 147px;
+    height: 147px;
+}
+
+.tp-content-title {
+    color: #595959;
+    font-size: 18px;
+    margin-top: 23px;
 }

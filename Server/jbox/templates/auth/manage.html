@@ -23,15 +23,16 @@
         <img src="/static/images/manage-background.png">
     </div>
     <div class="content">
-        <h2 id="integration-title">集成自己的应用</h2>
+        <h2 class="jbox-font" id="integration-title">集成自己的应用</h2>
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+        {% endfor %}
         <button class="create-integration"
                 onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>新建自定义集成
         </button>
-        <div>
-            <a class="btn" href="{{ url_for('auth.authorize_github') }}">
-                Authenticate your GitHub account
-            </a>
-        </div>
 
         <table id="table" class="table">
             <thead>
@@ -50,6 +51,7 @@
             </thead>
             <tbody>
             {% for integration in integrations %}
+                {% if integration.type == 'custom' %}
                 <tr>
                     <td class="jbox-font table-font">
                         {{ integration.name }}
@@ -66,7 +68,31 @@
                         </button>
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 id="integration-title">第三方集成</h2>
+        <button class="create-integration"
+                onclick=window.location.href="{{ url_for('auth.add_third_party') }}";>添加第三方集成
+        </button>
+        <table id="tp-table">
+            <tbody>
+                <tr>
+                    <td id="github-td" onclick=window.location.href="{{ url_for('auth.github_integration') }}">
+                        <div class="tp-content">
+                            <img class="tp-content-icon" src="/static/images/github1x.png">
+                            <p class="jbox-font tp-content-title">GitHub</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="tp-content">
+                            <img class="tp-content-icon" src="/static/images/discourse.png">
+                            <p class="jbox-font tp-content-title">Discourse</p>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

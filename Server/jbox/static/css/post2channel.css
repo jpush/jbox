@@ -69,18 +69,16 @@
     margin-right: 45px;
 }
 
-#create_integration_btn {
+.create_btn {
     background: #64b868;
     border-radius: 5px;
     padding: 13px 25px 13px 25px;
-    width: 223px;
-    height: 62px;
     font-size: 24px;
     color: #FFFFFF;
-    border: 0px hidden;
+    border: 0 hidden;
     box-shadow:none;
 }
 
-#create_integration_btn:hover {
+.create_btn:hover {
     background: #3f7d3f;
 }

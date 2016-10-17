@@ -27,8 +27,14 @@
                 {{ message }}
             </div>
         {% endfor %}
-        <p id="title" class="jbox-font">自定义集成设置</p>
-        <div id="edit_form">
+        <div class="col-lg-offset-2">
+            {% if integration.type == 'github' %}
+                <p id="title" class="jbox-font">GitHub 设置</p>
+            {% else %}
+                <p id="title" class="jbox-font">自定义集成设置</p>
+            {% endif %}
+        </div>
+        <div id="edit_form" class="col-lg-8 col-lg-offset-2">
             <div class="row">
                 <div class="column span description-div">
                     <p class="jbox-font span-title">绑定 channel</p>
@@ -55,6 +61,27 @@
                 </div>
             </div>
             <hr class="divider">
+            {% if integration.type == 'github' %}
+                <div class="row">
+                    <div class="column span description-div">
+                        <p class="jbox-font span-title">Repositories</p>
+                        <p class="jbox-font span-desc">选择你要监听的仓库</p>
+                    </div>
+                    <div id="selector-div" class="column">
+                        <label id="label0">
+                            <select id="repos_selector0" class="repo-select">
+                                <option id="choose" value>选择一个仓库...</option>
+                                <optgroup label="{{ user }}">
+                                    {% for repo in repos %}
+                                        <option value="{{ repo }}">{{ repo }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <hr class="divider">
+            {% endif %}
             <div class="row">
                 <div class="column span description-div">
                     <p class="jbox-font span-title">集成名称</p>
@@ -68,7 +95,8 @@
                     <p class="jbox-font span-title">集成描述</p>
                     <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
                 </div>
-                <input id="description" class="description" title="应用描述" type="text" value="{{ integration.description }}"/>
+                <input id="description" class="description" title="应用描述" type="text"
+                       value="{{ integration.description }}"/>
             </div>
             <hr class="divider">
             <div class="row">
@@ -100,35 +128,36 @@
                 {% else %}
                     <img id="icon" src="/static/images/image.png" title="default">
                 {% endif %}
-            <input id="resultFilename" type="hidden">
+                <input id="resultFilename" type="hidden">
             </div>
             <hr class="divider">
             <div class="row">
                 <input id="submit" type="submit" value="保存设置" class="jbox-font">
                 <button id="delete" type="button" value="删除集成" class="btn-lg jbox-font" data-toggle="modal"
-                    data-target="#deleteModal">删除集成</button>
+                        data-target="#deleteModal">删除集成
+                </button>
             </div>
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">删除集成</h4>
-                </div>
-                <div class="modal-body">
-                    <p>确定删除该集成?</p>
-                    <input type="hidden" id="input_hidden">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" id="deleteBtn" data-loading-text="删除中" data-dismiss="modal"
-                            class="btn btn-danger">删除
-                    </button>
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">删除集成</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>确定删除该集成?</p>
+                            <input type="hidden" id="input_hidden">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" id="deleteBtn" data-loading-text="删除中" data-dismiss="modal"
+                                    class="btn btn-danger">删除
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
         </div>
     </div>
@@ -199,6 +228,7 @@
                 });
             }
             bindClick();
+            selectClick();
         });
 
         $(window).load(function () {
@@ -225,23 +255,40 @@
         {#                    height: '100px'#}
         {#                }).insertAfter('#icon');#}
 
-        $('#regenerate_token').click(function () {
-            $.ajax({
-                type: "PUT",
-                contentType: "application/json; charset=utf-8",
-                url: "/v1/{{ integration.integration_id }}/token",
-                success: function (data) {
-                    if (data != undefined) {
-                        $('#token').text("webhook:api.jobx.com/{{ integration.integration_id }}/" + data['token']);
-                        toastr.success("已重新生成 token");
-                    }
-                },
-                error: function (error) {
-                    console.log(error);
-                    toastr.error("生成 token 失败")
+        function selectClick() {
+            var selectArr = $('select');
+            var n = selectArr.length;
+            if (n > 1) {
+                for (var i=0; i<n - 1; i++) {
+                    selectArr[i].bind('change', function () {
+                        if ($(this).selectedIndex == 0) {
+                            $(this).empty();
+                        }
+                    });
                 }
-            })
-        });
+                selectArr[n - 2].bind('change', function () {
+                   if ($(this).selectedIndex != 0 && $('#repos_selector' + n-1).ac) {
+                       $('<label id="label"' + n + ' ><select id="repo_selector"' + n + ' class="repo-select">' +
+                                '<option id="choose" value>选择一个仓库...</option><optgroup' + 'label="{{ user }}">'
+                                {% for repo in repos %}
+                                    + '<option value="{{ repo }}">{{ repo }}</option>'
+                                {% endfor %}
+                        + '</optgroup></select></label>').insertAfter('#label' + n - 1);
+                   }
+                });
+            } else {
+                $('#repos_selector0').bind('change', function () {
+                    if ($(this).selectedIndex != 0) {
+                        $('<label id="label1"><select id="repo_selector1" class="repo-select">' +
+                                '<option id="choose" value>选择一个仓库...</option><optgroup' + 'label="{{ user }}">'
+                                {% for repo in repos %}
+                                    + '<option value="{{ repo }}">{{ repo }}</option>'
+                                {% endfor %}
+                        + '</optgroup></select></label>').insertAfter('#label0');
+                    }
+                });
+            }
+        }
 
         $('#create_channel').click(function () {
             var new_channel = $('#new_channel').val();
@@ -341,24 +388,55 @@
             var desc = $('#description').val();
             var path = $('#resultFilename').val();
             var channel = $('#input_hidding').val();
-            $.ajax({
-                type: "PUT",
-                contentType: "application/json; charset=utf-8",
-                url: "/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
-                data: JSON.stringify({name: name, description: desc, icon: path, channel: channel}),
-                success: function (data) {
-                    toastr.success("保存成功");
-                    window.location.href = '/auth/manage'
-                },
-                error: function (error) {
-                    console.log(error);
-                    toastr.error("保存失败");
-                },
-                dataType: "json"
-            });
+            var type = "{{ integration.type }}";
+            if (type == 'github') {
+                var list = [];
+                var selIndex = $('#repos_selector0').selectedIndex;
+                if (selIndex == 0) {
+                    window.location.href = '/auth/github_integration'
+                } else {
+                    var length = $('#selector-div').children.length;
+                    for (var i = 0; i < length; i++) {
+                        choose = $('#repos_selector' + i + ' option:selected').val();
+                        list.push(choose);
+                    }
+                    console.log(list);
+                    $.ajax({
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        url: '/v1/github/{{ integration.integration_id }}',
+                        data: JSON.stringify({repos: list}),
+                        success: function (data) {
+                            toastr.success("保存成功");
+                            window.location.href = '/auth/manage'
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            toastr.error("保存失败");
+                        },
+                        dataType: "json"
+                    });
+                }
+            } else {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/v1/developers/{{ dev_key }}/{{ integration.integration_id }}",
+                    data: JSON.stringify({name: name, description: desc, icon: path, channel: channel}),
+                    success: function (data) {
+                        toastr.success("保存成功");
+                        window.location.href = '/auth/manage'
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        toastr.error("保存失败");
+                    },
+                    dataType: "json"
+                });
+            }
         });
 
-    $('#deleteBtn').click(function () {
+        $('#deleteBtn').click(function () {
             console.log('deleting');
             $.ajax({
                 type: "DELETE",

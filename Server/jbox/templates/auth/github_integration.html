@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/github_integration.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}极光宝盒-GitHub 集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="content col-lg-offset-2">
+        <div id="github-icon-area">
+            <img id="github-icon" src="/static/images/github1x.png">
+            <p class="jbox-font" id="github-icon-title">GitHub</p>
+            <button id="add-github-integration"
+                    onclick=window.location.href="{{ url_for('auth.post_to_channel_github') }}">
+                添加 GitHub 集成
+            </button>
+        </div>
+        <div class="column">
+            <div id="description">
+                <p class="jbox-font" id="desc-title">GitHub</p>
+                <p class="jbox-font desc-content">GitHub is home to all kinds of software projects, from simple programs
+                    to today’s
+                    most popular apps.
+                </p>
+                <p class="jbox-font desc-content">This integration will post commits, pull requests, and activity on
+                    GitHub Issues to a channel in
+                    JBox.</p>
+                <div id="table-area">
+                    {% if github_integrations %}
+                        {% for integration in github_integrations %}
+                            <div class="row" id="github-integration-content">
+                                <img src="/static/images/github-icon.png">
+                                <p class="integration-desc">来自{{ integration.repositories }}的 commits, issue 以及 pull
+                                    request 等活动将会作为 {{ integration.name }}
+                                    推送到 {{ channel }} 频道</p>
+                                <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}" type="button">编辑</button>
+                            </div>
+                            <hr id="divider">
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        {% if github_integrations %}
+            {% for integration in github_integrations %}
+                $('#{{ integration.integration_id }}').click(function () {
+                    window.location.href = '/auth/manage/edit_github_integration/{{ integration.integration_id }}'
+                });
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endblock %}
+

@@ -112,8 +112,10 @@ class Integration(db.Model):
     description = db.Column(db.String(150))
     icon = db.Column(db.String(150))
     token = db.Column(db.String(150))
+    type = db.Column(db.String(50), default='custom')
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
+    repositories = db.relationship('GitHub', backref='integration')
 
     def __repr__(self):
         return '<Integration %r>' % self.integration_id
@@ -152,6 +154,14 @@ class Integration(db.Model):
         except:
             return None
         return Integration.query.get(data['id'])
+
+
+class GitHub(db.Model):
+    __tablename__ = 'githubs'
+    id = db.Column(db.Integer, primary_key=True)
+    integration_id = db.Column(db.Integer, db.ForeignKey('integrations.id'))
+    repository = db.Column(db.String(150))
+    hook_id = db.Column(db.Integer)
 
 
 class Channel(db.Model):

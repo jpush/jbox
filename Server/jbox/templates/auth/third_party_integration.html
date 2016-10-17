@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tp_integration.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}极光宝盒-添加第三方集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar"></div>
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="tp-background">
+        <img id="background-img" src="/static/images/home.png">
+    </div>
+    <div class="content">
+        <h2 class="jbox-font" id="add-tp-title">选择要支持的第三方集成</h2>
+        <table id="tp-table">
+            <tbody>
+                <tr>
+                    <td id="github-td" onclick=window.location.href="{{ url_for('auth.github_integration') }}">
+                        <div class="tp-content">
+                            <img class="tp-content-icon" src="/static/images/github1x.png">
+                            <p class="jbox-font tp-content-title">GitHub</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="tp-content">
+                            <img class="tp-content-icon" src="/static/images/discourse.png">
+                            <p class="jbox-font tp-content-title">Discourse</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

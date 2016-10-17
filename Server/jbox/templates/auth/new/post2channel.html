@@ -28,7 +28,11 @@
         <div class="row">
             <div class="column">
                 <p id="title" class="jbox-font">推送到 Channel</p>
-                <p id="description" class="jbox-font">从选择一个 channel 开始, 接下来集成的应用的消息将会推送到这个 channel。</p>
+                {% if github %}
+                    <p id="description" class="jbox-font">从选择一个 channel 开始, 来自 GitHub 的消息将会推送到这个 channel。</p>
+                {% else %}
+                    <p id="description" class="jbox-font">从选择一个 channel 开始, 接下来集成的应用的消息将会推送到这个 channel。</p>
+                {% endif %}
             </div>
             <div id="input_div" class="column">
                 <div class="input-group">
@@ -49,8 +53,13 @@
         </div>
 
         <div style="margin-top: 40px;">
-            <button id="create_integration_btn" type="button">添加自定义集成
-            </button>
+            {% if github %}
+                <button class="create_btn" id="create_github_integration_btn" type="button">添加 GitHub 集成
+                </button>
+            {% else %}
+                <button class="create_btn" id="create_integration_btn" type="button">添加自定义集成
+                </button>
+            {% endif %}
         </div>
     </div>
     <script type="text/javascript">
@@ -104,6 +113,13 @@
                     $('#create_integration_btn').prop('disabled', false);
                 }
             });
+        });
+
+        $('#create_github_integration_btn').click(function () {
+            var channel = $('#selected_channel').val();
+            if (channel != '') {
+                window.location.href = '/auth/github/authorize/' + channel
+            }
         });
 
         $('#create_integration_btn').click(function () {

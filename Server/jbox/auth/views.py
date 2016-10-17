@@ -1,7 +1,7 @@
 import os
 import requests
 import uuid
-from flask import Flask, json, jsonify, render_template, redirect, request, url_for, flash, session
+from flask import abort, Flask, json, jsonify, render_template, redirect, request, url_for, flash, session
 from flask_httpauth import HTTPAuth
 from flask_oauthlib.client import OAuth
 from . import auth
@@ -26,6 +26,7 @@ github = oauth.remote_app(
     base_url='https://api.github.com/',
     request_token_url=None,
     access_token_url='https://github.com/login/oauth/access_token',
+    request_token_params={'scope': 'admin:repo_hook'},
     authorize_url='https://github.com/login/oauth/authorize'
 )
 
@@ -41,6 +42,24 @@ def manage():
     integrations = developer.integrations
     return render_template('auth/manage.html', **locals())
     # return render_template('index.html')
+
+
+@auth.route('/add_third_party', methods=['GET'])
+def add_third_party():
+    return render_template('auth/third_party_integration.html')
+
+
+@auth.route('/github_integration', methods=['GET'])
+def github_integration():
+    developer = get_developer()
+    integrations = developer.integrations
+    github_integrations = []
+    if integrations:
+        for integration in integrations:
+            if integration.type == 'github':
+                github_integrations.append(integration)
+    tp_length = len(github_integrations)
+    return render_template('auth/github_integration.html', **locals())
 
 
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>',
@@ -63,11 +82,80 @@ def edit_integration(integration_id):
     return render_template('auth/create.html', **locals())
 
 
+@auth.route('/manage/edit_github_integration/<string:integration_id>', methods=['GET', 'POST'])
+def edit_github_integration(integration_id):
+    developer = get_developer()
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
+    repositories = integration.repositories
+    store_repos = []
+    if repositories:
+        for repository in repositories:
+            store_repos.append(repository.repository)
+    channel = integration.channel.channel
+    channels = get_channel_list()
+    dev_key = developer.dev_key
+    try:
+        response = github.get('https://api.github.com/user/repos', {'access_token': integration.token})
+        me = github.get('user')
+        user = me.data['login']
+        print(user)
+        list = response.data
+        repos = []
+        if len(list) > 1:
+            for i in range(len(list)):
+                repos.append(list[i]['name'])
+            print(repos)
+        return render_template('auth/create.html', **locals())
+    except Exception:
+        return github.authorize(callback=url_for('auth.github_authorize', integration_id=integration_id, _external=True))
+
+
+@auth.route('/github/authorize/<string:integration_id>', methods=['GET'])
+def github_authorize(integration_id):
+    resp = github.authorized_response()
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error_reason'],
+            request.args['error_description']
+        )
+    session['github_token'] = (resp['access_token'], '')
+    response = github.get('https://api.github.com/user/repos', {'access_token': session['github_token'][0]})
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
+    repositories = integration.repositories
+    store_repos = []
+    if repositories:
+        for repository in repositories:
+            store_repos.append(repository.repository)
+    channel = integration.channel.channel
+    channels = get_channel_list()
+    developer = get_developer()
+    dev_key = developer.dev_key
+    me = github.get('user')
+    user = me.data['login']
+    print(user)
+    list = response.data
+    repos = []
+    if len(list) > 1:
+        for i in range(len(list)):
+            repos.append(list[i]['name'])
+        print(repos)
+    return render_template('auth/create.html', **locals())
+
+
 @auth.route('/new/post_to_channel', methods=['GET'])
 def post_to_channel():
     developer = get_developer()
     dev_key = developer.dev_key
     channels = get_channel_list()
+    return render_template('auth/new/post2channel.html', **locals())
+
+
+@auth.route('/new/github/post_to_channel', methods=['GET'])
+def post_to_channel_github():
+    developer = get_developer()
+    dev_key = developer.dev_key
+    channels = get_channel_list()
+    github = True
     return render_template('auth/new/post2channel.html', **locals())
 
 
@@ -151,13 +239,13 @@ def generate_file_name(id, file_type):
     return uuid.uuid3(uuid.NAMESPACE_DNS, id).__str__() + '.' + file_type
 
 
-@auth.route('/github/authorize')
-def authorize_github():
-    return github.authorize(callback=url_for('auth.new_github_integration', _external=True))
+@auth.route('/github/authorize/<string:channel>', methods=['GET'])
+def authorize_github(channel):
+    return github.authorize(callback=url_for('auth.new_github_integration', channel=channel, _external=True))
 
 
-@auth.route('/github/integrations', methods=['GET', 'POST'])
-def new_github_integration():
+@auth.route('/github/integrations/<string:channel>', methods=['GET', 'POST'])
+def new_github_integration(channel):
     resp = github.authorized_response()
     if resp is None:
         return 'Access denied: reason=%s error=%s' % (
@@ -166,11 +254,8 @@ def new_github_integration():
         )
     session['github_token'] = (resp['access_token'], '')
     token = session['github_token'][0]
-    me = github.get('user')
-    print(jsonify(me.data))
     new_integration_id = generate_integration_id()
     developer = get_developer()
-    channel = 'github'
     github_channel = Channel.query.filter_by(developer=developer, channel=channel).first()
     if github_channel is None:
         github_channel = Channel(developer=developer, channel=channel)
@@ -181,42 +266,11 @@ def new_github_integration():
                               channel=github_channel,
                               description='',
                               icon='',
-                              token=token)
+                              token=token,
+                              type='github')
     db.session.add(integration)
     db.session.commit()
-    # POST create webhook
-    # respMe = github.get('https://api.github.com/user', {'access_token': session['github_token'][0]})
-    data_dict = {"name": "web",
-            "active": True,
-            "events": [
-                "push",
-                "pull_request"
-            ],
-            "config": {
-                "url": "http://jbox.jiguang.cn/plugins/github/webhook",
-                "content_type": "json"
-            }}
-    print(token)
-    # response = github.post('https://api.github.com/repos/KenChoi1992/jchat-android/hooks', data=data_dict,
-    #                        headers=None, format='json')
-    # print(response.data)
-    import requests
-
-    url = "https://api.github.com/repos/KenChoi1992/jchat-android/hooks"
-
-    payload = "{\r\n  \"name\": \"web\",\r\n  \"active\": true,\r\n  \"events\": [\r\n    \"push\",\r\n    \"pull_request\"\r\n  ],\r\n  \"config\": {\r\n    \"url\": \"http://jbox.jiguang.cn/plugins/github/webhook\",\r\n    \"content_type\": \"json\"\r\n  }\r\n}"
-    headers = {
-        'Authorization': "Basic S2VuQ2hvaTE5OTI6Y3lnMTk5Mg==",
-        'Content-Type': "application/json",
-        'Accept': "application/vnd.github.damage-preview"
-    }
-
-    response = requests.request("POST", url, data=payload, headers=headers)
-
-    print(response.text)
-    # email = respMe.data['email']
-    # print("email:" + email)
-    return redirect(url_for('auth.edit_integration', integration_id=new_integration_id))
+    return redirect(url_for('auth.edit_github_integration', integration_id=new_integration_id))
 
 
 @github.tokengetter
