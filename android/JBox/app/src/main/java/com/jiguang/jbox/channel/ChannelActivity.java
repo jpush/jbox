@@ -1,8 +1,6 @@
 package com.jiguang.jbox.channel;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,10 +24,7 @@ import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
-import com.jiguang.jbox.data.source.remote.DeveloperRemoteDataSource;
-import com.jiguang.jbox.main.MainActivity;
 import com.jiguang.jbox.util.HttpUtil;
-import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.util.ViewHolder;
 import com.jiguang.jbox.view.TopBar;
 
@@ -66,8 +61,6 @@ public class ChannelActivity extends Activity {
     private TextView mTvDevName;
     private TextView mTvDevDesc;
     private CircleImageView mIvAvatar;
-
-    private Developer mDeveloper;
 
     private String mDevKey;
 
@@ -106,20 +99,10 @@ public class ChannelActivity extends Activity {
         });
         listView.setAdapter(mListAdapter);
 
-        View emptyView = findViewById(R.id.tv_hint);
-//        mListView.setEmptyView(emptyView);
-
-        // 申请外部存储访问权限。
-        if (!PermissionUtil.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            PermissionUtil.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, 1);
-        }
-
         // 初始化开发者信息。
         HttpUtil.getInstance().requestDeveloper(mDevKey, new DeveloperDataSource.LoadDevCallback() {
             @Override
             public void onDevLoaded(Developer dev) {
-                mDeveloper = dev;
-
                 android.os.Message msg = new android.os.Message();
                 msg.what = MSG_DEV_UPDATE;
                 Bundle bundle = new Bundle();
@@ -151,18 +134,19 @@ public class ChannelActivity extends Activity {
                         public void onChannelsLoaded(List<Channel> channels) {
                             mChannels = channels;
 
-                            if (mLocalChannels != null) {
+                            if (mLocalChannels.equals(channels)) {
+                                mListAdapter.replaceData(mLocalChannels);
+                            } else {
                                 // 将本地数据和服务器数据做对比，同步订阅状态。
-                                for (Channel channel : mChannels) {
+                                for (Channel channel : channels) {
                                     for (Channel localChannel : mLocalChannels) {
                                         if (localChannel.name.equals(channel.name)) {
                                             channel.isSubscribe = localChannel.isSubscribe;
                                         }
                                     }
                                 }
+                                mListAdapter.replaceData(channels);
                             }
-
-                            mListAdapter.replaceData(mChannels);
                         }
 
                         @Override
@@ -189,34 +173,34 @@ public class ChannelActivity extends Activity {
      * 将数据保存到数据库中，并打上 JPush TAG。
      */
     private void onBack() {
-        new Delete().from(Channel.class).where("DevKey = ?", mDevKey).execute();
+        if (!mChannels.equals(mLocalChannels)) {
+            new Delete().from(Channel.class).where("DevKey = ?", mDevKey).execute();
 
-        for (Channel c : mChannels) {
-            if (c.isSubscribe) {
-                mTags.add(c.devKey + "_" + c.name);
-            }
-            c.save();
-        }
-
-        if (!mTags.isEmpty()) {
-            JPushInterface.setTags(this, mTags, new TagAliasCallback() {
-                @Override
-                public void gotResult(int result, String desc, Set<String> set) {
-                    if (result == 0) {
-                        Toast.makeText(getApplicationContext(), "订阅成功", Toast.LENGTH_SHORT).show();
-                        // 将数据保存到数据库中。
-                    } else {
-                        Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
-                    }
+            for (Channel c : mChannels) {
+                if (c.isSubscribe) {
+                    mTags.add(c.devKey + "_" + c.name);
                 }
-            });
+                c.save();
+            }
 
-            AppApplication.shouldUpdateData = true;
+            if (!mTags.isEmpty()) {
+                JPushInterface.setTags(this, mTags, new TagAliasCallback() {
+                    @Override
+                    public void gotResult(int result, String desc, Set<String> set) {
+                        if (result == 0) {
+                            Toast.makeText(getApplicationContext(), "订阅成功", Toast.LENGTH_SHORT).show();
+                            // 将数据保存到数据库中。
+                        } else {
+                            Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                AppApplication.shouldUpdateData = true;
+            }
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        finish();
     }
 
     interface OnChannelCheckedListener {

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.query.Select;
-import com.activeandroid.query.Update;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.channel.ChannelActivity;
@@ -168,7 +167,7 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (!mDevKey.isEmpty() && !mChannel.isEmpty()) {
+                    if (!TextUtils.isEmpty(mDevKey) && !TextUtils.isEmpty(mChannel)) {
                         saveData();
                     }
                 }
@@ -181,11 +180,11 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
      * 请求拍照权限和写外部存储的权限。
      */
     private void requestPermission() {
-        if (PermissionUtil.hasPermission(this, Manifest.permission.CAMERA)) {
+        if (!PermissionUtil.hasPermission(this, Manifest.permission.CAMERA)) {
             PermissionUtil.requestPermission(this, Manifest.permission.CAMERA, PERMISSION_REQUEST_CAMERA);
         }
 
-        if (PermissionUtil.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (!PermissionUtil.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             PermissionUtil.requestPermission(this, Manifest.permission.CAMERA,
                     PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
         }

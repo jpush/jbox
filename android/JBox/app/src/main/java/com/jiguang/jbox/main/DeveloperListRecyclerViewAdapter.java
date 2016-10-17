@@ -12,6 +12,7 @@ import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -22,12 +23,14 @@ import static com.jiguang.jbox.main.DeveloperListFragment.OnListFragmentInteract
 public class DeveloperListRecyclerViewAdapter extends
         RecyclerView.Adapter<DeveloperListRecyclerViewAdapter.ViewHolder> {
 
-    private List<Developer> mValues;
+    private List<Developer> mValues = new ArrayList<>();
     private final OnListFragmentInteractionListener mListener;
 
     public DeveloperListRecyclerViewAdapter(List<Developer> items,
                                             OnListFragmentInteractionListener listener) {
-        mValues = items;
+        if (items != null) {
+            mValues = items;
+        }
         mListener = listener;
     }
 

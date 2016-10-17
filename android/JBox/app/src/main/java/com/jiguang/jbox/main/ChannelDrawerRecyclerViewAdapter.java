@@ -10,19 +10,21 @@ import android.widget.TextView;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.util.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelDrawerRecyclerViewAdapter extends
         RecyclerView.Adapter<ChannelDrawerRecyclerViewAdapter.ViewHolder> {
 
-    private List<Channel> mValues;
+    private List<Channel> mValues = new ArrayList<>();
     private final ChannelListFragment.OnListFragmentInteractionListener mListener;
 
     public ChannelDrawerRecyclerViewAdapter(List<Channel> items,
                                             ChannelListFragment.OnListFragmentInteractionListener listener) {
-        mValues = items;
+        if (items != null) {
+            mValues = items;
+        }
         mListener = listener;
     }
 
@@ -47,9 +49,8 @@ public class ChannelDrawerRecyclerViewAdapter extends
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    LogUtil.LOGI("JBox", "Channel click " + holder.item.name);
                     AppApplication.currentChannelName = holder.item.name;
-                    mListener.onListItemClick(holder.item);
+                    mListener.onChannelListItemClick(holder.item);
                 }
             }
         });

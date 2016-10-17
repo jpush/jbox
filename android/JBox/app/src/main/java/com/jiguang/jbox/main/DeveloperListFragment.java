@@ -37,7 +37,7 @@ public class DeveloperListFragment extends Fragment {
      */
     public DeveloperListFragment() {
         mDevs = new Select().from(Developer.class).execute();
-        if (mDevs != null && !mDevs.isEmpty()) {
+        if (mDevs != null && !mDevs.isEmpty()){
             AppApplication.currentDevKey = mDevs.get(0).key;
         }
     }
@@ -94,11 +94,8 @@ public class DeveloperListFragment extends Fragment {
 
     public void updateData() {
         mDevs = new Select().from(Developer.class).execute();
-        mAdapter.updateData(mDevs);
-        if (mDevs != null && !mDevs.isEmpty()) {
-            AppApplication.currentDevKey = mDevs.get(0).key;
-        }
-
+        mAdapter = new DeveloperListRecyclerViewAdapter(mDevs, mListener);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     /**

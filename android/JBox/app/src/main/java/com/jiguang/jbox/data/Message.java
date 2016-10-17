@@ -4,8 +4,10 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import java.io.Serializable;
+
 @Table(name = "Message")
-public class Message extends Model {
+public class Message extends Model implements Serializable {
 
     @Column(name = "Title")
     public String title;
@@ -21,6 +23,9 @@ public class Message extends Model {
 
     @Column(name = "Channel")
     public String channelName;
+
+    @Column(name = "IconUrl")
+    public String iconUrl;
 
     public Message() {
         super();

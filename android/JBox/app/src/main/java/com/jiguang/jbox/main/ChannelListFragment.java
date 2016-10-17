@@ -1,6 +1,7 @@
 package com.jiguang.jbox.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,10 +10,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
+import com.jiguang.jbox.channel.ChannelActivity;
 import com.jiguang.jbox.data.Channel;
 
 import java.util.List;
@@ -55,6 +58,16 @@ public class ChannelListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_drawer_channel, container, false);
 
+        ImageView ivEdit = (ImageView) view.findViewById(R.id.iv_edit);
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ChannelActivity.class);
+                intent.putExtra(ChannelActivity.EXTRA_DEV_KEY, AppApplication.currentDevKey);
+                startActivity(intent);
+            }
+        });
+
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_channel);
@@ -96,6 +109,6 @@ public class ChannelListFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListItemClick(Channel channel);
+        void onChannelListItemClick(Channel channel);
     }
 }

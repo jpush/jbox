@@ -14,16 +14,16 @@ public class Channel extends Model {
     public String name;
 
     @Column(name = "IconPath")
-    public String iconPath;
+    public String iconPath;     // 集成的 icon 路径。
 
-    @Column(name = "Desc")
-    public String desc;
+    @Column(name = "IconUrl")
+    public String iconUrl;      // 集成的 icon URL。
 
     @Column(name = "UnreadCount")
     public int unreadCount; // 未读消息数。
 
     @Column(name = "IsSubscribe")
-    public boolean isSubscribe;    // 默认为未订阅。
+    public boolean isSubscribe = true;    // 默认为订阅。
 
     public Channel() {
         super();
@@ -35,9 +35,13 @@ public class Channel extends Model {
         this.devKey = devKey;
         this.name = name;
         this.iconPath = iconPath;
-        this.desc = desc;
         this.unreadCount = unreadCount;
         this.isSubscribe = isSubscribe;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Channel objChannel = (Channel) obj;
+        return objChannel.name.equals(name) && (objChannel.isSubscribe == isSubscribe);
+    }
 }
