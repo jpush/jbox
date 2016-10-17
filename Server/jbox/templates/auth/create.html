@@ -99,19 +99,21 @@
                        value="{{ integration.description }}"/>
             </div>
             <hr class="divider">
-            <div class="row">
-                <div class="column span description-div">
-                    <p class="jbox-font span-title">Webhook</p>
-                    <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
+            {% if integration.type == 'custom' %}
+                <div class="row">
+                    <div class="column span description-div">
+                        <p class="jbox-font span-title">Webhook</p>
+                        <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
+                    </div>
+                    <input id="webhook" class="jbox-font description"
+                           value="jbox.jiguang.cn:80/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
                 </div>
-                <input id="webhook" class="jbox-font description"
-                       value="jbox.jiguang.cn:80/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
-            </div>
-            <div id="link-content">
-                <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
-                <a id="regenerate" class="jbox-font link">重新生成</a>
-            </div>
-            <hr class="divider">
+                <div id="link-content">
+                    <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
+                    <a id="regenerate" class="jbox-font link">重新生成</a>
+                </div>
+                <hr class="divider">
+            {% endif %}
             <div id="integration-content">
                 <div class="column span description-div">
                     <p class="jbox-font span-title">集成图标</p>
@@ -259,7 +261,7 @@
             var selectArr = $('select');
             var n = selectArr.length;
             if (n > 1) {
-                for (var i=0; i<n - 1; i++) {
+                for (var i = 0; i < n - 1; i++) {
                     selectArr[i].bind('change', function () {
                         if ($(this).selectedIndex == 0) {
                             $(this).empty();
@@ -267,14 +269,14 @@
                     });
                 }
                 selectArr[n - 2].bind('change', function () {
-                   if ($(this).selectedIndex != 0 && $('#repos_selector' + n-1).ac) {
-                       $('<label id="label"' + n + ' ><select id="repo_selector"' + n + ' class="repo-select">' +
+                    if ($(this).selectedIndex != 0 && $('#repos_selector' + n - 1).ac) {
+                        $('<label id="label"' + n + ' ><select id="repo_selector"' + n + ' class="repo-select">' +
                                 '<option id="choose" value>选择一个仓库...</option><optgroup' + 'label="{{ user }}">'
                                 {% for repo in repos %}
                                     + '<option value="{{ repo }}">{{ repo }}</option>'
                                 {% endfor %}
-                        + '</optgroup></select></label>').insertAfter('#label' + n - 1);
-                   }
+                                + '</optgroup></select></label>').insertAfter('#label' + n - 1);
+                    }
                 });
             } else {
                 $('#repos_selector0').bind('change', function () {
@@ -284,7 +286,7 @@
                                 {% for repo in repos %}
                                     + '<option value="{{ repo }}">{{ repo }}</option>'
                                 {% endfor %}
-                        + '</optgroup></select></label>').insertAfter('#label0');
+                                + '</optgroup></select></label>').insertAfter('#label0');
                     }
                 });
             }
