@@ -5,11 +5,10 @@ import android.content.Context;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.app.Application;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 public class AppApplication extends Application {
-
-    private static String APP_KEY;
-
     private static Context mContext;
 
     public static boolean shouldUpdateData = false;
@@ -21,9 +20,7 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-
-//        JPushInterface.init(this);
-
+        JPushInterface.init(this);
         ActiveAndroid.initialize(this);
     }
 
@@ -31,10 +28,6 @@ public class AppApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
         ActiveAndroid.dispose();
-    }
-
-    public static String getAppKey() {
-        return APP_KEY;
     }
 
     public static Context getAppContext() {

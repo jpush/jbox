@@ -2,10 +2,8 @@ package com.jiguang.jbox.util;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -16,15 +14,11 @@ import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,55 +82,62 @@ public class HttpUtil {
                             dev.name = json.getString("dev_name");
                             dev.platform = json.getString("platform");
                             dev.desc = json.getString("desc");
-                            dev.avatarUrl = json.getString("avatar");
+                            dev.avatarUrl = "http://" + json.getString("avatar");
 
                             Developer localDev = new Select().from(Developer.class)
                                     .where("Key = ?", devKey)
                                     .executeSingle();
 
-                            if (localDev != null && localDev.equals(dev)) {
+                            if (localDev != null) {
+                                if (!localDev.equals(dev)) {
+                                    localDev.name = dev.name;
+                                    localDev.platform = dev.platform;
+                                    localDev.desc = dev.desc;
+                                    localDev.avatarUrl = dev.avatarUrl;
+                                    localDev.save();
+                                }
                                 callback.onDevLoaded(localDev);
-                                return;
-                            }
-
-                            if (localDev == null || !localDev.avatarUrl.equals(dev.avatarUrl)) {
-                                // url 不一致从服务器下载头像。
-                                String url = "http://" + dev.avatarUrl;
-
-                                ImageLoader imgLoader = ImageLoader.getInstance();
-                                ImageLoaderConfiguration config = new ImageLoaderConfiguration
-                                        .Builder(AppApplication.getAppContext())
-                                        .build();
-                                imgLoader.init(config);
-
-                                Bitmap bitmap = imgLoader.loadImageSync(url);
-                                if (bitmap != null) {
-                                    String dirPath = Environment.getExternalStorageDirectory()
-                                            .getAbsolutePath() + "/jbox/avatar";
-                                    File dir = new File(dirPath);
-                                    if (!dir.exists()) {
-                                        dir.mkdirs();
-                                    }
-
-                                    String fileName = "avatar_" + devKey + ".jpg";
-                                    File avatarFile = new File(dir, fileName);
-
-                                    FileOutputStream out = new FileOutputStream(avatarFile);
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
-
-                                    dev.avatarPath = avatarFile.getAbsolutePath();
-
-                                    out.flush();
-                                    out.close();
-                                }
-
-                                if (localDev != null) {
-                                    localDev.delete();
-                                }
+                            } else {
                                 dev.save();
+                                callback.onDevLoaded(dev);
                             }
 
-                            callback.onDevLoaded(dev);
+
+//                            if (localDev == null || !localDev.avatarUrl.equals(dev.avatarUrl)) {
+//                                // url 不一致从服务器下载头像。
+//                                String url = "http://" + dev.avatarUrl;
+//
+//                                ImageLoader imgLoader = ImageLoader.getInstance();
+//                                ImageLoaderConfiguration config = new ImageLoaderConfiguration
+//                                        .Builder(AppApplication.getAppContext())
+//                                        .build();
+//                                imgLoader.init(config);
+//
+//                                Bitmap bitmap = imgLoader.loadImageSync(url);
+//                                if (bitmap != null) {
+//                                    String dirPath = Environment.getExternalStorageDirectory()
+//                                            .getAbsolutePath() + "/jbox/avatar";
+//                                    File dir = new File(dirPath);
+//                                    if (!dir.exists()) {
+//                                        dir.mkdirs();
+//                                    }
+//
+//                                    String fileName = "avatar_" + devKey + ".jpg";
+//                                    File avatarFile = new File(dir, fileName);
+//
+//                                    FileOutputStream out = new FileOutputStream(avatarFile);
+//                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
+//
+//                                    dev.avatarPath = avatarFile.getAbsolutePath();
+//
+//                                    out.flush();
+//                                    out.close();
+//                                }
+
+//                                if (localDev != null) {
+//                                    localDev.delete();
+//                                }
+//                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             callback.onDataNotAvailable();

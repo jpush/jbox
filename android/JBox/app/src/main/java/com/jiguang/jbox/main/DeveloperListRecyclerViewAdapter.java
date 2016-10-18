@@ -1,13 +1,12 @@
 package com.jiguang.jbox.main;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
@@ -43,18 +42,14 @@ public class DeveloperListRecyclerViewAdapter extends
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        final Developer item = mValues.get(position);
-
         holder.item = mValues.get(position);
 
-        Bitmap bitmap = BitmapFactory.decodeFile(item.avatarPath);
-        if (bitmap != null) {
-//            bitmap = Bitmap.createScaledBitmap(bitmap, holder.avatar.getWidth(),
-//                    holder.avatar.getHeight(), true);
-            holder.avatar.setImageBitmap(bitmap);
-        }
+        Glide.with(AppApplication.getAppContext())
+                .load(holder.item.avatarUrl)
+                .dontAnimate()
+                .into(holder.avatar);
 
-        holder.name.setText(item.name);
+        holder.name.setText(holder.item.name);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +57,7 @@ public class DeveloperListRecyclerViewAdapter extends
                 if (null != mListener) {
                     // Developer 列表的点击事件。
                     mListener.onDevListItemClick(holder.item.key);
-                    AppApplication.currentDevKey = item.key;
-                    // 更新 Channel 列表。
+                    AppApplication.currentDevKey = holder.item.key;
                 }
             }
         });

@@ -19,9 +19,6 @@ public class Developer extends Model {
     @Column(name = "Desc")
     public String desc;               // 用户描述。
 
-    @Column(name = "AvatarPath")
-    public String avatarPath;         // 头像路径。
-
     @Column(name="AvatarUrl")   // 头像 url。
     public String avatarUrl;
 

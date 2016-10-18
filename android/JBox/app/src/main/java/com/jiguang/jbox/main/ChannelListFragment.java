@@ -111,4 +111,5 @@ public class ChannelListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onChannelListItemClick(Channel channel);
     }
+
 }

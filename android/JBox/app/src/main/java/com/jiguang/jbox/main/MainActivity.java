@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,9 @@ import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.util.ViewHolder;
 import com.jiguang.jbox.view.TopBar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
@@ -52,6 +56,9 @@ public class MainActivity extends FragmentActivity
     private NavigationDrawerFragment mDrawerFragment;
 
     private DrawerLayout mDrawerLayout;
+
+    private MyReceiver mReceiver;
+    private IntentFilter mIntentFilter;
 
     private int mCurrentItems = 10; // 当前加载的消息数。
 
@@ -81,16 +88,22 @@ public class MainActivity extends FragmentActivity
         Handler handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(android.os.Message message) {
-                // 收到的是当前 Channel 的消息，更新界面。
-                Bundle data = message.getData();
-                Message msg = (Message) data.getSerializable("message");
-                mAdapter.addMessage(msg);
+                if (message.what == 0) {
+                    // 收到的是当前 Channel 的消息，更新界面。
+                    Bundle data = message.getData();
+                    Message msg = (Message) data.getSerializable("message");
+                    mAdapter.addMessage(msg);
+                } else if (message.what == 1) {
+                    mDrawerFragment.mChannelListFragment.updateData();
+                }
                 return false;
             }
         });
 
-        MyReceiver receiver = new MyReceiver(handler);
-        registerReceiver(receiver, new IntentFilter("cn.jpush.android.intent.MESSAGE_RECEIVED"));
+        mReceiver = new MyReceiver(handler);
+        mIntentFilter = new IntentFilter("cn.jpush.android.intent.MESSAGE_RECEIVED");
+        mIntentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");
+        mIntentFilter.addCategory("com.jiguang.jbox");
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
         mMsgListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -114,6 +127,7 @@ public class MainActivity extends FragmentActivity
 
         mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
                 .currentChannelName, QUERY_MESSAGE_COUNT, QUERY_MESSAGE_COUNT);
+
         mAdapter = new MessageListAdapter(mMessages);
         mMsgListView.setAdapter(mAdapter);
 
@@ -125,8 +139,14 @@ public class MainActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
+        registerReceiver(mReceiver, mIntentFilter);
 
         if (AppApplication.shouldUpdateData) {
+            mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
+                    .currentChannelName, QUERY_MESSAGE_COUNT, QUERY_MESSAGE_COUNT);
+            mAdapter.replaceData(mMessages);
+            mTopBar.setTitle(AppApplication.currentChannelName);
+
             mDrawerFragment.updateData();
             AppApplication.shouldUpdateData = false;
         }
@@ -136,22 +156,19 @@ public class MainActivity extends FragmentActivity
     protected void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
+        unregisterReceiver(mReceiver);
     }
 
     @Override
     public void onChannelListItemClick(Channel channel) {
-        if (channel.devKey.equals(AppApplication.currentDevKey) &&
-                channel.name.equals(AppApplication.currentChannelName)) {
-            mDrawerLayout.closeDrawer(mDrawerFragment.getView());
-            return;
-        }
-
         mTopBar.setTitle(channel.name);
         mCurrentItems = QUERY_MESSAGE_COUNT;
 
+        channel.unreadCount = 0;
+        channel.save();
+
         List<Message> messages = new Select().from(Message.class)
-                .where("DevKey=? AND Channel=?", AppApplication.currentDevKey,
-                        AppApplication.currentChannelName)
+                .where("DevKey=? AND Channel=?", channel.devKey, channel.name)
                 .limit(QUERY_MESSAGE_COUNT)
                 .execute();
         mAdapter.replaceData(messages);
@@ -175,9 +192,8 @@ public class MainActivity extends FragmentActivity
         }
 
         void replaceData(List<Message> list) {
-            if (list != null && !list.isEmpty()) {
-                mMessages = list;
-            }
+            mMessages = list;
+            notifyDataSetChanged();
         }
 
         void addMessage(Message msg) {
@@ -214,14 +230,25 @@ public class MainActivity extends FragmentActivity
             }
 
             final Message msg = mMessages.get(position);
-
+            TextView tvIcon = ViewHolder.get(convertView, R.id.tv_icon);
             ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
 
-            Glide.with(AppApplication.getAppContext())
-                    .load(msg.iconUrl)
-                    .centerCrop()
-                    .crossFade()
-                    .into(ivIcon);
+            if (TextUtils.isEmpty(msg.iconUrl)) {
+                ivIcon.setVisibility(View.INVISIBLE);
+                tvIcon.setVisibility(View.VISIBLE);
+
+                String firstChar = msg.channelName.substring(0, 1).toUpperCase();
+                tvIcon.setText(firstChar);
+            } else {
+                ivIcon.setVisibility(View.VISIBLE);
+                tvIcon.setVisibility(View.INVISIBLE);
+
+                Glide.with(AppApplication.getAppContext())
+                        .load(msg.iconUrl)
+                        .centerCrop()
+                        .crossFade()
+                        .into(ivIcon);
+            }
 
             TextView tvTitle = ViewHolder.get(convertView, R.id.tv_title);
             tvTitle.setText(msg.title);
@@ -254,46 +281,60 @@ public class MainActivity extends FragmentActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
-                Bundle bundle = intent.getBundleExtra(JPushInterface.EXTRA_MESSAGE);
+                Bundle bundle = intent.getExtras();
 
-                LogUtil.LOGI("MyReceiver", bundle.toString());
+                String extraJson = bundle.getString(JPushInterface.EXTRA_EXTRA);
 
-                String title = bundle.getString("title");
-                final String content = bundle.getString("content");
-                String devKey = bundle.getString("dev_key");
-                String channelName = bundle.getString("channel");
-                String iconUrl = bundle.getString("icon");   // 集成的图标 url。
+                LogUtil.LOGI("MyReceiver", extraJson);
 
-                // 保存 msg 到本地，并刷新页面数据。
-                Message msg = new Message();
-                msg.devKey = devKey;
-                msg.title = title;
-                msg.content = content;
-                msg.channelName = channelName;
-                msg.time = System.currentTimeMillis();
-                msg.iconUrl = iconUrl;
-                msg.save();
+                try {
+                    JSONObject jsonObject = new JSONObject(extraJson);
 
-                android.os.Message handlerMsg = new android.os.Message();
-                // 如果收到的是当前 Channel 的消息就更新界面，否则。
-                if (AppApplication.currentDevKey.equals(devKey) &&
-                        AppApplication.currentChannelName.equals(channelName)) {
-                    handlerMsg.what = 0;
+                    String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+                    String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+
+                    String devKey = jsonObject.getString("dev_key");
+                    String channelName = jsonObject.getString("channel");
+                    String iconUrl = jsonObject.getString("icon");   // 集成的图标 url。
+                    long timeMillis = Long.parseLong(jsonObject.getString("datetime"));
+
+                    // 保存 msg 到本地，并刷新页面数据。
+                    Message msg = new Message();
+                    msg.title = title;
+                    msg.content = content;
+                    msg.devKey = devKey;
+                    msg.channelName = channelName;
+                    msg.iconUrl = iconUrl;
+                    msg.time = timeMillis;
+                    msg.save();
+
                     Bundle data = new Bundle();
-                    data.putSerializable("message", msg);
-                    handlerMsg.setData(data);
-                    mHandler.sendMessage(handlerMsg);
-                } else {
-                    Channel c = new Select().from(Channel.class)
-                            .where("DevKey = ? AND Name = ?", devKey, channelName)
-                            .executeSingle();
 
-                    if (c != null) {
-                        new Update(Channel.class)
-                                .set("UnreadCount = ?", c.unreadCount + 1)
+                    android.os.Message handlerMsg = new android.os.Message();
+                    // 如果收到的是当前 Channel 的消息就更新界面，否则保存到数据库并更新界面。
+                    if (AppApplication.currentDevKey.equals(devKey) &&
+                            AppApplication.currentChannelName.equals(channelName)) {
+                        handlerMsg.what = 0;
+                        data.putSerializable("message", msg);
+                        handlerMsg.setData(data);
+                        mHandler.sendMessage(handlerMsg);
+                    } else {
+                        Channel c = new Select().from(Channel.class)
                                 .where("DevKey = ? AND Name = ?", devKey, channelName)
-                                .execute();
+                                .executeSingle();
+
+                        if (c != null) {
+                            new Update(Channel.class)
+                                    .set("UnreadCount = ?", c.unreadCount + 1)
+                                    .where("DevKey = ? AND Name = ?", devKey, channelName)
+                                    .execute();
+
+                            handlerMsg.what = 1;
+                            mHandler.sendMessage(handlerMsg);
+                        }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }

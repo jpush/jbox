@@ -1,8 +1,6 @@
 package com.jiguang.jbox.channel;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -18,6 +16,7 @@ import android.widget.Toast;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
@@ -70,6 +69,7 @@ public class ChannelActivity extends Activity {
         setContentView(R.layout.activity_channel);
 
         mDevKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
+        AppApplication.currentDevKey = mDevKey;
 
         mHandler = new MyHandler();
 
@@ -108,7 +108,7 @@ public class ChannelActivity extends Activity {
                 Bundle bundle = new Bundle();
                 bundle.putString("devName", dev.name);
                 bundle.putString("desc", dev.desc);
-                bundle.putString("avatarPath", dev.avatarPath);
+                bundle.putString("avatarUrl", dev.avatarUrl);
                 msg.setData(bundle);
                 mHandler.sendMessage(msg);
             }
@@ -124,7 +124,7 @@ public class ChannelActivity extends Activity {
         // 从本地数据库中进行查询。
         mLocalChannels = new Select().from(Channel.class).where("DevKey = ?", mDevKey).execute();
 
-        if (!HttpUtil.isNetworkAvailable()) {
+        if (!HttpUtil.isNetworkAvailable() && mLocalChannels != null) {
             mListAdapter.replaceData(mLocalChannels);
         } else {
             // 服务器端的 Channel 列表,要和本地数据库中的做对比。
@@ -134,19 +134,20 @@ public class ChannelActivity extends Activity {
                         public void onChannelsLoaded(List<Channel> channels) {
                             mChannels = channels;
 
-                            if (mLocalChannels.equals(channels)) {
-                                mListAdapter.replaceData(mLocalChannels);
-                            } else {
-                                // 将本地数据和服务器数据做对比，同步订阅状态。
-                                for (Channel channel : channels) {
-                                    for (Channel localChannel : mLocalChannels) {
-                                        if (localChannel.name.equals(channel.name)) {
-                                            channel.isSubscribe = localChannel.isSubscribe;
-                                        }
+                            if (mLocalChannels == null) {
+                                mListAdapter.replaceData(mChannels);
+                                return;
+                            }
+
+                            // 将本地数据和服务器数据做对比，同步订阅状态。
+                            for (Channel channel : mChannels) {
+                                for (Channel localChannel : mLocalChannels) {
+                                    if (localChannel.name.equals(channel.name)) {
+                                        channel.isSubscribe = localChannel.isSubscribe;
                                     }
                                 }
-                                mListAdapter.replaceData(channels);
                             }
+                            mListAdapter.replaceData(channels);
                         }
 
                         @Override
@@ -165,8 +166,8 @@ public class ChannelActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         onBack();   // 当点击回退键,保存数据,并打上 tag。
+        super.onBackPressed();
     }
 
     /**
@@ -178,6 +179,7 @@ public class ChannelActivity extends Activity {
 
             for (Channel c : mChannels) {
                 if (c.isSubscribe) {
+                    AppApplication.currentChannelName = c.name;
                     mTags.add(c.devKey + "_" + c.name);
                 }
                 c.save();
@@ -189,7 +191,8 @@ public class ChannelActivity extends Activity {
                     public void gotResult(int result, String desc, Set<String> set) {
                         if (result == 0) {
                             Toast.makeText(getApplicationContext(), "订阅成功", Toast.LENGTH_SHORT).show();
-                            // 将数据保存到数据库中。
+
+                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
                         }
@@ -199,8 +202,6 @@ public class ChannelActivity extends Activity {
                 AppApplication.shouldUpdateData = true;
             }
         }
-
-        finish();
     }
 
     interface OnChannelCheckedListener {
@@ -287,11 +288,11 @@ public class ChannelActivity extends Activity {
 
                     mTvDevName.setText(data.getString("devName"));
 
-                    if (!TextUtils.isEmpty(data.getString("avatarPath"))) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(data.getString("avatarPath"));
-                        bitmap = Bitmap.createScaledBitmap(bitmap, mIvAvatar.getWidth(),
-                                mIvAvatar.getHeight(), true);
-                        mIvAvatar.setImageBitmap(bitmap);
+                    if (!TextUtils.isEmpty(data.getString("avatarUrl"))) {
+                        Glide.with(AppApplication.getAppContext())
+                                .load(data.getString("avatarUrl"))
+                                .dontAnimate()
+                                .into(mIvAvatar);
                     }
 
                     if (!TextUtils.isEmpty(data.getString("desc"))) {

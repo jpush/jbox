@@ -34,8 +34,8 @@ public class NavigationDrawerFragment extends Fragment
     private ImageView mIvCircleFirst;
     private ImageView mIvCircleSecond;
 
-    private DeveloperListFragment mDevListFragment;
-    private ChannelListFragment mChannelListFragment;
+    public DeveloperListFragment mDevListFragment;
+    public ChannelListFragment mChannelListFragment;
 
     public NavigationDrawerFragment() {
         // Required empty public constructor
@@ -117,7 +117,6 @@ public class NavigationDrawerFragment extends Fragment
         mDevListFragment.updateData();
         mChannelListFragment.updateData(AppApplication.currentDevKey);
     }
-
 
     static class MyViewPagerAdapter extends FragmentPagerAdapter {
         private List<Fragment> mFragmentList;
