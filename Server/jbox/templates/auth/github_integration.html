@@ -46,7 +46,7 @@
                                 来自<p class="jbox-font bold"> {{ integration.repositories }} </p>的 commits, issue 以及 pull
                                 request 等活动将会作为<p class="jbox-font bold"> {{ integration.name }} </p>
                                 推送到<p class="jbox-font bold">{{ integration.channel }}</p>频道
-                                <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}"
+                                <button class="btn btn-info btn-middle" id="{{ integration.id }}"
                                         type="button">编辑
                                 </button>
                             </div>
@@ -61,8 +61,8 @@
     <script type="text/javascript">
         {% if github_integrations %}
             {% for integration in github_integrations %}
-                $('#{{ integration.integration_id }}').click(function () {
-                    window.location.href = '/auth/manage/edit_github_integration/{{ integration.integration_id }}'
+                $('#{{ integration.id }}').click(function () {
+                    window.location.href = '/auth/manage/edit_github_integration/{{ integration.id }}'
                 });
             {% endfor %}
         {% endif %}

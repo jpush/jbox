@@ -313,9 +313,9 @@ def save_github_integration(integration_id):
             return jsonify({}), 200
         elif len(repos) == 0 and len(repositories) != 0:
             for repository in repositories:
-                response = github.delete('https://api.github.com/repos/' + user + '/' + repository.repository
-                                         + '/hooks' + repository.hook_id)
-                if response.status == 200:
+                url = 'https://api.github.com/repos/' + user + '/' + repository.repository + '/hooks/' + str(repository.hook_id)
+                response = github.delete(url, data=None)
+                if response.status == 204:
                     db.session.delete(repository)
                     db.session.commit()
         elif len(repos) != 0 and len(repositories) == 0:
@@ -346,9 +346,9 @@ def save_github_integration(integration_id):
             rest2 = list(set(hook_dict.keys()).difference(set(repos)))
             if len(rest2) > 0:
                 for i in range(len(rest2)):
-                    response = github.delete('https://api.github.com/repos/' + user + '/' + rest2[i]
-                                             + '/hooks' + hook_dict[rest2[i]])
-                    if response.status == 200:
+                    url = 'https://api.github.com/repos/' + user + '/' + rest2[i] + '/hooks/' + str(hook_dict[rest2[i]])
+                    response = github.delete(url, data=None)
+                    if response.status == 204:
                         old_github = GitHub.query.filter_by(repository=rest2[i], hook_id=hook_dict[rest2[i]]).first()
                         db.session.delete(old_github)
                         db.session.commit()

@@ -109,6 +109,7 @@ def edit_github_integration(integration_id):
     if repositories:
         for repository in repositories:
             store_repos.append(repository.repository)
+    length = len(store_repos)
     channel = integration.channel.channel
     channels = get_channel_list()
     dev_key = developer.dev_key
