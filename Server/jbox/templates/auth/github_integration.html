@@ -43,10 +43,12 @@
                         {% for integration in github_integrations %}
                             <div class="row" id="github-integration-content">
                                 <img src="/static/images/github-icon.png">
-                                <p class="integration-desc">来自{{ integration.repositories }}的 commits, issue 以及 pull
-                                    request 等活动将会作为 {{ integration.name }}
-                                    推送到 {{ channel }} 频道</p>
-                                <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}" type="button">编辑</button>
+                                来自<p class="jbox-font bold"> {{ integration.repositories }} </p>的 commits, issue 以及 pull
+                                request 等活动将会作为<p class="jbox-font bold"> {{ integration.name }} </p>
+                                推送到<p class="jbox-font bold">{{ integration.channel }}</p>频道
+                                <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}"
+                                        type="button">编辑
+                                </button>
                             </div>
                             <hr id="divider">
                         {% endfor %}

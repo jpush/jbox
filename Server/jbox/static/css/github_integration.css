@@ -107,3 +107,8 @@
     margin-left: 30px;
     margin-right: 30px;
 }
+
+.bold {
+    font-weight: bold;
+    margin-top: 10px;
+}

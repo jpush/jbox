@@ -18,6 +18,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, 'database.db')
 
@@ -29,6 +30,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
+    DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, 'jbox.db')
 

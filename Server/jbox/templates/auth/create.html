@@ -127,6 +127,8 @@
                 </form>
                 {% if integration.icon %}
                     <img id="icon" src="/static/images/{{ integration.icon }}" title="icon">
+                {% elif integration.type == 'github' %}
+                    <img id="icon" src="/static/images/github1x.png" title="default">
                 {% else %}
                     <img id="icon" src="/static/images/image.png" title="default">
                 {% endif %}
@@ -265,11 +267,12 @@
                     selectArr[i].bind('change', function () {
                         if ($(this).selectedIndex == 0) {
                             $(this).empty();
+                            console.log('empty');
                         }
                     });
                 }
-                selectArr[n - 2].bind('change', function () {
-                    if ($(this).selectedIndex != 0 && $('#repos_selector' + n - 1).ac) {
+                selectArr[n - 1].bind('change', function () {
+                    if ($(this).selectedIndex != 0) {
                         $('<label id="label"' + n + ' ><select id="repo_selector"' + n + ' class="repo-select">' +
                                 '<option id="choose" value>选择一个仓库...</option><optgroup' + 'label="{{ user }}">'
                                 {% for repo in repos %}
@@ -398,7 +401,7 @@
                     window.location.href = '/auth/github_integration'
                 } else {
                     var length = $('#selector-div').children.length;
-                    for (var i = 0; i < length; i++) {
+                    for (var i = 0; i < length - 1; i++) {
                         choose = $('#repos_selector' + i + ' option:selected').val();
                         list.push(choose);
                     }
@@ -407,10 +410,10 @@
                         type: 'POST',
                         contentType: 'application/json; charset=utf-8',
                         url: '/v1/github/{{ integration.integration_id }}',
-                        data: JSON.stringify({repos: list}),
+                        data: JSON.stringify({repos: list, name: name, description: desc, icon: path, channel: channel}),
                         success: function (data) {
                             toastr.success("保存成功");
-                            window.location.href = '/auth/manage'
+                            window.location.href = '/auth/github_integration'
                         },
                         error: function (error) {
                             console.log(error);
@@ -447,7 +450,11 @@
                 success: function (data) {
                     if (data['deleted']) {
                         toastr.success("删除成功");
-                        window.location.href = "/auth/manage"
+                        {% if integration.type == 'github' %}
+                            window.location.href = "/auth/github_integration";
+                        {% else %}
+                            window.location.href = "/auth/manage";
+                        {% endif %}
                     }
                 },
                 error: function (error) {

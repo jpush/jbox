@@ -1,4 +1,4 @@
-import os
+import os, operator
 from flask import abort, Flask, json, jsonify, request, make_response, session, redirect, url_for
 from . import api
 from ..models import Developer, db, Channel, Integration, GitHub, generate_dev_key, generate_integration_id
@@ -294,51 +294,78 @@ def save_github_integration(integration_id):
     if repositories:
         for repository in repositories:
             hook_dict['%s' % repository.repository] = repository.hook_id
-    me = github.get('user')
-    print(me)
-    data_dict = {"name": "web",
-                 "active": True,
-                 "events": [
-                     "push",
-                     "pull_request"
-                 ],
-                 "config": {
-                     "url": "http://jbox.jiguang.cn/plugins/github/" + integration_id + "/webhook",
-                     "content_type": "json"
-                 }}
-    if len(repos) == 0 and len(repositories) == 0:
-        return jsonify({}), 200
-    elif len(repos) == 0 and len(repositories) != 0:
-        for repository in repositories:
-            response = github.delete('https://api.github.com/repos/' + me['login'] + '/' + repository.repository
-                                     + '/hooks' + repository.hook_id)
-    elif len(repos) != 0 and len(repositories) == 0:
-        for repo in repos:
-            response = github.post('https://api.github.com/repo/' + me['login'] + "/" + repo + "/hooks", data=data_dict,
-                                   format='json')
-    else:
-        # 得到选中的仓库(repos)与数据库中保存的仓库的差集，然后创建 webhook
-        rest1 = list(set(repos).difference(set(hook_dict.keys())))
-        if len(rest1) > 0:
-            for repository in rest1:
-                response = github.post('https://api.github.com/repo/' + me['login'] + "/" + repository + "/hooks",
-                                       data=data_dict, format='json')
+    print(hook_dict)
+    equal = operator.eq(repos, hook_dict.keys())
+    if not equal:
+        me = github.get('user')
+        user = me.data['login']
+        data_dict = {"name": "web",
+                     "active": True,
+                     "events": [
+                         "push",
+                         "pull_request"
+                     ],
+                     "config": {
+                         "url": "http://jbox.jiguang.cn/plugins/github/" + integration_id + "/webhook",
+                         "content_type": "json"
+                     }}
+        if len(repos) == 0 and len(repositories) == 0:
+            return jsonify({}), 200
+        elif len(repos) == 0 and len(repositories) != 0:
+            for repository in repositories:
+                response = github.delete('https://api.github.com/repos/' + user + '/' + repository.repository
+                                         + '/hooks' + repository.hook_id)
+                if response.status == 200:
+                    db.session.delete(repository)
+                    db.session.commit()
+        elif len(repos) != 0 and len(repositories) == 0:
+            for repo in repos:
+                response = github.post('https://api.github.com/repos/' + user + "/" + repo + "/hooks", data=data_dict,
+                                       format='json')
+                print(response.data)
                 if response.status == 201:
-                    new_github = GitHub(integration_id=integration.id,
-                                        repository=repository,
+                    new_github = GitHub(integration=integration,
+                                        repository=repo,
                                         hook_id=response.data['id'])
                     db.session.add(new_github)
                     db.session.commit()
-        # 得到数据库中保存的仓库与选中的仓库(repo)的差集，然后删除 webhook
-        rest2 = list(set(hook_dict.keys()).difference(set(repos)))
-        if len(rest2) > 0:
-            for i in range(len(rest2)):
-                response = github.delete('https://api.github.com/repos/' + me['login'] + '/' + rest2[i]
-                                         + '/hooks' + hook_dict[rest2[i]])
-                if response.status == 200:
-                    old_github = GitHub.query.filter_by(repository=rest2[i], hook_id=hook_dict[rest2[i]]).first()
-                    db.session.delete(old_github)
-                    db.session.commit()
+        else:
+            # 得到选中的仓库(repos)与数据库中保存的仓库的差集，然后创建 webhook
+            rest1 = list(set(repos).difference(set(hook_dict.keys())))
+            if len(rest1) > 0:
+                for repository in rest1:
+                    response = github.post('https://api.github.com/repos/' + user + "/" + repository + "/hooks",
+                                           data=data_dict, format='json')
+                    if response.status == 201:
+                        new_github = GitHub(integration=integration,
+                                            repository=repository,
+                                            hook_id=response.data['id'])
+                        db.session.add(new_github)
+                        db.session.commit()
+            # 得到数据库中保存的仓库与选中的仓库(repo)的差集，然后删除 webhook
+            rest2 = list(set(hook_dict.keys()).difference(set(repos)))
+            if len(rest2) > 0:
+                for i in range(len(rest2)):
+                    response = github.delete('https://api.github.com/repos/' + user + '/' + rest2[i]
+                                             + '/hooks' + hook_dict[rest2[i]])
+                    if response.status == 200:
+                        old_github = GitHub.query.filter_by(repository=rest2[i], hook_id=hook_dict[rest2[i]]).first()
+                        db.session.delete(old_github)
+                        db.session.commit()
+        return jsonify({}), 200
+    integration.channel.channel = request.json['channel']
+    if 'name' in request.json:
+        integration.name = request.json['name']
+    if 'description' in request.json:
+        integration.description = request.json['description']
+    if 'icon' in request.json:
+        integration.icon = request.json['icon']
+    db.session.add(integration)
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
+        abort(500)
     return jsonify({}), 200
 
 

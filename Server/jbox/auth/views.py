@@ -57,9 +57,27 @@ def github_integration():
     if integrations:
         for integration in integrations:
             if integration.type == 'github':
-                github_integrations.append(integration)
+                # github_integrations.append(integration)
+                repositories = integration.repositories
+                print(len(repositories))
+                if repositories:
+                    repo_list = []
+                    for repository in repositories:
+                        repo_list.append(repository.repository)
+                    new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
+                                    channel=integration.channel.channel, repositories=repo_list)
+                    github_integrations.append(new_github)
     tp_length = len(github_integrations)
     return render_template('auth/github_integration.html', **locals())
+
+
+class GitHub(object):
+    def __init__(self, id, name, icon, channel, repositories):
+        self.id = id
+        self.name = name
+        self.icon = icon
+        self.channel = channel
+        self.repositories = repositories
 
 
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>',
@@ -98,7 +116,6 @@ def edit_github_integration(integration_id):
         response = github.get('https://api.github.com/user/repos', {'access_token': integration.token})
         me = github.get('user')
         user = me.data['login']
-        print(user)
         list = response.data
         repos = []
         if len(list) > 1:
@@ -107,11 +124,12 @@ def edit_github_integration(integration_id):
             print(repos)
         return render_template('auth/create.html', **locals())
     except Exception:
-        return github.authorize(callback=url_for('auth.github_authorize', integration_id=integration_id, _external=True))
+        return github.authorize(
+            callback=url_for('auth.github_re_authorize', integration_id=integration_id, _external=True))
 
 
-@auth.route('/github/authorize/<string:integration_id>', methods=['GET'])
-def github_authorize(integration_id):
+@auth.route('/github/re-authorize/<string:integration_id>', methods=['GET'])
+def github_re_authorize(integration_id):
     resp = github.authorized_response()
     if resp is None:
         return 'Access denied: reason=%s error=%s' % (
@@ -264,6 +282,7 @@ def new_github_integration(channel):
     integration = Integration(developer=developer,
                               integration_id=new_integration_id,
                               channel=github_channel,
+                              name='github',
                               description='',
                               icon='',
                               token=token,
