@@ -5,7 +5,6 @@ from ..models import Developer, Integration
 import jpush
 from jpush import common
 
-
 baseurl = 'jbox.jiguang.cn:80'
 
 
@@ -26,21 +25,73 @@ def send_github_msg(integration_id):
     push.audience = jpush.audience(
         jpush.tag(developer.dev_key + '_' + integration.channel.channel)
     )
-    # push.audience = jpush.all_
-    # push.notification = jpush.notification(alert=request.json['title'],extras={'title': request.json['title'],
-    #                                                                              'message': request.json['message']})
-    android_msg = jpush.android(alert=request.json['title'], extras={'title': request.json['title'],
-                                                                     'message': request.json['message']})
-    ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title'],
-                                                             'message': request.json['message']})
+
+    message = ''
+    title = ''
+    commits = request.json['commits']
+    repository = request.json['repository']
+    sender = request.json['sender']
+    comment = request.json['comment']
+    issue = request.json['issue']
+    pull_request = request.json['pull_request']
+    author = sender['login']
+    action = request.json['action']
+
+    target_repository = '[' + repository['name'] + ':' + repository['default_branch'] + ']'
+    # push event
+    if commits:
+        print('push event')
+        length = len(commits)
+        if length > 1:
+            title = target_repository + str(length) + 'new commits by ' + author + ':'
+        else:
+            title = target_repository + '1 new commit by ' + author + ':'
+        print(commits)
+        for i in range(len(commits)):
+            id = commits[i]['id'][:7]
+            commit_comment = commits[i]['message']
+            message = message + id + ' ' + commit_comment + '-' + author + '\n'
+        print(message)
+    elif issue:
+        issue_title = issue['title']
+        # issue comment event
+        if comment:
+            print('issue comment event')
+            title = target_repository + 'New comment by ' + author + ' on issue ' + issue_title
+            message = comment['body']
+        # issue event(opened, closed)
+        else:
+            print('issue event')
+            title = target_repository + 'Issue ' + action + ' by ' + author
+            message = issue['body']
+    # commit comment event
+    elif comment:
+        print('commit comment event')
+        title = target_repository + 'New commit comment by ' + author
+        message = comment['body']
+    # pull request event
+    elif pull_request:
+        print('pull request event')
+        if action == 'opened':
+            title = target_repository + 'Pull request submitted by ' + author
+            message = pull_request['body']
+        elif action == 'closed':
+            merged = pull_request['merged']
+            if merged:
+                title = target_repository + 'Pull request by ' + author + ' was merged'
+            else:
+                title = target_repository + 'Pull request by ' + author + ' was closed with unmerged commits'
+
+    android_msg = jpush.android(alert=title, extras={'title': title, 'message': message})
+    ios_msg = jpush.ios(alert=title, extras={'title': title, 'message': message})
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
     print(integration.icon)
     if integration.icon is None or len(integration.icon) == 0:
         url = ''
     else:
         url = baseurl + '/static/images/' + integration.icon
-    push.notification = jpush.notification(alert=request.json['title'], android=android_msg, ios=ios_msg)
-    push.message = jpush.message(msg_content=request.json['message'], title=request.json['title'], content_type="tyope",
+    push.notification = jpush.notification(alert=title, android=android_msg, ios=ios_msg)
+    push.message = jpush.message(msg_content=message, title=title, content_type="tyope",
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
                                          'datetime': int(time.time()),
                                          'icon': url,
@@ -65,4 +116,3 @@ def send_github_msg(integration_id):
     except:
         print("Exception")
     return jsonify({}), 200
-

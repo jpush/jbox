@@ -300,7 +300,10 @@ def save_github_integration(integration_id):
                      "active": True,
                      "events": [
                          "push",
-                         "pull_request"
+                         "commit_comment",
+                         "pull_request",
+                         "issues",
+                         "issue_comment"
                      ],
                      "config": {
                          "url": "http://jbox.jiguang.cn/plugins/github/" + integration_id + "/webhook",
