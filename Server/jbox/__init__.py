@@ -29,5 +29,7 @@ def create_app(config_name):
     app.register_blueprint(auth_blueprint, url_prefix='/qrcode')
     from .api_1_0 import api as api_1_0_blueprint
     app.register_blueprint(api_1_0_blueprint, url_prefix='/v1')
+    from .plugins import plugins as plugins_blueprint
+    app.register_blueprint(plugins_blueprint, url_prefix='/plugins')
 
     return app

@@ -20,7 +20,7 @@
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.50);
     border-radius: 5px;
     width: 232px;
-    height: 316px;
+    height: 356px;
     margin-top: 103px;
     display: flex;
     flex-flow: column;
@@ -29,7 +29,6 @@
 }
 
 #github-icon {
-    margin-top: 33px;
     width: 147px;
     height: 147px;
 }
@@ -42,7 +41,6 @@
 
 #add-github-integration {
     margin-top: 36px;
-    margin-bottom: 26px;
     padding: 10px 15px 10px 15px;
     background:#64B868;
     border-radius:5px;

@@ -284,8 +284,6 @@ def save_github_integration(integration_id):
         abort(400)
     repos = request.json['repos']
     token = session['github_token'][0]
-    print(token)
-    print(repos.__str__())
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
         abort(400)
@@ -294,7 +292,6 @@ def save_github_integration(integration_id):
     if repositories:
         for repository in repositories:
             hook_dict['%s' % repository.repository] = repository.hook_id
-    print(hook_dict)
     equal = operator.eq(repos, hook_dict.keys())
     if not equal:
         me = github.get('user')
