@@ -41,7 +41,7 @@ public class ChannelDrawerRecyclerViewAdapter extends
         holder.tvChannel.setText(mValues.get(position).name);
 
         if (holder.item.unreadCount != 0) {
-            holder.tvUnreadCount.setText(holder.item.unreadCount);
+            holder.tvUnreadCount.setText(String.valueOf(holder.item.unreadCount));
             holder.tvUnreadCount.setVisibility(View.VISIBLE);
         }
 
@@ -61,14 +61,13 @@ public class ChannelDrawerRecyclerViewAdapter extends
         return mValues.size();
     }
 
-    public void updateData(List<Channel> channels) {
+    public void replaceData(List<Channel> channels) {
         mValues = channels;
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View view;
-        public final ImageView ivRemove;
         public final TextView tvChannel;
         public final TextView tvUnreadCount;
         public Channel item;
@@ -76,7 +75,6 @@ public class ChannelDrawerRecyclerViewAdapter extends
         public ViewHolder(View view) {
             super(view);
             this.view = view;
-            ivRemove = (ImageView) view.findViewById(R.id.iv_remove);
             tvChannel = (TextView) view.findViewById(R.id.tv_channel);
             tvUnreadCount = (TextView) view.findViewById(R.id.tv_unread_count);
         }

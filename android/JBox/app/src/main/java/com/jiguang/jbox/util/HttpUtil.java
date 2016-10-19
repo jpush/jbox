@@ -101,43 +101,6 @@ public class HttpUtil {
                                 dev.save();
                                 callback.onDevLoaded(dev);
                             }
-
-
-//                            if (localDev == null || !localDev.avatarUrl.equals(dev.avatarUrl)) {
-//                                // url 不一致从服务器下载头像。
-//                                String url = "http://" + dev.avatarUrl;
-//
-//                                ImageLoader imgLoader = ImageLoader.getInstance();
-//                                ImageLoaderConfiguration config = new ImageLoaderConfiguration
-//                                        .Builder(AppApplication.getAppContext())
-//                                        .build();
-//                                imgLoader.init(config);
-//
-//                                Bitmap bitmap = imgLoader.loadImageSync(url);
-//                                if (bitmap != null) {
-//                                    String dirPath = Environment.getExternalStorageDirectory()
-//                                            .getAbsolutePath() + "/jbox/avatar";
-//                                    File dir = new File(dirPath);
-//                                    if (!dir.exists()) {
-//                                        dir.mkdirs();
-//                                    }
-//
-//                                    String fileName = "avatar_" + devKey + ".jpg";
-//                                    File avatarFile = new File(dir, fileName);
-//
-//                                    FileOutputStream out = new FileOutputStream(avatarFile);
-//                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out);
-//
-//                                    dev.avatarPath = avatarFile.getAbsolutePath();
-//
-//                                    out.flush();
-//                                    out.close();
-//                                }
-
-//                                if (localDev != null) {
-//                                    localDev.delete();
-//                                }
-//                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             callback.onDataNotAvailable();

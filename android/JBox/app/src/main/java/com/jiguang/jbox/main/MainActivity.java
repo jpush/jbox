@@ -35,6 +35,8 @@ import com.jiguang.jbox.view.TopBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
@@ -60,7 +62,7 @@ public class MainActivity extends FragmentActivity
     private MyReceiver mReceiver;
     private IntentFilter mIntentFilter;
 
-    private int mCurrentItems = 10; // 当前加载的消息数。
+    private int mCurrentOffset = 0; // 当前加载的消息数。
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +90,14 @@ public class MainActivity extends FragmentActivity
         Handler handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(android.os.Message message) {
+                Bundle data = message.getData();
                 if (message.what == 0) {
                     // 收到的是当前 Channel 的消息，更新界面。
-                    Bundle data = message.getData();
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
                 } else if (message.what == 1) {
-                    mDrawerFragment.mChannelListFragment.updateData();
+                    String channelName = data.getString("ChannelName");
+                    mDrawerFragment.mChannelListFragment.updateData(channelName);
                 }
                 return false;
             }
@@ -118,15 +121,16 @@ public class MainActivity extends FragmentActivity
                 // 如果滑动到了最后，加载更多数据。
                 if (mMsgListView.getLastVisiblePosition() == totalItemCount) {
                     mMessages.addAll(queryMessages(AppApplication.currentDevKey,
-                            AppApplication.currentChannelName, mCurrentItems,
-                            mCurrentItems += QUERY_MESSAGE_COUNT));
+                            AppApplication.currentChannelName, mCurrentOffset,
+                            QUERY_MESSAGE_COUNT));
+                    mCurrentOffset += QUERY_MESSAGE_COUNT;
                     mAdapter.replaceData(mMessages);
                 }
             }
         });
 
         mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
-                .currentChannelName, QUERY_MESSAGE_COUNT, QUERY_MESSAGE_COUNT);
+                .currentChannelName, 0, QUERY_MESSAGE_COUNT);
 
         mAdapter = new MessageListAdapter(mMessages);
         mMsgListView.setAdapter(mAdapter);
@@ -143,7 +147,7 @@ public class MainActivity extends FragmentActivity
 
         if (AppApplication.shouldUpdateData) {
             mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
-                    .currentChannelName, QUERY_MESSAGE_COUNT, QUERY_MESSAGE_COUNT);
+                    .currentChannelName, 0, mCurrentOffset + QUERY_MESSAGE_COUNT);
             mAdapter.replaceData(mMessages);
             mTopBar.setTitle(AppApplication.currentChannelName);
 
@@ -162,24 +166,23 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onChannelListItemClick(Channel channel) {
         mTopBar.setTitle(channel.name);
-        mCurrentItems = QUERY_MESSAGE_COUNT;
 
         channel.unreadCount = 0;
         channel.save();
+        mDrawerFragment.mChannelListFragment.updateData(channel.devKey);
 
-        List<Message> messages = new Select().from(Message.class)
-                .where("DevKey=? AND Channel=?", channel.devKey, channel.name)
-                .limit(QUERY_MESSAGE_COUNT)
-                .execute();
+        List<Message> messages = queryMessages(channel.devKey, channel.name, 0,
+                mCurrentOffset + QUERY_MESSAGE_COUNT);
         mAdapter.replaceData(messages);
         mDrawerLayout.closeDrawer(mDrawerFragment.getView());
     }
 
-    private List<Message> queryMessages(String devKey, String channelName, int limit, int offSet) {
+    private List<Message> queryMessages(String devKey, String channelName, int offSet, int limit) {
         return new Select().from(Message.class)
                 .where("DevKey=? AND Channel=?", devKey, channelName)
-                .limit(limit)
                 .offset(offSet)
+                .limit(limit)
+                .orderBy("time DESC")
                 .execute();
     }
 
@@ -199,6 +202,7 @@ public class MainActivity extends FragmentActivity
         void addMessage(Message msg) {
             if (mMessages != null) {
                 mMessages.add(0, msg);
+                notifyDataSetChanged();
             }
         }
 
@@ -233,20 +237,26 @@ public class MainActivity extends FragmentActivity
             TextView tvIcon = ViewHolder.get(convertView, R.id.tv_icon);
             ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
 
-            if (TextUtils.isEmpty(msg.iconUrl)) {
-                ivIcon.setVisibility(View.INVISIBLE);
-                tvIcon.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(msg.iconUrl)) {   // 图片为空
+                if (ivIcon.getVisibility() == View.VISIBLE) {
+                    ivIcon.setVisibility(View.INVISIBLE);
+                    tvIcon.setVisibility(View.VISIBLE);
+                }
 
                 String firstChar = msg.channelName.substring(0, 1).toUpperCase();
                 tvIcon.setText(firstChar);
             } else {
-                ivIcon.setVisibility(View.VISIBLE);
-                tvIcon.setVisibility(View.INVISIBLE);
+                if (ivIcon.getVisibility() == View.INVISIBLE) {
+                    ivIcon.setVisibility(View.VISIBLE);
+                    tvIcon.setVisibility(View.GONE);
+                }
+
+                LogUtil.LOGI("MainActivity", msg.iconUrl);
 
                 Glide.with(AppApplication.getAppContext())
-                        .load(msg.iconUrl)
+                        .load("http://" + msg.iconUrl)
                         .centerCrop()
-                        .crossFade()
+                        .placeholder(R.drawable.default_avatar)
                         .into(ivIcon);
             }
 
@@ -256,9 +266,7 @@ public class MainActivity extends FragmentActivity
             TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
             tvContent.setText(msg.content);
 
-            long timeMillis = msg.time;
-            String formatTime = DateUtils.formatDateTime(parent.getContext(), timeMillis,
-                    DateUtils.FORMAT_SHOW_TIME);
+            String formatTime = new SimpleDateFormat("HH:mm").format(new Date(msg.time * 1000));
 
             TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
             tvTime.setText(formatTime);
@@ -330,6 +338,8 @@ public class MainActivity extends FragmentActivity
                                     .execute();
 
                             handlerMsg.what = 1;
+                            data.putString("ChannelName", channelName);
+                            handlerMsg.setData(data);
                             mHandler.sendMessage(handlerMsg);
                         }
                     }

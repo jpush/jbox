@@ -9,20 +9,10 @@
     android:paddingTop="4dp"
     tools:background="@drawable/bg_slide">
 
-    <ImageView
-        android:id="@+id/iv_remove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_remove"
-        android:layout_centerVertical="true"
-        android:visibility="gone"
-        />
-
     <TextView
         android:id="@+id/tv_channel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/iv_remove"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:textColor="#f3f3f3"
@@ -36,10 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:background="@drawable/badge"
+        android:gravity="center"
         android:layout_centerVertical="true"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textColor="@android:color/white"
+        android:textSize="12sp"
         android:visibility="invisible"
         tools:text="10"
         />

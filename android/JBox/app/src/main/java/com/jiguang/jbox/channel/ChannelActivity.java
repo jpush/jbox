@@ -177,9 +177,14 @@ public class ChannelActivity extends Activity {
         if (!mChannels.equals(mLocalChannels)) {
             new Delete().from(Channel.class).where("DevKey = ?", mDevKey).execute();
 
+            boolean firstSubscribe = true;
+
             for (Channel c : mChannels) {
                 if (c.isSubscribe) {
-                    AppApplication.currentChannelName = c.name;
+                    if (firstSubscribe) {
+                        AppApplication.currentChannelName = c.name;
+                        firstSubscribe = false;
+                    }
                     mTags.add(c.devKey + "_" + c.name);
                 }
                 c.save();
