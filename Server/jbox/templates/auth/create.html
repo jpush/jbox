@@ -288,10 +288,13 @@
         {#                    width: '100px',#}
         {#                    height: '100px'#}
         {#                }).insertAfter('#icon');#}
-        var record = {{ length }};
-        if (record == undefined) {
-            record = 0;
-        }
+        {% if integration.type == 'github' %}
+            var record = {{ length }};
+            if (record == undefined) {
+                record = 0;
+            }
+        {% endif %}
+
         function selectClick(i) {
             var selector = $('#repos_selector' + i);
             if (i == record) {
