@@ -388,6 +388,19 @@ def delete_integration(dev_key, integration_id):
                         os.remove(path)
                 db.session.delete(integration)
                 db.session.commit()
+                # 如果是 github 集成，删除所有的 webhook
+                if integration.type == 'github':
+                    repositories = integration.repositories
+                    if repositories:
+                        me = github.get('user')
+                        user = me.data['login']
+                        for repository in repositories:
+                            url = 'https://api.github.com/repos/' + user + '/' + repository.repository + '/hooks/' \
+                                  + str(repository.hook_id)
+                            response = github.delete(url, data=None)
+                            if response.status == 204:
+                                db.session.delete(repository)
+                                db.session.commit()
                 return jsonify({'deleted': True}), 200
             except:
                 db.session.rollback()

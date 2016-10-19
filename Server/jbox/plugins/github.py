@@ -61,7 +61,7 @@ def send_github_msg(integration_id):
         for i in range(len(commits)):
             commit_id = commits[i]['id'][:7]
             commit_comment = commits[i]['message']
-            message = message + commit_id + ' ' + commit_comment + '-' + author + '\n'
+            message = message + commit_id + ': ' + commit_comment + '-' + author + '\n'
         print(message)
     elif issue != '':
         issue_title = issue['title']
