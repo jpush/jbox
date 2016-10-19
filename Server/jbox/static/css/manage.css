@@ -105,6 +105,12 @@ body {
     justify-content: center;
 }
 
+.tp-content:hover {
+    background:#1f9ce2;
+    box-shadow:0 0 10px 0 rgba(0,0,0,0.50);
+    color: #FFFFFF;
+}
+
 .tp-content-icon {
     width: 147px;
     height: 147px;

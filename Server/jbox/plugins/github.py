@@ -28,18 +28,29 @@ def send_github_msg(integration_id):
 
     message = ''
     title = ''
-    commits = request.json['commits']
+    commits = ''
+    comment = ''
+    issue = ''
+    pull_request = ''
     repository = request.json['repository']
     sender = request.json['sender']
-    comment = request.json['comment']
-    issue = request.json['issue']
-    pull_request = request.json['pull_request']
     author = sender['login']
-    action = request.json['action']
+    if 'commits' in request.json:
+        commits = request.json['commits']
+    if 'comment' in request.json:
+        comment = request.json['comment']
+    if 'issue' in request.json:
+        issue = request.json['issue']
+    if 'pull_request' in request.json:
+        pull_request = request.json['pull_request']
+    if 'action' in request.json:
+        action = request.json['action']
+    else:
+        action = ''
 
     target_repository = '[' + repository['name'] + ':' + repository['default_branch'] + ']'
     # push event
-    if commits:
+    if commits != '':
         print('push event')
         length = len(commits)
         if length > 1:
@@ -48,14 +59,14 @@ def send_github_msg(integration_id):
             title = target_repository + '1 new commit by ' + author + ':'
         print(commits)
         for i in range(len(commits)):
-            id = commits[i]['id'][:7]
+            commit_id = commits[i]['id'][:7]
             commit_comment = commits[i]['message']
-            message = message + id + ' ' + commit_comment + '-' + author + '\n'
+            message = message + commit_id + ' ' + commit_comment + '-' + author + '\n'
         print(message)
-    elif issue:
+    elif issue != '':
         issue_title = issue['title']
         # issue comment event
-        if comment:
+        if comment != '':
             print('issue comment event')
             title = target_repository + 'New comment by ' + author + ' on issue ' + issue_title
             message = comment['body']
@@ -65,12 +76,12 @@ def send_github_msg(integration_id):
             title = target_repository + 'Issue ' + action + ' by ' + author
             message = issue['body']
     # commit comment event
-    elif comment:
+    elif comment != '':
         print('commit comment event')
         title = target_repository + 'New commit comment by ' + author
         message = comment['body']
     # pull request event
-    elif pull_request:
+    elif pull_request != '':
         print('pull request event')
         if action == 'opened':
             title = target_repository + 'Pull request submitted by ' + author
