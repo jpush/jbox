@@ -82,6 +82,10 @@ def send_github_msg(integration_id):
             else:
                 title = target_repository + 'Pull request by ' + author + ' was closed with unmerged commits'
 
+    print("the title")
+    print(title)
+    print("the message")
+    print(message)
     android_msg = jpush.android(alert=title, extras={'title': title, 'message': message})
     ios_msg = jpush.ios(alert=title, extras={'title': title, 'message': message})
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
