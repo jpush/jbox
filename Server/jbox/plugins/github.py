@@ -11,6 +11,9 @@ baseurl = 'jbox.jiguang.cn:80'
 
 @plugins.route('/github/<integration_id>/webhook', methods=['POST'])
 def send_github_msg(integration_id):
+    print("print the request json")
+    print(request.json)
+    
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
         abort(404)
