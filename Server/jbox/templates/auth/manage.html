@@ -80,17 +80,17 @@
         <table id="tp-table">
             <tbody>
                 <tr>
-                    <td id="github-td" onclick=window.location.href="{{ url_for('auth.github_integration') }}">
-                        <div class="tp-content">
+                    <td id="github-td">
+                        <button class="tp-content" onclick=window.location.href="{{ url_for('auth.github_integration') }}">
                             <img class="tp-content-icon" src="/static/images/github1x.png">
-                            <p class="jbox-font tp-content-title">GitHub</p>
-                        </div>
+                            GitHub
+                        </button>
                     </td>
                     <td>
-                        <div class="tp-content">
+                        <button class="tp-content" onclick=window.location.href="{{ url_for('auth.discourse_integration') }}">
                             <img class="tp-content-icon" src="/static/images/discourse.png">
-                            <p class="jbox-font tp-content-title">Discourse</p>
-                        </div>
+                            Discourse
+                        </button>
                     </td>
                 </tr>
             </tbody>

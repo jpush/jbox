@@ -47,26 +47,29 @@
 }
 
 .tp-content {
-    background: #ffffff;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.50);
+    background: #FFFFFF;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.50);
     width: 232px;
     height: 247px;
+    line-height: 60px;
     margin-right: 60px;
     display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
+    flex-flow: column;
     justify-content: center;
+    align-items: center;
+    color: #595959;
+    font-size: 18px;
+    border: 0 hidden;
+}
+
+.tp-content:hover {
+    background: #1f9ce2;
+    box-shadow:0 0 10px 0 rgba(0,0,0,0.50);
+    color: #FFFFFF;
 }
 
 .tp-content-icon {
     width: 147px;
     height: 147px;
 }
-
-.tp-content-title {
-    color: #595959;
-    font-size: 18px;
-    margin-top: 23px;
-}
-
 

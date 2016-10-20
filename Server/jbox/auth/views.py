@@ -46,7 +46,8 @@ def manage():
 
 @auth.route('/add_third_party', methods=['GET'])
 def add_third_party():
-    return render_template('auth/third_party_integration.html')
+    developer = get_developer()
+    return render_template('auth/third_party_integration.html', developer=developer)
 
 
 @auth.route('/github_integration', methods=['GET'])
@@ -78,6 +79,11 @@ class GitHub(object):
         self.icon = icon
         self.channel = channel
         self.repositories = repositories
+
+
+@auth.route('/discourse_integration', methods=['GET'])
+def discourse_integration():
+    return render_template('auth/github_integration.html')
 
 
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>',
