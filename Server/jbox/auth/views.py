@@ -83,7 +83,8 @@ class GitHub(object):
 
 @auth.route('/discourse_integration', methods=['GET'])
 def discourse_integration():
-    return render_template('auth/github_integration.html')
+    developer = get_developer()
+    return render_template('auth/discourse_integration.html', **locals())
 
 
 @auth.route('/manage/create_integration/<string:integration_id>/<string:token>/<string:channel>',
@@ -181,6 +182,15 @@ def post_to_channel_github():
     dev_key = developer.dev_key
     channels = get_channel_list()
     github = True
+    return render_template('auth/new/post2channel.html', **locals())
+
+
+@auth.route('/new/discourse/post_to_channel', methods=['GET'])
+def post_to_channel_discourse():
+    developer = get_developer()
+    channels = get_channel_list()
+    dev_key = developer.dev_key
+    discourse = True
     return render_template('auth/new/post2channel.html', **locals())
 
 

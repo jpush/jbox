@@ -30,6 +30,8 @@
                 <p id="title" class="jbox-font">推送到 Channel</p>
                 {% if github %}
                     <p id="description" class="jbox-font">从选择一个 channel 开始, 来自 GitHub 的消息将会推送到这个 channel。</p>
+                {% elif discourse %}
+                    <p id="description" class="jbox-font">从选择一个 channel 开始, 来自 Discourse 的消息将会推送到这个 channel。</p>
                 {% else %}
                     <p id="description" class="jbox-font">从选择一个 channel 开始, 接下来集成的应用的消息将会推送到这个 channel。</p>
                 {% endif %}
@@ -55,6 +57,9 @@
         <div style="margin-top: 40px;">
             {% if github %}
                 <button class="create_btn" id="create_github_integration_btn" type="button">添加 GitHub 集成
+                </button>
+            {% elif %}
+                <button class="create_btn" id="create_discourse_integration_btn" type="button">添加 Discourse 集成
                 </button>
             {% else %}
                 <button class="create_btn" id="create_integration_btn" type="button">添加自定义集成
