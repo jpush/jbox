@@ -44,9 +44,8 @@
                         {% for integration in discourse_integrations %}
                             <div class="row" id="discourse-integration-content">
                                 <img src="/static/images/discourse-icon.png">
-                                <p>来自 <strong>{{ integration.repositories }}</strong> 的 commits, issue 以及 pull
-                                request 等活动将会作为 <strong>{{ integration.name }}</strong>
-                                推送到 <strong>{{ integration.channel }}</strong> 频道</p>
+                                <p>来自  <strong>{{ integration.name }}</strong>
+                                推送到 <strong>{{ integration.channel.channel }}</strong> 频道</p>
                                 <button class="btn btn-info btn-middle" id="{{ integration.id }}"
                                         type="button">编辑
                                 </button>

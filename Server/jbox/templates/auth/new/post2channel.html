@@ -55,16 +55,15 @@
         </div>
 
         <div style="margin-top: 40px;">
-            {% if github %}
-                <button class="create_btn" id="create_github_integration_btn" type="button">添加 GitHub 集成
-                </button>
-            {% elif %}
-                <button class="create_btn" id="create_discourse_integration_btn" type="button">添加 Discourse 集成
-                </button>
-            {% else %}
-                <button class="create_btn" id="create_integration_btn" type="button">添加自定义集成
-                </button>
-            {% endif %}
+            <button class="create_btn" id="create_integration_btn" type="button">
+                {% if github %}
+                    添加 GitHub 集成
+                {% elif discourse %}
+                    添加 Discourse 集成
+                {% else %}
+                    添加自定义集成
+                {% endif %}
+            </button>
         </div>
     </div>
     <script type="text/javascript">
@@ -120,37 +119,40 @@
             });
         });
 
-        $('#create_github_integration_btn').click(function () {
-            var channel = $('#selected_channel').val();
-            if (channel != '') {
-                window.location.href = '/auth/github/authorize/' + channel
-            }
-        });
-
         $('#create_integration_btn').click(function () {
             var channel = $('#selected_channel').val();
             console.log('create integration, channel: ' + channel);
             if (channel != '') {
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: "../../v1/developers/{{ dev_key }}/integrations",
-                    data: JSON.stringify({channel: channel}),
-                    success: function (data) {
-                        if (data != undefined) {
-                            if (data["token"]) {
-                                window.location.href = '/auth/manage/create_integration/' + data["integration_id"] + '/' + data["token"] + '/' + channel
+                {% if github %}
+                    window.location.href = '/auth/github/authorize/' + channel;
+                {% else %}
+                    var data;
+                    {% if discourse %}
+                        data = JSON.stringify({channel: channel, discourse: true});
+                    {% else %}
+                        data = JSON.stringify({channel: channel});
+                    {% endif %}
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "/v1/developers/{{ dev_key }}/integrations",
+                        data: data,
+                        success: function (data) {
+                            if (data != undefined) {
+                                if (data["token"]) {
+                                    window.location.href = '/auth/manage/create_integration/' + data["integration_id"] + '/' + data["token"] + '/' + channel
+                                }
+                            } else {
+                                toastr.error("服务器异常");
                             }
-                        } else {
-                            toastr.error("服务器异常");
-                        }
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        toastr.error("创建失败");
-                    },
-                    dataType: "json"
-                })
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            toastr.error("创建失败");
+                        },
+                        dataType: "json"
+                    });
+                {% endif %}
             }
         })
     </script>

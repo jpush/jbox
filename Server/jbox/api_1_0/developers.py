@@ -213,11 +213,20 @@ def create_integrations(dev_key):
         for channel in channel_list:
             if request.json['channel'] == channel.channel:
                 new_integration_id = generate_integration_id()
-                new_integration = Integration(developer=developer,
-                                              integration_id=new_integration_id,
-                                              channel=channel,
-                                              description='',
-                                              icon='')
+                if "discourse" in request.json:
+                    print("create discourse integration")
+                    new_integration = Integration(developer=developer,
+                                                  integration_id=new_integration_id,
+                                                  channel=channel,
+                                                  description='',
+                                                  icon='',
+                                                  type='discourse')
+                else:
+                    new_integration = Integration(developer=developer,
+                                                  integration_id=new_integration_id,
+                                                  channel=channel,
+                                                  description='',
+                                                  icon='')
                 new_integration.insert_to_db()
                 token = new_integration.generate_auth_token(3600000000)
                 new_integration.token = token.decode('utf-8')
@@ -313,7 +322,8 @@ def save_github_integration(integration_id):
             return jsonify({}), 200
         elif len(repos) == 0 and len(repositories) != 0:
             for repository in repositories:
-                url = 'https://api.github.com/repos/' + user + '/' + repository.repository + '/hooks/' + str(repository.hook_id)
+                url = 'https://api.github.com/repos/' + user + '/' + repository.repository + '/hooks/' + str(
+                    repository.hook_id)
                 response = github.delete(url, data=None)
                 if response.status == 204:
                     db.session.delete(repository)

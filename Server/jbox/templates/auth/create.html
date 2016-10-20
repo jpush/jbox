@@ -30,6 +30,8 @@
         <div class="col-lg-offset-2">
             {% if integration.type == 'github' %}
                 <p id="title" class="jbox-font">GitHub 设置</p>
+            {% elif integration.type == 'discourse' %}
+                <p id="title" class="jbox-font">Discourse 设置</p>
             {% else %}
                 <p id="title" class="jbox-font">自定义集成设置</p>
             {% endif %}
@@ -142,6 +144,16 @@
                 <div id="link-content">
                     <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
                     <a id="regenerate" class="jbox-font link">重新生成</a>
+                </div>
+                <hr class="divider">
+            {% elif integration.type == 'discourse' %}
+                <div class="row">
+                    <div class="column span description-div">
+                        <p class="jbox-font span-title">Webhook</p>
+                        <p class="jbox-font span-desc">将这个 URL 复制到 discourse 插件上</p>
+                    </div>
+                    <input id="webhook" class="jbox-font description"
+                           value="jbox.jiguang.cn:80/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
                 </div>
                 <hr class="divider">
             {% endif %}
@@ -456,7 +468,11 @@
                     data: JSON.stringify({name: name, description: desc, icon: path, channel: channel}),
                     success: function (data) {
                         toastr.success("保存成功");
-                        window.location.href = '/auth/manage'
+                        {% if integration.type == "discourse" %}
+                            window.location.href = '/auth/discourse_integration';
+                        {% else %}
+                            window.location.href = '/auth/manage';
+                        {% endif %}
                     },
                     error: function (error) {
                         console.log(error);
