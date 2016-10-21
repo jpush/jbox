@@ -223,7 +223,7 @@ def upload_avatar(dev_key):
                 if os.path.exists(path) and os.path.isfile(path):
                     os.remove(path)
                 file_type = file.filename.rsplit('.', 1)[1]
-                filename = generate_file_name(developer.dev_key, file_type)
+                filename = generate_file_name(file_type)
                 file.save(os.path.join(UPLOAD_FOLDER, filename))
                 return jsonify(name=filename)
 
@@ -239,7 +239,7 @@ def upload_icon(integration_id):
                 if os.path.exists(path) and os.path.isfile(path):
                     os.remove(path)
                 file_type = file.filename.rsplit('.', 1)[1]
-                filename = generate_file_name(integration.integration_id, file_type)
+                filename = generate_file_name(file_type)
                 file.save(os.path.join(UPLOAD_FOLDER, filename))
                 return jsonify(name=filename)
 
@@ -275,8 +275,8 @@ def setting():
     return render_template('auth/setting.html', developer=developer)
 
 
-def generate_file_name(id, file_type):
-    return uuid.uuid3(uuid.NAMESPACE_DNS, id).__str__() + '.' + file_type
+def generate_file_name(file_type):
+    return uuid.uuid1().__str__() + '.' + file_type
 
 
 @auth.route('/github/authorize/<string:channel>', methods=['GET'])

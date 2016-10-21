@@ -44,9 +44,9 @@
                         {% for integration in discourse_integrations %}
                             <div class="row" id="discourse-integration-content">
                                 <img src="/static/images/discourse-icon.png">
-                                <p>来自  <strong>{{ integration.name }}</strong>
+                                <p>来自 Discourse 的通知将会作为 <strong>{{ integration.name }}</strong>
                                 推送到 <strong>{{ integration.channel.channel }}</strong> 频道</p>
-                                <button class="btn btn-info btn-middle" id="{{ integration.id }}"
+                                <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}"
                                         type="button">编辑
                                 </button>
                             </div>
@@ -61,8 +61,8 @@
     <script type="text/javascript">
         {% if discourse_integrations %}
             {% for integration in discourse_integrations %}
-                $('#{{ integration.id }}').click(function () {
-                    window.location.href = '/auth/manage/edit_discourse_integration/{{ integration.id }}'
+                $('#{{ integration.integration_id }}').click(function () {
+                    window.location.href = '/auth/manage/edit_integration/{{ integration.integration_id }}'
                 });
             {% endfor %}
         {% endif %}

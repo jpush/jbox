@@ -142,18 +142,10 @@ class Integration(db.Model):
                     flag = True
         return True
 
-    def generate_auth_token(self, expiration):
-        s = Serializer(current_app.config["SECRET_KEY"], expires_in=expiration)
-        return s.dumps({'id': self.id})
-
     @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(current_app.config['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except:
-            return None
-        return Integration.query.get(data['id'])
+    def generate_auth_token():
+        token = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 10)])
+        return token
 
 
 class GitHub(db.Model):

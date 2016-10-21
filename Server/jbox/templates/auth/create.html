@@ -143,7 +143,7 @@
                 </div>
                 <div id="link-content">
                     <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
-                    <a id="regenerate" class="jbox-font link">重新生成</a>
+                    <button id="regenerate" class="jbox-font link">重新生成</button>
                 </div>
                 <hr class="divider">
             {% elif integration.type == 'discourse' %}
@@ -153,7 +153,7 @@
                         <p class="jbox-font span-desc">将这个 URL 复制到 discourse 插件上</p>
                     </div>
                     <input id="webhook" class="jbox-font description"
-                           value="jbox.jiguang.cn:80/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
+                           value="jbox.jiguang.cn/plugins/discourse/{{ integration.integration_id }}/{{ integration.token }}/webhook"/>
                 </div>
                 <hr class="divider">
             {% endif %}
@@ -364,6 +364,26 @@
                 })
             });
         }
+
+        $('#regenerate').click(function () {
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                url: "/v1/developers/{{ integration.integration_id }}/token",
+                success: function (data) {
+                    if (data != undefined) {
+                        if (data["token"]) {
+                            toastr.success("已重新生成token");
+                            $('#webhook').val("jbox.jiguang.cn:80/v1/message/{{ integration.integration_id }}/" + data['token']);
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("重新生成失败");
+                }
+            })
+        });
 
         function preview(img, selection) {
             var scaleX = 100 / (selection.width || 1);

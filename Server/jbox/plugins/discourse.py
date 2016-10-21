@@ -1,16 +1,14 @@
 import time
 from flask import abort, Flask, jsonify, request
-from . import api
+from . import plugins
 from ..models import Developer, Integration
 import jpush
 from jpush import common
-from  .developers import baseurl
+from .github import baseurl
 
 
-@api.route('/message/<integration_id>/<token>', methods=['POST'])
-def send_message(integration_id, token):
-    if not request.json or not 'message' in request.json or not 'title' in request.json:
-        abort(400)
+@plugins.route('/discourse/<string:integration_id>/<string:token>/webhook', methods=['POST'])
+def send_discourse_msg(integration_id, token):
     integration = Integration.query.filter_by(integration_id=integration_id, token=token).first()
     if integration is None:
         abort(400)

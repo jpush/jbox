@@ -228,13 +228,13 @@ def create_integrations(dev_key):
                                                   description='',
                                                   icon='')
                 new_integration.insert_to_db()
-                token = new_integration.generate_auth_token(3600000000)
-                new_integration.token = token.decode('utf-8')
+                token = new_integration.generate_auth_token()
+                new_integration.token = token
                 db.session.add(new_integration)
                 try:
                     db.session.commit()
                     return jsonify({'integration_id': new_integration_id,
-                                    'token': token.decode('utf-8')}), 201
+                                    'token': token}), 201
                 except:
                     db.session.rollback()
                     abort(500)
@@ -242,18 +242,27 @@ def create_integrations(dev_key):
     db.session.add(new_channel)
     try:
         new_integration_id = generate_integration_id()
-        new_integration = Integration(developer=developer,
-                                      integration_id=new_integration_id,
-                                      channel=new_channel,
-                                      description='',
-                                      icon='')
+        if "discourse" in request.json:
+            print("create discourse integration")
+            new_integration = Integration(developer=developer,
+                                          integration_id=new_integration_id,
+                                          channel=new_channel,
+                                          description='',
+                                          icon='',
+                                          type='discourse')
+        else:
+            new_integration = Integration(developer=developer,
+                                          integration_id=new_integration_id,
+                                          channel=new_channel,
+                                          description='',
+                                          icon='')
         new_integration.insert_to_db()
-        token = new_integration.generate_auth_token(3600000000)
-        new_integration.token = token.decode('utf-8')
+        token = new_integration.generate_auth_token()
+        new_integration.token = token
         db.session.add(new_integration)
         db.session.commit()
         return jsonify({'integration_id': new_integration_id,
-                        'token': token.decode('utf-8')}), 201
+                        'token': token}), 201
     except:
         db.session.rollback()
         abort(500)
@@ -440,17 +449,17 @@ def get_developer_with_devkey(dev_key):
 
 # FIX: TOKEN
 # 重新生成 integration token   这个接口没有测试
-@api.route('/<integration_id>/token', methods=['PUT'])
+@api.route('/developers/<string:integration_id>/token', methods=['PUT'])
 def regenerate_integration_token(integration_id):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
         abort(400)
-    token = integration.generate_auth_token(3600000000)
-    integration.token = token.decode('utf-8')
+    token = integration.generate_auth_token()
+    integration.token = token
     try:
         db.session.add(integration)
         db.session.commit()
-        return jsonify({'token': token.decode('utf-8')}), 200
+        return jsonify({'token': token}), 200
     except:
         db.session.rollback()
         abort(500)

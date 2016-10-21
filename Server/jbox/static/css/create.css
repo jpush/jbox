@@ -137,6 +137,8 @@
 .link {
     font-size: 20px;
     color: #40a4e0;
+    border: 0 hidden;
+    box-shadow:none;
 }
 
 #integration-content {
