@@ -9,6 +9,7 @@ from .github import baseurl
 
 @plugins.route('/discourse/<string:integration_id>/<string:token>/webhook', methods=['POST'])
 def send_discourse_msg(integration_id, token):
+    print("discourse")
     integration = Integration.query.filter_by(integration_id=integration_id, token=token).first()
     if integration is None:
         abort(400)

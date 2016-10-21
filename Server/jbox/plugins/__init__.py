@@ -2,4 +2,4 @@ from flask import Blueprint
 
 plugins = Blueprint('plugins', __name__)
 
-from . import github
+from . import github, discourse
