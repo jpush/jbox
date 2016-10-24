@@ -76,7 +76,6 @@ public class DeveloperListFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -104,4 +103,5 @@ public class DeveloperListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onDevListItemClick(String devKey);
     }
+
 }

@@ -69,7 +69,6 @@ public class ChannelActivity extends Activity {
         setContentView(R.layout.activity_channel);
 
         mDevKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
-        AppApplication.currentDevKey = mDevKey;
 
         mHandler = new MyHandler();
 
@@ -123,6 +122,9 @@ public class ChannelActivity extends Activity {
 
         // 从本地数据库中进行查询。
         mLocalChannels = new Select().from(Channel.class).where("DevKey = ?", mDevKey).execute();
+        if (mLocalChannels != null) {
+            mListAdapter.replaceData(mLocalChannels);
+        }
 
         if (!HttpUtil.isNetworkAvailable() && mLocalChannels != null) {
             mListAdapter.replaceData(mLocalChannels);
@@ -132,12 +134,16 @@ public class ChannelActivity extends Activity {
                     new ChannelDataSource.LoadChannelsCallback() {
                         @Override
                         public void onChannelsLoaded(List<Channel> channels) {
-                            mChannels = channels;
+                            if (channels == null) {
+                                return;
+                            }
 
                             if (mLocalChannels == null) {
                                 mListAdapter.replaceData(mChannels);
                                 return;
                             }
+
+                            mChannels = channels;
 
                             // 将本地数据和服务器数据做对比，同步订阅状态。
                             for (Channel channel : mChannels) {
@@ -296,6 +302,7 @@ public class ChannelActivity extends Activity {
                     if (!TextUtils.isEmpty(data.getString("avatarUrl"))) {
                         Glide.with(AppApplication.getAppContext())
                                 .load(data.getString("avatarUrl"))
+                                .placeholder(R.drawable.default_avatar)
                                 .dontAnimate()
                                 .into(mIvAvatar);
                     }

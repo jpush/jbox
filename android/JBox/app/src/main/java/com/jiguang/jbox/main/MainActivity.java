@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,8 +95,8 @@ public class MainActivity extends FragmentActivity
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
                 } else if (message.what == 1) {
-                    String channelName = data.getString("ChannelName");
-                    mDrawerFragment.mChannelListFragment.updateData(channelName);
+                    String devKey = data.getString("DevKey");
+                    mDrawerFragment.mChannelListFragment.updateData(devKey);
                 }
                 return false;
             }
@@ -338,7 +337,7 @@ public class MainActivity extends FragmentActivity
                                     .execute();
 
                             handlerMsg.what = 1;
-                            data.putString("ChannelName", channelName);
+                            data.putString("DevKey", msg.devKey);
                             handlerMsg.setData(data);
                             mHandler.sendMessage(handlerMsg);
                         }

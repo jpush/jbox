@@ -83,6 +83,12 @@ public class HttpUtil {
                             dev.platform = json.getString("platform");
                             dev.desc = json.getString("desc");
                             dev.avatarUrl = "http://" + json.getString("avatar");
+                            if (TextUtils.isEmpty(AppApplication.currentDevKey)) {
+                                dev.isSelected = true;
+                                AppApplication.currentDevKey = devKey;
+                            } else {
+                                dev.isSelected = false;
+                            }
 
                             Developer localDev = new Select().from(Developer.class)
                                     .where("Key = ?", devKey)

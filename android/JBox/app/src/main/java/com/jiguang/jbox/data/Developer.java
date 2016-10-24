@@ -17,10 +17,13 @@ public class Developer extends Model {
     public String platform;    // 第三方登录平台。
 
     @Column(name = "Desc")
-    public String desc;               // 用户描述。
+    public String desc;        // 用户描述。
 
     @Column(name="AvatarUrl")   // 头像 url。
     public String avatarUrl;
+
+    @Column(name="IsSelected")
+    public boolean isSelected = false;  // 是否被选中。
 
     public Developer() {
         super();

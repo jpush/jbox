@@ -10,12 +10,14 @@ import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.content.ContentValues.TAG;
 import static com.jiguang.jbox.main.DeveloperListFragment.OnListFragmentInteractionListener;
 
 
@@ -41,11 +43,18 @@ public class DeveloperListRecyclerViewAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.item = mValues.get(position);
+
+        if (holder.item.isSelected) {
+            holder.view.setAlpha(1);
+        } else {
+            holder.view.setAlpha((float) 0.5);
+        }
 
         Glide.with(AppApplication.getAppContext())
                 .load(holder.item.avatarUrl)
+                .placeholder(R.drawable.ic_avatar_default)
                 .dontAnimate()
                 .into(holder.avatar);
 
@@ -54,10 +63,26 @@ public class DeveloperListRecyclerViewAdapter extends
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogUtil.LOGI(TAG, holder.item.isSelected + "");
+                AppApplication.currentDevKey = holder.item.key;
+
+                if (!holder.item.isSelected) {
+                    for (Developer d : mValues) {
+                        if (d != holder.item && d.isSelected) {
+                            d.isSelected = false;
+                            d.save();
+                            break;
+
+                        }
+                    }
+                    holder.item.isSelected = true;
+                    holder.item.save();
+
+                    notifyDataSetChanged();
+                }
+
                 if (null != mListener) {
-                    // Developer 列表的点击事件。
                     mListener.onDevListItemClick(holder.item.key);
-                    AppApplication.currentDevKey = holder.item.key;
                 }
             }
         });
