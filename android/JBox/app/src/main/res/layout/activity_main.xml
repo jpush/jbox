@@ -16,11 +16,19 @@
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/widget_height"
-            android:background="@color/colorPrimary"
-            app:show_left="true"
-            app:background_left="@drawable/ic_navigation"
-            tools:title="Channel 1"
-            />
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/iv_menu"
+                android:layout_width="22dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_menu"
+                />
+
+        </com.jiguang.jbox.view.TopBar>
+
 
         <ListView
             android:id="@+id/lv_msg"

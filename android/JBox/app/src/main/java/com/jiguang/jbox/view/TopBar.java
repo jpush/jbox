@@ -37,8 +37,8 @@ public class TopBar extends FrameLayout {
 
         mTvLeft = (TextView) findViewById(R.id.tv_left);
         if (bgLeft != 0) {
+            mTvLeft.setText(null);
             mTvLeft.setBackgroundResource(bgLeft);
-            mTvLeft.setText("");
         }
 
         if (isShowLeft) {

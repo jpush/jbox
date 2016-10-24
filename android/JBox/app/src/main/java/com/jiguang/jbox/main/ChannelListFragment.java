@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.channel.ChannelActivity;
 import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.util.LogUtil;
 
 import java.util.List;
 
@@ -24,6 +26,8 @@ import java.util.List;
  * 侧边栏 Channel list.
  */
 public class ChannelListFragment extends Fragment {
+    private static final String TAG = "ChannelListFragment";
+
     private OnListFragmentInteractionListener mListener;
     private List<Channel> mChannels;
 
@@ -57,6 +61,25 @@ public class ChannelListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_drawer_channel, container, false);
+
+        SearchView searchView = (SearchView) view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mChannels = new Select().from(Channel.class)
+                        .where("DevKey=? AND IsSubscribe=? AND Name LIKE ?",
+                                AppApplication.currentDevKey, true, '%' + newText + '%')
+                        .execute();
+                mAdapter.replaceData(mChannels);
+                mAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
 
         ImageView ivEdit = (ImageView) view.findViewById(R.id.iv_edit);
         ivEdit.setOnClickListener(new View.OnClickListener() {
@@ -104,8 +127,8 @@ public class ChannelListFragment extends Fragment {
         mChannels = new Select().from(Channel.class)
                 .where("DevKey=? AND IsSubscribe=?", devKey, true)
                 .execute();
-        mAdapter = new ChannelDrawerRecyclerViewAdapter(mChannels, mListener);
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.replaceData(mChannels);
+        mAdapter.notifyDataSetChanged();
     }
 
     public interface OnListFragmentInteractionListener {

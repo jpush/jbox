@@ -75,7 +75,9 @@ public class MainActivity extends FragmentActivity
 
         mTopBar = (TopBar) findViewById(R.id.topBar);
         mTopBar.setTitle(AppApplication.currentChannelName);
-        mTopBar.setLeftClick(new View.OnClickListener() {
+
+        ImageView ivMenu = (ImageView) findViewById(R.id.iv_menu);
+        ivMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDrawerLayout.openDrawer(mDrawerFragment.getView());

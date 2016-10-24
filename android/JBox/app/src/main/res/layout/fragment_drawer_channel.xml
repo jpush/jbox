@@ -6,20 +6,35 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="com.jiguang.jbox.main.NavigationDrawerFragment">
 
-    <SearchView
-        android:id="@+id/search_view"
+    <RelativeLayout
+        android:id="@+id/rl_search"
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_height"
-        />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="#33000000">
+
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            style="@android:style/ThemeOverlay.Material.Dark"
+            android:background="#59000000"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_channels"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/search_view"
-        android:paddingStart="16dp"
+        android:layout_below="@id/rl_search"
+        android:background="#7F000000"
+        android:layout_marginTop="16dp"
         android:paddingEnd="16dp"
-        android:background="#7F000000">
+        android:paddingStart="16dp">
 
         <TextView
             android:id="@+id/label_channel"
@@ -50,8 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_channels"
-        android:divider="@android:color/transparent"
         android:layout_marginTop="8dp"
+        android:divider="@android:color/transparent"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
         />

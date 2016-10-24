@@ -129,7 +129,7 @@ public class ChannelActivity extends Activity {
         if (!HttpUtil.isNetworkAvailable() && mLocalChannels != null) {
             mListAdapter.replaceData(mLocalChannels);
         } else {
-            // 服务器端的 Channel 列表,要和本地数据库中的做对比。
+            // 服务器端的 Channel 列表，要和本地数据库中的做对比。
             HttpUtil.getInstance().requestChannels(mDevKey,
                     new ChannelDataSource.LoadChannelsCallback() {
                         @Override
