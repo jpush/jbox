@@ -1,8 +1,8 @@
 #navigationbar {
     margin-left: 0;
     margin-right: 0;
-    margin-top: -20;
-    height: 106px;
+    margin-top: -20px;
+    height: 96px;
     background-color: #13081B;
     color: #000000;
     z-index: 1000;

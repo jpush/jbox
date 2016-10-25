@@ -1,15 +1,13 @@
 body {
     background: url("../images/application-background.png") no-repeat;
     -webkit-background-size: 100%;
-    /*background-size: 100%;*/
     background-color: #00C4CC;
 }
 
 .content {
     display: flex;
+
     flex-flow: column nowrap;
-    /*width: 100%;*/
-    /*height: 100%;*/
     margin-left: 0px;
     margin-right: 0px;
     padding-bottom: 349px;
@@ -17,9 +15,17 @@ body {
 
 .row-layer {
     display: flex;
+
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
+}
+
+.row-img {
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
+    background: rgba(0, 0, 0, 0.50);
 }
 
 .column-layer {
@@ -31,7 +37,6 @@ body {
 
 #layer1 {
     margin-top: 0px;
-    /*margin: 0px;*/
     margin-left: 0px;
     margin-right: 0px;
     height: 402px;
@@ -42,11 +47,9 @@ body {
     align-self: flex-end;
     margin-top: 42px;
     margin-right: 51px;
-    /*margin-bottom: -132px;*/
 }
 
 #cloud-big {
-    /*margin-left: 100px;*/
     margin-bottom: -232px;
     margin-right: 100px;
 
@@ -92,8 +95,6 @@ body {
     margin-left: 0;
     margin-right: 0;
     margin-top: -20px;
-    height: 106px;
-    /*background-color: #001e33;*/
-    /*color: #001e33;*/
+    height: 96px;
     background: rgba(0, 0, 0, 0.50);
 }
