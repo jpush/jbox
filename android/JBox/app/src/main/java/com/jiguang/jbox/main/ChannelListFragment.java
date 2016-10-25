@@ -18,7 +18,6 @@ import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.channel.ChannelActivity;
 import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.util.LogUtil;
 
 import java.util.List;
 
@@ -127,8 +126,11 @@ public class ChannelListFragment extends Fragment {
         mChannels = new Select().from(Channel.class)
                 .where("DevKey=? AND IsSubscribe=?", devKey, true)
                 .execute();
-        mAdapter.replaceData(mChannels);
-        mAdapter.notifyDataSetChanged();
+//        mAdapter.replaceData(mChannels);
+//        mAdapter.notifyDataSetChanged();
+
+        mAdapter = new ChannelDrawerRecyclerViewAdapter(mChannels, mListener);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     public interface OnListFragmentInteractionListener {
