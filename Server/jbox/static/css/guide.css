@@ -1,9 +1,9 @@
 #navigationbar {
-    /*margin-left: 0;*/
-    /*margin-right: 0;*/
-    /*margin-top: 0PX;*/
-    /*padding-top: 0px;*/
-    /*height: 106px;*/
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -20px;
+
+    height: 106px;
     background-color: #000000;
     color: #000000;
     /*z-index: 1000;*/

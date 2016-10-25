@@ -1,7 +1,7 @@
 #navigationbar {
     margin-left: 0;
     margin-right: 0;
-    margin-top: 0;
+    margin-top: -20px;
     height: 106px;
     background-color: #3B3849;
     color: #000000;

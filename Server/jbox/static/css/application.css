@@ -88,3 +88,12 @@ body {
     margin-top: 90px
 }
 
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -20px;
+    height: 106px;
+    /*background-color: #001e33;*/
+    /*color: #001e33;*/
+    background: rgba(0, 0, 0, 0.50);
+}

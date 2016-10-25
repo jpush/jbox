@@ -50,7 +50,7 @@ body {
 #navigationbar {
     margin-left: 0;
     margin-right: 0;
-    margin-top: 0;
+    margin-top: -20px;
     height: 106px;
     background-color: #526A4A;
     color: #000000;
