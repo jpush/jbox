@@ -153,7 +153,7 @@ public class ChannelActivity extends Activity {
                                     }
                                 }
                             }
-                            mListAdapter.replaceData(channels);
+                            mListAdapter.replaceData(mChannels);
                         }
 
                         @Override
@@ -185,6 +185,8 @@ public class ChannelActivity extends Activity {
 
             boolean firstSubscribe = true;
 
+            AppApplication.currentChannelName = "";
+
             for (Channel c : mChannels) {
                 if (c.isSubscribe) {
                     if (firstSubscribe) {
@@ -196,23 +198,21 @@ public class ChannelActivity extends Activity {
                 c.save();
             }
 
-            if (!mTags.isEmpty()) {
-                JPushInterface.setTags(this, mTags, new TagAliasCallback() {
-                    @Override
-                    public void gotResult(int result, String desc, Set<String> set) {
-                        if (result == 0) {
-                            Toast.makeText(getApplicationContext(), "订阅成功", Toast.LENGTH_SHORT).show();
-
-                            finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
-                        }
+            JPushInterface.setTags(this, mTags, new TagAliasCallback() {
+                @Override
+                public void gotResult(int result, String desc, Set<String> set) {
+                    if (result == 0) {
+                        Toast.makeText(getApplicationContext(), "操作成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            });
 
-                AppApplication.shouldUpdateData = true;
-            }
+            AppApplication.shouldUpdateData = true;
         }
+        finish();
     }
 
     interface OnChannelCheckedListener {
@@ -236,7 +236,6 @@ public class ChannelActivity extends Activity {
 
         void replaceData(List<Channel> channels) {
             mChannels = channels;
-//            notifyDataSetChanged();
         }
 
         @Override

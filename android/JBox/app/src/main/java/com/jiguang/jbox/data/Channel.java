@@ -26,6 +26,6 @@ public class Channel extends Model {
     @Override
     public boolean equals(Object obj) {
         Channel objChannel = (Channel) obj;
-        return objChannel.name.equals(name);
+        return objChannel.name.equals(name) && objChannel.isSubscribe == this.isSubscribe;
     }
 }

@@ -21,7 +21,7 @@
     <!-- scan end -->
 
     <!-- channel start -->
-    <string name="channel_channel">频道</string>
+    <string name="channel_channel">频道订阅</string>
     <string name="channel_dev_description">这个人很懒，什么都没留下</string>
     <string name="channel_subscribe">订阅</string>
     <!-- channel end -->
