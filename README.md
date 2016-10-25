@@ -29,19 +29,19 @@ JBox 直接使用极光推送服务，能够保证消息快速、稳定的送达
 
 
 ## Usage
-- JBox Web 使用流程图
+- Web 控制台使用流程图
 ![image](https://github.com/jpush/jbox/blob/dev/ReadmeResource/jboxWebImg.png)
 
-- JBox Server 使用流程图
+- Server 开发流程图
 ![image](https://github.com/jpush/jbox/blob/dev/ReadmeResource/jboxServerImg.png)
 
 ### Doc
+- [产品使用指南](http://jbox.jiguang.cn/guide)
 - [自定义集成 API](http://jbox.jiguang.cn/document)
-- [产品使用指导](http://jbox.jiguang.cn/guide)
 
 ## Support
 - [极光社区](http://community.jiguang.cn/)
-- [Look at the issues](https://github.com/jpush/jpush-phonegap-plugin/issues)
+- [Look at the issues](https://github.com/jpush/jbox/issues)
 
 ## License
 MIT © [JiGuang](/LICENSE)
