@@ -1,4 +1,4 @@
-target '极光宝盒' do
+target 'jbox' do
     pod 'AFNetworking'
     pod 'MJRefresh'
     pod 'FMDB'
