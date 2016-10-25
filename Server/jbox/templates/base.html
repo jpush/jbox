@@ -8,43 +8,91 @@
 {% block title %}极光宝盒{% endblock %}
 
 {% block navbar %}
-    <div id="navbar" class="navigator base-navigator">
-        <div class="left-navigator">
-            <a href="{{ url_for('main.index') }}"><img id="logo" src="/static/images/JBoxicon.png"></a>
+{#    <div id="navbar" class="navigator base-navigator">#}
+{#        <div class="left-navigator">#}
+{#            <a href="{{ url_for('main.index') }}"><img id="logo" src="/static/images/JBoxicon.png"></a>#}
 {#            <a id="jbox" class="jbox-font" href="{{ url_for('main.index') }}">JBox</a>#}
-        </div>
-        <div class="manage-navigator-right">
-            <a id="app" class="jbox-font nav-font" href="{{ url_for('main.application') }}">极光宝盒app</a>
-            <a id="api" class="jbox-font nav-font" href="{{ url_for('main.document') }}">api文档</a>
-            <a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">guide</a>
-            {% if 'qq_token' in session %}{# current_user.is_authenticated #}
-                <a id="manage" class="jbox-font" href="{{ url_for('auth.manage') }}">管理</a>
-            {% endif %}
-            <div id="nav-divider"></div>
-            {% if 'qq_token' in session %}{# current_user.is_authenticated #}
+{#        </div>#}
+{#        <div class="manage-navigator-right">#}
+{#            <a id="app" class="jbox-font nav-font" href="{{ url_for('main.application') }}">极光宝盒app</a>#}
+{#            <a id="api" class="jbox-font nav-font" href="{{ url_for('main.document') }}">api文档</a>#}
+{#            <a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">guide</a>#}
+{#            {% if 'qq_token' in session %}#}
+{#                <a id="manage" class="jbox-font" href="{{ url_for('auth.manage') }}">管理</a>#}
+{#            {% endif %}#}
+{#            <div id="nav-divider"></div>#}
+{#            {% if 'qq_token' in session %}#}
+{#                {% if developer %}#}
+{#                    {% if  developer.avatar %}#}
+{#                        <img id="avatar" src="/static/images/{{ developer.avatar }}">#}
+{#                        <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">#}
+{#                            {{ developer.username }}#}
+{#                        </a>#}
+{#                    {% else %}#}
+{#                        <img id="avatar" src="/static/images/DefaultHead.png">#}
+{#                        <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">#}
+{#                            {{ developer.username }}#}
+{#                        </a>#}
+{#                    {% endif %}#}
+{#                {% else %}#}
+{#                    <img id="avatar" src="/static/images/bear.png">#}
+{#                    <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">Devname</a>#}
+{#                {% endif %}#}
+{##}
+{#                <a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a>#}
+{#            {% else %}#}
+{#                <a id="login" class="jbox-font" href="{{ url_for('main.login') }}">登录</a>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+
+
+
+
+      <div class=" header">
+        <nav>
+
+          <ul class="pull-right nav nav-pills navbar-nav navigator" >
+              <li role=""><a id="app" class="jbox-font nav-font" href="{{ url_for('main.application') }}">极光宝盒app</a></li>
+              <li role=""><a id="api" class="jbox-font nav-font" href="{{ url_for('main.document') }}">api文档</a></li>
+              <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">guide</a></li>
+              <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">guide</a></li>
+              {% if 'qq_token' in session %}
+                  <li role="" class="navigator-item"><a id="manage" class="jbox-font" href="{{ url_for('auth.manage') }}">管理</a></li>
+              {% endif %}
+                <li role=""><div id="nav-divider"></div></li>
+              {% if 'qq_token' in session %}
                 {% if developer %}
                     {% if  developer.avatar %}
-                        <img id="avatar" src="/static/images/{{ developer.avatar }}">
-                        <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">
-                            {{ developer.username }}
-                        </a>
+                        <li role=""><img id="avatar" src="/static/images/{{ developer.avatar }}"></li>
+                        <li role="">
+                            <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">
+                                {{ developer.username }}
+                            </a>
+                        </li>
                     {% else %}
-                        <img id="avatar" src="/static/images/DefaultHead.png">
-                        <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">
-                            {{ developer.username }}
-                        </a>
+                        <li role=""><img id="avatar" src="/static/images/DefaultHead.png"></li>
+                        <li role="">
+                            <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">
+                                {{ developer.username }}
+                            </a>
+                        </li>
                     {% endif %}
                 {% else %}
-                    <img id="avatar" src="/static/images/bear.png">
-                    <a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">Devname</a>
-                {% endif %}
+                    <li role=""><img id="avatar" src="/static/images/bear.png"></li>
+                    <li role=""?><a id="dev_name" class="jbox-font dropdown-toggle" href="{{ url_for('auth.profile') }}">Devname</a></li>
 
-                <a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a>
-            {% else %}
-                <a id="login" class="jbox-font" href="{{ url_for('main.login') }}">登录</a>
-            {% endif %}
-        </div>
-    </div>
+                {% endif %}
+                    <li role=""><a id="logout" class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a></li>
+              {% else %}
+                  <li role=""><a id="login" class="jbox-font" href="{{ url_for('main.login') }}">登录</a></li>
+              {% endif %}
+          </ul>
+        </nav>
+          <div class="left-navigator">
+            <a href="{{ url_for('main.index') }}"><img id="logo" src="/static/images/JBoxicon.png"></a>
+          </div>
+      </div>
 {% endblock %}
 
 {% block content %}

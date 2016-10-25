@@ -9,7 +9,7 @@ body {
     height: 106px;
     background-color: #000000;
     color: #000000;
-    z-index: 1000;
+    /*z-index: 1000;*/
     opacity:0.5;
 }
 
