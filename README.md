@@ -29,10 +29,11 @@ JBox 直接使用极光推送服务，能够保证消息快速、稳定的送达
 
 
 ## Usage
-- Web 控制台使用流程图
+### Workflow
+- Web 控制台使用
 ![image](https://github.com/jpush/jbox/blob/dev/ReadmeResource/jboxWebImg.png)
 
-- Server 开发流程图
+- Server 开发
 ![image](https://github.com/jpush/jbox/blob/dev/ReadmeResource/jboxServerImg.png)
 
 ### Doc
