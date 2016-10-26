@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     android:paddingBottom="4dp"
     android:paddingTop="4dp"
     tools:background="@drawable/bg_slide">
@@ -14,7 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
         android:textColor="#f3f3f3"
         android:textSize="18sp"
         tools:text="Github"

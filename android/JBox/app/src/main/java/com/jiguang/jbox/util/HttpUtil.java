@@ -100,11 +100,9 @@ public class HttpUtil {
                                     localDev.platform = dev.platform;
                                     localDev.desc = dev.desc;
                                     localDev.avatarUrl = dev.avatarUrl;
-                                    localDev.save();
                                 }
                                 callback.onDevLoaded(localDev);
                             } else {
-                                dev.save();
                                 callback.onDevLoaded(dev);
                             }
                         } catch (JSONException e) {

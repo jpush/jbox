@@ -44,6 +44,10 @@ public class MainActivity extends FragmentActivity
         implements ChannelListFragment.OnListFragmentInteractionListener {
     private final String TAG = "MainActivity";
 
+    public static final int MSG_WHAT_RECEIVE_MSG_CURRENT = 0;
+    public static final int MSG_WHAT_RECEIVE_MSG = 1;
+    public static final int MSG_WHAT_UPDATE_DEV = 2;
+
     private final int QUERY_MESSAGE_COUNT = 10;
 
     private TopBar mTopBar;
@@ -62,6 +66,8 @@ public class MainActivity extends FragmentActivity
     private IntentFilter mIntentFilter;
 
     private int mCurrentOffset = 0; // 当前加载的消息数。
+
+    public static Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,16 +94,20 @@ public class MainActivity extends FragmentActivity
             PermissionUtil.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, 0);
         }
 
-        Handler handler = new Handler(new Handler.Callback() {
+        handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(android.os.Message message) {
                 Bundle data = message.getData();
-                if (message.what == 0) {
+                if (message.what == MSG_WHAT_RECEIVE_MSG_CURRENT) {
                     // 收到的是当前 Channel 的消息，更新界面。
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
-                } else if (message.what == 1) {
+                } else if (message.what == MSG_WHAT_RECEIVE_MSG) {
                     String devKey = data.getString("DevKey");
+                    mDrawerFragment.mChannelListFragment.updateData(devKey);
+                } else if (message.what == MSG_WHAT_UPDATE_DEV) {
+                    String devKey = data.getString("DevKey");
+                    mDrawerFragment.mDevListFragment.updateData();
                     mDrawerFragment.mChannelListFragment.updateData(devKey);
                 }
                 return false;
@@ -323,7 +333,7 @@ public class MainActivity extends FragmentActivity
                     // 如果收到的是当前 Channel 的消息就更新界面，否则保存到数据库并更新界面。
                     if (AppApplication.currentDevKey.equals(devKey) &&
                             AppApplication.currentChannelName.equals(channelName)) {
-                        handlerMsg.what = 0;
+                        handlerMsg.what = MainActivity.MSG_WHAT_RECEIVE_MSG_CURRENT;
                         data.putSerializable("message", msg);
                         handlerMsg.setData(data);
                         mHandler.sendMessage(handlerMsg);
@@ -338,7 +348,7 @@ public class MainActivity extends FragmentActivity
                                     .where("DevKey = ? AND Name = ?", devKey, channelName)
                                     .execute();
 
-                            handlerMsg.what = 1;
+                            handlerMsg.what = MainActivity.MSG_WHAT_RECEIVE_MSG;
                             data.putString("DevKey", msg.devKey);
                             handlerMsg.setData(data);
                             mHandler.sendMessage(handlerMsg);

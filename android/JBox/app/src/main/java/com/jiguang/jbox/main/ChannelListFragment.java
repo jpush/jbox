@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
@@ -61,24 +62,24 @@ public class ChannelListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_drawer_channel, container, false);
 
-        SearchView searchView = (SearchView) view.findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mChannels = new Select().from(Channel.class)
-                        .where("DevKey=? AND IsSubscribe=? AND Name LIKE ?",
-                                AppApplication.currentDevKey, true, '%' + newText + '%')
-                        .execute();
-                mAdapter.replaceData(mChannels);
-                mAdapter.notifyDataSetChanged();
-                return false;
-            }
-        });
+//        SearchView searchView = (SearchView) view.findViewById(R.id.search_view);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                mChannels = new Select().from(Channel.class)
+//                        .where("DevKey=? AND IsSubscribe=? AND Name LIKE ?",
+//                                AppApplication.currentDevKey, true, '%' + newText + '%')
+//                        .execute();
+//                mAdapter.replaceData(mChannels);
+//                mAdapter.notifyDataSetChanged();
+//                return false;
+//            }
+//        });
 
         ImageView ivEdit = (ImageView) view.findViewById(R.id.iv_edit);
         ivEdit.setOnClickListener(new View.OnClickListener() {

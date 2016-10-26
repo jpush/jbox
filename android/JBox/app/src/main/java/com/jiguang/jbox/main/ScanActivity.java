@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -110,7 +111,32 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             mDevKey = str[0];
             mChannel = str[1];
 
-            saveData();
+            if (!new Select().from(Developer.class).where("Key = ?", mDevKey).exists()) {
+                HttpUtil.getInstance().requestDeveloper(mDevKey,
+                        new DeveloperDataSource.LoadDevCallback() {
+                    @Override
+                    public void onDevLoaded(Developer dev) {
+                        dev.save();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("DevKey", dev.key);
+
+                        Message msg = new Message();
+                        msg.what = MainActivity.MSG_WHAT_UPDATE_DEV;
+                        msg.setData(bundle);
+                        msg.setTarget(MainActivity.handler);
+                        msg.sendToTarget();
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        Toast.makeText(AppApplication.getAppContext(), "二维码失效，订阅失败。",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            saveData(mDevKey, mChannel);
+            AppApplication.shouldUpdateData = true;
         } else {
             // 扫描二维码返回 devKey，再请求 developer 信息。
             Intent intent = new Intent(this, ChannelActivity.class);
@@ -168,7 +194,7 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (!TextUtils.isEmpty(mDevKey) && !TextUtils.isEmpty(mChannel)) {
-                        saveData();
+                        saveData(mDevKey, mChannel);
                     }
                 }
                 return;
@@ -190,38 +216,15 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
         }
     }
 
-    private void saveData() {
-        Developer dev = new Select().from(Developer.class)
-                .where("Key = ?", mDevKey)
-                .executeSingle();
-
-        if (dev == null) {  // 还没有关注这个开发者。
-            HttpUtil.getInstance().requestDeveloper(mDevKey,
-                    new DeveloperDataSource.LoadDevCallback() {
-                        @Override
-                        public void onDevLoaded(Developer dev) {
-                            if (dev != null) {
-                                // 保存到本地数据库中。
-                                dev.save();
-                            }
-                        }
-
-                        @Override
-                        public void onDataNotAvailable() {
-                            Toast.makeText(AppApplication.getAppContext(), "二维码失效，订阅失败。",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
-
+    private void saveData(String devKey, String channelName) {
         Channel c = new Select().from(Channel.class)
-                .where("DevKey = ? AND Name = ?", mDevKey, mChannel)
+                .where("DevKey = ? AND Name = ?", devKey, channelName)
                 .executeSingle();
 
         if (c == null) {    // 本地不存在，进行订阅。
             c = new Channel();
-            c.devKey = mDevKey;
-            c.name = mChannel;
+            c.devKey = devKey;
+            c.name = channelName;
             c.isSubscribe = true;
             c.save();
 
@@ -252,8 +255,6 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                 }
             });
         }
-
-        AppApplication.shouldUpdateData = true;
     }
 
 }

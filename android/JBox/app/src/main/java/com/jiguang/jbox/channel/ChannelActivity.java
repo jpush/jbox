@@ -110,6 +110,8 @@ public class ChannelActivity extends Activity {
                 bundle.putString("avatarUrl", dev.avatarUrl);
                 msg.setData(bundle);
                 mHandler.sendMessage(msg);
+
+                dev.save();
             }
 
             @Override
