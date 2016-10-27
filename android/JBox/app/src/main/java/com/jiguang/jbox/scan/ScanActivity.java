@@ -1,4 +1,4 @@
-package com.jiguang.jbox.main;
+package com.jiguang.jbox.scan;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,6 +18,7 @@ import com.jiguang.jbox.channel.ChannelActivity;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
+import com.jiguang.jbox.main.MainActivity;
 import com.jiguang.jbox.util.AppUtil;
 import com.jiguang.jbox.util.HttpUtil;
 import com.jiguang.jbox.util.LogUtil;
@@ -38,7 +39,6 @@ import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
  * 二维码扫描界面。
  */
 public class ScanActivity extends Activity implements QRCodeView.Delegate {
-
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 

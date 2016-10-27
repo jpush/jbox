@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.jiguang.jbox.main.ScanActivity">
+    tools:context="com.jiguang.jbox.scan.ScanActivity">
 
     <com.jiguang.jbox.view.TopBar
         android:id="@+id/topBar"

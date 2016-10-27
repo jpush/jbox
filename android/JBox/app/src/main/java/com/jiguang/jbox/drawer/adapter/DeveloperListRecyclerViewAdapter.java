@@ -1,4 +1,4 @@
-package com.jiguang.jbox.main;
+package com.jiguang.jbox.drawer.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.ContentValues.TAG;
-import static com.jiguang.jbox.main.DeveloperListFragment.OnListFragmentInteractionListener;
+import static com.jiguang.jbox.drawer.DeveloperListFragment.OnListFragmentInteractionListener;
 
 
 public class DeveloperListRecyclerViewAdapter extends

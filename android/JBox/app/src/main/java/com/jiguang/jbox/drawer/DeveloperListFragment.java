@@ -1,4 +1,4 @@
-package com.jiguang.jbox.main;
+package com.jiguang.jbox.drawer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.drawer.adapter.DeveloperListRecyclerViewAdapter;
+import com.jiguang.jbox.scan.ScanActivity;
 
 import java.util.List;
 
@@ -66,7 +68,6 @@ public class DeveloperListFragment extends Fragment {
             }
         });
 
-        // Set the adapter
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_dev);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));

@@ -4,12 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,12 +14,12 @@ import com.activeandroid.query.Select;
 import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
+import com.jiguang.jbox.channel.adapter.SubChannelListAdapter;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
 import com.jiguang.jbox.util.HttpUtil;
-import com.jiguang.jbox.util.ViewHolder;
 import com.jiguang.jbox.view.TopBar;
 
 import java.util.ArrayList;
@@ -217,72 +212,6 @@ public class ChannelActivity extends Activity {
         finish();
     }
 
-    interface OnChannelCheckedListener {
-
-        /**
-         * 根据 Channel 的选择状态来判断是否订阅。
-         */
-        void onChannelChecked(int position, boolean isChecked);
-    }
-
-    private static class SubChannelListAdapter extends BaseAdapter {
-
-        private List<Channel> mChannels;
-
-        private OnChannelCheckedListener mChannelCheckedListener;
-
-        SubChannelListAdapter(List<Channel> channels, OnChannelCheckedListener listener) {
-            mChannels = channels;
-            mChannelCheckedListener = listener;
-        }
-
-        void replaceData(List<Channel> channels) {
-            mChannels = channels;
-        }
-
-        @Override
-        public int getCount() {
-            return mChannels.size();
-        }
-
-        @Override
-        public Channel getItem(int i) {
-            return mChannels.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(final int i, View convertView, ViewGroup viewGroup) {
-            if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                convertView = inflater.inflate(R.layout.item_subscribe_channel, viewGroup, false);
-            }
-
-            Channel channel = getItem(i);
-            String name = channel.name;
-
-            TextView tvHead = ViewHolder.get(convertView, R.id.tv_head);
-            tvHead.setText(name.substring(0, 1).toUpperCase());
-
-            TextView tvChannel = ViewHolder.get(convertView, R.id.tv_channel);
-            tvChannel.setText(name);
-
-            CheckBox cbIsSubscribe = ViewHolder.get(convertView, R.id.cb_isSubscribe);
-            cbIsSubscribe.setChecked(channel.isSubscribe);
-            cbIsSubscribe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mChannelCheckedListener.onChannelChecked(i, isChecked);
-                }
-            });
-
-            return convertView;
-        }
-    }
 
     // TODO: 改进内存泄漏风险。
     private class MyHandler extends Handler {

@@ -1,11 +1,10 @@
-package com.jiguang.jbox.main;
+package com.jiguang.jbox.drawer;
 
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
+import com.jiguang.jbox.drawer.adapter.DrawerViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +67,7 @@ public class NavigationDrawerFragment extends Fragment
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
         mViewPager = (ViewPager) v.findViewById(viewPager);
-        mViewPager.setAdapter(new MyViewPagerAdapter(fm, fragmentList));
+        mViewPager.setAdapter(new DrawerViewPagerAdapter(fm, fragmentList));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -116,25 +116,6 @@ public class NavigationDrawerFragment extends Fragment
     public void updateData() {
         mDevListFragment.updateData();
         mChannelListFragment.updateData(AppApplication.currentDevKey);
-    }
-
-    static class MyViewPagerAdapter extends FragmentPagerAdapter {
-        private List<Fragment> mFragmentList;
-
-        MyViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-            super(fm);
-            mFragmentList = fragments;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
     }
 
 }
