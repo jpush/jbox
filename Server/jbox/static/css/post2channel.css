@@ -10,12 +10,12 @@
 
 .post2channel-bg {
     background: #777193;
-    width: 100%;
+    /*width: 100%;*/
     height: 456px;
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
+    /*display: flex;*/
+    /*flex-flow: row;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
 }
 
 #mac {
@@ -58,6 +58,7 @@
     margin-top: 20px;
     margin-right: 49px;
     border-radius: 5px;
+    text-align: left;
 }
 
 #show_channels {
