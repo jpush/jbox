@@ -12,6 +12,10 @@ body {
     align-items: center;
 }
 
+.mainImage {
+    margin-bottom: 100
+}
+
 .content {
     display: flex;
     flex-flow: column nowrap;
@@ -37,8 +41,8 @@ body {
     font-size: 20px;
     color: #FFFFFF;
     letter-spacing: 0;
-    text-align: center;
-    align-self: center;
+    /*text-align: center;*/
+    /*align-self: center;*/
     border: 0 hidden;
     box-shadow:none;
 }
@@ -86,11 +90,6 @@ body {
 }
 
 #tp-table {
-    margin: 62px 242px 191px 242px;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .tp-content {
