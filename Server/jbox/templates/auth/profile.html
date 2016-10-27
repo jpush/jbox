@@ -21,22 +21,20 @@
 
 {% block content %}
     <div id="first-layer">
-        <div class="col-lg-offset-2">
             <div class="container">
                 <img id="profile-bg" src="/static/images/profile-bg.png">
             </div>
-        </div>
     </div>
     <div id="second-layer">
-        <div class="row">
+{#        <div class="row">#}
 
             <div class="container-fluid" style="text-align: right">
-                <button id="edit" class="jbox-font btn-lg" type="button"
+                <button id="edit" class="" type="button"
                         onclick=window.location.href="{{ url_for('auth.setting') }}">编辑
                 </button>
             </div>
 
-            <div class="container" style="text-align: center;align-content: center;">
+            <div class="container-fluid" style="text-align: center;align-content: center;">
 
                 {% if developer.avatar %}
                     <img id="dev-avatar" src="/static/images/{{ developer.avatar }}">
@@ -52,13 +50,17 @@
                 <div id="dev-qrcode"></div>
                 <p id="qrcode-desc" class="jbox-font">扫一扫订阅所有 channel</p>
             </div>
-        </div>
+{#        </div>#}
     </div>
 
     <div class="container-fluid">
+        <p id="channel-title" class="jbox-font">Channel 列表</p>
+    </div>
+    <div class="container-fluid">
+        <p id="desc" class="jbox-font">扫一扫订阅指定 channel</p>
+    </div>
+    <div class="container-fluid">
         <div class="row">
-            <p id="channel-title" class="jbox-font">Channel 列表</p>
-            <p id="desc" class="jbox-font">扫一扫订阅指定 channel</p>
             <table id="channel-table" align="center">
                 <tbody></tbody>
             </table>

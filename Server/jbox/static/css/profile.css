@@ -9,7 +9,7 @@ body {
     margin-left: 0;
     margin-right: 0;
     margin-top: -20px;
-    height: 96px;
+    height: 100px;
     background-color: #3D617F;
     color: #000000;
     z-index: 1000;
@@ -22,11 +22,12 @@ body {
 }
 
 #second-layer {
-    display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
     background: #0277bd;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 #profile-bg {
@@ -39,7 +40,7 @@ body {
     border-radius: 5px;
     font-size: 24px;
     color: #FFFFFF;
-    margin-top: 100px;
+    margin-top: 146px;
     margin-right: 61px;
     width: 133px;
     align-self: flex-end;
