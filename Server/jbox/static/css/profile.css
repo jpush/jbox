@@ -39,11 +39,10 @@ body {
     border-radius: 5px;
     font-size: 24px;
     color: #FFFFFF;
-    padding: 10px 22px 10px 22px;
     margin-top: 45px;
     margin-right: 61px;
     width: 133px;
-    align-self: flex-end;
+    /*align-self: flex-end;*/
     z-index: 1000;
 }
 
@@ -72,8 +71,11 @@ body {
 
 #dev-qrcode {
     margin-top: 35px;
-    padding: 10px;
     background: #FFFFFF;
+    width: 201px;
+    height: 201px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #qrcode-desc {
@@ -98,11 +100,11 @@ body {
 }
 
 #channel-table {
-    margin: 62px 242px 191px 242px;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
+    /*margin: 62px 242px 191px 242px;*/
+    /*display: flex;*/
+    /*flex-flow: column;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
 }
 
 .channel-td {

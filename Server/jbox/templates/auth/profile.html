@@ -22,34 +22,48 @@
 {% block content %}
     <div id="first-layer">
         <div class="col-lg-offset-2">
-            <img id="profile-bg" src="/static/images/profile-bg.png">
+            <div class="container">
+                <img id="profile-bg" src="/static/images/profile-bg.png">
+            </div>
         </div>
     </div>
     <div id="second-layer">
-        <button id="edit" class="jbox-font btn-lg" type="button"
-                onclick=window.location.href="{{ url_for('auth.setting') }}">编辑
-        </button>
-        {% if developer.avatar %}
-            <img id="dev-avatar" src="/static/images/{{ developer.avatar }}">
-        {% else %}
-            <img id="dev-avatar" src="/static/images/jiguang-bear.png">
-        {% endif %}
-        <p id="display-name" class="jbox-font">{{ developer.username }}</p>
-        {% if developer.description %}
-            <p id="dev-desc">{{ developer.description }}</p>
-        {% else %}
-            <p id="dev-desc">这个人很懒, 什么都没留下</p>
-        {% endif %}
-        <div id="dev-qrcode"></div>
-        <p id="qrcode-desc" class="jbox-font">扫一扫订阅所有 channel</p>
+        <div class="row">
+            <div class="container-fluid" style="text-align: right">
+                <button id="edit" class="jbox-font btn-lg" type="button"
+                        onclick=window.location.href="{{ url_for('auth.setting') }}">编辑
+                </button>
+            </div>
+
+            <div class="container" style="text-align: center;align-content: center;">
+
+                {% if developer.avatar %}
+                    <img id="dev-avatar" src="/static/images/{{ developer.avatar }}">
+                {% else %}
+                    <img id="dev-avatar" src="/static/images/jiguang-bear.png">
+                {% endif %}
+                <p id="display-name" class="jbox-font">{{ developer.username }}</p>
+                {% if developer.description %}
+                    <p id="dev-desc">{{ developer.description }}</p>
+                {% else %}
+                    <p id="dev-desc">这个人很懒, 什么都没留下</p>
+                {% endif %}
+                <div id="dev-qrcode"></div>
+                <p id="qrcode-desc" class="jbox-font">扫一扫订阅所有 channel</p>
+            </div>
+        </div>
     </div>
-    <div class="column">
-        <p id="channel-title" class="jbox-font">Channel 列表</p>
-        <p id="desc" class="jbox-font">扫一扫订阅指定 channel</p>
-        <table id="channel-table">
-            <tbody></tbody>
-        </table>
+
+    <div class="container-fluid">
+        <div class="row">
+            <p id="channel-title" class="jbox-font">Channel 列表</p>
+            <p id="desc" class="jbox-font">扫一扫订阅指定 channel</p>
+            <table id="channel-table" align="center">
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
+
 
     <script type="text/javascript">
         var qrcode = new QRCode(document.getElementById("dev-qrcode"), {
