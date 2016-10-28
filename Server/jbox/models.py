@@ -24,6 +24,7 @@ class Developer(UserMixin, db.Model):
     avatar = db.Column(db.String(150))
     integrations = db.relationship('Integration', backref='developer')
     channels = db.relationship('Channel', primaryjoin='Developer.id==Channel.developer_id', backref='developer')
+    authorizations = db.relationship('Authorization', backref='developer')
 
     def __repr__(self):
         return '<Developer %r>' % self.dev_key
@@ -115,7 +116,7 @@ class Integration(db.Model):
     type = db.Column(db.String(50), default='custom')
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
-    repositories = db.relationship('GitHub', backref='integration')
+    githubs = db.relationship('GitHub', backref='integration')
 
     def __repr__(self):
         return '<Integration %r>' % self.integration_id
@@ -165,6 +166,14 @@ class Channel(db.Model):
 
     def __repr__(self):
         return '<Channel %r>' % self.channel
+
+
+class Authorization(db.Model):
+    __tablename__ = 'authorizations'
+    id = db.Column(db.Integer, primary_key=True)
+    oauth_token = db.Column(db.String(150))
+    type = db.Column(db.String(50))
+    developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
 
 
 @login_manager.user_loader

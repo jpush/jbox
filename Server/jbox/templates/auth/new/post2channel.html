@@ -129,7 +129,7 @@
             console.log('create integration, channel: ' + channel);
             if (channel != '') {
                 {% if github %}
-                    window.location.href = '/auth/github/authorize/' + channel;
+                    window.location.href = '/auth/github/create/' + channel;
                 {% else %}
                     var data;
                     {% if discourse %}

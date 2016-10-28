@@ -218,6 +218,7 @@ def create_integrations(dev_key):
                     new_integration = Integration(developer=developer,
                                                   integration_id=new_integration_id,
                                                   channel=channel,
+                                                  name='discourse',
                                                   description='',
                                                   icon='',
                                                   type='discourse')
@@ -247,6 +248,7 @@ def create_integrations(dev_key):
             new_integration = Integration(developer=developer,
                                           integration_id=new_integration_id,
                                           channel=new_channel,
+                                          name='discourse',
                                           description='',
                                           icon='',
                                           type='discourse')
@@ -301,19 +303,17 @@ def save_github_integration(integration_id):
         print('request json error')
         abort(400)
     repos = request.json['repos']
-    token = session['github_token'][0]
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
         abort(400)
-    repositories = integration.repositories
+    githubs = integration.githubs
     hook_dict = {}
-    if repositories:
-        for repository in repositories:
-            hook_dict['%s' % repository.repository] = repository.hook_id
+    if githubs:
+        for entity in githubs:
+            hook_dict['%s' % entity.repository] = entity.hook_id
     equal = operator.eq(repos, hook_dict.keys())
     if not equal:
-        me = github.get('user')
-        user = me.data['login']
+        user = session['user']
         data_dict = {"name": "web",
                      "active": True,
                      "events": [
@@ -327,17 +327,17 @@ def save_github_integration(integration_id):
                          "url": "http://jbox.jiguang.cn/plugins/github/" + integration_id + "/webhook",
                          "content_type": "json"
                      }}
-        if len(repos) == 0 and len(repositories) == 0:
+        if len(repos) == 0 and len(githubs) == 0:
             return jsonify({}), 200
-        elif len(repos) == 0 and len(repositories) != 0:
-            for repository in repositories:
-                url = 'https://api.github.com/repos/' + user + '/' + repository.repository + '/hooks/' + str(
-                    repository.hook_id)
+        elif len(repos) == 0 and len(githubs) != 0:
+            for entity in githubs:
+                url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' + str(
+                    entity.hook_id)
                 response = github.delete(url, data=None)
                 if response.status == 204:
-                    db.session.delete(repository)
+                    db.session.delete(entity)
                     db.session.commit()
-        elif len(repos) != 0 and len(repositories) == 0:
+        elif len(repos) != 0 and len(githubs) == 0:
             for repo in repos:
                 response = github.post('https://api.github.com/repos/' + user + "/" + repo + "/hooks", data=data_dict,
                                        format='json')
@@ -409,16 +409,15 @@ def delete_integration(dev_key, integration_id):
                 db.session.commit()
                 # 如果是 github 集成，删除所有的 webhook
                 if integration.type == 'github':
-                    repositories = integration.repositories
-                    if repositories:
-                        me = github.get('user')
-                        user = me.data['login']
-                        for repository in repositories:
-                            url = 'https://api.github.com/repos/' + user + '/' + repository.repository + '/hooks/' \
-                                  + str(repository.hook_id)
+                    githubs = integration.githubs
+                    if githubs:
+                        user = session['user']
+                        for entity in githubs:
+                            url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
+                                  + str(entity.hook_id)
                             response = github.delete(url, data=None)
                             if response.status == 204:
-                                db.session.delete(repository)
+                                db.session.delete(entity)
                                 db.session.commit()
                 return jsonify({'deleted': True}), 200
             except:

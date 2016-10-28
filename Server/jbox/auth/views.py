@@ -6,7 +6,7 @@ from flask_httpauth import HTTPAuth
 from flask_oauthlib.client import OAuth
 from . import auth
 from config import basedir
-from ..models import db, Channel, Developer, Integration, generate_integration_id
+from ..models import db, Channel, Developer, Integration, Authorization, generate_integration_id
 from ..main.views import update_qq_api_request_data, qq, json_to_dict
 
 app = Flask(__name__)
@@ -52,21 +52,73 @@ def add_third_party():
 
 @auth.route('/github_integration', methods=['GET'])
 def github_integration():
+    try:
+        response = github.get("user")
+        user = response.data['login']
+        session['user'] = user
+        developer = get_developer()
+        integrations = developer.integrations
+        github_integrations = []
+        if integrations:
+            for integration in integrations:
+                if integration.type == 'github':
+                    githubs = integration.githubs
+                    if githubs:
+                        repo_list = []
+                        for entity in githubs:
+                            repo_list.append(entity.repository)
+                        new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
+                                            channel=integration.channel.channel, repositories=repo_list)
+                        github_integrations.append(new_github)
+        return render_template('auth/github_integration.html', **locals())
+    except Exception:
+        # 重新授权
+        return github.authorize(
+            callback=url_for('auth.github_re_authorize', _external=True))
+
+
+@auth.route('/github/re-authorize', methods=['GET'])
+def github_re_authorize():
+    developer = get_developer()
+    resp = github.authorized_response()
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error_reason'],
+            request.args['error_description']
+        )
+    session['github_token'] = (resp['access_token'], '')
+    token = session['github_token'][0]
+    print(token)
+    authorization = Authorization.query.filter_by(developer_id=developer.id, type='github').first()
+    if authorization is None:
+        authorization = Authorization(developer=developer, oauth_token=token, type='github')
+        db.session.add(authorization)
+        db.session.commit()
+    else:
+        try:
+            authorization.oauth_token = token
+            db.session.add(authorization)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            abort(500)
+    if 'user' not in session:
+        me = github.get('user')
+        user = me.data['login']
+        session['user'] = user
     developer = get_developer()
     integrations = developer.integrations
     github_integrations = []
     if integrations:
         for integration in integrations:
             if integration.type == 'github':
-                # github_integrations.append(integration)
-                repositories = integration.repositories
-                print(len(repositories))
-                if repositories:
+                githubs = integration.githubs
+                if githubs:
                     repo_list = []
-                    for repository in repositories:
-                        repo_list.append(repository.repository)
+                    for entity in githubs:
+                        repo_list.append(entity.repository)
                     new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
-                                    channel=integration.channel.channel, repositories=repo_list)
+                                        channel=integration.channel.channel, repositories=repo_list)
                     github_integrations.append(new_github)
     return render_template('auth/github_integration.html', **locals())
 
@@ -116,54 +168,17 @@ def edit_integration(integration_id):
 def edit_github_integration(integration_id):
     developer = get_developer()
     integration = Integration.query.filter_by(integration_id=integration_id).first()
-    repositories = integration.repositories
+    githubs = integration.githubs
     store_repos = []
-    if repositories:
-        for repository in repositories:
-            store_repos.append(repository.repository)
+    if githubs:
+        for entity in githubs:
+            store_repos.append(entity.repository)
     length = len(store_repos)
     channel = integration.channel.channel
     channels = get_channel_list()
     dev_key = developer.dev_key
-    try:
-        response = github.get('https://api.github.com/user/repos', {'access_token': integration.token})
-        me = github.get('user')
-        user = me.data['login']
-        list = response.data
-        repos = []
-        if len(list) > 1:
-            for i in range(len(list)):
-                repos.append(list[i]['name'])
-            print(repos)
-        return render_template('auth/create.html', **locals())
-    except Exception:
-        return github.authorize(
-            callback=url_for('auth.github_re_authorize', integration_id=integration_id, _external=True))
-
-
-@auth.route('/github/re-authorize/<string:integration_id>', methods=['GET'])
-def github_re_authorize(integration_id):
-    resp = github.authorized_response()
-    if resp is None:
-        return 'Access denied: reason=%s error=%s' % (
-            request.args['error_reason'],
-            request.args['error_description']
-        )
-    session['github_token'] = (resp['access_token'], '')
-    response = github.get('https://api.github.com/user/repos', {'access_token': session['github_token'][0]})
-    integration = Integration.query.filter_by(integration_id=integration_id).first()
-    repositories = integration.repositories
-    store_repos = []
-    if repositories:
-        for repository in repositories:
-            store_repos.append(repository.repository)
-    channel = integration.channel.channel
-    channels = get_channel_list()
-    developer = get_developer()
-    dev_key = developer.dev_key
-    me = github.get('user')
-    user = me.data['login']
-    print(user)
+    response = github.get('https://api.github.com/user/repos')
+    user = session['user']
     list = response.data
     repos = []
     if len(list) > 1:
@@ -279,21 +294,8 @@ def generate_file_name(file_type):
     return uuid.uuid1().__str__() + '.' + file_type
 
 
-@auth.route('/github/authorize/<string:channel>', methods=['GET'])
-def authorize_github(channel):
-    return github.authorize(callback=url_for('auth.new_github_integration', channel=channel, _external=True))
-
-
-@auth.route('/github/integrations/<string:channel>', methods=['GET', 'POST'])
-def new_github_integration(channel):
-    resp = github.authorized_response()
-    if resp is None:
-        return 'Access denied: reason=%s error=%s' % (
-            request.args['error_reason'],
-            request.args['error_description']
-        )
-    session['github_token'] = (resp['access_token'], '')
-    token = session['github_token'][0]
+@auth.route('/github/create/<string:channel>', methods=['GET'])
+def create_github_integration(channel):
     new_integration_id = generate_integration_id()
     developer = get_developer()
     github_channel = Channel.query.filter_by(developer=developer, channel=channel).first()
@@ -307,8 +309,10 @@ def new_github_integration(channel):
                               name='github',
                               description='',
                               icon='',
-                              token=token,
                               type='github')
+    integration.insert_to_db()
+    token = integration.generate_auth_token()
+    integration.token = token
     db.session.add(integration)
     db.session.commit()
     return redirect(url_for('auth.edit_github_integration', integration_id=new_integration_id))
@@ -316,4 +320,12 @@ def new_github_integration(channel):
 
 @github.tokengetter
 def get_github_oauth_token():
-    return session.get('github_token')
+    print("execute token getter")
+    developer = get_developer()
+    authorization = Authorization.query.filter_by(developer_id=developer.id, type='github').first()
+    if authorization is None:
+        print("return None")
+        return None
+    else:
+        return (authorization.oauth_token, '')
+
