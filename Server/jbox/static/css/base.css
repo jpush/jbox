@@ -90,14 +90,14 @@ ul,li{margin:0;padding:0;}
 }
 
 .column {
-    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
-    display: -moz-box; /* Firefox 17- */
-    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
-    display: -moz-flex; /* Firefox 18+ */
-    display: -ms-flexbox; /* IE 10 */
-    display: flex;
+    /*display: -webkit-box; !* Chrome 4+, Safari 3.1, iOS Safari 3.2+ *!*/
+    /*display: -moz-box; !* Firefox 17- *!*/
+    /*display: -webkit-flex; !* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 *!*/
+    /*display: -moz-flex; !* Firefox 18+ *!*/
+    /*display: -ms-flexbox; !* IE 10 *!*/
+    /*display: flex;*/
 
-    flex-flow: column;
+    /*flex-flow: column;*/
 }
 
 .span-title {
@@ -109,6 +109,7 @@ ul,li{margin:0;padding:0;}
     font-size: 20px;
     color: #595959;
     box-shadow:none;
+    font-family: "PingFang SC-Semibold";
 }
 
 .divider {
@@ -136,7 +137,6 @@ ul,li{margin:0;padding:0;}
     color: #595959;
     font-size: 20px;
     padding-top: 10px;
-    text-align: center;
     font-weight: 800;
 }
 

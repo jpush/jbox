@@ -16,55 +16,83 @@
 
 {% block navbar %}
     <div id="navigationbar">{{ super() }}</div>
-
 {% endblock %}
 
 
 {% block content %}
+
     <div class="column">
-        <p id="setting-title" class="jbox-font">设置</p>
-        <div id="setting-form" class="column">
-            <div class="row">
-                <div class="column span">
-                    <p id="avatar-title" class="jbox-font span-title">头像图标</p>
-                    {% if developer.avatar %}
-                        <img id="setting-avatar" src="/static/images/{{ developer.avatar }}">
-                        <input id="resultFilename" value="{{ developer.avatar }}" type="hidden">
-                    {% else %}
-                        <img id="setting-avatar" src="/static/images/jiguang-bear.png">
-                        <input id="resultFilename"  type="hidden">
-                    {% endif %}
-                </div>
-                <div id="avatar-right" class="column">
-                    <form id="uploadform" method="post" enctype="multipart/form-data">
-                        <div class="upload upload-btn">
-                            <div class="jbox-font upload-content">上传图片</div>
-                            <input id="file" type="file" class="inputstyle">
-                        </div>
-                    </form>
-                    <p id="avatar-desc" class="jbox-font"> 选择一张图片作为你的头像(不超过2M)</p>
-                </div>
-            </div>
-            <hr class="divider">
-            <div class="row">
-                <div class="column span">
-                    <p class="jbox-font span-title">开发者名称</p>
-                    <p class="jbox-font span-desc">给你的开发者账号设置名称</p>
-                </div>
-                <input id="name-input" class="description" title="开发者名称" type="text" value="{{ developer.username }}"/>
-            </div>
-            <hr class="divider">
-            <div class="row">
-                <div class="column span">
-                    <p class="jbox-font span-title">开发者描述</p>
-                    <p class="jbox-font span-desc">给你的开发者账号添加描述（选填）</p>
-                </div>
-                <input id="desc-input" class="description" title="开发者描述" type="text"
-                       value="{{ developer.description }}"/>
-            </div>
-            <hr class="divider">
-            <input id="submit" type="submit" value="保存设置" class="jbox-font">
+        <div class="container">
+            <p id="setting-title" class="jbox-font" style="text-align: left;">设置</p>
         </div>
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4 ">
+                        <div class="row-left-content" style="margin-top: 61px;">
+                            <p class="jbox-font span-title table-title">头像图标</p>
+                            {% if developer.avatar %}
+                                <img id="setting-avatar" src="/static/images/{{ developer.avatar }}">
+                                <input id="resultFilename" value="{{ developer.avatar }}" type="hidden">
+                            {% else %}
+                                <img id="setting-avatar" src="/static/images/jiguang-bear.png">
+                                <input id="resultFilename"  type="hidden">
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    <div class="col-md-8" style="margin-top: 61px;">
+                        <div style="width: 500px;height: 48px;">
+                            <form id="uploadform" method="post" enctype="multipart/form-data">
+                                <div class="upload upload-btn" style="text-align: center">
+                                    <div class="jbox-font upload-content">上传图片</div>
+                                    <input id="file" type="file" class="inputstyle">
+                                </div>
+                            </form>
+                        </div>
+
+                        <p id="avatar-desc" class=""> 选择一张图片作为你的头像(不超过2M)</p>
+                    </div>
+                </div>
+            </div>
+            <hr class="divider">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row-left-content">
+                            <p class="jbox-font span-title table-title">开发者名称</p>
+                            <p class="span-desc">给你的开发者账号设置名称</p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8 ">
+                        <input id="name-input" class="description" title="开发者名称" type="text" value="{{ developer.username }}"/>
+                    </div>
+                </div>
+            </div>
+            <hr class="divider">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row-left-content">
+                            <p class="jbox-font span-title table-title">开发者描述</p>
+                            <p class="span-desc">给你的开发者账号添加描述（选填）</p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <input id="desc-input" class="description" title="开发者描述" type="text" value="{{ developer.description }}"/>
+                    </div>
+                </div>
+            </div>
+            <hr class="divider">
+            <div class="container-fluid" style="text-align: center">
+                <input id="submit" type="submit" value="保存设置" class="jbox-font">
+            </div>
+        </div>
+
     </div>
 
     <script type="text/javascript">
