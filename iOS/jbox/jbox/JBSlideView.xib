@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -13,57 +13,54 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide_bg" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-j9-zbN"/>
-                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="tRr-hT-9xH">
-                    <textInputTraits key="textInputTraits" returnKeyType="search"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="ts4-Ep-JiN"/>
-                    </connections>
-                </searchBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="z4H-cT-704">
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <outlet property="dataSource" destination="aAE-hE-DGN" id="EH0-I6-emf"/>
-                        <outlet property="delegate" destination="aAE-hE-DGN" id="7VH-Tw-OsG"/>
-                    </connections>
                 </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Channels" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uim-F2-hSQ">
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="olP-b3-wqq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eO6-2s-bhg">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="23" id="VY4-D2-ocV"/>
+                        <constraint firstAttribute="height" constant="23" id="g91-BR-Ini"/>
+                    </constraints>
                     <state key="normal" image="slide_edit"/>
                     <connections>
                         <action selector="editBtnPressed:" destination="aAE-hE-DGN" eventType="touchUpInside" id="akh-ds-ZwR"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jyc-cu-kLK">
-                    <state key="normal" image="slide_add"/>
-                    <connections>
-                        <action selector="scanBtnPressed:" destination="aAE-hE-DGN" eventType="touchUpInside" id="Fdn-j5-gDJ"/>
-                    </connections>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Channels" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uim-F2-hSQ">
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8N-Il-tV3">
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="hZ2-Oq-and"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="jyc-cu-kLK" secondAttribute="bottom" constant="15" id="5k7-Vz-gE9"/>
+                <constraint firstAttribute="trailing" secondItem="eO6-2s-bhg" secondAttribute="trailing" constant="20" id="5XK-ma-ZDl"/>
                 <constraint firstAttribute="bottom" secondItem="z4H-cT-704" secondAttribute="bottom" id="63n-OB-Pub"/>
-                <constraint firstItem="jyc-cu-kLK" firstAttribute="centerX" secondItem="aAE-hE-DGN" secondAttribute="centerX" id="7bO-b7-5d2"/>
-                <constraint firstItem="tRr-hT-9xH" firstAttribute="leading" secondItem="aAE-hE-DGN" secondAttribute="leading" constant="25" id="8hz-aI-j4y"/>
+                <constraint firstItem="v8N-Il-tV3" firstAttribute="top" secondItem="aAE-hE-DGN" secondAttribute="top" id="CJP-pV-2ex"/>
                 <constraint firstAttribute="trailing" secondItem="z4H-cT-704" secondAttribute="trailing" id="FYN-lu-CS9"/>
-                <constraint firstItem="eO6-2s-bhg" firstAttribute="trailing" secondItem="tRr-hT-9xH" secondAttribute="trailing" id="LjG-7s-GaO"/>
-                <constraint firstItem="z4H-cT-704" firstAttribute="top" secondItem="eO6-2s-bhg" secondAttribute="bottom" constant="12" id="LsZ-y1-Jjj"/>
-                <constraint firstItem="uim-F2-hSQ" firstAttribute="top" secondItem="tRr-hT-9xH" secondAttribute="bottom" constant="25" id="OLq-vH-bo9"/>
+                <constraint firstItem="z4H-cT-704" firstAttribute="top" secondItem="uim-F2-hSQ" secondAttribute="bottom" id="Fbw-Nm-Ljq"/>
+                <constraint firstItem="uim-F2-hSQ" firstAttribute="leading" secondItem="aAE-hE-DGN" secondAttribute="leading" id="IZG-gb-hWC"/>
+                <constraint firstAttribute="bottom" secondItem="z4H-cT-704" secondAttribute="bottom" constant="60" id="K7u-iw-M4O"/>
+                <constraint firstAttribute="trailing" secondItem="v8N-Il-tV3" secondAttribute="trailing" id="PtO-gC-4Qg"/>
                 <constraint firstAttribute="bottom" secondItem="Jzp-j9-zbN" secondAttribute="bottom" id="S8e-R9-f8p"/>
+                <constraint firstItem="v8N-Il-tV3" firstAttribute="leading" secondItem="aAE-hE-DGN" secondAttribute="leading" id="Vjt-69-qPh"/>
                 <constraint firstAttribute="trailing" secondItem="Jzp-j9-zbN" secondAttribute="trailing" id="Vmt-d1-uaY"/>
-                <constraint firstAttribute="trailing" secondItem="tRr-hT-9xH" secondAttribute="trailing" constant="25" id="WzQ-YS-Cn9"/>
                 <constraint firstItem="Jzp-j9-zbN" firstAttribute="top" secondItem="aAE-hE-DGN" secondAttribute="top" id="X7Y-vt-WK6"/>
-                <constraint firstItem="uim-F2-hSQ" firstAttribute="leading" secondItem="tRr-hT-9xH" secondAttribute="leading" id="cYI-1v-Yya"/>
+                <constraint firstAttribute="trailing" secondItem="uim-F2-hSQ" secondAttribute="trailing" id="apM-aO-dXv"/>
                 <constraint firstItem="z4H-cT-704" firstAttribute="leading" secondItem="aAE-hE-DGN" secondAttribute="leading" id="hrC-Vi-Tga"/>
-                <constraint firstItem="jyc-cu-kLK" firstAttribute="top" secondItem="z4H-cT-704" secondAttribute="bottom" constant="15" id="j8b-7A-p8i"/>
-                <constraint firstItem="tRr-hT-9xH" firstAttribute="top" secondItem="aAE-hE-DGN" secondAttribute="top" constant="35" id="mSX-BK-UC9"/>
                 <constraint firstItem="eO6-2s-bhg" firstAttribute="centerY" secondItem="uim-F2-hSQ" secondAttribute="centerY" id="oWz-Zb-UGY"/>
                 <constraint firstItem="Jzp-j9-zbN" firstAttribute="leading" secondItem="aAE-hE-DGN" secondAttribute="leading" id="xU0-VZ-8rK"/>
+                <constraint firstItem="uim-F2-hSQ" firstAttribute="top" secondItem="v8N-Il-tV3" secondAttribute="bottom" id="xUQ-Bk-mOS"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
@@ -72,14 +69,11 @@
             </variation>
             <connections>
                 <outlet property="channel_tableView" destination="z4H-cT-704" id="zzs-8N-SkA"/>
-                <outlet property="searchBar" destination="tRr-hT-9xH" id="P5Y-e7-Z41"/>
-                <outlet property="tableViewContraintBottom" destination="j8b-7A-p8i" id="7Dr-rg-jso"/>
             </connections>
-            <point key="canvasLocation" x="-295" y="285"/>
+            <point key="canvasLocation" x="-612" y="-14"/>
         </view>
     </objects>
     <resources>
-        <image name="slide_add" width="48" height="33"/>
         <image name="slide_bg" width="297" height="667"/>
         <image name="slide_edit" width="27" height="26"/>
     </resources>

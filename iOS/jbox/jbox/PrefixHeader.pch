@@ -30,7 +30,10 @@ static NSString *JBSlideTableViewCellShouldUpdate = @"JBSlideTableViewCellShould
 
 #define UIScreenWidth [UIScreen mainScreen].bounds.size.width
 #define UIScreenHeight [UIScreen mainScreen].bounds.size.height
+#define SlideViewWidth 0.8*UIScreenWidth
 
 #define WEAK_SELF(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
+
 
 

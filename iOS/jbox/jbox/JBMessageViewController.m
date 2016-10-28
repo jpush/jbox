@@ -10,19 +10,17 @@
 #import "JBMessageTableViewCell.h"
 #import "JBMessage.h"
 #import "JBDatabase.h"
-#import "JBSlideView.h"
+#import "JBScrollViewController.h"
 #import "JPUSHService.h"
 #import "JBNetwork.h"
 #import <MJRefresh.h>
-
-
-#define SlideViewWidth 0.8*UIScreenWidth
 
 @interface JBMessageViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic ,retain)NSArray *messageArray;
 @property(nonatomic, assign)BOOL appeared;
-@property(nonatomic, retain)JBSlideView *slideView;
+@property (weak, nonatomic) IBOutlet UILabel *placeholder_label;
+@property(nonatomic, retain)JBScrollViewController *scrollViewController;
 
 @end
 
@@ -37,11 +35,6 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"message_btn"] style:UIBarButtonItemStylePlain target:self action:@selector(slide:)];
-
-    //slide
-    self.slideView = [[NSBundle mainBundle] loadNibNamed:@"JBSlideView" owner:nil options:nil][0];
-    self.slideView.frame = CGRectMake(- SlideViewWidth, 0, SlideViewWidth, UIScreenHeight);
-    [[UIApplication sharedApplication].keyWindow addSubview:self.slideView];
 
     //data
     if ([JBDatabase getSortedDevkeyAndChannel].count) {
@@ -61,6 +54,10 @@
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slide:)];
     [self.view addGestureRecognizer:tap];
     [self.view addGestureRecognizer:swipe];
+
+    self.scrollViewController = [[JBScrollViewController alloc] initWithNibName:@"JBScrollViewController" bundle:nil];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:_scrollViewController.view];
+
 }
 
 -(void)didReceiveMessage:(NSNotification*)noti{
@@ -93,19 +90,16 @@
 }
 
 -(void)slideAnimate{
-    //收起键盘
-    [self.slideView searchBarCancelButtonClicked:_slideView.searchBar];
-
     WEAK_SELF(weakSelf);
     if (self.isSlideOut) {
         [UIView animateWithDuration:0.25 animations:^{
-            weakSelf.slideView.frame         = CGRectMake(- SlideViewWidth, 0, SlideViewWidth, UIScreenHeight);
+            weakSelf.scrollViewController.view.frame = CGRectMake(- SlideViewWidth, 0, SlideViewWidth, UIScreenHeight);
             weakSelf.navigationController.view.frame = CGRectMake(0, 0, UIScreenWidth, UIScreenHeight);
             weakSelf.isSlideOut              = NO;
         }];
     }else{
         [UIView animateWithDuration:0.25 animations:^{
-            weakSelf.slideView.frame         = CGRectMake(0, 0, SlideViewWidth, UIScreenHeight);
+            weakSelf.scrollViewController.view.frame = CGRectMake(0, 0, SlideViewWidth, UIScreenHeight);
             weakSelf.navigationController.view.frame = CGRectMake(SlideViewWidth, 0, UIScreenWidth, UIScreenHeight);
             weakSelf.isSlideOut              = YES;
         }];

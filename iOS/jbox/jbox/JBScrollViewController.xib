@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JBScrollViewController">
+            <connections>
+                <outlet property="pageControl" destination="Fzr-1j-Q9e" id="a92-29-RS7"/>
+                <outlet property="scrollView" destination="teA-np-zc7" id="5lS-fi-dOM"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="667" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="teA-np-zc7">
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="IEr-kE-t5i"/>
+                    </connections>
+                </scrollView>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="Fzr-1j-Q9e"/>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="teA-np-zc7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="45n-kq-zQ9"/>
+                <constraint firstItem="Fzr-1j-Q9e" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="B6y-At-Zhf"/>
+                <constraint firstItem="teA-np-zc7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ds6-xG-MHg"/>
+                <constraint firstAttribute="bottom" secondItem="teA-np-zc7" secondAttribute="bottom" id="bw0-1W-SPu"/>
+                <constraint firstAttribute="bottom" secondItem="Fzr-1j-Q9e" secondAttribute="bottom" constant="20" id="iYC-nd-8ox"/>
+                <constraint firstAttribute="trailing" secondItem="teA-np-zc7" secondAttribute="trailing" id="wow-nv-ZnU"/>
+            </constraints>
+            <point key="canvasLocation" x="-283.5" y="30.5"/>
+        </view>
+    </objects>
+</document>

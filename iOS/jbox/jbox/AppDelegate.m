@@ -56,7 +56,7 @@
                                                           UIUserNotificationTypeSound | 
                                                           UIUserNotificationTypeAlert)  
                                               categories:nil];  
-    } else {    
+    } else {   
         //categories 必须为nil 
         [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |   
                                                           UIRemoteNotificationTypeSound |   

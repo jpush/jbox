@@ -12,6 +12,4 @@
 -(void)shouldUpdate;
 @property (weak, nonatomic) IBOutlet UITableView *channel_tableView;
 @property(nonatomic, assign)BOOL isEditing;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
--(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar;
 @end

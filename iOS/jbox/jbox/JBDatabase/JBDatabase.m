@@ -296,18 +296,16 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
         BOOL result = [JBSharedChannelDatabase executeUpdate:sqlInsertTable];
         if (result) {
             //打tag
-            [JPUSHService setTags:[NSSet set] alias:nil fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
-                NSMutableArray *channels = [JBDatabase getAllChannels];
-                NSMutableSet *set = [NSMutableSet set];
-                for (JBChannel *channel in channels) {
-                    if ([channel.isSubscribed boolValue]) {
-                        NSString *tag = [NSString stringWithFormat:@"%@_%@",channel.dev_key,channel.name];
-                        [set addObject:tag];
-                    }
+            NSMutableArray *channels = [JBDatabase getAllChannels];
+            NSMutableSet *set = [NSMutableSet set];
+            for (JBChannel *channel in channels) {
+                if ([channel.isSubscribed boolValue]) {
+                    NSString *tag = [NSString stringWithFormat:@"%@_%@",channel.dev_key,channel.name];
+                    [set addObject:tag];
                 }
-                [JPUSHService setTags:set alias:nil fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:JBSlideViewShouldUpdate object:nil];
-                }];
+            }
+            [JPUSHService setTags:set alias:nil fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:JBSlideViewShouldUpdate object:nil];
             }];
         }
         [JBSharedChannelDatabase close];

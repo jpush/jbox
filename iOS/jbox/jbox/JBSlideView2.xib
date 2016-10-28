@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="JBSlideView2">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide_bg" translatesAutoresizingMaskIntoConstraints="NO" id="Wcc-um-bPq"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Teams" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0cD-ef-bSi">
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="1Us-Ca-87V"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0TI-WC-0ea">
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="iN0-l3-epB" id="zY3-hV-UVm"/>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="0rc-vs-g4S"/>
+                    </connections>
+                </tableView>
+                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3E-NH-zUI">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23" id="4VQ-jq-VAJ"/>
+                        <constraint firstAttribute="width" constant="23" id="hHM-dD-chv"/>
+                    </constraints>
+                    <state key="normal" image="slide2_add"/>
+                    <connections>
+                        <action selector="scanBtnPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="YEz-SA-a5Z"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kYD-2B-SzP">
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="U3E-NH-zUI" secondAttribute="trailing" constant="20" id="5U0-Dy-DcY"/>
+                <constraint firstAttribute="trailing" secondItem="kYD-2B-SzP" secondAttribute="trailing" id="9d0-7Q-iBc"/>
+                <constraint firstItem="kYD-2B-SzP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="DTv-zf-uQB"/>
+                <constraint firstItem="kYD-2B-SzP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="FEN-8e-3Nw"/>
+                <constraint firstAttribute="trailing" secondItem="0cD-ef-bSi" secondAttribute="trailing" id="N6D-ou-ou6"/>
+                <constraint firstAttribute="bottom" secondItem="0TI-WC-0ea" secondAttribute="bottom" constant="60" id="UDY-ST-ChS"/>
+                <constraint firstAttribute="bottom" secondItem="Wcc-um-bPq" secondAttribute="bottom" id="XFR-qC-9dj"/>
+                <constraint firstItem="Wcc-um-bPq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cOc-67-QOx"/>
+                <constraint firstItem="0cD-ef-bSi" firstAttribute="top" secondItem="kYD-2B-SzP" secondAttribute="bottom" id="fYa-3v-L37"/>
+                <constraint firstItem="0TI-WC-0ea" firstAttribute="top" secondItem="0cD-ef-bSi" secondAttribute="bottom" id="fjX-cU-Ydd"/>
+                <constraint firstItem="0cD-ef-bSi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="gGl-Pe-2jY"/>
+                <constraint firstItem="U3E-NH-zUI" firstAttribute="centerY" secondItem="0cD-ef-bSi" secondAttribute="centerY" id="gHO-TU-hWN"/>
+                <constraint firstItem="0cD-ef-bSi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gUq-f2-eRk"/>
+                <constraint firstAttribute="trailing" secondItem="Wcc-um-bPq" secondAttribute="trailing" id="lXT-8r-xTs"/>
+                <constraint firstItem="Wcc-um-bPq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="mhs-S0-vvr"/>
+                <constraint firstItem="0TI-WC-0ea" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="oNv-BO-PLA"/>
+                <constraint firstAttribute="trailing" secondItem="0TI-WC-0ea" secondAttribute="trailing" id="yL1-mH-NGa"/>
+            </constraints>
+            <connections>
+                <outlet property="team_tableView" destination="0TI-WC-0ea" id="7hS-ah-Cyz"/>
+            </connections>
+            <point key="canvasLocation" x="-192.5" y="37.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="slide2_add" width="20" height="21"/>
+        <image name="slide_bg" width="297" height="667"/>
+    </resources>
+</document>
