@@ -39,15 +39,14 @@ public class DeveloperListFragment extends Fragment {
      */
     public DeveloperListFragment() {
         mDevs = new Select().from(Developer.class).execute();
-        if (mDevs != null && !mDevs.isEmpty()){
+        if (mDevs != null && !mDevs.isEmpty()) {
             AppApplication.currentDevKey = mDevs.get(0).key;
         }
     }
 
     @SuppressWarnings("unused")
     public static DeveloperListFragment newInstance() {
-        DeveloperListFragment fragment = new DeveloperListFragment();
-        return fragment;
+        return new DeveloperListFragment();
     }
 
     @Override
@@ -94,6 +93,7 @@ public class DeveloperListFragment extends Fragment {
 
     public void updateData() {
         mDevs = new Select().from(Developer.class).execute();
+        mAdapter = null;
         mAdapter = new DeveloperListRecyclerViewAdapter(mDevs, mListener);
         mRecyclerView.setAdapter(mAdapter);
     }

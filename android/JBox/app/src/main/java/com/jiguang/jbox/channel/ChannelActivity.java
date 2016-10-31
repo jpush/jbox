@@ -3,6 +3,7 @@ package com.jiguang.jbox.channel;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
@@ -32,7 +33,7 @@ import cn.jpush.android.api.TagAliasCallback;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * 扫描二维码后的 channel 展示界面。
+ * 订阅 channel 界面。
  */
 public class ChannelActivity extends Activity {
     private final String TAG = "ChannelActivity";
@@ -65,21 +66,42 @@ public class ChannelActivity extends Activity {
 
         mDevKey = getIntent().getStringExtra(EXTRA_DEV_KEY);
 
-        mHandler = new MyHandler();
-
         TopBar topBar = (TopBar) findViewById(R.id.topBar);
-        topBar.setLeftClick(new View.OnClickListener() {    // 顶部栏返回事件。
+        topBar.setLeftClick(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBack();
             }
         });
 
+        mHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if (msg.what == MSG_DEV_UPDATE) {       // 获取用户信息后，更新界面。
+                    Bundle data = msg.getData();
+
+                    mTvDevName.setText(data.getString("devName"));
+
+                    if (!TextUtils.isEmpty(data.getString("avatarUrl"))) {
+                        Glide.with(AppApplication.getAppContext())
+                                .load(data.getString("avatarUrl"))
+                                .placeholder(R.drawable.default_avatar)
+                                .dontAnimate()
+                                .into(mIvAvatar);
+                    }
+
+                    if (!TextUtils.isEmpty(data.getString("desc"))) {
+                        mTvDevDesc.setText(data.getString("desc"));
+                    }
+                }
+                return false;
+            }
+        });
+
         ListView listView = (ListView) findViewById(R.id.lv_channel);
 
         // Init head view.
-        View headView = getLayoutInflater().inflate(
-                R.layout.view_subscribe_channel, listView, false);
+        View headView = getLayoutInflater().inflate(R.layout.view_subscribe_channel, listView, false);
         mIvAvatar = (CircleImageView) headView.findViewById(R.id.iv_dev_icon);
         mTvDevName = (TextView) headView.findViewById(R.id.tv_name);
         mTvDevDesc = (TextView) headView.findViewById(R.id.tv_desc);
@@ -104,14 +126,15 @@ public class ChannelActivity extends Activity {
                 bundle.putString("desc", dev.desc);
                 bundle.putString("avatarUrl", dev.avatarUrl);
                 msg.setData(bundle);
-                mHandler.sendMessage(msg);
+                msg.setTarget(mHandler);
+                msg.sendToTarget();
 
                 dev.save();
             }
 
             @Override
             public void onDataNotAvailable() {
-                Toast.makeText(getApplicationContext(), "获取 developer 信息出错。",
+                Toast.makeText(getApplicationContext(), R.string.channel_error_dev,
                         Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -155,11 +178,11 @@ public class ChannelActivity extends Activity {
 
                         @Override
                         public void onDataNotAvailable() {
-                            Toast.makeText(getApplicationContext(), "网络请求错误", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.channel_error_http,
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
         }
-
     }
 
     @Override
@@ -199,10 +222,12 @@ public class ChannelActivity extends Activity {
                 @Override
                 public void gotResult(int result, String desc, Set<String> set) {
                     if (result == 0) {
-                        Toast.makeText(getApplicationContext(), "操作成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.channel_success,
+                                Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "订阅失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.channel_fail,
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -210,41 +235,6 @@ public class ChannelActivity extends Activity {
             AppApplication.shouldUpdateData = true;
         }
         finish();
-    }
-
-
-    // TODO: 改进内存泄漏风险。
-    private class MyHandler extends Handler {
-
-        MyHandler() {
-            super();
-        }
-
-        @Override
-        public void dispatchMessage(android.os.Message msg) {
-            // 更新 UI
-            switch (msg.what) {
-                case ChannelActivity.MSG_DEV_UPDATE:    // 更新 head view 数据
-                    Bundle data = msg.getData();
-
-                    mTvDevName.setText(data.getString("devName"));
-
-                    if (!TextUtils.isEmpty(data.getString("avatarUrl"))) {
-                        Glide.with(AppApplication.getAppContext())
-                                .load(data.getString("avatarUrl"))
-                                .placeholder(R.drawable.default_avatar)
-                                .dontAnimate()
-                                .into(mIvAvatar);
-                    }
-
-                    if (!TextUtils.isEmpty(data.getString("desc"))) {
-                        mTvDevDesc.setText(data.getString("desc"));
-                    }
-
-                    break;
-                default:
-            }
-        }
     }
 
 }

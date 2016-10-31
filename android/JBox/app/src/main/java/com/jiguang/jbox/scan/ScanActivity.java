@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -41,7 +42,6 @@ import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 public class ScanActivity extends Activity implements QRCodeView.Delegate {
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
-
     private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 2;
 
     private QRCodeView mScanView;
@@ -93,14 +93,13 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        LogUtil.LOGI("ScanActivity", "devKey: " + result);
-
         if (TextUtils.isEmpty(result)) {
             return;
         }
 
         if (!PermissionUtil.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Toast.makeText(this, "该功能必须要允许相应权限", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.scan_permission, Toast.LENGTH_SHORT).show();
+
             PermissionUtil.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
             return;
@@ -114,26 +113,26 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             if (!new Select().from(Developer.class).where("Key = ?", mDevKey).exists()) {
                 HttpUtil.getInstance().requestDeveloper(mDevKey,
                         new DeveloperDataSource.LoadDevCallback() {
-                    @Override
-                    public void onDevLoaded(Developer dev) {
-                        dev.save();
+                            @Override
+                            public void onDevLoaded(Developer dev) {
+                                dev.save();
 
-                        Bundle bundle = new Bundle();
-                        bundle.putString("DevKey", dev.key);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("DevKey", dev.key);
 
-                        Message msg = new Message();
-                        msg.what = MainActivity.MSG_WHAT_UPDATE_DEV;
-                        msg.setData(bundle);
-                        msg.setTarget(MainActivity.handler);
-                        msg.sendToTarget();
-                    }
+                                Message msg = new Message();
+                                msg.what = MainActivity.MSG_WHAT_UPDATE_DEV;
+                                msg.setData(bundle);
+                                msg.setTarget(MainActivity.handler);
+                                msg.sendToTarget();
+                            }
 
-                    @Override
-                    public void onDataNotAvailable() {
-                        Toast.makeText(AppApplication.getAppContext(), "二维码失效，订阅失败。",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            @Override
+                            public void onDataNotAvailable() {
+                                Toast.makeText(AppApplication.getAppContext(),
+                                        R.string.scan_qrcode_invalid, Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
             saveData(mDevKey, mChannel);
             AppApplication.shouldUpdateData = true;
@@ -148,7 +147,7 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeOpenCameraError() {
-        Toast.makeText(this, "打开相机出错", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.scan_open_camer_fail, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -160,7 +159,6 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
             final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
 
-            // TODO: 有内存泄漏风险。
             new AsyncTask<Void, Void, String>() {
 
                 @Override
@@ -171,7 +169,8 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                 @Override
                 protected void onPostExecute(String result) {
                     if (TextUtils.isEmpty(result)) {
-                        Toast.makeText(ScanActivity.this, "未发现二维码", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScanActivity.this, R.string.scan_qrcode_not_found,
+                                Toast.LENGTH_SHORT).show();
                     } else {
                         onScanQRCodeSuccess(result);
                     }
@@ -181,7 +180,8 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CAMERA:
                 if (grantResults.length > 0 &&
@@ -232,7 +232,8 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                 @Override
                 public void gotResult(int status, String desc, Set<String> set) {
                     if (status == 0) {
-                        Toast.makeText(ScanActivity.this, "订阅成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScanActivity.this, R.string.scan_subscribe_success,
+                                Toast.LENGTH_SHORT).show();
                     } else {
                         LogUtil.LOGI(TAG, desc);
                     }
@@ -247,9 +248,11 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                 @Override
                 public void gotResult(int status, String desc, Set<String> set) {
                     if (status == 0) {
-                        Toast.makeText(ScanActivity.this, "订阅成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScanActivity.this, R.string.scan_subscribe_success,
+                                Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(ScanActivity.this, "订阅失败，请检查网络", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScanActivity.this, R.string.scan_subscribe_fail,
+                                Toast.LENGTH_SHORT).show();
                         LogUtil.LOGI(TAG, desc);
                     }
                 }

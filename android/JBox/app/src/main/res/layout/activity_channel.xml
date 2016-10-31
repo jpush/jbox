@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_height"
         android:background="@color/colorPrimary"
-        app:topbar_title="@string/channel_channel"
+        app:topbar_title="@string/channel_title"
         app:show_left="true"
         />
 

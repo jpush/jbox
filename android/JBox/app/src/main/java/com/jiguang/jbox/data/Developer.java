@@ -19,10 +19,10 @@ public class Developer extends Model {
     @Column(name = "Desc")
     public String desc;        // 用户描述。
 
-    @Column(name="AvatarUrl")   // 头像 url。
+    @Column(name = "AvatarUrl")   // 头像 url。
     public String avatarUrl;
 
-    @Column(name="IsSelected")
+    @Column(name = "IsSelected")
     public boolean isSelected = false;  // 是否被选中。
 
     public Developer() {
@@ -31,6 +31,13 @@ public class Developer extends Model {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Developer)) {
+            return false;
+        }
+
         Developer objDev = (Developer) obj;
 
         if (!objDev.key.equals(key)) {

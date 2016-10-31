@@ -72,10 +72,6 @@ public class TopBar extends FrameLayout {
         mTvTitle.setText(title);
     }
 
-    public void setRightText(String rightText) {
-        mTvRight.setText(rightText);
-    }
-
     public void setRightClick(OnClickListener listener) {
         mTvRight.setOnClickListener(listener);
     }

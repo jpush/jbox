@@ -1,24 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="account_top_height">162dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
     <dimen name="widget_height">48dp</dimen>
-    <dimen name="navigation_drawer_width">240dp</dimen>
 
-    <!-- drawer start -->
-    <dimen name="drawer_channel">20sp</dimen>
-    <!-- drawer end -->
+    <dimen name="navigation_drawer_width">256dp</dimen>
 
-    <!-- sub channel start -->
-    <dimen name="sub_channel_head_height">132dp</dimen>
-
-    <dimen name="sub_channel_circle_width">48dp</dimen>
-    <dimen name="sub_channel_circle_height">48dp</dimen>
-
-    <dimen name="sub_channel_icon_width">36dp</dimen>
-    <dimen name="sub_channel_icon_height">36dp</dimen>
-    <!-- sub channel end -->
-
+    <dimen name="drawer_channel">18sp</dimen>
 </resources>

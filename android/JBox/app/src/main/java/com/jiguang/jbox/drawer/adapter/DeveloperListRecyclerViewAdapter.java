@@ -93,11 +93,6 @@ public class DeveloperListRecyclerViewAdapter extends
         return mValues.size();
     }
 
-    public void updateData(List<Developer> devs) {
-        mValues = devs;
-        notifyDataSetChanged();
-    }
-
     class ViewHolder extends RecyclerView.ViewHolder {
         final View view;
         final CircleImageView avatar;

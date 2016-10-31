@@ -11,7 +11,6 @@ import com.activeandroid.query.Update;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.data.Channel;
 import com.jiguang.jbox.data.Message;
-import com.jiguang.jbox.main.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +43,6 @@ public class MessageReceiver extends BroadcastReceiver {
                 String iconUrl = jsonObject.getString("icon");   // 集成的图标 url。
                 long timeMillis = Long.parseLong(jsonObject.getString("datetime"));
 
-                // 保存 msg 到本地，并刷新页面数据。
                 Message msg = new Message();
                 msg.title = title;
                 msg.content = content;

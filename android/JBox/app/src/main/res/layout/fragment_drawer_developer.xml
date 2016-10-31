@@ -11,10 +11,11 @@
         android:background="#7F000000">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Team"
+            android:text="@string/drawer_dev_title"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             />
@@ -23,10 +24,11 @@
             android:id="@+id/iv_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_add"/>
+            android:src="@drawable/ic_add"
+            android:contentDescription="@string/drawer_dev_add_desc"/>
 
     </RelativeLayout>
 

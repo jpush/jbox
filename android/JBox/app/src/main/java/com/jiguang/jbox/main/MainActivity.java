@@ -28,8 +28,6 @@ import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends FragmentActivity
         implements ChannelListFragment.OnListFragmentInteractionListener {
-    private final String TAG = "MainActivity";
-
     public static final int MSG_WHAT_RECEIVE_MSG_CURRENT = 0;
     public static final int MSG_WHAT_RECEIVE_MSG = 1;
     public static final int MSG_WHAT_UPDATE_DEV = 2;
@@ -72,7 +70,9 @@ public class MainActivity extends FragmentActivity
         ivMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerLayout.openDrawer(mDrawerFragment.getView());
+                if (mDrawerFragment.getView() != null) {
+                    mDrawerLayout.openDrawer(mDrawerFragment.getView());
+                }
             }
         });
 
@@ -126,14 +126,13 @@ public class MainActivity extends FragmentActivity
             }
         });
 
-        mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
-                .currentChannelName, 0, QUERY_MESSAGE_COUNT);
-
-        mAdapter = new MessageListAdapter(mMessages);
-        mMsgListView.setAdapter(mAdapter);
-
         View emptyView = findViewById(R.id.tv_hint);
         mMsgListView.setEmptyView(emptyView);
+
+        mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
+                .currentChannelName, 0, QUERY_MESSAGE_COUNT);
+        mAdapter = new MessageListAdapter(mMessages);
+        mMsgListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -171,7 +170,10 @@ public class MainActivity extends FragmentActivity
         List<Message> messages = queryMessages(channel.devKey, channel.name, 0,
                 mCurrentOffset + QUERY_MESSAGE_COUNT);
         mAdapter.replaceData(messages);
-        mDrawerLayout.closeDrawer(mDrawerFragment.getView());
+
+        if (mDrawerFragment.getView() != null) {
+            mDrawerLayout.closeDrawer(mDrawerFragment.getView());
+        }
     }
 
     private List<Message> queryMessages(String devKey, String channelName, int offSet, int limit) {

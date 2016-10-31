@@ -1,6 +1,7 @@
 package com.jiguang.jbox.main.adapter;
 
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,6 @@ import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.util.ViewHolder;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -36,11 +35,6 @@ public class MessageListAdapter extends BaseAdapter {
             mMessages.add(0, msg);
             notifyDataSetChanged();
         }
-    }
-
-    void addMessages(List<Message> messages) {
-        mMessages.addAll(messages);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -69,7 +63,7 @@ public class MessageListAdapter extends BaseAdapter {
         TextView tvIcon = ViewHolder.get(convertView, R.id.tv_icon);
         ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
 
-        if (TextUtils.isEmpty(msg.iconUrl)) {   // 图片为空
+        if (TextUtils.isEmpty(msg.iconUrl)) {
             if (ivIcon.getVisibility() == View.VISIBLE) {
                 ivIcon.setVisibility(View.INVISIBLE);
                 tvIcon.setVisibility(View.VISIBLE);
@@ -96,7 +90,8 @@ public class MessageListAdapter extends BaseAdapter {
         TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
         tvContent.setText(msg.content);
 
-        String formatTime = new SimpleDateFormat("HH:mm").format(new Date(msg.time * 1000));
+        String formatTime = DateUtils.formatDateTime(parent.getContext(),
+                msg.time * 1000, DateUtils.FORMAT_SHOW_TIME);
 
         TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
         tvTime.setText(formatTime);

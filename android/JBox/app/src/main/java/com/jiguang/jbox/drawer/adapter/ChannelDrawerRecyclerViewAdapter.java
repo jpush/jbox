@@ -61,10 +61,6 @@ public class ChannelDrawerRecyclerViewAdapter extends
         return mValues.size();
     }
 
-    void replaceData(List<Channel> channels) {
-        mValues = channels;
-    }
-
     class ViewHolder extends RecyclerView.ViewHolder {
         public final View view;
         public final TextView tvChannel;

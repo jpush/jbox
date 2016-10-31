@@ -47,8 +47,7 @@ public class ChannelListFragment extends Fragment {
 
     @SuppressWarnings("unused")
     public static ChannelListFragment newInstance(int columnCount) {
-        ChannelListFragment fragment = new ChannelListFragment();
-        return fragment;
+        return new ChannelListFragment();
     }
 
     @Override
@@ -106,7 +105,6 @@ public class ChannelListFragment extends Fragment {
         mChannels = new Select().from(Channel.class)
                 .where("DevKey=? AND IsSubscribe=?", devKey, true)
                 .execute();
-
         mAdapter = null;
         mAdapter = new ChannelDrawerRecyclerViewAdapter(mChannels, mListener);
         mRecyclerView.setAdapter(mAdapter);
