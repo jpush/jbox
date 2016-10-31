@@ -114,6 +114,7 @@ class Integration(db.Model):
     icon = db.Column(db.String(150))
     token = db.Column(db.String(150))
     type = db.Column(db.String(50), default='custom')
+    owner = db.Column(db.String(100))
     developer_id = db.Column(db.Integer, db.ForeignKey('developers.id'))
     channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'))
     githubs = db.relationship('GitHub', backref='integration')

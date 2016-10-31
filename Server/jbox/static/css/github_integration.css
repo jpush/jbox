@@ -39,8 +39,13 @@
     margin-top: 20px;
 }
 
+#github-user {
+    color: #595959;
+    font-size: 18px;
+}
+
 #add-github-integration {
-    margin-top: 36px;
+    margin-top: 10px;
     padding: 10px 15px 10px 15px;
     background:#64B868;
     border-radius:5px;

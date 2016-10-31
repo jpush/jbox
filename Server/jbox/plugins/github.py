@@ -1,7 +1,7 @@
 import time
-from flask import abort, Flask, jsonify, request
+from flask import abort, Flask, jsonify, request, session
 from . import plugins
-from ..models import Developer, Integration
+from ..models import Developer, Integration, Authorization, db
 import jpush
 from jpush import common
 
@@ -130,4 +130,23 @@ def send_github_msg(integration_id):
         return jsonify({'error': 'JPush failed, please read the code and refer code document'}), 500
     except:
         print("Exception")
+    return jsonify({}), 200
+
+
+@plugins.route('/github/<string:dev_key>/cancel_authorization', methods=['POST'])
+def cancel_github_authorization(dev_key):
+    print('cancel github authorization')
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if developer is None:
+        abort(400)
+    authorization = Authorization.query.filter_by(developer=developer, type='github').first()
+    if authorization:
+        try:
+            db.session.delete(authorization)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            abort(500)
+    session.pop('user', None)
+    session.pop('github_token', None)
     return jsonify({}), 200

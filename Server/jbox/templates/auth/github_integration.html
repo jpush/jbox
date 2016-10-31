@@ -19,14 +19,23 @@
 {% endblock %}
 
 {% block content %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="content col-lg-offset-1">
         <div id="github-icon-area">
             <img id="github-icon" src="/static/images/github1x.png">
             <p class="jbox-font" id="github-icon-title">GitHub</p>
-            <button id="add-github-integration"
-                    onclick=window.location.href="{{ url_for('auth.post_to_channel_github') }}">
-                添加 GitHub 集成
-            </button>
+            {% if user %}
+                <p class="jbox-font" id="github-user">Authorized: {{ user }}</p>
+                <button id="cancel_btn" class="btn btn-warning">取消授权</button>
+            {% else %}
+                <button id="authorize_btn" class="btn btn-info" onclick="authorize()">GitHub 授权</button>
+            {% endif %}
+            <button id="add-github-integration">添加 GitHub 集成</button>
         </div>
         <div class="column">
             <div id="description">
@@ -44,8 +53,8 @@
                             <div class="row" id="github-integration-content">
                                 <img src="/static/images/github-icon.png">
                                 <p>来自 <strong>{{ integration.repositories }}</strong> 的 commits, issue 以及 pull
-                                request 等活动将会作为 <strong>{{ integration.name }}</strong>
-                                推送到 <strong>{{ integration.channel }}</strong> 频道</p>
+                                    request 等活动将会作为 <strong>{{ integration.name }}</strong>
+                                    推送到 <strong>{{ integration.channel }}</strong> 频道</p>
                                 <button class="btn btn-info btn-middle" id="{{ integration.id }}"
                                         type="button">编辑
                                 </button>
@@ -62,10 +71,52 @@
         {% if github_integrations %}
             {% for integration in github_integrations %}
                 $('#{{ integration.id }}').click(function () {
-                    window.location.href = '/auth/manage/edit_github_integration/{{ integration.id }}'
+                    {% if user %}
+                        window.location.href = '/auth/manage/edit_github_integration/{{ integration.id }}';
+                    {% else %}
+                        toastr.warning("当前还没有添加 GitHub 授权，请点击左侧 GitHub 授权按钮进行授权。");
+                    {% endif %}
                 });
             {% endfor %}
         {% endif %}
+
+        $('#cancel_btn').click(function () {
+            $(this).attr("disabled", true);
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: '/plugins/github/{{ dev_key }}/cancel_authorization',
+                success: function (data) {
+                    toastr.success("已取消 GitHub 授权");
+                    $('#cancel_btn').attr("disabled", false);
+                    $('#cancel_btn').hide();
+                    $('#add-github-integration').attr("disabled", true);
+                    $('#github-user').toggle();
+                    if ($('#authorize_btn').length <= 0) {
+                        $('<button id="authorize_btn" class="btn btn-info" onclick="authorize()">GitHub 授权</button>').insertAfter('#cancel_btn');
+                    } else {
+                        $('#authorize_btn').show();
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("取消授权失败")
+                }
+            })
+        });
+
+        function authorize() {
+            $('#authorize_btn').attr("disabled", true);
+            window.location.href = '/auth/github/authorize';
+        }
+
+        $('#add-github-integration').click(function () {
+            {% if user %}
+                window.location.href = '{{ url_for('auth.post_to_channel_github') }}';
+            {% else %}
+                toastr.warning("请先进行 GitHub 授权");
+            {% endif %}
+        })
     </script>
 {% endblock %}
 
