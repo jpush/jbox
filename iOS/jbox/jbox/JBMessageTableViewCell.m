@@ -29,7 +29,7 @@
     }else{
         CGSize size1 = [self.title_label   caculatedSize];
         CGSize size2 = [self.content_label caculatedSize];
-        _suitableHeight = 7 + size1.height + 7 + size2.height + 7;
+        _suitableHeight = 7 + size1.height + 7 + size2.height + 8;
         return _suitableHeight;
     }
 }

@@ -39,7 +39,7 @@
                         </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="08:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MwC-rV-Wfv">
-                        <rect key="frame" x="272" y="9.5" width="38" height="16"/>
+                        <rect key="frame" x="272" y="7" width="38" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="38" id="cNj-CC-pu7"/>
                         </constraints>
@@ -62,13 +62,13 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="MwC-rV-Wfv" firstAttribute="top" secondItem="O2q-EL-KH9" secondAttribute="top" id="2yZ-Nj-l4p"/>
                     <constraint firstItem="O2q-EL-KH9" firstAttribute="top" secondItem="VFv-RF-eYu" secondAttribute="top" id="BFI-cn-C6T"/>
                     <constraint firstItem="O2q-EL-KH9" firstAttribute="leading" secondItem="1b9-0n-LmH" secondAttribute="leading" constant="10" id="C8g-PZ-5hP"/>
                     <constraint firstAttribute="trailing" secondItem="XFq-GH-ayx" secondAttribute="trailing" constant="11" id="DBd-eq-Qv6"/>
                     <constraint firstItem="XFq-GH-ayx" firstAttribute="leading" secondItem="VFv-RF-eYu" secondAttribute="leading" id="DVq-N1-ZmT"/>
                     <constraint firstItem="XFq-GH-ayx" firstAttribute="top" secondItem="VFv-RF-eYu" secondAttribute="bottom" constant="7" id="IgW-Nt-85x"/>
                     <constraint firstItem="VFv-RF-eYu" firstAttribute="leading" secondItem="O2q-EL-KH9" secondAttribute="trailing" constant="10" id="MfT-3y-Gcl"/>
-                    <constraint firstItem="MwC-rV-Wfv" firstAttribute="centerY" secondItem="VFv-RF-eYu" secondAttribute="centerY" id="OkY-Bz-uty"/>
                     <constraint firstAttribute="trailing" secondItem="MwC-rV-Wfv" secondAttribute="trailing" constant="10" id="aY7-om-mkc"/>
                     <constraint firstItem="MwC-rV-Wfv" firstAttribute="leading" secondItem="VFv-RF-eYu" secondAttribute="trailing" constant="15" id="b50-Cc-Nbl"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XFq-GH-ayx" secondAttribute="bottom" constant="7" id="fPM-tU-Tmu"/>
