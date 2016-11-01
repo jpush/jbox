@@ -80,6 +80,8 @@ def github_integration():
                         new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
                                             channel=integration.channel.channel, repositories=repo_list)
                         github_integrations.append(new_github)
+                    else:
+                        github_integrations.append(integration)
         print('github_integrations length:' + str(len(github_integrations)))
         return render_template('auth/github_integration.html', **locals())
     except Exception:
@@ -131,7 +133,8 @@ def github_re_authorize():
                     new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
                                         channel=integration.channel.channel, repositories=repo_list)
                     github_integrations.append(new_github)
-    print('re-authorize github_integrations length:' + str(len(github_integrations)))
+                else:
+                    github_integrations.append(integration)
     return render_template('auth/github_integration.html', **locals())
 
 
