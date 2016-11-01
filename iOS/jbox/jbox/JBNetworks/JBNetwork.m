@@ -26,9 +26,12 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 
 #pragma mark - public
 
-+(void)getDevInfoWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
-    [JBNetwork GET:devkey paramtes:nil complete:^(id responseObject) {
-        complete(responseObject);
++(void)getDevInfoWithDevkey:(NSString*)devkeyStr complete:(void (^)(JBDevkey *devkey))complete{
+    [JBNetwork GET:devkeyStr paramtes:nil complete:^(id responseObject) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        JBDevkey *devkey = [JBDevkey new];
+        [devkey setValuesForKeysWithDictionary:dict];
+        complete(devkey);
     }];
 }
 

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JBSlideView2 : UIView
+@interface JBTeamSlideView : UIView
 
 @end

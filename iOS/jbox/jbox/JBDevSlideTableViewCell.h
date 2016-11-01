@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "JBDevkey.h"
 
-@interface JBSlideTableViewCell2 : UITableViewCell
+@interface JBDevSlideTableViewCell : UITableViewCell
 
-@property(nonatomic,retain)JBDevkey *devkey;
+@property(nonatomic, retain)JBDevkey *devkey;
 
 @end

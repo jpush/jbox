@@ -47,6 +47,8 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
     }
     [[NSUserDefaults standardUserDefaults] setObject:dataArr forKey:JBUserDefaultsDevkey];
     [JBDatabase createChannelTableWithDevkey:devkey];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:JBDevkeyInserted object:nil];
 }
 
 +(BOOL)devkeyInDatabase:(NSString*)devkey{
@@ -275,6 +277,17 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
     return modelArray;
 }
 
++(NSMutableArray*)getSubscribedChannelsFromDevkey:(NSString*)devkey{
+    NSMutableArray *array = [JBDatabase getChannelsFromDevkey:devkey];
+    for (JBChannel *channel in array.reverseObjectEnumerator) {
+        if (!channel.isSubscribed.boolValue) {
+            [array removeObject:channel];
+            continue;
+        }
+    }
+    return array;
+}
+
 +(void)checkAndDeleteChannelsFromDevkey:(NSString*)devkey newChannelNames:(NSArray*)newChannelNames{
     NSMutableArray *originChannels  = [JBDatabase getChannelsFromDevkey:devkey];
     for (JBChannel *channel in originChannels) {
@@ -305,7 +318,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
                 }
             }
             [JPUSHService setTags:set alias:nil fetchCompletionHandle:^(int iResCode, NSSet *iTags, NSString *iAlias) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:JBSlideViewShouldUpdate object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:JBChannelUpdated object:nil];
             }];
         }
         [JBSharedChannelDatabase close];

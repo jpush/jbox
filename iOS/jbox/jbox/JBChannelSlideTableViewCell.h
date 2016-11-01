@@ -1,5 +1,5 @@
 //
-//  JBSlideTableViewCell.h
+//  JBChannelSlideTableViewCell.h
 //  极光宝盒
 //
 //  Created by wuxingchen on 16/9/5.
@@ -9,10 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "JBChannel.h"
 
-@interface JBSlideTableViewCell : UITableViewCell
+@interface JBChannelSlideTableViewCell : UITableViewCell
 
 @property(nonatomic,retain)JBChannel *channel;
-//-(void)becomeToEditing;
-//-(void)endToEditing;
 
 @end

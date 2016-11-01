@@ -1,5 +1,5 @@
 //
-//  JBSlideView.h
+//  JBChannelSlideView.h
 //  极光宝盒
 //
 //  Created by wuxingchen on 16/9/12.
@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JBDevkey.h"
 
-@interface JBSlideView : UIView <UITableViewDelegate, UITableViewDataSource>
+@interface JBChannelSlideView : UIView <UITableViewDelegate, UITableViewDataSource>
 -(void)shouldUpdate;
 @property (weak, nonatomic) IBOutlet UITableView *channel_tableView;
-@property(nonatomic, assign)BOOL isEditing;
+@property(nonatomic, retain)JBDevkey *devkey;
 @end

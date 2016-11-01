@@ -27,8 +27,9 @@
     if (_suitableHeight < 60) {
         return 60;
     }else{
-        CGSize size = [self.content_label caculatedSize];
-        _suitableHeight = 60 + size.height - 16;
+        CGSize size1 = [self.title_label   caculatedSize];
+        CGSize size2 = [self.content_label caculatedSize];
+        _suitableHeight = 7 + size1.height + 7 + size2.height + 7;
         return _suitableHeight;
     }
 }

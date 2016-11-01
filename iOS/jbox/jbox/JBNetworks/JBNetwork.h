@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JBDevkey.h"
 
 @interface JBNetwork : NSObject
 
-+(void)getDevInfoWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete;
++(void)getDevInfoWithDevkey:(NSString*)devkeyStr complete:(void (^)(JBDevkey *devkey))complete;
 
 +(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete;
 

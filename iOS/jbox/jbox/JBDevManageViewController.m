@@ -58,39 +58,35 @@
 
 -(void)setScanedDevkey:(NSString *)scanedDevkey{
     _scanedDevkey = scanedDevkey;
-    NSString *realDevkey = [scanedDevkey componentsSeparatedByString:@"_"][0];
+    if (scanedDevkey && ![scanedDevkey isEqualToString:@""]) {
+        NSString *realDevkey = [scanedDevkey componentsSeparatedByString:@"_"][0];
 
-    if ([JBDatabase devkeyInDatabase:realDevkey]) {
-        [self updateUIWithDevkey:[JBDatabase getDevkeyInfoWithDevkey:realDevkey]];
-        self.channels = [JBDatabase getChannelsFromDevkey:realDevkey];
-    }
+        WEAK_SELF(weakSelf);
+        [JBNetwork getDevInfoWithDevkey:realDevkey complete:^(JBDevkey *devkey) {
 
-    WEAK_SELF(weakSelf);
-    [JBNetwork getDevInfoWithDevkey:realDevkey complete:^(id responseObject) {
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        JBDevkey *devkey = [JBDevkey new];
-        [devkey setValuesForKeysWithDictionary:dict];
-        [JBDatabase insertDevkey:devkey];
+            [JBDatabase insertDevkey:devkey];
 
-        [weakSelf updateUIWithDevkey:devkey];
+            [weakSelf updateUIWithDevkey:devkey];
 
-        [JBNetwork getChannelsWithDevkey:realDevkey complete:^(id responseObject) {
+            [JBNetwork getChannelsWithDevkey:realDevkey complete:^(id responseObject) {
 
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-            NSArray *channelNames = dict[@"channels"];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+                NSArray *channelNames = dict[@"channels"];
 
-            [JBDatabase checkAndDeleteChannelsFromDevkey:realDevkey newChannelNames:channelNames];
+                [JBDatabase checkAndDeleteChannelsFromDevkey:realDevkey newChannelNames:channelNames];
 
-            for (NSString *name in channelNames) {
-                JBChannel *channel = [JBChannel new];
-                channel.dev_key       = realDevkey;
-                channel.isSubscribed  = @"0";
-                channel.name          = name;
-                [JBDatabase insertChannel:channel];
-            }
-            weakSelf.channels = [JBDatabase getChannelsFromDevkey:realDevkey];
+                for (NSString *name in channelNames) {
+                    JBChannel *channel = [JBChannel new];
+                    channel.dev_key       = realDevkey;
+                    channel.isSubscribed  = @"0";
+                    channel.name          = name;
+                    [JBDatabase insertChannel:channel];
+                }
+                weakSelf.channels = [JBDatabase getChannelsFromDevkey:realDevkey];
+            }];
         }];
-    }];
+
+    }
 }
 
 -(void)updateUIWithDevkey:(JBDevkey*)devkey{

@@ -10,12 +10,12 @@
 		0D253C901D9A11C80087EDD6 /* jpush-ios-2.1.9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D253C8E1D9A11C80087EDD6 /* jpush-ios-2.1.9.a */; };
 		0D253C911D9A11C80087EDD6 /* JPUSHService.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D253C8F1D9A11C80087EDD6 /* JPUSHService.h */; };
 		0D49A6121DBF223700EBA216 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D49A6101DBF223700EBA216 /* LaunchScreen.storyboard */; };
-		0D49A61E1DBF4AB800EBA216 /* JBSlideTableViewCell2.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D49A61B1DBF4AB800EBA216 /* JBSlideTableViewCell2.h */; };
-		0D49A61F1DBF4AB800EBA216 /* JBSlideTableViewCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D49A61C1DBF4AB800EBA216 /* JBSlideTableViewCell2.m */; };
-		0D49A6201DBF4AB800EBA216 /* JBSlideTableViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D49A61D1DBF4AB800EBA216 /* JBSlideTableViewCell2.xib */; };
-		0D49A6241DBF4FC900EBA216 /* JBSlideView2.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D49A6211DBF4FC900EBA216 /* JBSlideView2.h */; };
-		0D49A6251DBF4FC900EBA216 /* JBSlideView2.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D49A6221DBF4FC900EBA216 /* JBSlideView2.m */; };
-		0D49A6261DBF4FC900EBA216 /* JBSlideView2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D49A6231DBF4FC900EBA216 /* JBSlideView2.xib */; };
+		0D49A61E1DBF4AB800EBA216 /* JBDevSlideTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D49A61B1DBF4AB800EBA216 /* JBDevSlideTableViewCell.h */; };
+		0D49A61F1DBF4AB800EBA216 /* JBDevSlideTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D49A61C1DBF4AB800EBA216 /* JBDevSlideTableViewCell.m */; };
+		0D49A6201DBF4AB800EBA216 /* JBDevSlideTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D49A61D1DBF4AB800EBA216 /* JBDevSlideTableViewCell.xib */; };
+		0D49A6241DBF4FC900EBA216 /* JBTeamSlideView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D49A6211DBF4FC900EBA216 /* JBTeamSlideView.h */; };
+		0D49A6251DBF4FC900EBA216 /* JBTeamSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D49A6221DBF4FC900EBA216 /* JBTeamSlideView.m */; };
+		0D49A6261DBF4FC900EBA216 /* JBTeamSlideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D49A6231DBF4FC900EBA216 /* JBTeamSlideView.xib */; };
 		0D49A6321DBF5DE100EBA216 /* JBScrollViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D49A62F1DBF5DE100EBA216 /* JBScrollViewController.h */; };
 		0D49A6331DBF5DE100EBA216 /* JBScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D49A6301DBF5DE100EBA216 /* JBScrollViewController.m */; };
 		0D49A6341DBF5DE100EBA216 /* JBScrollViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D49A6311DBF5DE100EBA216 /* JBScrollViewController.xib */; };
@@ -61,12 +61,12 @@
 		0D9B94CF1DBE0DAE00958BFB /* JBEditChannelTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D9B94CC1DBE0DAE00958BFB /* JBEditChannelTableViewCell.h */; };
 		0D9B94D01DBE0DAE00958BFB /* JBEditChannelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B94CD1DBE0DAE00958BFB /* JBEditChannelTableViewCell.m */; };
 		0D9B94D11DBE0DAE00958BFB /* JBEditChannelTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D9B94CE1DBE0DAE00958BFB /* JBEditChannelTableViewCell.xib */; };
-		0D9B94D51DBE0DCC00958BFB /* JBSlideView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D9B94D21DBE0DCC00958BFB /* JBSlideView.h */; };
-		0D9B94D61DBE0DCC00958BFB /* JBSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B94D31DBE0DCC00958BFB /* JBSlideView.m */; };
-		0D9B94D71DBE0DCC00958BFB /* JBSlideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D9B94D41DBE0DCC00958BFB /* JBSlideView.xib */; };
-		0D9B94E11DBE0DF700958BFB /* JBSlideTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D9B94DE1DBE0DF700958BFB /* JBSlideTableViewCell.h */; };
-		0D9B94E21DBE0DF700958BFB /* JBSlideTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B94DF1DBE0DF700958BFB /* JBSlideTableViewCell.m */; };
-		0D9B94E31DBE0DF700958BFB /* JBSlideTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D9B94E01DBE0DF700958BFB /* JBSlideTableViewCell.xib */; };
+		0D9B94D51DBE0DCC00958BFB /* JBChannelSlideView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D9B94D21DBE0DCC00958BFB /* JBChannelSlideView.h */; };
+		0D9B94D61DBE0DCC00958BFB /* JBChannelSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B94D31DBE0DCC00958BFB /* JBChannelSlideView.m */; };
+		0D9B94D71DBE0DCC00958BFB /* JBChannelSlideView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D9B94D41DBE0DCC00958BFB /* JBChannelSlideView.xib */; };
+		0D9B94E11DBE0DF700958BFB /* JBChannelSlideTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D9B94DE1DBE0DF700958BFB /* JBChannelSlideTableViewCell.h */; };
+		0D9B94E21DBE0DF700958BFB /* JBChannelSlideTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B94DF1DBE0DF700958BFB /* JBChannelSlideTableViewCell.m */; };
+		0D9B94E31DBE0DF700958BFB /* JBChannelSlideTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D9B94E01DBE0DF700958BFB /* JBChannelSlideTableViewCell.xib */; };
 		0D9B94E61DBE0E1700958BFB /* JBNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D9B94E41DBE0E1700958BFB /* JBNetwork.h */; };
 		0D9B94E71DBE0E1700958BFB /* JBNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9B94E51DBE0E1700958BFB /* JBNetwork.m */; };
 		0D9B94EE1DBE0E3200958BFB /* JBChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D9B94E81DBE0E3200958BFB /* JBChannel.h */; };
@@ -572,12 +572,12 @@
 		0D253C8E1D9A11C80087EDD6 /* jpush-ios-2.1.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.9.a"; sourceTree = "<group>"; };
 		0D253C8F1D9A11C80087EDD6 /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		0D49A6111DBF223700EBA216 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = jbox/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		0D49A61B1DBF4AB800EBA216 /* JBSlideTableViewCell2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBSlideTableViewCell2.h; path = jbox/JBSlideTableViewCell2.h; sourceTree = SOURCE_ROOT; };
-		0D49A61C1DBF4AB800EBA216 /* JBSlideTableViewCell2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBSlideTableViewCell2.m; path = jbox/JBSlideTableViewCell2.m; sourceTree = SOURCE_ROOT; };
-		0D49A61D1DBF4AB800EBA216 /* JBSlideTableViewCell2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBSlideTableViewCell2.xib; path = jbox/JBSlideTableViewCell2.xib; sourceTree = SOURCE_ROOT; };
-		0D49A6211DBF4FC900EBA216 /* JBSlideView2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBSlideView2.h; path = jbox/JBSlideView2.h; sourceTree = SOURCE_ROOT; };
-		0D49A6221DBF4FC900EBA216 /* JBSlideView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBSlideView2.m; path = jbox/JBSlideView2.m; sourceTree = SOURCE_ROOT; };
-		0D49A6231DBF4FC900EBA216 /* JBSlideView2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBSlideView2.xib; path = jbox/JBSlideView2.xib; sourceTree = SOURCE_ROOT; };
+		0D49A61B1DBF4AB800EBA216 /* JBDevSlideTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBDevSlideTableViewCell.h; path = jbox/JBDevSlideTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		0D49A61C1DBF4AB800EBA216 /* JBDevSlideTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBDevSlideTableViewCell.m; path = jbox/JBDevSlideTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		0D49A61D1DBF4AB800EBA216 /* JBDevSlideTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBDevSlideTableViewCell.xib; path = jbox/JBDevSlideTableViewCell.xib; sourceTree = SOURCE_ROOT; };
+		0D49A6211DBF4FC900EBA216 /* JBTeamSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBTeamSlideView.h; path = jbox/JBTeamSlideView.h; sourceTree = SOURCE_ROOT; };
+		0D49A6221DBF4FC900EBA216 /* JBTeamSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBTeamSlideView.m; path = jbox/JBTeamSlideView.m; sourceTree = SOURCE_ROOT; };
+		0D49A6231DBF4FC900EBA216 /* JBTeamSlideView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBTeamSlideView.xib; path = jbox/JBTeamSlideView.xib; sourceTree = SOURCE_ROOT; };
 		0D49A62F1DBF5DE100EBA216 /* JBScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBScrollViewController.h; path = jbox/JBScrollViewController.h; sourceTree = SOURCE_ROOT; };
 		0D49A6301DBF5DE100EBA216 /* JBScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBScrollViewController.m; path = jbox/JBScrollViewController.m; sourceTree = SOURCE_ROOT; };
 		0D49A6311DBF5DE100EBA216 /* JBScrollViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBScrollViewController.xib; path = jbox/JBScrollViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -624,12 +624,12 @@
 		0D9B94CC1DBE0DAE00958BFB /* JBEditChannelTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBEditChannelTableViewCell.h; path = jbox/JBEditChannelTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		0D9B94CD1DBE0DAE00958BFB /* JBEditChannelTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBEditChannelTableViewCell.m; path = jbox/JBEditChannelTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		0D9B94CE1DBE0DAE00958BFB /* JBEditChannelTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBEditChannelTableViewCell.xib; path = jbox/JBEditChannelTableViewCell.xib; sourceTree = SOURCE_ROOT; };
-		0D9B94D21DBE0DCC00958BFB /* JBSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBSlideView.h; path = jbox/JBSlideView.h; sourceTree = SOURCE_ROOT; };
-		0D9B94D31DBE0DCC00958BFB /* JBSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBSlideView.m; path = jbox/JBSlideView.m; sourceTree = SOURCE_ROOT; };
-		0D9B94D41DBE0DCC00958BFB /* JBSlideView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBSlideView.xib; path = jbox/JBSlideView.xib; sourceTree = SOURCE_ROOT; };
-		0D9B94DE1DBE0DF700958BFB /* JBSlideTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBSlideTableViewCell.h; path = jbox/JBSlideTableViewCell.h; sourceTree = SOURCE_ROOT; };
-		0D9B94DF1DBE0DF700958BFB /* JBSlideTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBSlideTableViewCell.m; path = jbox/JBSlideTableViewCell.m; sourceTree = SOURCE_ROOT; };
-		0D9B94E01DBE0DF700958BFB /* JBSlideTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBSlideTableViewCell.xib; path = jbox/JBSlideTableViewCell.xib; sourceTree = SOURCE_ROOT; };
+		0D9B94D21DBE0DCC00958BFB /* JBChannelSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBChannelSlideView.h; path = jbox/JBChannelSlideView.h; sourceTree = SOURCE_ROOT; };
+		0D9B94D31DBE0DCC00958BFB /* JBChannelSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBChannelSlideView.m; path = jbox/JBChannelSlideView.m; sourceTree = SOURCE_ROOT; };
+		0D9B94D41DBE0DCC00958BFB /* JBChannelSlideView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBChannelSlideView.xib; path = jbox/JBChannelSlideView.xib; sourceTree = SOURCE_ROOT; };
+		0D9B94DE1DBE0DF700958BFB /* JBChannelSlideTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBChannelSlideTableViewCell.h; path = jbox/JBChannelSlideTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		0D9B94DF1DBE0DF700958BFB /* JBChannelSlideTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBChannelSlideTableViewCell.m; path = jbox/JBChannelSlideTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		0D9B94E01DBE0DF700958BFB /* JBChannelSlideTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JBChannelSlideTableViewCell.xib; path = jbox/JBChannelSlideTableViewCell.xib; sourceTree = SOURCE_ROOT; };
 		0D9B94E41DBE0E1700958BFB /* JBNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBNetwork.h; path = jbox/JBNetworks/JBNetwork.h; sourceTree = SOURCE_ROOT; };
 		0D9B94E51DBE0E1700958BFB /* JBNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBNetwork.m; path = jbox/JBNetworks/JBNetwork.m; sourceTree = SOURCE_ROOT; };
 		0D9B94E81DBE0E3200958BFB /* JBChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBChannel.h; path = jbox/JBDatabase/JBChannel.h; sourceTree = SOURCE_ROOT; };
@@ -1364,18 +1364,18 @@
 		0D3210501D7D4C4D00EA22AF /* V */ = {
 			isa = PBXGroup;
 			children = (
-				0D9B94D21DBE0DCC00958BFB /* JBSlideView.h */,
-				0D9B94D31DBE0DCC00958BFB /* JBSlideView.m */,
-				0D9B94D41DBE0DCC00958BFB /* JBSlideView.xib */,
-				0D9B94DE1DBE0DF700958BFB /* JBSlideTableViewCell.h */,
-				0D9B94DF1DBE0DF700958BFB /* JBSlideTableViewCell.m */,
-				0D9B94E01DBE0DF700958BFB /* JBSlideTableViewCell.xib */,
-				0D49A6211DBF4FC900EBA216 /* JBSlideView2.h */,
-				0D49A6221DBF4FC900EBA216 /* JBSlideView2.m */,
-				0D49A6231DBF4FC900EBA216 /* JBSlideView2.xib */,
-				0D49A61B1DBF4AB800EBA216 /* JBSlideTableViewCell2.h */,
-				0D49A61C1DBF4AB800EBA216 /* JBSlideTableViewCell2.m */,
-				0D49A61D1DBF4AB800EBA216 /* JBSlideTableViewCell2.xib */,
+				0D9B94D21DBE0DCC00958BFB /* JBChannelSlideView.h */,
+				0D9B94D31DBE0DCC00958BFB /* JBChannelSlideView.m */,
+				0D9B94D41DBE0DCC00958BFB /* JBChannelSlideView.xib */,
+				0D9B94DE1DBE0DF700958BFB /* JBChannelSlideTableViewCell.h */,
+				0D9B94DF1DBE0DF700958BFB /* JBChannelSlideTableViewCell.m */,
+				0D9B94E01DBE0DF700958BFB /* JBChannelSlideTableViewCell.xib */,
+				0D49A6211DBF4FC900EBA216 /* JBTeamSlideView.h */,
+				0D49A6221DBF4FC900EBA216 /* JBTeamSlideView.m */,
+				0D49A6231DBF4FC900EBA216 /* JBTeamSlideView.xib */,
+				0D49A61B1DBF4AB800EBA216 /* JBDevSlideTableViewCell.h */,
+				0D49A61C1DBF4AB800EBA216 /* JBDevSlideTableViewCell.m */,
+				0D49A61D1DBF4AB800EBA216 /* JBDevSlideTableViewCell.xib */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -2279,7 +2279,7 @@
 				0D9B985B1DBE0F9F00958BFB /* ZXPDF417BarcodeValue.h in Headers */,
 				0D9B970D1DBE0F9E00958BFB /* ZXAztecWriter.h in Headers */,
 				0D9B976C1DBE0F9E00958BFB /* ZXReedSolomonEncoder.h in Headers */,
-				0D49A6241DBF4FC900EBA216 /* JBSlideView2.h in Headers */,
+				0D49A6241DBF4FC900EBA216 /* JBTeamSlideView.h in Headers */,
 				0D9B94FA1DBE0E8200958BFB /* UIColor+Hex.h in Headers */,
 				0D9B978F1DBE0F9E00958BFB /* ZXBinaryBitmap.h in Headers */,
 				0D9B97C01DBE0F9E00958BFB /* ZXDataMatrixEdifactEncoder.h in Headers */,
@@ -2336,7 +2336,7 @@
 				0D4D276F1D9BBA4500685223 /* LBXScanViewController.h in Headers */,
 				0D9B97781DBE0F9E00958BFB /* ZXCharacterSetECI.h in Headers */,
 				0D9B98BC1DBE0F9F00958BFB /* ZXMultiFormatReader.h in Headers */,
-				0D9B94D51DBE0DCC00958BFB /* JBSlideView.h in Headers */,
+				0D9B94D51DBE0DCC00958BFB /* JBChannelSlideView.h in Headers */,
 				0D9B977C1DBE0F9E00958BFB /* ZXDefaultGridSampler.h in Headers */,
 				0D9B97FE1DBE0F9E00958BFB /* ZXRSSExpandedDecodedChar.h in Headers */,
 				0D9B982A1DBE0F9E00958BFB /* ZXCode93Reader.h in Headers */,
@@ -2351,7 +2351,7 @@
 				0D9B97AC1DBE0F9E00958BFB /* ZXDataMatrixBitMatrixParser.h in Headers */,
 				0D9B972A1DBE0F9E00958BFB /* ZXGeoResultParser.h in Headers */,
 				0D9B97AE1DBE0F9E00958BFB /* ZXDataMatrixDataBlock.h in Headers */,
-				0D49A61E1DBF4AB800EBA216 /* JBSlideTableViewCell2.h in Headers */,
+				0D49A61E1DBF4AB800EBA216 /* JBDevSlideTableViewCell.h in Headers */,
 				0D9B97881DBE0F9E00958BFB /* ZXPerspectiveTransform.h in Headers */,
 				0D9B97BA1DBE0F9E00958BFB /* ZXDataMatrixBase256Encoder.h in Headers */,
 				0D9B987D1DBE0F9F00958BFB /* ZXingObjCPDF417.h in Headers */,
@@ -2478,7 +2478,7 @@
 				0D4D27651D9BBA4500685223 /* LBXScanNative.h in Headers */,
 				0D9B97CF1DBE0F9E00958BFB /* ZXDataMatrixX12Encoder.h in Headers */,
 				0D9B978A1DBE0F9E00958BFB /* ZXStringUtils.h in Headers */,
-				0D9B94E11DBE0DF700958BFB /* JBSlideTableViewCell.h in Headers */,
+				0D9B94E11DBE0DF700958BFB /* JBChannelSlideTableViewCell.h in Headers */,
 				0D9B98941DBE0F9F00958BFB /* ZXQRCodeFormatInformation.h in Headers */,
 				0D9B97431DBE0F9E00958BFB /* ZXTelResultParser.h in Headers */,
 				0D9B98AE1DBE0F9F00958BFB /* ZXQRCodeMatrixUtil.h in Headers */,
@@ -2603,16 +2603,16 @@
 				0D9B94C71DBE0D5400958BFB /* JBDevManageViewController.xib in Resources */,
 				0D9B94BB1DBE0CBE00958BFB /* JBMessageViewController.xib in Resources */,
 				0D9B98D51DBE0FB800958BFB /* LICENSE in Resources */,
-				0D49A6261DBF4FC900EBA216 /* JBSlideView2.xib in Resources */,
-				0D9B94E31DBE0DF700958BFB /* JBSlideTableViewCell.xib in Resources */,
+				0D49A6261DBF4FC900EBA216 /* JBTeamSlideView.xib in Resources */,
+				0D9B94E31DBE0DF700958BFB /* JBChannelSlideTableViewCell.xib in Resources */,
 				0D9B94D11DBE0DAE00958BFB /* JBEditChannelTableViewCell.xib in Resources */,
-				0D49A6201DBF4AB800EBA216 /* JBSlideTableViewCell2.xib in Resources */,
+				0D49A6201DBF4AB800EBA216 /* JBDevSlideTableViewCell.xib in Resources */,
 				0D9B95031DBE0F5A00958BFB /* Info.plist in Resources */,
 				0D49A6341DBF5DE100EBA216 /* JBScrollViewController.xib in Resources */,
 				0D9B95011DBE0F4B00958BFB /* Assets.xcassets in Resources */,
 				0D49A6121DBF223700EBA216 /* LaunchScreen.storyboard in Resources */,
 				0D9B94B51DBE0CA600958BFB /* JBChannelTableViewCell.xib in Resources */,
-				0D9B94D71DBE0DCC00958BFB /* JBSlideView.xib in Resources */,
+				0D9B94D71DBE0DCC00958BFB /* JBChannelSlideView.xib in Resources */,
 				0D9B96F51DBE0F9E00958BFB /* COPYING in Resources */,
 				0D9B94C11DBE0CEC00958BFB /* JBMessageTableViewCell.xib in Resources */,
 			);
@@ -2685,7 +2685,7 @@
 				0D9B97631DBE0F9E00958BFB /* ZXMonochromeRectangleDetector.m in Sources */,
 				0D9B94C01DBE0CEC00958BFB /* JBMessageTableViewCell.m in Sources */,
 				0D9B98991DBE0F9F00958BFB /* ZXQRCodeVersion.m in Sources */,
-				0D49A61F1DBF4AB800EBA216 /* JBSlideTableViewCell2.m in Sources */,
+				0D49A61F1DBF4AB800EBA216 /* JBDevSlideTableViewCell.m in Sources */,
 				0D9B97E51DBE0F9E00958BFB /* ZXAbstractExpandedDecoder.m in Sources */,
 				0D9B98A91DBE0F9F00958BFB /* ZXQRCodeBlockPair.m in Sources */,
 				0D9B98641DBE0F9F00958BFB /* ZXPDF417DecodedBitStreamParser.m in Sources */,
@@ -2868,13 +2868,13 @@
 				0D9B97131DBE0F9E00958BFB /* ZXAddressBookAUResultParser.m in Sources */,
 				0D9B989B1DBE0F9F00958BFB /* ZXQRCodeAlignmentPattern.m in Sources */,
 				0D9B97671DBE0F9E00958BFB /* ZXGenericGF.m in Sources */,
-				0D9B94D61DBE0DCC00958BFB /* JBSlideView.m in Sources */,
+				0D9B94D61DBE0DCC00958BFB /* JBChannelSlideView.m in Sources */,
 				0D4D27721D9BBA4500685223 /* LBXScanViewStyle.m in Sources */,
 				0D9B989F1DBE0F9F00958BFB /* ZXQRCodeDetector.m in Sources */,
 				0D9B979D1DBE0F9E00958BFB /* ZXInvertedLuminanceSource.m in Sources */,
 				0D9B97B71DBE0F9E00958BFB /* ZXDataMatrixDetector.m in Sources */,
 				0D9B98CE1DBE0FB800958BFB /* UIActionSheet+LBXAlertAction.m in Sources */,
-				0D9B94E21DBE0DF700958BFB /* JBSlideTableViewCell.m in Sources */,
+				0D9B94E21DBE0DF700958BFB /* JBChannelSlideTableViewCell.m in Sources */,
 				0D9B94BA1DBE0CBE00958BFB /* JBMessageViewController.m in Sources */,
 				0D9B97941DBE0F9E00958BFB /* ZXDecodeHints.m in Sources */,
 				0D9B972F1DBE0F9E00958BFB /* ZXISBNResultParser.m in Sources */,
@@ -2902,7 +2902,7 @@
 				0D9B94EF1DBE0E3200958BFB /* JBChannel.m in Sources */,
 				0D9B97981DBE0F9E00958BFB /* ZXEncodeHints.m in Sources */,
 				0D9B97381DBE0F9E00958BFB /* ZXResultParser.m in Sources */,
-				0D49A6251DBF4FC900EBA216 /* JBSlideView2.m in Sources */,
+				0D49A6251DBF4FC900EBA216 /* JBTeamSlideView.m in Sources */,
 				0D9B97401DBE0F9E00958BFB /* ZXSMTPResultParser.m in Sources */,
 				0D9B970A1DBE0F9E00958BFB /* ZXAztecDetectorResult.m in Sources */,
 				0D9B97B51DBE0F9E00958BFB /* ZXDataMatrixVersion.m in Sources */,
