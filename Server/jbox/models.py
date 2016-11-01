@@ -144,11 +144,6 @@ class Integration(db.Model):
                     flag = True
         return True
 
-    @staticmethod
-    def generate_auth_token():
-        token = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 10)])
-        return token
-
 
 class GitHub(db.Model):
     __tablename__ = 'githubs'
@@ -195,4 +190,10 @@ def generate_platform_id():
 def generate_integration_id():
     integration_id = ''.join([(string.ascii_letters+string.digits)[x] for x in random.sample(range(0, 62), 15)])
     return integration_id
+
+
+def generate_auth_token():
+    token = ''.join([(string.ascii_letters + string.digits)[x] for x in random.sample(range(0, 62), 10)])
+    return token
+
 

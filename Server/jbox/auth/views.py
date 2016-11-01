@@ -6,7 +6,7 @@ from flask_httpauth import HTTPAuth
 from flask_oauthlib.client import OAuth
 from . import auth
 from config import basedir
-from ..models import db, Channel, Developer, Integration, Authorization, generate_integration_id
+from ..models import db, Channel, Developer, Integration, Authorization, generate_integration_id, generate_auth_token
 from ..main.views import update_qq_api_request_data, qq, json_to_dict
 
 app = Flask(__name__)
@@ -80,6 +80,7 @@ def github_integration():
                         new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
                                             channel=integration.channel.channel, repositories=repo_list)
                         github_integrations.append(new_github)
+        print('github_integrations length:' + str(len(github_integrations)))
         return render_template('auth/github_integration.html', **locals())
     except Exception:
         # 重新授权
@@ -130,6 +131,7 @@ def github_re_authorize():
                     new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
                                         channel=integration.channel.channel, repositories=repo_list)
                     github_integrations.append(new_github)
+    print('re-authorize github_integrations length:' + str(len(github_integrations)))
     return render_template('auth/github_integration.html', **locals())
 
 
@@ -337,10 +339,8 @@ def create_github_integration(channel):
                               description='',
                               icon='',
                               type='github',
+                              token=generate_auth_token(),
                               owner=session['user'])
-    integration.insert_to_db()
-    token = integration.generate_auth_token()
-    integration.token = token
     db.session.add(integration)
     db.session.commit()
     return redirect(url_for('auth.edit_github_integration', integration_id=new_integration_id))

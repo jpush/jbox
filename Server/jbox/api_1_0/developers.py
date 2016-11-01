@@ -1,7 +1,7 @@
 import os, operator
 from flask import abort, Flask, json, jsonify, request, make_response, session, redirect, url_for
 from . import api
-from ..models import Developer, db, Channel, Integration, GitHub, generate_dev_key, generate_integration_id
+from ..models import Developer, db, Channel, Integration, GitHub, generate_dev_key, generate_integration_id, generate_auth_token
 from .authentication import auth
 from ..main.views import qq, update_qq_api_request_data
 from ..auth.views import github
@@ -213,6 +213,7 @@ def create_integrations(dev_key):
         for channel in channel_list:
             if request.json['channel'] == channel.channel:
                 new_integration_id = generate_integration_id()
+                token = generate_auth_token()
                 if "discourse" in request.json:
                     print("create discourse integration")
                     new_integration = Integration(developer=developer,
@@ -221,16 +222,15 @@ def create_integrations(dev_key):
                                                   name='discourse',
                                                   description='',
                                                   icon='',
+                                                  token=token,
                                                   type='discourse')
                 else:
                     new_integration = Integration(developer=developer,
                                                   integration_id=new_integration_id,
                                                   channel=channel,
                                                   description='',
-                                                  icon='')
-                new_integration.insert_to_db()
-                token = new_integration.generate_auth_token()
-                new_integration.token = token
+                                                  icon='',
+                                                  token=token)
                 db.session.add(new_integration)
                 try:
                     db.session.commit()
@@ -243,6 +243,7 @@ def create_integrations(dev_key):
     db.session.add(new_channel)
     try:
         new_integration_id = generate_integration_id()
+        token = generate_auth_token()
         if "discourse" in request.json:
             print("create discourse integration")
             new_integration = Integration(developer=developer,
@@ -251,16 +252,15 @@ def create_integrations(dev_key):
                                           name='discourse',
                                           description='',
                                           icon='',
-                                          type='discourse')
+                                          type='discourse',
+                                          token=token)
         else:
             new_integration = Integration(developer=developer,
                                           integration_id=new_integration_id,
                                           channel=new_channel,
                                           description='',
-                                          icon='')
-        new_integration.insert_to_db()
-        token = new_integration.generate_auth_token()
-        new_integration.token = token
+                                          icon='',
+                                          token=token)
         db.session.add(new_integration)
         db.session.commit()
         return jsonify({'integration_id': new_integration_id,
@@ -453,7 +453,7 @@ def regenerate_integration_token(integration_id):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
         abort(400)
-    token = integration.generate_auth_token()
+    token = generate_auth_token()
     integration.token = token
     try:
         db.session.add(integration)
