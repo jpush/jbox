@@ -39,48 +39,55 @@
     </div>
 
     <div class="container" style="text-align: center;">
-        <button class="create-integration" onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>新建自定义集成</button>
+        <button class="create-integration" onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>
+            新建自定义集成
+        </button>
     </div>
 
     <div class="container-fluid">
-        <table id="table" class="table" align="center">
-            <thead>
-            <tr class="table-header">
-                <th class="jbox-font table-header-font">
-                    应用名
-                </th>
-                <th class="jbox-font table-header-font">
-                    频道
-                </th>
-                <th class="jbox-font table-header-font">
-                    描述
-                </th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for integration in integrations %}
-                {% if integration.type == 'custom' %}
-                <tr>
-                    <td class="jbox-font table-font">
-                        {{ integration.name }}
-                    </td>
-                    <td class="jbox-font table-font">
-                        {{ integration.channel.channel }}
-                    </td>
-                    <td class="jbox-font table-font">
-                        {{ integration.description }}
-                    </td>
-                    <td>
-                        <button id='{{ integration.id }}' name="edit" class="btn btn-info btn-middle"
-                                type="button">编辑
-                        </button>
-                    </td>
+        {% if integrations %}
+            <table id="table" class="table" align="center">
+                <thead>
+                <tr class="table-header">
+                    <th class="jbox-font table-header-font">
+                        应用名
+                    </th>
+                    <th class="jbox-font table-header-font">
+                        频道
+                    </th>
+                    <th class="jbox-font table-header-font">
+                        描述
+                    </th>
+                    <th></th>
                 </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for integration in integrations %}
+                    {% if integration.type == 'custom' %}
+                        <tr>
+                            <td class="jbox-font table-font">
+                                {{ integration.name }}
+                            </td>
+                            <td class="jbox-font table-font">
+                                {{ integration.channel.channel }}
+                            </td>
+                            <td class="jbox-font table-font">
+                                {{ integration.description }}
+                            </td>
+                            <td>
+                                <button id='{{ integration.id }}' name="edit" class="btn btn-info btn-middle"
+                                        type="button">编辑
+                                </button>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="jbox-font tip-font">当前还没有创建自定义集成</p>
+        {% endif %}
+
     </div>
 
     <div class="container" style="text-align: center;">
@@ -94,101 +101,35 @@
     </div>
 
     <div class="container">
-        <table id="tp-table" align="center">
-            <tbody>
+        {% if github_integrations or discourse_integrations %}
+            <table class="tp-table" align="center">
+                <tbody>
                 <tr>
-                    <td id="github-td">
-                        <button class="tp-content" onclick=window.location.href="{{ url_for('auth.github_integration') }}">
-                            <img class="tp-content-icon" src="/static/images/github1x.png">
-                            GitHub
-                        </button>
-                    </td>
-                    <td>
-                        <button class="tp-content" onclick=window.location.href="{{ url_for('auth.discourse_integration') }}">
-                            <img class="tp-content-icon" src="/static/images/discourse.png">
-                            Discourse
-                        </button>
-                    </td>
+                    {% if github_integrations %}
+                        <td id="github-td">
+                            <button class="tp-content"
+                                    onclick=window.location.href="{{ url_for('auth.github_integration') }}">
+                                <img class="tp-content-icon" src="/static/images/github1x.png">
+                                GitHub
+                            </button>
+                        </td>
+                    {% endif %}
+                    {% if discourse_integrations %}
+                        <td>
+                            <button class="tp-content"
+                                    onclick=window.location.href="{{ url_for('auth.discourse_integration') }}">
+                                <img class="tp-content-icon" src="/static/images/discourse.png">
+                                Discourse
+                            </button>
+                        </td>
+                    {% endif %}
                 </tr>
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        {% else %}
+            <p class="jbox-font tip-font">当前没有添加任何第三方集成</p>
+        {% endif %}
 
-    <div class="content">
-{#        <h2 class="jbox-font" id="integration-title">集成自己的应用</h2>#}
-{#        {% for message in get_flashed_messages() %}#}
-{#            <div class="alert alert-warning">#}
-{#                <button type="button" class="close" data-dismiss="alert">&times;</button>#}
-{#                {{ message }}#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#        <button class="create-integration"#}
-{#                onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>新建自定义集成#}
-{#        </button>#}
-
-{#        <table id="table" class="table">#}
-{#            <thead>#}
-{#            <tr class="table-header">#}
-{#                <th class="jbox-font table-header-font">#}
-{#                    应用名#}
-{#                </th>#}
-{#                <th class="jbox-font table-header-font">#}
-{#                    频道#}
-{#                </th>#}
-{#                <th class="jbox-font table-header-font">#}
-{#                    描述#}
-{#                </th>#}
-{#                <th></th>#}
-{#            </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#            {% for integration in integrations %}#}
-{#                {% if integration.type == 'custom' %}#}
-{#                <tr>#}
-{#                    <td class="jbox-font table-font">#}
-{#                        {{ integration.name }}#}
-{#                    </td>#}
-{#                    <td class="jbox-font table-font">#}
-{#                        {{ integration.channel.channel }}#}
-{#                    </td>#}
-{#                    <td class="jbox-font table-font">#}
-{#                        {{ integration.description }}#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        <button id='{{ integration.id }}' name="edit" class="btn btn-info btn-middle"#}
-{#                                type="button">编辑#}
-{#                        </button>#}
-{#                    </td>#}
-{#                </tr>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-
-
-{#        <button class="create-integration"#}
-{#                onclick=window.location.href="{{ url_for('auth.add_third_party') }}";>添加第三方集成#}
-{#        </button>#}
-{#        <table id="tp-table">#}
-{#            <tbody>#}
-{#                <tr>#}
-{#                    <td id="github-td">#}
-{#                        <button class="tp-content" onclick=window.location.href="{{ url_for('auth.github_integration') }}">#}
-{#                            <img class="tp-content-icon" src="/static/images/github1x.png">#}
-{#                            GitHub#}
-{#                        </button>#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        <button class="tp-content" onclick=window.location.href="{{ url_for('auth.discourse_integration') }}">#}
-{#                            <img class="tp-content-icon" src="/static/images/discourse.png">#}
-{#                            Discourse#}
-{#                        </button>#}
-{#                    </td>#}
-{#                </tr>#}
-{#            </tbody>#}
-{#        </table>#}
-    </div>
-    <div class="span4">
     </div>
 
     <script type="text/javascript">

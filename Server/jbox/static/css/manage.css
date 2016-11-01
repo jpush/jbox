@@ -89,7 +89,13 @@ body {
     color: #595959;
 }
 
-#tp-table {
+.tip-font {
+    font-size: 18px;
+    color: #595959;
+}
+
+.tp-table {
+    mso-cellspacing: 60px;
 }
 
 .tp-content {
@@ -97,7 +103,6 @@ body {
     width: 232px;
     height: 247px;
     line-height: 60px;
-    margin-right: 60px;
     display: flex;
     flex-flow: column;
     justify-content: center;

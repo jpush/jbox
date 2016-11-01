@@ -116,7 +116,10 @@ def authorized():
             developer.insert_to_db()
     if developer is None:
         developer = get_developer()
-    return redirect(url_for('auth.manage', developer=developer))
+    username = developer.username
+    if username is None or username == '':
+        return redirect(url_for('auth.setting'))
+    return redirect(url_for('auth.manage'))
 
 
 @qq.tokengetter
@@ -151,18 +154,27 @@ def index():
 @main.route('/document', methods=['GET'])
 def document():
     developer = get_developer()
+    username = developer.username
+    if username is None or username == '':
+        return redirect(url_for('auth.setting'))
     return render_template('document.html', developer=developer)
 
 
 @main.route('/guide', methods=['GET'])
 def guide():
     developer = get_developer()
+    username = developer.username
+    if username is None or username == '':
+        return redirect(url_for('auth.setting'))
     return render_template('guide.html', developer=developer)
 
 
 @main.route('/application', methods=['GET'])
 def application():
     developer = get_developer()
+    username = developer.username
+    if username is None or username == '':
+        return redirect(url_for('auth.setting'))
     return render_template('application.html', developer=developer)
 
 

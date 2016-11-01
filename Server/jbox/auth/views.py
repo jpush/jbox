@@ -38,10 +38,13 @@ def allowed_file(filename):
 @auth.route('/manage', methods=['GET', 'POST'])
 def manage():
     developer = get_developer()
-    print(developer)
-    integrations = developer.integrations
+    username = developer.username
+    if username is None or username == '':
+        return redirect(url_for('auth.setting'))
+    integrations = Integration.query.filter_by(developer=developer, type='custom').all()
+    github_integrations = Integration.query.filter_by(developer=developer, type='github').all()
+    discourse_integrations = Integration.query.filter_by(developer=developer, type='discourse').all()
     return render_template('auth/manage.html', **locals())
-    # return render_template('index.html')
 
 
 @auth.route('/add_third_party', methods=['GET'])
@@ -297,13 +300,21 @@ def get_developer():
 @auth.route('/profile', methods=['GET'])
 def profile():
     developer = get_developer()
+    username = developer.username
+    if username is None or username == '':
+        return redirect(url_for('auth.setting'))
     return render_template('auth/profile.html', developer=developer)
 
 
 @auth.route('/setting', methods=['GET', 'POST'])
 def setting():
     developer = get_developer()
-    return render_template('auth/setting.html', developer=developer)
+    username = developer.username
+    if username is None or username == '':
+        first_login = True
+    else:
+        first_login = False
+    return render_template('auth/setting.html', **locals())
 
 
 def generate_file_name(file_type):

@@ -55,24 +55,6 @@ ul,li{margin:0;padding:0;}
 .nav-font {
     font-size: 18px;
     color: #FFFFFF;
-    margin-right: 0px;
-}
-
-#manage {
-    font-size: 18px;
-    color: #FFFFFF;
-    margin-right: 10px;
-}
-
-#logout {
-    font-size: 18px;
-    color: #FFFFFF;
-    margin-right: 30px;
-}
-
-#login {
-    font-size: 18px;
-    color: #FFFFFF;
 }
 
 #nav-divider {

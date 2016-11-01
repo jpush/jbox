@@ -14,9 +14,11 @@
 
 {% block title %}设置{% endblock %}
 
-{% block navbar %}
-    <div id="navigationbar">{{ super() }}</div>
-{% endblock %}
+{% if not first_login %}
+    {% block navbar %}
+        <div id="navigationbar">{{ super() }}</div>
+    {% endblock %}
+{% endif %}
 
 
 {% block content %}
@@ -36,7 +38,7 @@
                                 <input id="resultFilename" value="{{ developer.avatar }}" type="hidden">
                             {% else %}
                                 <img id="setting-avatar" src="/static/images/jiguang-bear.png">
-                                <input id="resultFilename"  type="hidden">
+                                <input id="resultFilename" type="hidden">
                             {% endif %}
                         </div>
 
@@ -62,12 +64,17 @@
                     <div class="col-md-4">
                         <div class="row-left-content">
                             <p class="jbox-font span-title table-title">开发者名称</p>
-                            <p class="span-desc">给你的开发者账号设置名称</p>
+                            <p class="span-desc">给你的开发者账号设置名称(必填)</p>
                         </div>
 
                     </div>
                     <div class="col-md-8 ">
-                        <input id="name-input" class="description" title="开发者名称" type="text" value="{{ developer.username }}"/>
+                        {% if not username or username == '' %}
+                            <input id="name-input" class="description" title="开发者名称" type="text" value=""/>
+                        {% else %}
+                            <input id="name-input" class="description" title="开发者名称" type="text"
+                                   value="{{ developer.username }}"/>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -83,7 +90,8 @@
 
                     </div>
                     <div class="col-md-8">
-                        <input id="desc-input" class="description" title="开发者描述" type="text" value="{{ developer.description }}"/>
+                        <input id="desc-input" class="description" title="开发者描述" type="text"
+                               value="{{ developer.description }}"/>
                     </div>
                 </div>
             </div>
@@ -99,7 +107,6 @@
         $(document).ready(function () {
             $('#name-input').val("{{ developer.username }}");
             $('#desc-input').val("{{ developer.description }}");
-
 
 
             $("input[type='file']").change(function () {
@@ -186,21 +193,25 @@
             var name = $('#name-input').val();
             var desc = $('#desc-input').val();
             var path = $('#resultFilename').val();
-            $.ajax({
-                type: "PUT",
-                contentType: "application/json; charset=utf-8",
-                url: "/v1/developers/{{ developer.dev_key }}",
-                data: JSON.stringify({name: name, desc: desc, avatar: path}),
-                success: function (data) {
-                    toastr.success("保存成功");
-                    window.location.href = '/auth/profile'
-                },
-                error: function (error) {
-                    console.log(error);
-                    toastr.error("保存失败");
-                },
-                dataType: "json"
-            });
+            if (name == undefined || name == '') {
+                toastr.warning("必须填写开发者名称");
+            } else {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/v1/developers/{{ developer.dev_key }}",
+                    data: JSON.stringify({name: name, desc: desc, avatar: path}),
+                    success: function (data) {
+                        toastr.success("保存成功");
+                        window.location.href = '/auth/profile'
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        toastr.error("保存失败");
+                    },
+                    dataType: "json"
+                });
+            }
         });
     </script>
 {% endblock %}

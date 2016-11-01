@@ -18,7 +18,7 @@ class Developer(UserMixin, db.Model):
     dev_key = db.Column(db.String(40), unique=True, index=True)
     platform = db.Column(db.String(50))
     platform_id = db.Column(db.String(40), unique=True)
-    username = db.Column(db.String(150), index=True)
+    username = db.Column(db.String(150), index=True, default='')
     confirmed = db.Column(db.Boolean, default=False)
     description = db.Column(db.String(150), default='')
     avatar = db.Column(db.String(150))
