@@ -19,6 +19,7 @@ import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.drawer.ChannelListFragment;
 import com.jiguang.jbox.drawer.NavigationDrawerFragment;
 import com.jiguang.jbox.main.adapter.MessageListAdapter;
+import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.view.TopBar;
 
@@ -52,6 +53,7 @@ public class MainActivity extends FragmentActivity
     private int mCurrentOffset = 0; // 当前加载的消息数。
 
     public static Handler handler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class MainActivity extends FragmentActivity
                     // 收到的是当前 Channel 的消息，更新界面。
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
+                    mAdapter.notifyDataSetChanged();
                 } else if (message.what == MSG_WHAT_RECEIVE_MSG) {
                     String devKey = data.getString("DevKey");
                     mDrawerFragment.mChannelListFragment.updateData(devKey);
@@ -115,13 +118,18 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
+                LogUtil.LOGI("MainActivity", mMsgListView.getLastVisiblePosition() + ":" + totalItemCount);
+
                 // 如果滑动到了最后，加载更多数据。
-                if (mMsgListView.getLastVisiblePosition() == totalItemCount) {
-                    mMessages.addAll(queryMessages(AppApplication.currentDevKey,
-                            AppApplication.currentChannelName, mCurrentOffset,
-                            QUERY_MESSAGE_COUNT));
-                    mCurrentOffset += QUERY_MESSAGE_COUNT;
-                    mAdapter.replaceData(mMessages);
+                if (mMsgListView.getLastVisiblePosition() + 1 == totalItemCount) {
+                    if (mMessages != null) {
+                        mMessages.addAll(queryMessages(AppApplication.currentDevKey,
+                                AppApplication.currentChannelName, mCurrentOffset,
+                                QUERY_MESSAGE_COUNT));
+                        mCurrentOffset += QUERY_MESSAGE_COUNT;
+                        mAdapter.replaceData(mMessages);
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         });
@@ -170,6 +178,7 @@ public class MainActivity extends FragmentActivity
         List<Message> messages = queryMessages(channel.devKey, channel.name, 0,
                 mCurrentOffset + QUERY_MESSAGE_COUNT);
         mAdapter.replaceData(messages);
+        mAdapter.notifyDataSetChanged();
 
         if (mDrawerFragment.getView() != null) {
             mDrawerLayout.closeDrawer(mDrawerFragment.getView());

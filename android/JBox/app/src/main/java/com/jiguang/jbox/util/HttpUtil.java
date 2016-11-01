@@ -72,8 +72,6 @@ public class HttpUtil {
                     if (response.isSuccessful()) {
                         String body = response.body().string();
 
-                        LogUtil.LOGI(TAG, body);
-
                         try {
                             JSONObject json = new JSONObject(body);
 

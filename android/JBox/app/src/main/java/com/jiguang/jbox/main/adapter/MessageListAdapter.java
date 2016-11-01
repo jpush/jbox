@@ -27,13 +27,11 @@ public class MessageListAdapter extends BaseAdapter {
 
     public void replaceData(List<Message> list) {
         mMessages = list;
-        notifyDataSetChanged();
     }
 
     public void addMessage(Message msg) {
         if (mMessages != null) {
             mMessages.add(0, msg);
-            notifyDataSetChanged();
         }
     }
 
