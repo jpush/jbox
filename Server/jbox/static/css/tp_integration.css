@@ -39,11 +39,11 @@
 }
 
 #tp-table {
-    margin: 62px 242px 191px 242px;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
+    /*margin: 62px 242px 191px 242px;*/
+    /*display: flex;*/
+    /*flex-flow: column;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
 }
 
 .tp-content {
