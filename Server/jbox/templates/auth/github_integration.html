@@ -28,7 +28,10 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4" style="float: left !important;">
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-2" style="float: left !important;">
                 <div id="github-icon-area" style="text-align: center">
                     <img id="github-icon" src="/static/images/github1x.png">
                     <p class="jbox-font" id="github-icon-title">GitHub</p>
@@ -41,7 +44,7 @@
                     <button id="add-github-integration">添加 GitHub 集成</button>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div id="description">
                     <p class="jbox-font" id="desc-title">GitHub</p>
                     <p class="jbox-font desc-content">GitHub is home to all kinds of software projects, from simple programs
@@ -68,13 +71,13 @@
                                         {% endif %}
                                     </div>
                                     <div class="col-md-1">
-                                        <button class="btn btn-info btn-middle" id="{{ integration.id }}"
+                                        <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}"
                                             type="button">编辑
                                         </button>
                                     </div>
                                 </div>
-                                <hr id="divider">
                             {% endfor %}
+                            <hr id="divider">
                         {% endif %}
                     </div>
                 </div>
@@ -86,9 +89,9 @@
     <script type="text/javascript">
         {% if github_integrations %}
             {% for integration in github_integrations %}
-                $('#{{ integration.id }}').click(function () {
+                $('#{{ integration.integration_id }}').click(function () {
                     {% if user %}
-                        window.location.href = '/auth/manage/edit_github_integration/{{ integration.id }}';
+                        window.location.href = '/auth/manage/edit_github_integration/{{ integration.integration_id }}';
                     {% else %}
                         toastr.warning("当前还没有添加 GitHub 授权，请点击左侧 GitHub 授权按钮进行授权。");
                     {% endif %}

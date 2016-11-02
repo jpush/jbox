@@ -20,14 +20,8 @@
 {% block title %}极光宝盒-编辑集成{% endblock %}
 
 {% block content %}
-    <div id="content" class="column">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-warning">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message }}
-            </div>
-        {% endfor %}
-        <div class="col-lg-offset-2">
+    <div class="container">
+        <div style="text-align: left;">
             {% if integration.type == 'github' %}
                 <p id="title" class="jbox-font">GitHub 设置</p>
             {% elif integration.type == 'discourse' %}
@@ -36,12 +30,15 @@
                 <p id="title" class="jbox-font">自定义集成设置</p>
             {% endif %}
         </div>
-        <div id="edit_form" class="col-lg-8 col-lg-offset-2">
-            <div class="row">
-                <div class="column span description-div">
-                    <p class="jbox-font span-title">绑定 channel</p>
-                    <p class="jbox-font span-desc">将消息发送到指定的 channel</p>
-                </div>
+    </div>
+
+    <div id="edit_form" class="col-lg-10 col-lg-offset-1">
+        <div class="row" style="margin-top: 38px;">
+            <div class="col-md-3">
+                <p class="jbox-font span-title">绑定 channel</p>
+                <p class="jbox-font span-desc">将消息发送到指定的 channel</p>
+            </div>
+            <div class="col-md-5" style="margin-top: 30px;">
                 <div class="input-group">
                     <input id="selected_channel" type="text" class="form-control" aria-label="..."
                            placeholder="{{ channel }}">
@@ -57,19 +54,24 @@
                         </ul>
                     </div>
                 </div>
-                <div id="qrcode-content" class="column">
+            </div>
+            <div class="col-md-3">
+                <div id="qrcode-content" class="column" style="margin-top: 0px;">
                     <div id="qrcode"></div>
                     <p id="qrcode-desc" class="jbox-font">手机扫一扫订阅该 channel</p>
                 </div>
             </div>
-            <hr class="divider">
-            {% if integration.type == 'github' %}
-                {% if confirmed %}
-                    <div class="row">
-                        <div class="column span description-div">
-                            <p class="jbox-font span-title">Repositories</p>
-                            <p class="jbox-font span-desc">选择你要监听的仓库</p>
-                        </div>
+        </div>
+        <hr class="divider">
+
+        {% if integration.type == 'github' %}
+            {% if confirmed %}
+                <div class="row">
+                    <div class="col-md-3">
+                        <p class="jbox-font span-title">Repositories</p>
+                        <p class="jbox-font span-desc">选择你要监听的仓库</p>
+                    </div>
+                    <div class="col-md-8">
                         <div id="selector-div" class="column">
                             {% if store_repos %}
                                 {% for store_repo in store_repos %}
@@ -115,68 +117,77 @@
                             {% endif %}
                         </div>
                     </div>
-                {% else %}
-                    <div>
-                        <p class="jbox-font span-desc">添加这个集成的用户为 {{ owner }}, 当前授权用户为 {{ user }}，所以
-                            您没有权限为此集成添加 GitHub webhook。</p>
-                    </div>
-                {% endif %}
-
-                <hr class="divider">
-            {% endif %}
-            <div class="row">
-                <div class="column span description-div">
-                    <p class="jbox-font span-title">集成名称</p>
-                    <p class="jbox-font span-desc">给你的集成设置名称</p>
                 </div>
+            {% else %}
+                <div class="col-md-8">
+                    <p class="jbox-font span-desc">添加这个集成的用户为 {{ owner }}, 当前授权用户为 {{ user }}，所以
+                        您没有权限为此集成添加 GitHub webhook。</p>
+                </div>
+            {% endif %}
+
+            <hr class="divider">
+        {% endif %}
+        <div class="row">
+            <div class="col-md-3">
+                <p class="jbox-font span-title">集成名称</p>
+                <p class="jbox-font span-desc">给你的集成设置名称</p>
+            </div>
+            <div class="col-md-8">
                 <input id="name" class="description" title="应用名" type="text" value="{{ integration.name }}"/>
             </div>
-            <hr class="divider">
-            <div class="row">
-                <div class="column span description-div">
-                    <p class="jbox-font span-title">集成描述</p>
-                    <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
-                </div>
+        </div>
+        <hr class="divider">
+
+        <div class="row">
+            <div class="col-md-3">
+                <p class="jbox-font span-title">集成描述</p>
+                <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
+            </div>
+            <div class="col-md-8">
                 <input id="description" class="description" title="应用描述" type="text"
                        value="{{ integration.description }}"/>
             </div>
-            <hr class="divider">
-            {% if integration.type == 'custom' %}
-                <div class="row">
-                    <div class="column span description-div">
-                        <p class="jbox-font span-title">Webhook</p>
-                        <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
-                    </div>
+        </div>
+        <hr class="divider">
+
+        {% if integration.type == 'custom' %}
+            <div class="row">
+                <div class="col-md-3">
+                    <p class="jbox-font span-title">Webhook</p>
+                    <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
+                    <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
+                </div>
+                <div class="col-md-8">
                     <input id="webhook" class="jbox-font description"
                            value="jbox.jiguang.cn/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
-                </div>
-                <div id="link-content">
-                    <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
                     <button id="regenerate" class="jbox-font link">重新生成</button>
                 </div>
-                <hr class="divider">
-            {% elif integration.type == 'discourse' %}
-                <div class="row">
-                    <div class="column span description-div">
-                        <p class="jbox-font span-title">Webhook</p>
-                        <p class="jbox-font span-desc">将这个 URL 复制到 discourse 插件上</p>
-                    </div>
-                    <input id="webhook" class="jbox-font description"
-                           value="jbox.jiguang.cn/plugins/discourse/{{ integration.integration_id }}/{{ integration.token }}/webhook"/>
-                </div>
-                <hr class="divider">
-            {% endif %}
-            <div id="integration-content">
+            </div>
+            <hr class="divider">
+        {% elif integration.type == 'discourse' %}
+            <div class="row">
                 <div class="column span description-div">
-                    <p class="jbox-font span-title">集成图标</p>
-                    <p class="jbox-font span-desc">选择一张图片作为集成图标(不超过2M)</p>
+                    <p class="jbox-font span-title">Webhook</p>
+                    <p class="jbox-font span-desc">将这个 URL 复制到 discourse 插件上</p>
                 </div>
+                <input id="webhook" class="jbox-font description"
+                       value="jbox.jiguang.cn/plugins/discourse/{{ integration.integration_id }}/{{ integration.token }}/webhook"/>
+            </div>
+        {% endif %}
+        <div id="integration-content">
+            <div class="col-md-3">
+                <p class="jbox-font span-title">集成图标</p>
+                <p class="jbox-font span-desc">选择一张图片作为集成图标(不超过2M)</p>
+            </div>
+            <div class="col-md-2" style="margin-top: 45px">
                 <form id="uploadform" method="post" enctype="multipart/form-data">
                     <div class="upload upload-btn">
                         <div class="jbox-font upload-content">上传图片</div>
                         <input id="file" type="file" class="inputstyle">
                     </div>
                 </form>
+            </div>
+            <div class="col-md-4">
                 {% if integration.icon %}
                     <img id="icon" src="/static/images/{{ integration.icon }}" title="icon">
                 {% elif integration.type == 'github' %}
@@ -184,39 +195,49 @@
                 {% else %}
                     <img id="icon" src="/static/images/image.png" title="default">
                 {% endif %}
-                <input id="resultFilename" type="hidden">
             </div>
-            <hr class="divider">
-            <div class="row">
+            <input id="resultFilename" type="hidden">
+        </div>
+
+        <hr class="divider">
+        <div class="row" style="margin-top: 256px;">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
                 <input id="submit" type="submit" value="保存设置" class="jbox-font">
+            </div>
+            <div class="col-md-4">
                 <button id="delete" type="button" value="删除集成" class="btn-lg jbox-font" data-toggle="modal"
                         data-target="#deleteModal">删除集成
                 </button>
             </div>
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">删除集成</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>确定删除该集成?</p>
-                            <input type="hidden" id="input_hidden">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" id="deleteBtn" data-loading-text="删除中" data-dismiss="modal"
-                                    class="btn btn-danger">删除
-                            </button>
-                        </div>
+        </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">删除集成</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>确定删除该集成?</p>
+                        <input type="hidden" id="input_hidden">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" id="deleteBtn" data-loading-text="删除中" data-dismiss="modal"
+                                class="btn btn-danger">删除
+                        </button>
                     </div>
                 </div>
             </div>
-
         </div>
+
     </div>
+
     <script type="text/javascript">
         toastr.options = {
             "closeButton": false,

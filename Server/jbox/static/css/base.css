@@ -85,6 +85,8 @@ ul,li{margin:0;padding:0;}
 .span-title {
     font-size: 24px;
     color: #464646;
+    text-align: left;
+    margin-left: 30px;
 }
 
 .span-desc {
@@ -92,6 +94,8 @@ ul,li{margin:0;padding:0;}
     color: #595959;
     box-shadow:none;
     font-family: "PingFang SC-Semibold";
+    text-align: left;
+    margin-left: 30px;
 }
 
 .divider {
@@ -138,6 +142,7 @@ ul,li{margin:0;padding:0;}
     position: absolute;
     left: 0;
     top: 0;
+    margin-top: 45px;
 }
 
 #dev_name {

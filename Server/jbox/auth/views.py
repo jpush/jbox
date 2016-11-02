@@ -77,7 +77,7 @@ def github_integration():
                         repo_list = []
                         for entity in githubs:
                             repo_list.append(entity.repository)
-                        new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
+                        new_github = GitHub(integration_id=integration.integration_id, name=integration.name, icon=integration.icon,
                                             channel=integration.channel.channel, repositories=repo_list)
                         github_integrations.append(new_github)
                     else:
@@ -130,7 +130,7 @@ def github_re_authorize():
                     repo_list = []
                     for entity in githubs:
                         repo_list.append(entity.repository)
-                    new_github = GitHub(id=integration.integration_id, name=integration.name, icon=integration.icon,
+                    new_github = GitHub(integration_id=integration.integration_id, name=integration.name, icon=integration.icon,
                                         channel=integration.channel.channel, repositories=repo_list)
                     github_integrations.append(new_github)
                 else:
@@ -139,8 +139,8 @@ def github_re_authorize():
 
 
 class GitHub(object):
-    def __init__(self, id, name, icon, channel, repositories):
-        self.id = id
+    def __init__(self, integration_id, name, icon, channel, repositories):
+        self.integration_id = integration_id
         self.name = name
         self.icon = icon
         self.channel = channel

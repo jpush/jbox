@@ -22,12 +22,7 @@
     width: 232px;
     height: 386px;
     margin-top: 103px;
-    /*display: flex;*/
-    /*flex-flow: column;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     text-align: right;
-    margin-left: 96px;
 }
 
 #github-icon {
@@ -75,8 +70,6 @@
 
 #description {
     margin-top: 103px;
-    /*margin-left: 53px;*/
-    margin-left: -80px;
 }
 
 
