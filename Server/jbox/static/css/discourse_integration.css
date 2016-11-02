@@ -26,11 +26,15 @@
     flex-flow: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 #discourse-icon {
     width: 147px;
     height: 147px;
+    margin-right: 43px;
+    margin-left: 43px;
+    margin-top: 33px;
 }
 
 #discourse-icon-title {
@@ -66,18 +70,19 @@
 #desc-title {
     color: #595959;
     font-size: 36px;
+    text-align: left;
 }
 
 .desc-content {
     color: #595959;
     font-size: 20px;
+    text-align: left;
 }
 
 #table-area {
     background: #ffffff;
     border: 1px solid #e8e8e8;
     border-radius: 5px;
-    width: 993px;
     min-height: 200px;
     margin-top: 116px;
     margin-right: 78px;
