@@ -20,15 +20,21 @@
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.50);
     border-radius: 5px;
     width: 232px;
-    height: 356px;
+    height: 386px;
     margin-top: 103px;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
+    /*display: flex;*/
+    /*flex-flow: column;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    text-align: right;
+    margin-left: 96px;
 }
 
 #github-icon {
+    /*margin: auto;*/
+    margin-right: 43px;
+    margin-left: 43px;
+    margin-top: 33px;
     width: 147px;
     height: 147px;
 }
@@ -61,31 +67,38 @@
 
 #add-github-integration:hover {
     background: #3f7d3f;
+    margin-left: auto;
+    margin-right: auto;
+    align-content: center;
+    text-align: center;
 }
 
 #description {
     margin-top: 103px;
-    margin-left: 53px;
+    /*margin-left: 53px;*/
+    margin-left: -80px;
 }
+
 
 #desc-title {
     color: #595959;
     font-size: 36px;
+    text-align: left;
 }
 
 .desc-content {
     color: #595959;
     font-size: 20px;
+    text-align: left;
 }
 
 #table-area {
     background: #ffffff;
     border: 1px solid #e8e8e8;
     border-radius: 5px;
-    width: 993px;
     min-height: 200px;
     margin-top: 116px;
-    margin-right: 78px;
+    margin-right: px;
 }
 
 .row {

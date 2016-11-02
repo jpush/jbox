@@ -25,52 +25,63 @@
             {{ message }}
         </div>
     {% endfor %}
-    <div class="content col-lg-offset-1">
-        <div id="github-icon-area">
-            <img id="github-icon" src="/static/images/github1x.png">
-            <p class="jbox-font" id="github-icon-title">GitHub</p>
-            {% if user %}
-                <p class="jbox-font" id="github-user">Authorized: {{ user }}</p>
-                <button id="cancel_btn" class="btn btn-warning">取消授权</button>
-            {% else %}
-                <button id="authorize_btn" class="btn btn-info" onclick="authorize()">GitHub 授权</button>
-            {% endif %}
-            <button id="add-github-integration">添加 GitHub 集成</button>
-        </div>
-        <div class="column">
-            <div id="description">
-                <p class="jbox-font" id="desc-title">GitHub</p>
-                <p class="jbox-font desc-content">GitHub is home to all kinds of software projects, from simple programs
-                    to today’s
-                    most popular apps.
-                </p>
-                <p class="jbox-font desc-content">This integration will post commits, pull requests, and activity on
-                    GitHub Issues to a channel in
-                    JBox.</p>
-                <div id="table-area">
-                    {% if github_integrations %}
-                        {% for integration in github_integrations %}
-                            <div class="row" id="github-integration-content">
-                                <img src="/static/images/github-icon.png">
-                                {% if integration.repositories %}
-                                    <p>来自 <strong>{{ integration.repositories }}</strong> 的 commits, issue 以及 pull
-                                        request 等活动将会作为 <strong>{{ integration.name }}</strong>
-                                        推送到 <strong>{{ integration.channel }}</strong> 频道</p>
-                                {% else %}
-                                    <p>当前没有监听任何仓库</p>
-                                {% endif %}
 
-                                <button class="btn btn-info btn-middle" id="{{ integration.id }}"
-                                        type="button">编辑
-                                </button>
-                            </div>
-                            <hr id="divider">
-                        {% endfor %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4" style="float: left !important;">
+                <div id="github-icon-area" style="text-align: center">
+                    <img id="github-icon" src="/static/images/github1x.png">
+                    <p class="jbox-font" id="github-icon-title">GitHub</p>
+                    {% if user %}
+                        <p class="jbox-font" id="github-user">Authorized: {{ user }}</p>
+                        <button id="cancel_btn" class="btn btn-warning">取消授权</button>
+                    {% else %}
+                        <button id="authorize_btn" class="btn btn-info" onclick="authorize()">GitHub 授权</button>
                     {% endif %}
+                    <button id="add-github-integration">添加 GitHub 集成</button>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div id="description">
+                    <p class="jbox-font" id="desc-title">GitHub</p>
+                    <p class="jbox-font desc-content">GitHub is home to all kinds of software projects, from simple programs
+                        to today’s
+                        most popular apps.
+                    </p>
+                    <p class="jbox-font desc-content">This integration will post commits, pull requests, and activity on
+                        GitHub Issues to a channel in
+                        JBox.</p>
+                    <div id="table-area">
+                        {% if github_integrations %}
+                            {% for integration in github_integrations %}
+                                <div class="row" id="github-integration-content">
+                                    <div class="col-md-1">
+                                        <img src="/static/images/github-icon.png">
+                                    </div>
+                                    <div class="col-md-10">
+                                        {% if integration.repositories %}
+                                            <p>来自 <strong>{{ integration.repositories }}</strong> 的 commits, issue 以及 pull
+                                                request 等活动将会作为 <strong>{{ integration.name }}</strong>
+                                                推送到 <strong>{{ integration.channel }}</strong> 频道</p>
+                                        {% else %}
+                                            <p>当前没有监听任何仓库</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-info btn-middle" id="{{ integration.id }}"
+                                            type="button">编辑
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr id="divider">
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <script type="text/javascript">
         {% if github_integrations %}
