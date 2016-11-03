@@ -11,9 +11,9 @@
     <div class=" header">
         <nav>
             <ul class="pull-right nav nav-pills navbar-nav navigator">
-                <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.application') }}">极光宝盒app</a></li>
-                <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.document') }}">api文档</a></li>
-                <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">guide</a></li>
+                <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.application') }}">极光宝盒APP</a></li>
+                <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.document') }}">API 文档</a></li>
+                <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.guide') }}">Guide</a></li>
                 {% if 'qq_token' in session %}
                     <li role="" class="navigator-item"><a class="jbox-font nav-font"
                                                           href="{{ url_for('auth.manage') }}">管理</a></li>
