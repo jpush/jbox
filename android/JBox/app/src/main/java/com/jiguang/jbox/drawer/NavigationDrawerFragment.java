@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,7 +27,7 @@ import static com.jiguang.jbox.R.id.viewPager;
  */
 public class NavigationDrawerFragment extends Fragment
         implements DeveloperListFragment.OnListFragmentInteractionListener {
-    private final String TAG = "NavigationDrawerFragment";
+    private DrawerLayout mDrawerLayout;
 
     private ViewPager mViewPager;
 
@@ -47,7 +47,7 @@ public class NavigationDrawerFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.drawer_main, container, false);
 
@@ -77,9 +77,11 @@ public class NavigationDrawerFragment extends Fragment
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
                     mIvCircleFirst.setSelected(true);
                     mIvCircleSecond.setSelected(false);
                 } else {
+                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     mIvCircleFirst.setSelected(false);
                     mIvCircleSecond.setSelected(true);
                 }
@@ -88,14 +90,6 @@ public class NavigationDrawerFragment extends Fragment
             @Override
             public void onPageScrollStateChanged(int state) {
 
-            }
-        });
-
-        mViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
             }
         });
 
@@ -111,6 +105,10 @@ public class NavigationDrawerFragment extends Fragment
     public void onDevListItemClick(String devKey) {
         mChannelListFragment.updateData(devKey);
         mViewPager.setCurrentItem(1);
+    }
+
+    public void setDrawerLayout(DrawerLayout drawerLayout) {
+        mDrawerLayout = drawerLayout;
     }
 
     public void updateData() {

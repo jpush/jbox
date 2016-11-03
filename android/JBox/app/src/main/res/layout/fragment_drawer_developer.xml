@@ -27,8 +27,9 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
+            android:contentDescription="@string/drawer_dev_add_desc"
             android:src="@drawable/ic_add"
-            android:contentDescription="@string/drawer_dev_add_desc"/>
+            />
 
     </RelativeLayout>
 
