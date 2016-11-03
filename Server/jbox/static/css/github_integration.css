@@ -21,7 +21,7 @@
     border-radius: 5px;
     width: 232px;
     height: 386px;
-    margin-top: 103px;
+    margin-top: 100px;
     text-align: right;
 }
 
@@ -38,11 +38,13 @@
     color: #595959;
     font-size: 18px;
     margin-top: 20px;
+    text-align: center;
 }
 
 #github-user {
     color: #595959;
     font-size: 18px;
+    text-align: center;
 }
 
 #add-github-integration {
@@ -95,10 +97,6 @@
 }
 
 .row {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-    align-items: center;
 }
 
 #github-integration-content {
