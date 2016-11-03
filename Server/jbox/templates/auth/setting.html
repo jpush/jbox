@@ -194,7 +194,7 @@
             var desc = $('#desc-input').val();
             var path = $('#resultFilename').val();
             if (name == undefined || name == '') {
-                toastr.warning("必须填写开发者名称");
+                toastr.warning("必须填写开发者名称并保存，否则不能进行其他操作！");
             } else {
                 $.ajax({
                     type: "PUT",

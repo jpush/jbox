@@ -153,7 +153,7 @@ def cancel_github_authorization(dev_key):
     return jsonify({}), 200
 
 
-@plugins.route('/github/<string:integration_id>/override', methods=['POST'])
+@plugins.route('/github/<string:integration_id>/override', methods=['GET', 'POST'])
 def github_override(integration_id):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:

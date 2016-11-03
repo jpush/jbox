@@ -111,13 +111,13 @@ def authorized():
             developer = Developer(dev_key=dev_key,
                                   platform='qq',
                                   platform_id=openid,
-                                  username=resp['nickname'],
                                   description='')
             developer.insert_to_db()
     if developer is None:
         developer = get_developer()
     username = developer.username
     if username is None or username == '':
+        print('login first time. redirect to setting')
         return redirect(url_for('auth.setting'))
     return redirect(url_for('auth.manage'))
 
@@ -154,6 +154,8 @@ def index():
 @main.route('/document', methods=['GET'])
 def document():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     username = developer.username
     if username is None or username == '':
         return redirect(url_for('auth.setting'))
@@ -163,6 +165,8 @@ def document():
 @main.route('/guide', methods=['GET'])
 def guide():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     username = developer.username
     if username is None or username == '':
         return redirect(url_for('auth.setting'))
@@ -172,6 +176,8 @@ def guide():
 @main.route('/application', methods=['GET'])
 def application():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     username = developer.username
     if username is None or username == '':
         return redirect(url_for('auth.setting'))

@@ -38,6 +38,8 @@ def allowed_file(filename):
 @auth.route('/manage', methods=['GET', 'POST'])
 def manage():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     username = developer.username
     if username is None or username == '':
         return redirect(url_for('auth.setting'))
@@ -50,6 +52,8 @@ def manage():
 @auth.route('/add_third_party', methods=['GET'])
 def add_third_party():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     return render_template('auth/third_party_integration.html', developer=developer)
 
 
@@ -57,6 +61,8 @@ def add_third_party():
 def github_integration():
     try:
         developer = get_developer()
+        if developer is None:
+            return redirect(url_for('main.login'))
         dev_key = developer.dev_key
         if 'user' in session:
             user = session['user']
@@ -82,7 +88,6 @@ def github_integration():
                         github_integrations.append(new_github)
                     else:
                         github_integrations.append(integration)
-        print('github_integrations length:' + str(len(github_integrations)))
         return render_template('auth/github_integration.html', **locals())
     except Exception:
         # 重新授权
@@ -92,6 +97,8 @@ def github_integration():
 @auth.route('/github/re-authorize', methods=['GET'])
 def github_re_authorize():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     dev_key = developer.dev_key
     resp = github.authorized_response()
     if resp is None:
@@ -119,7 +126,6 @@ def github_re_authorize():
         me = github.get('user')
         user = me.data['login']
         session['user'] = user
-    developer = get_developer()
     integrations = developer.integrations
     github_integrations = []
     if integrations:
@@ -150,6 +156,8 @@ class GitHub(object):
 @auth.route('/discourse_integration', methods=['GET'])
 def discourse_integration():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     integrations = developer.integrations
     discourse_integrations = []
     if integrations:
@@ -163,8 +171,10 @@ def discourse_integration():
             methods=['GET', 'POST'])
 def create_integration(integration_id, token, channel):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
-    channels = get_channel_list()
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
+    channels = get_channel_list()
     dev_key = developer.dev_key
     return render_template('auth/create.html', **locals())
 
@@ -172,6 +182,8 @@ def create_integration(integration_id, token, channel):
 @auth.route('/manage/edit_integration/<string:integration_id>', methods=['GET', 'POST'])
 def edit_integration(integration_id):
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     channel = integration.channel.channel
     channels = get_channel_list()
@@ -182,6 +194,8 @@ def edit_integration(integration_id):
 @auth.route('/manage/edit_github_integration/<string:integration_id>', methods=['GET', 'POST'])
 def edit_github_integration(integration_id):
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     githubs = integration.githubs
     if 'user' not in session:
@@ -215,6 +229,8 @@ def edit_github_integration(integration_id):
 @auth.route('/new/post_to_channel', methods=['GET'])
 def post_to_channel():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     dev_key = developer.dev_key
     channels = get_channel_list()
     return render_template('auth/new/post2channel.html', **locals())
@@ -223,6 +239,8 @@ def post_to_channel():
 @auth.route('/new/github/post_to_channel', methods=['GET'])
 def post_to_channel_github():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     dev_key = developer.dev_key
     channels = get_channel_list()
     github = True
@@ -232,6 +250,8 @@ def post_to_channel_github():
 @auth.route('/new/discourse/post_to_channel', methods=['GET'])
 def post_to_channel_discourse():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     channels = get_channel_list()
     dev_key = developer.dev_key
     discourse = True
@@ -241,14 +261,10 @@ def post_to_channel_discourse():
 @auth.route('/new/channel', methods=['GET'])
 def new_channel():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     dev_key = developer.dev_key
     return render_template('auth/new/channel.html', **locals())
-
-
-@auth.route('/qrcode', methods=['GET'])
-def qrcode():
-    developer = get_developer()
-    return render_template('auth/qrcode.html', dev_key=developer.dev_key)
 
 
 @auth.route('/upload/avatar/<dev_key>', methods=['POST'])
@@ -305,6 +321,8 @@ def get_developer():
 @auth.route('/profile', methods=['GET'])
 def profile():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     username = developer.username
     if username is None or username == '':
         return redirect(url_for('auth.setting'))
@@ -314,6 +332,8 @@ def profile():
 @auth.route('/setting', methods=['GET', 'POST'])
 def setting():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     username = developer.username
     if username is None or username == '':
         first_login = True
@@ -330,6 +350,8 @@ def generate_file_name(file_type):
 def create_github_integration(channel):
     new_integration_id = generate_integration_id()
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     github_channel = Channel.query.filter_by(developer=developer, channel=channel).first()
     if github_channel is None:
         github_channel = Channel(developer=developer, channel=channel)
@@ -356,6 +378,8 @@ def get_github_oauth_token():
         return session.get('github_token')
     else:
         developer = get_developer()
+        if developer is None:
+            return redirect(url_for('main.login'))
         authorization = Authorization.query.filter_by(developer_id=developer.id, type='github').first()
         if authorization is None:
             print("return None")
@@ -372,6 +396,8 @@ def github_authorize():
 @auth.route('/github/authorize/callback')
 def github_authorize_callback():
     developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
     resp = github.authorized_response()
     if resp is None:
         return 'Access denied: reason=%s error=%s' % (
