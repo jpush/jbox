@@ -119,9 +119,10 @@
                     </div>
                 </div>
             {% else %}
-                <div class="col-md-8">
+                <div class="j-column">
                     <p class="jbox-font span-desc">添加这个集成的用户为 {{ owner }}, 当前授权用户为 {{ user }}，所以
                         您没有权限为此集成添加 GitHub webhook。</p>
+                    <button class="btn btn-warning" id="github_override">点击以覆盖 GitHub Webhook</button>
                 </div>
             {% endif %}
 
@@ -201,10 +202,7 @@
 
         <hr class="divider">
         <div class="row" style="margin-top: 256px;">
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-offset-3 col-md-4">
                 <input id="submit" type="submit" value="保存设置" class="jbox-font">
             </div>
             <div class="col-md-4">
@@ -356,6 +354,21 @@
                 }
             }
         }
+
+        $('#github_override').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/plugins/github/{{ integration.integration_id }}/override",
+                success: function (data) {
+                    window.location.href = "/auth/manage/edit_github_integration/{{ integration.integration_id }}";
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("服务端返回错误，操作失败！")
+                }
+            });
+            window.location.href = "/plugins/github/{{ integration.integration_id }}/override";
+        });
 
         $('#create_channel').click(function () {
             var new_channel = $('#new_channel').val();

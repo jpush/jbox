@@ -2,6 +2,7 @@ import time
 from flask import abort, Flask, jsonify, request, session
 from . import plugins
 from ..models import Developer, Integration, Authorization, db
+from ..auth.views import github
 import jpush
 from jpush import common
 
@@ -150,3 +151,31 @@ def cancel_github_authorization(dev_key):
     session.pop('user', None)
     session.pop('github_token', None)
     return jsonify({}), 200
+
+
+@plugins.route('/github/<string:integration_id>/override', methods=['POST'])
+def github_override(integration_id):
+    integration = Integration.query.filter_by(integration_id=integration_id).first()
+    if integration is None:
+        abort(400)
+    githubs = integration.githubs
+    if githubs:
+        for entity in githubs:
+            url = 'https://api.github.com/repos/' + integration.owner + '/' + entity.repository + '/hooks/' + str(
+                entity.hook_id)
+            response = github.delete(url, data=None)
+            if response.status == 204:
+                try:
+                    db.session.delete(entity)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    abort(500)
+    integration.owner = session['user']
+    try:
+        db.session.add(integration)
+        db.session.commit()
+        return jsonify({}), 200
+    except:
+        db.session.rollback()
+        abort(500)
