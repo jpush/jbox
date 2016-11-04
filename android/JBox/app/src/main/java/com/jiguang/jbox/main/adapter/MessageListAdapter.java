@@ -1,5 +1,7 @@
 package com.jiguang.jbox.main.adapter;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -51,13 +53,25 @@ public class MessageListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(R.layout.item_msg, parent, false);
         }
 
         final Message msg = mMessages.get(position);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(msg.url)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(msg.url));
+                    parent.getContext().startActivity(intent);
+                }
+            }
+        });
+
         TextView tvIcon = ViewHolder.get(convertView, R.id.tv_icon);
         ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
 

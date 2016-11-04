@@ -61,7 +61,8 @@ public class HttpUtil {
                     .url(url)
                     .build();
 
-            mHttpClient.newCall(request).enqueue(new Callback() {
+            Call call = mHttpClient.newCall(request);
+            call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     callback.onDataNotAvailable();
@@ -106,6 +107,8 @@ public class HttpUtil {
                         } catch (JSONException e) {
                             e.printStackTrace();
                             callback.onDataNotAvailable();
+                        } finally {
+                            response.close();
                         }
                     } else {
                         throw new IOException("Unexpected code " + response);
@@ -170,6 +173,8 @@ public class HttpUtil {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    response.close();
                 }
             }
         });

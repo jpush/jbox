@@ -27,6 +27,9 @@ public class Message extends Model implements Serializable {
     @Column(name = "IconUrl")
     public String iconUrl;
 
+    @Column(name = "Url")
+    public String url;
+
     public Message() {
         super();
     }

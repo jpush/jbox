@@ -155,12 +155,15 @@ public class MainActivity extends FragmentActivity
                 // 如果滑动到了最后，加载更多数据。
                 if (mMsgListView.getLastVisiblePosition() + 1 == totalItemCount) {
                     if (mMessages != null) {
-                        mMessages.addAll(queryMessages(AppApplication.currentDevKey,
+                        List<Message> newMessageList = queryMessages(AppApplication.currentDevKey,
                                 AppApplication.currentChannelName, mCurrentOffset,
-                                QUERY_MESSAGE_COUNT));
-                        mCurrentOffset += QUERY_MESSAGE_COUNT;
-                        mAdapter.replaceData(mMessages);
-                        mAdapter.notifyDataSetChanged();
+                                QUERY_MESSAGE_COUNT);
+                        if (newMessageList != null && !newMessageList.isEmpty()) {
+                            mMessages.addAll(newMessageList);
+                            mCurrentOffset += newMessageList.size();
+                            mAdapter.replaceData(mMessages);
+                            mAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
             }
@@ -169,8 +172,9 @@ public class MainActivity extends FragmentActivity
         View emptyView = findViewById(R.id.tv_hint);
         mMsgListView.setEmptyView(emptyView);
 
-        mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
-                .currentChannelName, 0, QUERY_MESSAGE_COUNT);
+        mMessages = queryMessages(AppApplication.currentDevKey, AppApplication.currentChannelName,
+                0, QUERY_MESSAGE_COUNT);
+        mCurrentOffset += mMessages.size();
         mAdapter = new MessageListAdapter(mMessages);
         mMsgListView.setAdapter(mAdapter);
     }

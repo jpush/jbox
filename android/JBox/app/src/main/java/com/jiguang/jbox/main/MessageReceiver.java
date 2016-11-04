@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.activeandroid.query.Select;
 import com.activeandroid.query.Update;
@@ -31,6 +32,7 @@ public class MessageReceiver extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();
 
             String extraJson = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            Log.i("Receiver", extraJson);
 
             try {
                 JSONObject jsonObject = new JSONObject(extraJson);
@@ -42,6 +44,7 @@ public class MessageReceiver extends BroadcastReceiver {
                 String channelName = jsonObject.getString("channel");
                 String iconUrl = jsonObject.getString("icon");   // 集成的图标 url。
                 long timeMillis = Long.parseLong(jsonObject.getString("datetime"));
+                String url = jsonObject.isNull("url") ? null : jsonObject.getString("url");
 
                 Message msg = new Message();
                 msg.title = title;
@@ -50,6 +53,7 @@ public class MessageReceiver extends BroadcastReceiver {
                 msg.channelName = channelName;
                 msg.iconUrl = iconUrl;
                 msg.time = timeMillis;
+                msg.url = url;
                 msg.save();
 
                 Bundle data = new Bundle();
