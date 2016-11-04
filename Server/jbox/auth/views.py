@@ -26,7 +26,7 @@ github = oauth.remote_app(
     base_url='https://api.github.com/',
     request_token_url=None,
     access_token_url='https://github.com/login/oauth/access_token',
-    request_token_params={'scope': 'admin:repo_hook'},
+    request_token_params={'scope': 'admin:repo_hook,repo'},
     authorize_url='https://github.com/login/oauth/authorize'
 )
 
@@ -215,8 +215,9 @@ def edit_github_integration(integration_id):
         channel = integration.channel.channel
         channels = get_channel_list()
         dev_key = developer.dev_key
-        response = github.get('https://api.github.com/user/repos?per_page=200')
+        response = github.get('https://api.github.com/user/repos?per_page=400')
         list = response.data
+        print(list)
         result_key = []
         result = {}
         if len(list) > 0:
