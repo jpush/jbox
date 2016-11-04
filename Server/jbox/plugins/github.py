@@ -116,7 +116,7 @@ def send_github_msg(integration_id):
                                          'datetime': int(time.time()),
                                          'icon': icon_url,
                                          'integation_name': integration.name,
-                                         'github_url': url})
+                                         'url': url})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
     push.platform = jpush.all_
