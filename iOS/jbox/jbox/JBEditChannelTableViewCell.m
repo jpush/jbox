@@ -26,6 +26,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     self.subscribe_button.titleLabel.textAlignment = NSTextAlignmentLeft;
+    self.isSubscribe = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

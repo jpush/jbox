@@ -10,7 +10,6 @@
 #import "JBMessageTableViewCell.h"
 #import "JBMessage.h"
 #import "JBDatabase.h"
-#import "JBScrollViewController.h"
 #import "JPUSHService.h"
 #import "JBNetwork.h"
 #import <MJRefresh.h>
@@ -20,8 +19,7 @@
 @property(nonatomic ,retain)NSArray *messageArray;
 @property(nonatomic, assign)BOOL appeared;
 @property (weak, nonatomic) IBOutlet UILabel *placeholder_label;
-@property(nonatomic, retain)JBScrollViewController *scrollViewController;
-
+@property(nonatomic, assign)int counts;
 @end
 
 @implementation JBMessageViewController
@@ -30,6 +28,7 @@
     [super viewDidLoad];
 
     self.title = self.channel.name ? self.channel.name : @"频道";
+    self.counts = 20;
 
     //bar
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -46,8 +45,10 @@
     [self updateData];
 
     WEAK_SELF(weakSelf);
-    self.message_tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf.message_tableView.mj_header endRefreshing];
+    self.message_tableView.mj_footer = [MJRefreshBackStateFooter footerWithRefreshingBlock:^{
+        [weakSelf.message_tableView.mj_footer endRefreshing];
+        weakSelf.counts = weakSelf.counts + 20;
+        [weakSelf updateData];
     }];
 
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(slide:)];
@@ -128,13 +129,23 @@
 }
 
 -(void)updateData{
-    self.messageArray = [JBDatabase getMessagesFromChannel:_channel];
-    [self.message_tableView reloadData];
-    if (self.messageArray.count > 0) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.messageArray.count - 1 inSection:0];
-        [self.message_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        [self.view layoutIfNeeded];
+    NSMutableArray *mArray1 = [JBDatabase getMessagesFromChannel:_channel];
+    NSArray *mArray2        = [[mArray1 reverseObjectEnumerator] allObjects];
+    NSRange range = NSMakeRange(0, self.counts);
+    if (mArray2) {
+        if (mArray2.count >= self.counts) {
+            self.messageArray = [mArray2 subarrayWithRange:range];
+        }else{
+            self.messageArray = mArray2;
+        }
     }
+
+    [self.message_tableView reloadData];
+//    if (self.messageArray.count > 0) {
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.messageArray.count - 1 inSection:0];
+//        [self.message_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//        [self.view layoutIfNeeded];
+//    }
     if (self.appeared) {
         [JBDatabase setAllMessagesReadWithChannel:self.channel];
     }

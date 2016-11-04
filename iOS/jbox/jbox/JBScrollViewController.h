@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JBTeamSlideView.h"
+#import "JBChannelSlideView.h"
 
 @interface JBScrollViewController : UIViewController
+
+@property(nonatomic, retain)JBTeamSlideView *teamSlideView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property(nonatomic, retain)JBChannelSlideView *channelSlideView;
 
 @end
