@@ -86,8 +86,9 @@
     padding: 10px;
     margin-left: 0;
     margin-right: 0;
-
+    color: #595959;
     width: 100%;
+    text-align: left;
 }
 
 #selector-div {

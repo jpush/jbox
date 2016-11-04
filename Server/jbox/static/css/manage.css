@@ -103,14 +103,11 @@ body {
     width: 232px;
     height: 247px;
     line-height: 60px;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
     color: #595959;
     font-size: 18px;
     box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.50);
     border: 0 hidden;
+    text-align: center;
 }
 
 .tp-content:hover {
