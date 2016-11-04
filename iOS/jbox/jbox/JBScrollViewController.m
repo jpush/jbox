@@ -7,15 +7,10 @@
 //
 
 #import "JBScrollViewController.h"
-#import "JBChannelSlideView.h"
-#import "JBTeamSlideView.h"
 #import "JBDatabase.h"
 
 @interface JBScrollViewController ()<UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property(nonatomic, retain)JBChannelSlideView *channelSlideView;
-@property(nonatomic, retain)JBTeamSlideView *teamSlideView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 
 @end
@@ -40,10 +35,8 @@
     self.channelSlideView = [[NSBundle mainBundle] loadNibNamed:@"JBChannelSlideView" owner:nil options:nil][0];
     if ([JBDatabase getDevkeys].count > 0) {
         self.channelSlideView.devkey = [JBDatabase getDevkeys][0];
-
     }
     [self.scrollView addSubview:_channelSlideView];
-
 }
 
 -(void)viewDidLayoutSubviews{

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
@@ -19,7 +20,6 @@ import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.drawer.ChannelListFragment;
 import com.jiguang.jbox.drawer.NavigationDrawerFragment;
 import com.jiguang.jbox.main.adapter.MessageListAdapter;
-import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.view.TopBar;
 
@@ -60,10 +60,44 @@ public class MainActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
+        mDrawerLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mDrawerLayout.closeDrawers();
+                        break;
+                }
+                return false;
+            }
+        });
+
         mDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerFragment.setDrawerLayout(mDrawerLayout);
 
         mTopBar = (TopBar) findViewById(R.id.topBar);
         mTopBar.setTitle(AppApplication.currentChannelName);
@@ -118,8 +152,6 @@ public class MainActivity extends FragmentActivity
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
-                LogUtil.LOGI("MainActivity", mMsgListView.getLastVisiblePosition() + ":" + totalItemCount);
-
                 // 如果滑动到了最后，加载更多数据。
                 if (mMsgListView.getLastVisiblePosition() + 1 == totalItemCount) {
                     if (mMessages != null) {
@@ -165,6 +197,17 @@ public class MainActivity extends FragmentActivity
         super.onPause();
         JPushInterface.onPause(this);
         unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerFragment.getView() != null) {
+            if (mDrawerLayout.isDrawerOpen(mDrawerFragment.getView())) {
+                mDrawerLayout.closeDrawers();
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 
     @Override

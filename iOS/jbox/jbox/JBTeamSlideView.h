@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JBTeamSlideView : UIView
+@interface JBTeamSlideView : UIView <UITableViewDelegate, UITableViewDataSource>
+
+@property(nonatomic, retain)NSMutableArray *devArray;
+@property (weak, nonatomic) IBOutlet UITableView *team_tableView;
 
 @end

@@ -14,11 +14,9 @@
 #import "JBDatabase.h"
 #import "JBChannelSlideView.h"
 
-@interface JBTeamSlideView ()<UITableViewDelegate, UITableViewDataSource>
+@interface JBTeamSlideView ()
 
 - (IBAction)scanBtnPressed:(id)sender;
-@property (weak, nonatomic) IBOutlet UITableView *team_tableView;
-@property(nonatomic, retain)NSMutableArray *devArray;
 
 @end
 

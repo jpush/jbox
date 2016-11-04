@@ -24,6 +24,12 @@
                             <constraint firstAttribute="width" constant="106" id="NTE-7I-glP"/>
                             <constraint firstAttribute="height" constant="106" id="Pcy-dg-O9Y"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="53"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TrI-sU-QBw">
                         <rect key="frame" x="126" y="144" width="45" height="20.5"/>
@@ -45,7 +51,7 @@
                 <outlet property="avatar_imageView" destination="hkP-fu-AwT" id="VQk-gC-QSP"/>
                 <outlet property="teamName_label" destination="TrI-sU-QBw" id="piq-Gc-pZf"/>
             </connections>
-            <point key="canvasLocation" x="-798" y="-148"/>
+            <point key="canvasLocation" x="-804" y="-343"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -78,14 +78,13 @@
                 for (NSString *name in channelNames) {
                     JBChannel *channel = [JBChannel new];
                     channel.dev_key       = realDevkey;
-                    channel.isSubscribed  = @"0";
+                    channel.isSubscribed  = @"1";
                     channel.name          = name;
                     [JBDatabase insertChannel:channel];
                 }
                 weakSelf.channels = [JBDatabase getChannelsFromDevkey:realDevkey];
             }];
         }];
-
     }
 }
 

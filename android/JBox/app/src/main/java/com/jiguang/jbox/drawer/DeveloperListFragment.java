@@ -69,6 +69,29 @@ public class DeveloperListFragment extends Fragment {
 
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_dev);
+//        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                Log.i("DeveloperListFragment", "onTouch");
+//                return true;
+//            }
+//        });
+//        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                float startX = 0;
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        startX = event.getX();
+//                    case MotionEvent.ACTION_MOVE:
+//                        if (event.getX() - startX > 10) {    // 向左滑动
+//                            v.getParent().getParent().requestDisallowInterceptTouchEvent(true);
+//                        }
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mAdapter = new DeveloperListRecyclerViewAdapter(mDevs, mListener);
         mRecyclerView.setAdapter(mAdapter);
