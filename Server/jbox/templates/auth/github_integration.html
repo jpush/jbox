@@ -109,7 +109,6 @@
                     toastr.success("已取消 GitHub 授权");
                     $('#cancel_btn').attr("disabled", false);
                     $('#cancel_btn').hide();
-                    $('#add-github-integration').attr("disabled", true);
                     $('#github-user').toggle();
                     if ($('#authorize_btn').length <= 0) {
                         $('<button id="authorize_btn" class="btn btn-info" onclick="authorize()">GitHub 授权</button>').insertAfter('#cancel_btn');
@@ -133,7 +132,8 @@
             {% if user %}
                 window.location.href = '{{ url_for('auth.post_to_channel_github') }}';
             {% else %}
-                toastr.warning("请先进行 GitHub 授权");
+                $('#authorize_btn').attr("disabled", true);
+                window.location.href = '/auth/github/authorize';
             {% endif %}
         })
     </script>
