@@ -10,10 +10,10 @@ body {
     width: 100%;
     justify-content: center;
     align-items: center;
+    padding-top: 30px;
 }
 
 .mainImage {
-    margin-bottom: 100
 }
 
 .content {
