@@ -63,10 +63,10 @@ def send_github_msg(integration_id):
             commit_id = commits[i]['id'][:7]
             commit_comment = commits[i]['message']
             message = message + commit_id + ': ' + commit_comment + '-' + author + '\n'
-        url = commits[0]['url']
+        url = commits[0]['html_url']
         print(message)
     elif issue != '':
-        url = issue['url']
+        url = issue['html_url']
         issue_title = issue['title']
         # issue comment event
         if comment != '':
@@ -83,11 +83,11 @@ def send_github_msg(integration_id):
         print('commit comment event')
         title = target_repository + 'New commit comment by ' + author
         message = comment['body']
-        url = comment['url']
+        url = comment['html_url']
     # pull request event
     elif pull_request != '':
         print('pull request event')
-        url = pull_request['url']
+        url = pull_request['html_url']
         if action == 'opened':
             title = target_repository + 'Pull request submitted by ' + author
             message = pull_request['body']
