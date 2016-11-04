@@ -108,7 +108,6 @@ def github_re_authorize():
         )
     session['github_token'] = (resp['access_token'], '')
     token = session['github_token'][0]
-    print(token)
     authorization = Authorization.query.filter_by(developer_id=developer.id, type='github').first()
     if authorization is None:
         authorization = Authorization(developer=developer, oauth_token=token, type='github')
@@ -216,13 +215,18 @@ def edit_github_integration(integration_id):
         channel = integration.channel.channel
         channels = get_channel_list()
         dev_key = developer.dev_key
-        response = github.get('https://api.github.com/user/repos')
+        response = github.get('https://api.github.com/user/repos?per_page=200')
         list = response.data
-        repos = []
-        if len(list) > 1:
+        result_key = []
+        result = {}
+        if len(list) > 0:
             for i in range(len(list)):
-                repos.append(list[i]['name'])
-            print(repos)
+                owner = list[i]['owner']
+                if owner['login'] in result:
+                    result[owner['login']].append(list[i]['name'])
+                else:
+                    result_key.append(owner['login'])
+                    result[owner['login']] = [list[i]['name']]
         return render_template('auth/create.html', **locals())
 
 
@@ -373,7 +377,6 @@ def create_github_integration(channel):
 
 @github.tokengetter
 def get_github_oauth_token():
-    print("execute token getter")
     if 'github_token' in session:
         return session.get('github_token')
     else:
@@ -382,7 +385,6 @@ def get_github_oauth_token():
             return redirect(url_for('main.login'))
         authorization = Authorization.query.filter_by(developer_id=developer.id, type='github').first()
         if authorization is None:
-            print("return None")
             return None
         else:
             return (authorization.oauth_token, '')
