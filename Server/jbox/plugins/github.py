@@ -35,6 +35,7 @@ def send_github_msg(integration_id):
     repository = request.json['repository']
     sender = request.json['sender']
     author = sender['login']
+    url = ''
     if 'commits' in request.json:
         commits = request.json['commits']
     if 'comment' in request.json:
@@ -62,8 +63,10 @@ def send_github_msg(integration_id):
             commit_id = commits[i]['id'][:7]
             commit_comment = commits[i]['message']
             message = message + commit_id + ': ' + commit_comment + '-' + author + '\n'
+        url = commits[0]['url']
         print(message)
     elif issue != '':
+        url = issue['url']
         issue_title = issue['title']
         # issue comment event
         if comment != '':
@@ -80,9 +83,11 @@ def send_github_msg(integration_id):
         print('commit comment event')
         title = target_repository + 'New commit comment by ' + author
         message = comment['body']
+        url = comment['url']
     # pull request event
     elif pull_request != '':
         print('pull request event')
+        url = pull_request['url']
         if action == 'opened':
             title = target_repository + 'Pull request submitted by ' + author
             message = pull_request['body']
@@ -102,15 +107,16 @@ def send_github_msg(integration_id):
     # ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title']})
     print(integration.icon)
     if integration.icon is None or len(integration.icon) == 0:
-        url = ''
+        icon_url = ''
     else:
-        url = baseurl + '/static/images/' + integration.icon
+        icon_url = baseurl + '/static/images/' + integration.icon
     push.notification = jpush.notification(alert=title, android=android_msg, ios=ios_msg)
     push.message = jpush.message(msg_content=message, title=title, content_type="tyope",
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
                                          'datetime': int(time.time()),
-                                         'icon': url,
-                                         'integation_name': integration.name})
+                                         'icon': icon_url,
+                                         'integation_name': integration.name,
+                                         'github_url': url})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
     push.platform = jpush.all_

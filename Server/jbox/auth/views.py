@@ -217,7 +217,6 @@ def edit_github_integration(integration_id):
         dev_key = developer.dev_key
         response = github.get('https://api.github.com/user/repos?per_page=400')
         list = response.data
-        print(list)
         result_key = []
         result = {}
         if len(list) > 0:
