@@ -5,15 +5,13 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {#    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>#}
-
-
 {% endblock %}
 
 {% block title %}Index{% endblock %}
 
+
 {% block navbar %}
     <div id="navigationbar">{{ super() }}</div>
-
 {% endblock %}
 
 {% block body %}
@@ -27,17 +25,7 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="column">#}
-{#        <div class="content-text">#}
-{#            <p id="description" class="jbox-font"><b>极光宝盒，<br>#}
-{#                你的消息管理中心<br>#}
-{#                只需要简单配置<br>#}
-{#                就能在 iOS 、android 端生成你的专属App。#}
-{#            </b>#}
-{#            </p>#}
-{#        </div>#}
-{#        <img id="jbox-bear" src="/static/images/jbox-bear.png">#}
-{#    </div>#}
+
     <div class="site-wrapper">
         <div class="site-wrapper-inner">
             <div class="cover-container">
@@ -59,25 +47,6 @@
 
     </div>
 
-
-
-
-
-{#    <div class="container">#}
-{#        <div class="columns">#}
-{#            <div class="col-lg-8">#}
-{#                <p id="description" class="jbox-font"><b>极光宝盒，<br>#}
-{#                你的消息管理中心<br>#}
-{#                只需要简单配置<br>#}
-{#                就能在 iOS 、android 端生成你的专属App。#}
-{#                </b>#}
-{#                </p>#}
-{#            </div>#}
-{#            <div class="col-md-8">#}
-{#                <img id="jbox-bear" src="/static/images/jbox-bear.png">#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
     <script type="text/javascript">
         console.log(window.location.hash)
         console.log(window.location.hash)
