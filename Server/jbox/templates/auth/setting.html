@@ -196,6 +196,14 @@
             if (name == undefined || name == '') {
                 toastr.warning("必须填写开发者名称并保存，否则不能进行其他操作！");
             } else {
+                if (name.length > 20) {
+                    toastr.error("名字的长度不能超过 20 个字母");
+                    return;
+                }
+                if (desc.length > 64) {
+                    toastr.error("描述的长度不能超过 64 个字母");
+                    return;
+                }
                 $.ajax({
                     type: "PUT",
                     contentType: "application/json; charset=utf-8",
