@@ -25,17 +25,17 @@ body {
     margin-right: 0;
     margin-left: 0;
     margin-top: 0;
-    height: 358px;
+    height: 258px;
     background: rgba(0, 0, 0, 0.50);
 }
 
 .mainImage-Container {
     text-align: center;
-    margin-bottom: -100px;
+    margin-bottom: 0px;
 }
 
 .mainImage {
-    margin-top: 100px;
+    margin-top: 0px;
     width: 100%;
     max-width: 1072px;
 }

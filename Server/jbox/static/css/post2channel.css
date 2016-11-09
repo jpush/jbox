@@ -2,7 +2,7 @@
     margin-left: 0;
     margin-right: 0;
     margin-top: -20px;
-    height: 96px;
+    height: 86px;
     background-color: #3B3849;
     color: #000000;
     z-index: 1000;
@@ -11,7 +11,7 @@
 .post2channel-bg {
     background: #777193;
     /*width: 100%;*/
-    height: 456px;
+    height: 356px;
     padding-top: 47px;
 }
 
