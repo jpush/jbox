@@ -29,9 +29,10 @@
 }
 
 .row {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
+}
+
+.left-description {
+    width: 300px;
 }
 
 .span {
@@ -39,21 +40,19 @@
 }
 
 .input-group {
-    display: flex;
     margin-left: 29px;
     margin-top: 17px;
-    flex: 2;
 }
 
 #qrcode-content {
-    flex: 1;
     margin-top: 47px;
-    align-content: center;
+    text-align: center;
 }
 
 #qrcode {
-    margin-left: 72px;
-    margin-right: 72px;
+    margin-left: 50px;
+    margin-right: 50px;
+
 }
 
 #qrcode-desc {
@@ -64,15 +63,10 @@
 }
 
 .j-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 #github_override {
-    align-self: center;
-    justify-content: center;
+    /*align-self: center;*/
 }
 
 .description {
@@ -92,14 +86,12 @@
 }
 
 #selector-div {
-    /*flex: 1;*/
     margin-left: 0;
     margin-right: 0;
     width: 100%;
 }
 
 .repo-select {
-    /*width: 100%;*/
     width: 700px;
     margin-left: 0;
     margin-right: 0;;
@@ -138,12 +130,10 @@
 
 #regenerate {
     margin-right: 161px;
+    margin-top: 13px;
 }
 
 #link-content {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
 }
 
 .link {
@@ -151,12 +141,10 @@
     color: #40a4e0;
     border: 0 hidden;
     box-shadow:none;
+    background-color: transparent;
 }
 
 #integration-content {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
 }
 
 #select-file {

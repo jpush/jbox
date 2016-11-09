@@ -39,10 +39,12 @@
     <div id="edit_form" class="col-lg-10 col-lg-offset-1">
         <div class="row" style="margin-top: 38px;">
             <div class="col-md-3">
-                <p class="jbox-font span-title">绑定频道</p>
-                <p class="jbox-font span-desc">将消息发送到指定的频道</p>
+                <div class="left-description">
+                    <p class="jbox-font span-title">绑定频道</p>
+                    <p class="jbox-font span-desc">将消息发送到指定的频道</p>
+                </div>
             </div>
-            <div class="col-md-5" style="margin-top: 30px;">
+            <div class="col-md-6" style="margin-top: 30px;">
                 <div class="input-group">
                     <input id="selected_channel" type="text" class="form-control" aria-label="..."
                            placeholder="{{ channel }}">
@@ -59,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div id="qrcode-content" class="column" style="margin-top: 0px;">
                     <div id="qrcode"></div>
                     <p id="qrcode-desc" class="jbox-font">手机扫一扫订阅该频道</p>
@@ -72,8 +74,10 @@
             {% if confirmed %}
                 <div class="row">
                     <div class="col-md-3">
-                        <p class="jbox-font span-title">Repositories</p>
-                        <p class="jbox-font span-desc">选择你要监听的仓库</p>
+                        <div class="left-description">
+                            <p class="jbox-font span-title">Repositories</p>
+                            <p class="jbox-font span-desc">选择你要监听的仓库</p>
+                        </div>
                     </div>
                     <div class="col-md-7">
                         <div id="selector-div" class="column">
@@ -140,46 +144,57 @@
         {% endif %}
         <div class="row">
             <div class="col-md-3">
-                <p class="jbox-font span-title">集成名称</p>
-                <p class="jbox-font span-desc">给你的集成设置名称</p>
+                <div class="left-description">
+                    <p class="jbox-font span-title">集成名称</p>
+                    <p class="jbox-font span-desc">给你的集成设置名称</p>
+                </div>
             </div>
             <div class="col-md-7">
                 <input id="name" class="description" title="应用名" type="text" value="{{ integration.name }}"/>
             </div>
+            <div class="col-md-1"></div>
         </div>
         <hr class="divider">
 
         <div class="row">
             <div class="col-md-3">
-                <p class="jbox-font span-title">集成描述</p>
-                <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
+                <div class="left-description">
+                    <p class="jbox-font span-title">集成描述</p>
+                    <p class="jbox-font span-desc">给你的集成添加描述(选填)</p>
+                </div>
             </div>
             <div class="col-md-7">
                 <input id="description" class="description" title="应用描述" type="text"
                        value="{{ integration.description }}"/>
             </div>
+            <div class="col-md-1"></div>
         </div>
         <hr class="divider">
 
         {% if integration.type == 'custom' %}
             <div class="row">
                 <div class="col-md-3">
-                    <p class="jbox-font span-title">Webhook</p>
-                    <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
-                    <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
+                    <div class="left-description">
+                        <p class="jbox-font span-title">Webhook</p>
+                        <p class="jbox-font span-desc">将你的 json 发送到这个 URL</p>
+                        <a id="check-api" class="jbox-font link" href="{{ url_for('main.document') }}">查看 API 说明</a>
+                    </div>
                 </div>
                 <div class="col-md-7" style="text-align: right;">
                     <input id="webhook" class="jbox-font description"
                            value="jbox.jiguang.cn/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
                     <button id="regenerate" class="jbox-font link">重新生成</button>
                 </div>
+            <div class="col-md-1"></div>
             </div>
             <hr class="divider">
         {% elif integration.type == 'discourse' %}
             <div class="row">
                 <div class="col-md-3">
-                    <p class="jbox-font span-title">Webhook</p>
-                    <p class="jbox-font span-desc">将这个 URL 复制到 discourse 插件上</p>
+                    <div class="left-description">
+                        <p class="jbox-font span-title">Webhook</p>
+                        <p class="jbox-font span-desc">将这个 URL 复制到 discourse 插件上</p>
+                    </div>
                 </div>
                 <div class="col-md-7">
                     <input id="webhook" class="jbox-font description"
@@ -195,8 +210,10 @@
         <div id="integration-content">
             <div class="row">
                 <div class="col-md-3">
-                    <p class="jbox-font span-title">集成图标</p>
-                    <p class="jbox-font span-desc">选择一张图片作为集成图标(不超过2M)</p>
+                    <div class="left-description">
+                        <p class="jbox-font span-title">集成图标</p>
+                        <p class="jbox-font span-desc">选择一张图片作为集成图标(不超过2M)</p>
+                    </div>
                 </div>
                 <div class="col-md-2" style="margin-top: 45px">
                     <form id="uploadform" method="post" enctype="multipart/form-data">
@@ -206,7 +223,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-6">
                     {% if integration.icon %}
                         <img id="icon" src="/static/images/{{ integration.icon }}" title="icon">
                     {% elif integration.type == 'github' %}
