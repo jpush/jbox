@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/send_to_channel.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}消息{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

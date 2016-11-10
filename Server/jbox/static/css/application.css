@@ -86,12 +86,15 @@ body {
     background: rgba(0, 0, 0, 0.50);
     width: 250px;
     height: 188px;
-    justify-content: center;
-    align-items: center;
     text-align: center;
     padding: 30px;
+    border-width: 0px;
 }
 
+.icon-background:hover {
+    background: rgba(0, 0, 0, 0.80);
+
+}
 #ios {
     /*margin-top: 90px;*/
     /*margin-left: 60px;*/
