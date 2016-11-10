@@ -50,6 +50,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
 
     self.title = @"订阅频道";
+
+    self.channel_tableView.tableFooterView = [UIView new];
 }
 
 -(void)back{
@@ -78,8 +80,14 @@
                 for (NSString *name in channelNames) {
                     JBChannel *channel = [JBChannel new];
                     channel.dev_key       = realDevkey;
-                    channel.isSubscribed  = @"1";
                     channel.name          = name;
+                    if (self.isScaned) {
+                        channel.isSubscribed  = @"1";
+                        [JBDatabase updateChannel:channel];
+
+                    }else{
+                        channel.isSubscribed  = @"0";
+                    }
                     [JBDatabase insertChannel:channel];
                 }
                 weakSelf.channels = [JBDatabase getChannelsFromDevkey:realDevkey];

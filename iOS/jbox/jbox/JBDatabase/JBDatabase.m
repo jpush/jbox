@@ -31,7 +31,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 
 +(void)insertDevkey:(JBDevkey *)devkey{
     NSMutableArray *devkeys = [JBDatabase getDevkeys];
-    if (![JBDatabase devkeyInDatabase:devkey.dev_key]) {
+    if (![JBDatabase devkeyInDatabase:devkey.dev_key] && devkey.dev_key) {
         [devkeys addObject:devkey];
     }else{
         for (int i = 0; i < devkeys.count; i++) {
@@ -110,7 +110,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 
 +(void)createChannel:(JBChannel*)channel{
     if ([JBSharedDatabase open]) {
-        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (id integer PRIMARY KEY AUTOINCREMENT,title text ,message text ,devkey text ,channel text, time text, read text, icon text, integation_name text)", JBTableName(channel.dev_key, channel.name)];
+        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (id integer PRIMARY KEY AUTOINCREMENT,title text ,message text ,devkey text ,channel text, time text, read text, icon text, integation_name text, url text)", JBTableName(channel.dev_key, channel.name)];
         BOOL result = [JBSharedDatabase executeUpdate:sqlCreateTable];
         if (result) {
 
@@ -128,7 +128,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 +(void)insertMessages:(NSArray*)mArray{
     if ([JBSharedDatabase open]) {
         for (JBMessage *message in mArray) {
-            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (title,message,devkey,channel,time,read,icon,integation_name) values ('%@','%@','%@','%@','%@', '%@', '%@', '%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.channel, message.time, message.read, message.icon, message.integation_name];
+            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (title,message,devkey,channel,time,read,icon,integation_name,url) values ('%@','%@','%@','%@','%@', '%@', '%@', '%@', '%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.channel, message.time, message.read, message.icon, message.integation_name, message.url];
             BOOL result = [JBSharedDatabase executeUpdate:sqlInsertTable];
             if (result) {
             }
@@ -151,6 +151,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
             message.time    = [set stringForColumn:@"time"];
             message.read    = [set stringForColumn:@"read"];
             message.icon    = [set stringForColumn:@"icon"];
+            message.url     = [set stringForColumn:@"url"];
             message.integation_name = [set stringForColumn:@"integation_name"];
             [modelArray addObject:message];
         }

@@ -171,22 +171,6 @@
         NSString *channelName = [scanedDevkey componentsSeparatedByString:@"_"][1];
 
         //
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        JBMessageViewController *vc = ((UINavigationController*)[[UIApplication sharedApplication] keyWindow].rootViewController).viewControllers[0];
-        for (int i = 0; i < vc.scrollViewController.teamSlideView.devArray.count; i++) {
-            if ([((JBDevkey*)vc.scrollViewController.teamSlideView.devArray[i]).dev_key isEqualToString:realDevkey]) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-                [vc.scrollViewController.teamSlideView.team_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-                [vc.scrollViewController.scrollView setContentOffset:CGPointMake(SlideViewWidth, 0) animated:NO];
-                JBDevkey *devkey = [JBDevkey new];
-                devkey.dev_key   = realDevkey;
-                vc.scrollViewController.channelSlideView.devkey = devkey;
-//                [vc.scrollViewController.teamSlideView tableView:vc.scrollViewController.teamSlideView.team_tableView didSelectRowAtIndexPath:indexPath];
-            }
-        }
-        [vc slide:nil];
-
-        //
         if (scanedDevkey && ![scanedDevkey isEqualToString:@""]) {
 
 
@@ -209,6 +193,25 @@
                             channel.name          = name;
                             [JBDatabase insertChannel:channel];
                             [JBDatabase updateChannel:channel];
+
+                            //
+                            [self.navigationController popToRootViewControllerAnimated:YES];
+                            JBMessageViewController *vc = ((UINavigationController*)[[UIApplication sharedApplication] keyWindow].rootViewController).viewControllers[0];
+                            for (int i = 0; i < vc.scrollViewController.teamSlideView.devArray.count; i++) {
+                                if ([((JBDevkey*)vc.scrollViewController.teamSlideView.devArray[i]).dev_key isEqualToString:realDevkey]) {
+                                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                                    [vc.scrollViewController.teamSlideView.team_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                                    [vc.scrollViewController.scrollView setContentOffset:CGPointMake(SlideViewWidth, 0) animated:NO];
+                                    JBDevkey *devkey = [JBDevkey new];
+                                    devkey.dev_key   = realDevkey;
+                                    vc.scrollViewController.channelSlideView.devkey = devkey;
+                                    //                [vc.scrollViewController.teamSlideView tableView:vc.scrollViewController.teamSlideView.team_tableView didSelectRowAtIndexPath:indexPath];
+                                }
+                            }
+                            [vc slide:nil];
+
+
+
                         }
                     }
                 }];
@@ -219,6 +222,7 @@
     }else{
         JBDevManageViewController *controller = [[JBDevManageViewController alloc] initWithNibName:@"JBDevManageViewController" bundle:[NSBundle mainBundle]];
         controller.scanedDevkey = [strResult.strScanned copy];
+        controller.isScaned = YES;
         [self.navigationController pushViewController:controller animated:YES];
     }
 }

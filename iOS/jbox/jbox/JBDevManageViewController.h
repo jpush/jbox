@@ -11,5 +11,6 @@
 @interface JBDevManageViewController : UIViewController
 
 @property (nonatomic, retain)NSString *scanedDevkey;
+@property(nonatomic, assign)BOOL isScaned;
 
 @end

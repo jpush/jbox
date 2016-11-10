@@ -17,4 +17,5 @@
 @property(nonatomic, retain)NSString *read;
 @property(nonatomic, retain)NSString *icon;
 @property(nonatomic, retain)NSString *integation_name;
+@property(nonatomic, retain)NSString *url;
 @end

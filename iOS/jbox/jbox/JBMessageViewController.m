@@ -14,7 +14,7 @@
 #import "JBNetwork.h"
 #import <MJRefresh.h>
 
-@interface JBMessageViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface JBMessageViewController ()<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
 @property(nonatomic ,retain)NSArray *messageArray;
 @property(nonatomic, assign)BOOL appeared;
@@ -29,6 +29,7 @@
 
     self.title = self.channel.name ? self.channel.name : @"频道";
     self.counts = 20;
+    self.message_tableView.tableFooterView = [UIView new];
 
     //bar
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -55,6 +56,7 @@
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slide:)];
     [self.view addGestureRecognizer:tap];
     [self.view addGestureRecognizer:swipe];
+    tap.delegate = self;
 
     self.scrollViewController = [[JBScrollViewController alloc] initWithNibName:@"JBScrollViewController" bundle:nil];
     [[[UIApplication sharedApplication] keyWindow] addSubview:_scrollViewController.view];
@@ -71,6 +73,7 @@
     message.time       = dict[@"extras"][@"datetime"];
     message.icon       = dict[@"extras"][@"icon"];
     message.read       = @"0";
+    message.url        = dict[@"extras"][@"url"];
     message.integation_name = dict[@"extras"][@"integation_name"];
     [JBDatabase insertMessages:@[message]];
     [self.message_tableView reloadData];
@@ -85,7 +88,9 @@
         if (swipe.direction == UISwipeGestureRecognizerDirectionLeft && self.isSlideOut) {
             [self slideAnimate];
         }
-    }else{
+    }else if(self.isSlideOut){
+        [self slideAnimate];
+    }else if([gesture isKindOfClass:[UIBarButtonItem class]]){
         [self slideAnimate];
     }
 }
@@ -146,7 +151,14 @@
 //        [self.message_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 //        [self.view layoutIfNeeded];
 //    }
-    if (self.appeared) {
+    if (self.appeared && !self.isSlideOut) {
+        [JBDatabase setAllMessagesReadWithChannel:self.channel];
+    }
+}
+
+-(void)setIsSlideOut:(BOOL)isSlideOut{
+    _isSlideOut = isSlideOut;
+    if (!isSlideOut) {
         [JBDatabase setAllMessagesReadWithChannel:self.channel];
     }
 }
@@ -181,7 +193,23 @@
         cell = [[NSBundle mainBundle] loadNibNamed:@"JBMessageTableViewCell" owner:nil options:nil].lastObject;
     }
     cell.message = self.messageArray[indexPath.row];
+    cell.userInteractionEnabled = YES;
+
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    JBMessageTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.message.url && ![cell.message.url isEqualToString:@""]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:cell.message.url]];
+    }
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+    if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+        return self.isSlideOut;
+    }
+    return YES;
 }
 
 @end
