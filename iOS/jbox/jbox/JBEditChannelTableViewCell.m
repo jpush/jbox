@@ -38,7 +38,7 @@
     _channel = channel;
     self.name_label.text = channel.name;
     self.isSubscribe = [channel.isSubscribed boolValue];
-    self.icon_label.text = [channel.name substringToIndex:1];
+    self.icon_label.text = [channel.name substringToIndex:1].uppercaseString;
 }
 
 -(void)setIsSubscribe:(BOOL)isSubscribe{

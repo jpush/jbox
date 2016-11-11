@@ -48,7 +48,11 @@
     self.time_label.text    = time;
     if ([message.icon isEqualToString:@""] || !message.icon) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 45, 45)];
-        label.text = [message.integation_name substringToIndex:1];
+        if (message.integation_name.length > 1) {
+            label.text = [message.integation_name substringToIndex:1].uppercaseString;
+        }else{
+            label.text = [self.message.channel substringToIndex:1].uppercaseString;
+        }
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont systemFontOfSize:36];
         label.textAlignment = NSTextAlignmentCenter;
