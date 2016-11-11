@@ -23,23 +23,30 @@
     </div>
     <div class="container" style="border-width: 1px;">
         <div class="content-body">
-            <p class="sub-title">选择要发送到的频道</p>
-            <div class="input-group">
-                <input id="selected_channel" type="text" class="form-control" aria-label="..."
-                       placeholder="{{ channel }}">
-                <input id="input_hidding" type="hidden" value="{{ channel }}">
-                <div class="input-group-btn">
-                    <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
-                    <ul class="dropdow n-menu dropdown-menu-right">
-                        {% for channel in channels %}
-                            <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
-                        {% endfor %}
-                    </ul>
+            <div class="row">
+                <p class="sub-title">选择要发送到的频道</p>
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <input id="selected_channel" type="text" class="form-control" aria-label="..."
+                           placeholder="{{ channel }}">
+                    <input id="input_hidding" type="hidden" value="{{ channel }}">
+                    <div class="input-group-btn">
+                        <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                        <ul class="dropdow n-menu dropdown-menu-right">
+                            {% for channel in channels %}
+                                <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <p class="sub-title">输入要发送的消息</p>
+
+            <div class="row" style="margin-top: 40px">
+                <p class="sub-title">输入要发送的消息</p>
+            </div>
             <div class="row">
                 <input id="title-input" placeholder="Your title">
             </div>

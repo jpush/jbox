@@ -1,3 +1,6 @@
+body {
+    background-color: #F9F9F9;
+}
 #navigationbar {
     margin-left: 0;
     margin-right: 0;
@@ -9,14 +12,11 @@
 }
 
 #title-input {
-    /*border-width: 0px;*/
-    /*background-color: transparent;*/
-
-    margin-top: 20px;
+    margin-top: 5px;
     border-radius: 5px;
     border-style: solid;
     border-width: 1px;
-    border-color: #979797;
+    border-color: #D3D3D3;
     height: 47px;
     padding: 10px;
     margin-left: 0;
@@ -52,21 +52,6 @@
 
 }
 
-.title-content {
-    margin-top: 20px;
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
-    height: 47px;
-    padding: 10px;
-    margin-left: 0;
-    margin-right: 0;
-    color: #595959;
-    border-color: #D3D3D3;
-    width: 100%;
-    text-align: left;
-}
-
 .message-content {
     border-radius: 5px;
     border-style: solid;
@@ -82,11 +67,15 @@
 
 .content-body {
     border-width: 1px;
-    border-color: #979797;
+    border-color: #D3D3D3;
     margin-left: 0px;
     margin-right: 0px;
-    height: 190px;
-    background-color: #00C4CC;
+    border-radius: 5px;
+    height: 600px;
+    border-style: solid;
+    padding: 50px;
+    background-color: white;
+
 }
 
 #send-btn {
