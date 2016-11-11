@@ -39,7 +39,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     //JPush sdk
-    [JPUSHService setupWithOption:launchOptions appKey:@"1c29cb5814072b5b1f8ef829" channel:@"" apsForProduction:NO advertisingIdentifier:nil];
+    [JPUSHService setupWithOption:launchOptions appKey:@"1c29cb5814072b5b1f8ef829" channel:@"" apsForProduction:YES advertisingIdentifier:nil];
 
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
