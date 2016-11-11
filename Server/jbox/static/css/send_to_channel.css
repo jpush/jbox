@@ -32,9 +32,9 @@ body {
     border-width: 0px;
     margin: 0px;
     margin-left: 20px;
-    margin-right: 0px;
+    margin-right: 20px;;
     height: 190px;
-    width: 720px;
+    width: 620px;
     outline:none;
     text-align: start;
     text-color: #595959;
@@ -44,6 +44,8 @@ body {
 .main-title {
     font-size: 36px;
     color: #595959;
+    margin-left: 35px;
+    margin-top: 25px;
 }
 
 .sub-title {
@@ -63,6 +65,9 @@ body {
     margin-right:0;
     margin-left: 0;
     height: 250px;
+    /*padding-top: 16px;*/
+    /*padding-right: 15px;*/
+    /*padding-left: 15px;*/
 }
 
 .content-body {
