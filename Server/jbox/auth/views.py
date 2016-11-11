@@ -374,6 +374,15 @@ def create_github_integration(channel):
     db.session.commit()
     return redirect(url_for('auth.edit_github_integration', integration_id=new_integration_id))
 
+@auth.route('/send_to_channel/<string:channel>', methods=['GET'])
+def send_to_channel(channel):
+    developer = get_developer()
+    if developer is None:
+        return redirect(url_for('main.login'))
+    channels = get_channel_list()
+    print(channels)
+    return render_template('auth/send_to_channel.html', **locals())
+
 
 @github.tokengetter
 def get_github_oauth_token():

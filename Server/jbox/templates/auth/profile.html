@@ -95,8 +95,8 @@
                     var id;
                     for (var j = 1; j <= 3 && j + (i - 1)*3 <= count; j++) {
                         id = (i - 1) * 3 + j - 1;
-                        var td = $('<td ><div class="channel-td"><div id="channel' + id + '">' +
-                                '</div><p class="channel-title">' + list[id] + '</p></div></td>');
+                        var td = $('<td ><a href="/auth/send_to_channel/' + list[id] +'"><div class="channel-td"><div id="channel' + id + '">' +
+                                '</div><p class="channel-title">' + list[id] + '</p></div></td></a>');
                         console.log(list[id]);
                         console.log(id);
                         td.appendTo(tr);
@@ -114,7 +114,48 @@
                 }
             }
         }
+
     </script>
 {% endblock %}
 
+
+
+
+{#$('#create_integration_btn').click(function () {#}
+{#var channel = $('#selected_channel').val();#}
+{#console.log('create integration, channel: ' + channel);#}
+{#if (channel != '') {#}
+{#{% if github %}#}
+{#    window.location.href = '/auth/github/create/' + channel;#}
+{#{% else %}#}
+{#    var data;#}
+{#    {% if discourse %}#}
+{#        data = JSON.stringify({channel: channel, discourse: true});#}
+{#    {% else %}#}
+{#        data = JSON.stringify({channel: channel});#}
+{#    {% endif %}#}
+{#    $.ajax({#}
+{#    type: "POST",#}
+{#    contentType: "application/json; charset=utf-8",#}
+{#    url: "/v1/developers/{{ dev_key }}/integrations",#}
+{#    data: data,#}
+{#    success: function (data) {#}
+{#    if (data != undefined) {#}
+{#    if (data["token"]) {#}
+{#    window.location.href = '/auth/manage/create_integration/' + data["integration_id"] + '/' + data["token"] + '/' +#}
+{#    channel#}
+{#    }#}
+{#    } else {#}
+{#    toastr.error("服务器异常");#}
+{#    }#}
+{#    },#}
+{#    error: function (error) {#}
+{#    console.log(error);#}
+{#    toastr.error("创建失败");#}
+{#    },#}
+{#    dataType: "json"#}
+{#    });#}
+{#{% endif %}#}
+{#}#}
+{#        })#}
 
