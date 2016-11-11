@@ -14,6 +14,7 @@
                 <outlet property="avatar_imageView" destination="E65-dD-BVV" id="QYP-Rm-nAr"/>
                 <outlet property="channel_tableView" destination="du7-Yl-NkS" id="Evf-A0-T9e"/>
                 <outlet property="desc_label" destination="xWg-Iq-MQG" id="4ai-u3-nsf"/>
+                <outlet property="devnameBg_constraint" destination="FbY-W0-Wrc" id="roK-iJ-3LZ"/>
                 <outlet property="devname_label" destination="9lO-fp-4Jy" id="2ug-b6-L4j"/>
                 <outlet property="view" destination="giW-ge-DWG" id="EBM-pn-6ks"/>
             </connections>
@@ -24,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="du7-Yl-NkS">
-                    <rect key="frame" x="0.0" y="201" width="375" height="466"/>
+                    <rect key="frame" x="0.0" y="200" width="375" height="467"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Ks0-tW-0AJ"/>
@@ -32,9 +33,9 @@
                     </connections>
                 </tableView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="devname_bg" translatesAutoresizingMaskIntoConstraints="NO" id="8zN-M2-fbD">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="201"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="201" id="FbY-W0-Wrc"/>
+                        <constraint firstAttribute="height" constant="200" id="FbY-W0-Wrc"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="devname_defaultAvatar" translatesAutoresizingMaskIntoConstraints="NO" id="E65-dD-BVV">
@@ -80,7 +81,7 @@
                 <constraint firstItem="E65-dD-BVV" firstAttribute="top" secondItem="giW-ge-DWG" secondAttribute="top" constant="30" id="q3P-7F-s6R"/>
                 <constraint firstItem="du7-Yl-NkS" firstAttribute="leading" secondItem="giW-ge-DWG" secondAttribute="leading" id="tXt-h1-SV8"/>
             </constraints>
-            <point key="canvasLocation" x="47" y="292"/>
+            <point key="canvasLocation" x="-81" y="31"/>
         </view>
     </objects>
     <resources>

@@ -16,6 +16,8 @@
 
 
 #import "UIColor+Hex.h"
+#import "UILabel+ContentSize.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
 
 static NSString *CellReuseIdentifier     = @"cell";

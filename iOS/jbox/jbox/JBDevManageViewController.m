@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *avatar_imageView;
 @property (weak, nonatomic) IBOutlet UILabel *devname_label;
 @property (weak, nonatomic) IBOutlet UILabel *desc_label;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *devnameBg_constraint;
 
 @end
 
@@ -99,6 +100,8 @@
 -(void)updateUIWithDevkey:(JBDevkey*)devkey{
     self.devname_label.text = devkey.dev_name;
     self.desc_label.text    = [devkey.desc isEqualToString:@""] ? @"这个人很懒什么都没有留下" : devkey.desc;
+    self.devnameBg_constraint.constant = 200 - 17 + [self.desc_label caculatedSize].height;
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@",devkey.avatar]];
 
     [self.avatar_imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"devname_defaultAvatar"]];
