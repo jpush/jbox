@@ -4,6 +4,7 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/application.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
 {% endblock %}
 
 {% block title %}极光宝盒 App{% endblock %}
@@ -55,5 +56,25 @@
         function click_android() {
             window.location.href = "http://www.baidu.com";
         }
+
+        $('#ios').click(function () {
+                        var sUserAgent = navigator.userAgent.toLowerCase();
+            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+            var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+            var bIsAndroid = sUserAgent.match(/android/i) == "android";
+            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+            if (bIsIphoneOs || bIsIpad) {
+                // window.location.href = "itms-services://?action=download-manifest&url=https://dn-jmsgweb.qbox.me/jchat-ios-1.1.0b1611/jchat.plist";
+                window.location.href = "itms-services://?action=download-manifest&url=https://www.jchat.io/downloads/jchat.plist";
+                // window.location.href = "https://www.jchat.io/downloads/JChat.ipa"
+            } else {
+                // window.location.href = "https://dn-jmsgweb.qbox.me/jchat-ios-1.1.0b1611/jchat.ipa";
+                window.location.href = "/static/app/jbox.ipa"
+            }
+        })
     </script>
 {% endblock %}

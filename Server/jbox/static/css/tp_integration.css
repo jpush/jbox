@@ -54,9 +54,6 @@
     height: 247px;
     line-height: 60px;
     margin-right: 60px;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
     align-items: center;
     color: #595959;
     font-size: 18px;
