@@ -21,19 +21,19 @@
 
 {% block content %}
     <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-1">
-            <div style="text-align: left;">
-                {% if integration.type == 'github' %}
-                    <p id="title" class="jbox-font">GitHub 设置</p>
-                {% elif integration.type == 'discourse' %}
-                    <p id="title" class="jbox-font">Discourse 设置</p>
-                {% else %}
-                    <p id="title" class="jbox-font">自定义集成设置</p>
-                {% endif %}
+        <div class="row">
+            <div class="col-md-4 col-md-offset-1">
+                <div style="text-align: left;">
+                    {% if integration.type == 'github' %}
+                        <p id="title" class="jbox-font">GitHub 设置</p>
+                    {% elif integration.type == 'discourse' %}
+                        <p id="title" class="jbox-font">Discourse 设置</p>
+                    {% else %}
+                        <p id="title" class="jbox-font">自定义集成设置</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     <div id="edit_form" class="col-lg-10 col-lg-offset-1">
@@ -87,18 +87,18 @@
                                         <select id="repos_selector{{ loop.index0 }}" class="repo-select"
                                                 onchange="selectClick({{ loop.index0 }})">
                                             <option id="choose" value>选择一个仓库...</option>
-                                                {% for key in result_key %}
-                                                    <optgroup label="{{ key }}">
+                                            {% for key in result_key %}
+                                                <optgroup label="{{ key }}">
                                                     {% for repo in result[key] %}
                                                         {% if repo == store_repo %}
                                                             <option selected="selected"
-                                                                value="{{ repo }}">{{ repo }}</option>
+                                                                    value="{{ repo }}">{{ repo }}</option>
                                                         {% else %}
                                                             <option value="{{ repo }}">{{ repo }}</option>
                                                         {% endif %}
                                                     {% endfor %}
-                                                    </optgroup>
-                                                {% endfor %}
+                                                </optgroup>
+                                            {% endfor %}
                                         </select>
                                     </label>
                                 {% endfor %}
@@ -135,9 +135,33 @@
                 </div>
             {% else %}
                 <div class="j-column">
-                    <p class="jbox-font span-desc">添加这个集成的用户为 {{ owner }}, 当前授权用户为 {{ user }}，所以
-                        您没有权限为此集成添加 GitHub webhook。</p>
-                    <button class="btn btn-warning" id="github_override">点击以覆盖 GitHub Webhook</button>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="left-description">
+                                <p class="jbox-font span-title">Repositories</p>
+                                <p class="jbox-font span-desc">选择你要监听的仓库</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div id="selector-div" class="column">
+                                {% if store_repos %}
+                                    {% for store_repo in store_repos %}
+                                        <label id="label{{ loop.index0 }}">
+                                            <select id="repos_selector{{ loop.index0 }}" class="repo-select"
+                                                    disabled="disabled">
+                                                <option selected="selected"
+                                                        value="{{ store_repo }}">{{ store_repo }}</option>
+                                            </select>
+                                        </label>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="jbox-font span-desc">添加这个集成的用户为 {{ owner }}, 当前授权用户为 {{ user }}，
+                        所以您没有权限为此集成添加 GitHub webhook。</p>
+                    <button class="btn btn-warning col-md-offset-6" id="github_override">点击以覆盖 GitHub Webhook</button>
                 </div>
             {% endif %}
 
@@ -186,7 +210,7 @@
                            value="jbox.jiguang.cn/v1/message/{{ integration.integration_id }}/{{ integration.token }}"/>
                     <button id="regenerate" class="jbox-font link">重新生成</button>
                 </div>
-            <div class="col-md-1"></div>
+                <div class="col-md-1"></div>
             </div>
             <hr class="divider">
         {% elif integration.type == 'discourse' %}
@@ -199,11 +223,11 @@
                 </div>
                 <div class="col-md-7">
                     <input id="webhook" class="jbox-font description"
-                       value="jbox.jiguang.cn/plugins/discourse/{{ integration.integration_id }}/{{ integration.token }}/webhook"/>
+                           value="jbox.jiguang.cn/plugins/discourse/{{ integration.integration_id }}/{{ integration.token }}/webhook"/>
                 </div>
-{#                <div class="column span description-div">#}
-{#                #}
-{#                </div>#}
+                {#                <div class="column span description-div">#}
+                {#                #}
+                {#                </div>#}
 
             </div>
             <hr class="divider">

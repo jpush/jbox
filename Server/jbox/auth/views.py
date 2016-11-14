@@ -221,12 +221,12 @@ def edit_github_integration(integration_id):
         result = {}
         if len(list) > 0:
             for i in range(len(list)):
-                owner = list[i]['owner']
-                if owner['login'] in result:
-                    result[owner['login']].append(list[i]['name'])
+                repo_owner = list[i]['owner']
+                if repo_owner['login'] in result:
+                    result[repo_owner['login']].append(list[i]['name'])
                 else:
-                    result_key.append(owner['login'])
-                    result[owner['login']] = [list[i]['name']]
+                    result_key.append(repo_owner['login'])
+                    result[repo_owner['login']] = [list[i]['name']]
         return render_template('auth/create.html', **locals())
 
 

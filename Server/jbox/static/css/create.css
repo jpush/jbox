@@ -65,10 +65,6 @@
 .j-column {
 }
 
-#github_override {
-    /*align-self: center;*/
-}
-
 .description {
 
     margin-top: 20px;
@@ -92,7 +88,7 @@
 }
 
 .repo-select {
-    width: 700px;
+    width: 500px;
     margin-left: 0;
     margin-right: 0;;
     margin-top: 20px;
