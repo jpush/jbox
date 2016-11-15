@@ -26,6 +26,7 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 *venv/
+*.python-version
 
 # Android/IJ
 #
