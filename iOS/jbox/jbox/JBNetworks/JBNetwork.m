@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 #pragma mark - public
 
 +(void)getDevInfoWithDevkey:(NSString*)devkeyStr complete:(void (^)(JBDevkey *devkey))complete{
-    [JBNetwork GET:devkeyStr paramtes:nil complete:^(id responseObject) {
+    [JBNetwork GET:devkeyStr paramtes:devkeyStr complete:^(id responseObject) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         JBDevkey *devkey = [JBDevkey new];
         [devkey setValuesForKeysWithDictionary:dict];
@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
 }
 
 +(void)getChannelsWithDevkey:(NSString*)devkey complete:(void (^)(id responseObject))complete{
-    [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:nil complete:^(id responseObject) {
+    [JBNetwork GET:StrBy(devkey, @"/channels") paramtes:devkey complete:^(id responseObject) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
         NSMutableArray *downloadChannelNames = dict[@"channels"];
         //把数据库里有，但是下载没有的数据删掉
@@ -105,7 +105,7 @@ typedef NS_ENUM(NSInteger, RequestHttpType){
     NSString *requestType = (type == RequestHttpTypeGET ? @"GET" : @"POST");
     AFHTTPRequestSerializer *requestSerializer = [AFHTTPRequestSerializer serializer];
 
-    NSString *authStr   = [NSString stringWithFormat:@"%@:%@", @"Authorization", param];
+    NSString *authStr   = [NSString stringWithFormat:@"%@:%@", @"1c29cb5814072b5b1f8ef829", param];
     NSData   *authData  = [authStr dataUsingEncoding:NSUTF8StringEncoding];
     NSString *authValue = [NSString stringWithFormat:@"Basic %@", [authData base64EncodedStringWithOptions:0]];
 
