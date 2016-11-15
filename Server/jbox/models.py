@@ -109,7 +109,7 @@ class Integration(db.Model):
     __tablename__ = 'integrations'
     id = db.Column(db.Integer, primary_key=True)
     integration_id = db.Column(db.String(40), unique=True)
-    name = db.Column(db.String(100))
+    name = db.Column(db.String(100), default='')
     description = db.Column(db.String(150), default='')
     icon = db.Column(db.String(150))
     token = db.Column(db.String(150))
