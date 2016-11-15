@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
-import android.util.Base64;
+import android.util.Log;
 
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
@@ -25,6 +25,7 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -53,71 +54,68 @@ public class HttpUtil {
         final Resources resources = AppApplication.getAppContext().getResources();
         String url = String.format(resources.getString(R.string.url_get_developers), devKey);
 
-        try {
-            // TODO: 用作校验，目前暂时不用。
-            String devKeyBase64 = Base64.encodeToString(devKey.getBytes("UTF-8"), Base64.NO_WRAP);
+        String appKey = AppApplication.getAppKey();
+        String basicAuth = Credentials.basic(appKey, devKey);
 
-            final Request request = new Request.Builder()
-                    .url(url)
-                    .build();
+        final Request request = new Request.Builder()
+                .header("Authorization", basicAuth)
+                .url(url)
+                .build();
 
-            Call call = mHttpClient.newCall(request);
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    callback.onDataNotAvailable();
-                }
+        Call call = mHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onDataNotAvailable();
+            }
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        String body = response.body().string();
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String body = response.body().string();
 
-                        try {
-                            JSONObject json = new JSONObject(body);
+                    try {
+                        JSONObject json = new JSONObject(body);
 
-                            Developer dev = new Developer();
-                            dev.key = devKey;
-                            dev.name = json.getString("dev_name");
-                            dev.platform = json.getString("platform");
-                            dev.desc = json.getString("desc");
-                            dev.avatarUrl = "http://" + json.getString("avatar");
-                            if (TextUtils.isEmpty(AppApplication.currentDevKey)) {
-                                dev.isSelected = true;
-                                AppApplication.currentDevKey = devKey;
-                            } else {
-                                dev.isSelected = false;
-                            }
-
-                            Developer localDev = new Select().from(Developer.class)
-                                    .where("Key = ?", devKey)
-                                    .executeSingle();
-
-                            if (localDev != null) {
-                                if (!localDev.equals(dev)) {
-                                    localDev.name = dev.name;
-                                    localDev.platform = dev.platform;
-                                    localDev.desc = dev.desc;
-                                    localDev.avatarUrl = dev.avatarUrl;
-                                }
-                                callback.onDevLoaded(localDev);
-                            } else {
-                                callback.onDevLoaded(dev);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            callback.onDataNotAvailable();
-                        } finally {
-                            response.close();
+                        Developer dev = new Developer();
+                        dev.key = devKey;
+                        dev.name = json.getString("dev_name");
+                        dev.platform = json.getString("platform");
+                        dev.desc = json.getString("desc");
+                        dev.avatarUrl = "http://" + json.getString("avatar");
+                        if (TextUtils.isEmpty(AppApplication.currentDevKey)) {
+                            dev.isSelected = true;
+                            AppApplication.currentDevKey = devKey;
+                        } else {
+                            dev.isSelected = false;
                         }
-                    } else {
-                        throw new IOException("Unexpected code " + response);
+
+                        Developer localDev = new Select().from(Developer.class)
+                                .where("Key = ?", devKey)
+                                .executeSingle();
+
+                        if (localDev != null) {
+                            if (!localDev.equals(dev)) {
+                                localDev.name = dev.name;
+                                localDev.platform = dev.platform;
+                                localDev.desc = dev.desc;
+                                localDev.avatarUrl = dev.avatarUrl;
+                            }
+                            callback.onDevLoaded(localDev);
+                        } else {
+                            callback.onDevLoaded(dev);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        callback.onDataNotAvailable();
+                    } finally {
+                        response.close();
                     }
+                } else {
+                    throw new IOException("Unexpected code " + response);
                 }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
     /**
@@ -125,7 +123,9 @@ public class HttpUtil {
      *
      * @param devKey 目标开发者的 dev key。
      */
-    public void requestChannels(final String devKey, final ChannelDataSource.LoadChannelsCallback callback) {
+    public void requestChannels(final String devKey,
+                                final ChannelDataSource.LoadChannelsCallback callback) {
+        Log.i(TAG, devKey);
         if (TextUtils.isEmpty(devKey)) {
             return;
         }
@@ -133,9 +133,11 @@ public class HttpUtil {
         Resources resources = AppApplication.getAppContext().getResources();
         String url = String.format(resources.getString(R.string.url_get_channels), devKey);
 
-        byte[] devKeyBase64 = Base64.decode(devKey, Base64.DEFAULT);
+        String appKey = AppApplication.getAppKey();
+        String basicAuth = Credentials.basic(appKey, devKey);
 
         Request request = new Request.Builder()
+                .header("Authorization", basicAuth)
                 .url(url)
                 .build();
 

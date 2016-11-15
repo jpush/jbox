@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
@@ -59,8 +59,8 @@ public class DeveloperListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_drawer_developer, container, false);
 
-        ImageView ivAdd = (ImageView) view.findViewById(R.id.iv_add);
-        ivAdd.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout rlAdd = (RelativeLayout) view.findViewById(R.id.rl_add);
+        rlAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), ScanActivity.class));
@@ -69,29 +69,6 @@ public class DeveloperListFragment extends Fragment {
 
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_dev);
-//        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                Log.i("DeveloperListFragment", "onTouch");
-//                return true;
-//            }
-//        });
-//        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                float startX = 0;
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        startX = event.getX();
-//                    case MotionEvent.ACTION_MOVE:
-//                        if (event.getX() - startX > 10) {    // 向左滑动
-//                            v.getParent().getParent().requestDisallowInterceptTouchEvent(true);
-//                        }
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mAdapter = new DeveloperListRecyclerViewAdapter(mDevs, mListener);
         mRecyclerView.setAdapter(mAdapter);
