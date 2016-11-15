@@ -39,6 +39,14 @@
     /*flex: 1 1 auto;*/
 }
 
+.divider {
+    /*margin: 42px 50px 64px 50px;*/
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 1px;
+    background-color: #c0c0c0;
+}
+
 .row-layer {
     display: flex;
     flex-flow: row nowrap;
