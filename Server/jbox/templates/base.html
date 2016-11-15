@@ -33,13 +33,14 @@
                                 {{ developer.username }}
                             </a>
                         </li>
+                        <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a></li>
                     {% else %}
                         <li role=""><img id="avatar" src="/static/images/bear.png"></li>
                         <li role=""><a class="jbox-font nav-font"
                                        href="{{ url_for('auth.profile') }}">Devname</a>
                         </li>
+                        <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a></li>
                     {% endif %}
-                    <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a></li>
                 {% else %}
                     <li role=""><a class="jbox-font nav-font" href="{{ url_for('main.login') }}">登录</a></li>
                 {% endif %}

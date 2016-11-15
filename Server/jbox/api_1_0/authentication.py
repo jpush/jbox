@@ -13,11 +13,15 @@ def get_token():
         return unauthorized('Invalid credentials')
     return jsonify({'token': g.current_user.generate_auth_token(expiration=3600), 'expiration': 3600})
 
+
 @auth.verify_password
-def get_auth3(platform, platform_id):
-    if platform == '':
-        return False
-    developer = Developer.query.filter_by(platform=platform, platform_id=platform_id).first()
-    if developer is None:
+def verify_pw(app_key, dev_key):
+    developer = Developer.query.filter_by(dev_key=dev_key).first()
+    if not developer:
         return False
     return True
+
+
+@auth.error_handler
+def auth_error():
+    return jsonify({"error": "Access Denied"}), 401

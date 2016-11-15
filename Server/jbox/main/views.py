@@ -52,13 +52,6 @@ def update_qq_api_request_data(data={}):
     return defaults
 
 
-# @main.route('/')
-def index():
-    '''just for verify website owner here.'''
-    return Markup('''<meta property="qc:admins" '''
-                  '''content="226526754150631611006375" />''')
-
-
 @main.route('/user_info')
 def get_user_info():
     if 'qq_token' in session:
@@ -177,7 +170,6 @@ def guide():
         if username is None or username == '':
             return redirect(url_for('auth.setting'))
         return render_template('guide.html', developer=developer)
-
 
 
 @main.route('/application', methods=['GET'])

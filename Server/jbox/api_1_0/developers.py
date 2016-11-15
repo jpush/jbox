@@ -8,6 +8,7 @@ from ..auth.views import github
 from config import basedir
 
 baseurl = 'jbox.jiguang.cn:80'
+app_key = os.environ.get("APP_KEY")
 
 
 # 通过 body 中的 platform, platform_id, username 来创建一个 Developer
@@ -67,7 +68,7 @@ def get_developer(platform, platform_id):
 
 # 获取 developer 的信息, 通过 dev_key 查询
 @api.route('/developers/<dev_key>', methods=['GET'])
-# @auth.login_required
+@auth.login_required
 def get_developer_info(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
@@ -131,6 +132,7 @@ def create_channel(dev_key):
 
 # 获得 dev_key 下的所有 channel
 @api.route('/developers/<string:dev_key>/channels', methods=['GET'])
+@auth.login_required
 def get_channels(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
@@ -146,7 +148,6 @@ def get_channels(dev_key):
 
 # 获取 dev_key 下的所有自定义集成的信息
 @api.route('/developers/<dev_key>/integrations', methods=['GET'])
-# @auth.login_required
 def get_integrations(dev_key):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is None:
@@ -176,6 +177,7 @@ def get_integrations(dev_key):
 
 # 获取某个自定义集成的信息
 @api.route('/developers/integrations/<integration_id>', methods=['GET'])
+@auth.login_required
 def get_integration(integration_id):
     integration = Integration.query.filter_by(integration_id=integration_id).first()
     if integration is None:
