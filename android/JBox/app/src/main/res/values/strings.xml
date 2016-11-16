@@ -41,8 +41,8 @@
     <!-- subscribe channel end -->
 
     <!-- http url start -->
-    <string name="url_get_developers">http://jbox.jiguang.cn/v1/developers/%s</string>
-    <string name="url_get_channels">http://jbox.jiguang.cn/v1/developers/%s/channels</string>
+    <string name="url_get_developers">https://jbox.jiguang.cn/v1/developers/%s</string>
+    <string name="url_get_channels">https://jbox.jiguang.cn/v1/developers/%s/channels</string>
     <string name="channel_no_hint">没有可订阅 Channel</string>
     <!-- http url end -->
 
