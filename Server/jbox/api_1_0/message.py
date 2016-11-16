@@ -46,7 +46,7 @@ def send_message(integration_id, token):
                                          'icon': url,
                                          'integation_name': integration.name})
 
-    push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
+    push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": True}
     push.platform = jpush.all_
 
     try:
