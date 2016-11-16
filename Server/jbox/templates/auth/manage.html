@@ -133,7 +133,7 @@
         {% endif %}
 
     </div>
-
+    {{ super() }}
     <script type="text/javascript">
         {% for integration in integrations %}
             $('#{{ integration.id }}').click(function () {

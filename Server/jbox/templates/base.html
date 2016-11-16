@@ -53,7 +53,22 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        {% block page_content %}{% endblock %}
+{#    <div class="container">#}
+{#        {% block page_content %}{% endblock %}#}
+{#    </div>#}
+    <div class="row">
+        <footer>
+            <hr/>
+
+            <div role="contentinfo">
+                <!-- Copyright etc -->
+
+                <p>Copyright 2011-2016, jiguang.cn, All Rights Reserved. <br/>粤ICP备12056275号-13 深圳市和讯华谷信息技术有限公司</p>
+
+            </div>
+            <div style="text-align: center">
+                Built with <a href="http://www.mkdocs.org">MkDocs</a>
+            </div>
+        </footer>
     </div>
 {% endblock %}
