@@ -93,8 +93,10 @@
                                                         {% if repo == store_repo %}
                                                             <option selected="selected"
                                                                     value="{{ repo }}">{{ repo }}</option>
-                                                        {% else %}
+                                                        {% elif user == key %}
                                                             <option value="{{ repo }}">{{ repo }}</option>
+                                                        {% else %}
+                                                            <option value="{{ repo }}" disabled="disabled">{{ repo }}</option>
                                                         {% endif %}
                                                     {% endfor %}
                                                 </optgroup>
@@ -109,7 +111,11 @@
                                         {% for key in result_key %}
                                             <optgroup label="{{ key }}">
                                                 {% for repo in result[key] %}
-                                                    <option value="{{ repo }}">{{ repo }}</option>
+                                                    {% if user == key %}
+                                                        <option value="{{ repo }}">{{ repo }}</option>
+                                                    {% else %}
+                                                        <option value="{{ repo }}" disabled="disabled">{{ repo }}</option>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </optgroup>
                                         {% endfor %}
@@ -122,7 +128,11 @@
                                         {% for key in result_key %}
                                             <optgroup label="{{ key }}">
                                                 {% for repo in result[key] %}
-                                                    <option value="{{ repo }}">{{ repo }}</option>
+                                                    {% if user == key %}
+                                                        <option value="{{ repo }}">{{ repo }}</option>
+                                                    {% else %}
+                                                        <option value="{{ repo }}" disabled="disabled">{{ repo }}</option>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </optgroup>
                                         {% endfor %}
@@ -406,7 +416,11 @@
                             {% for key in result_key %}
                                 + '<optgroup label="{{ key }}">'
                                 {% for repo in result[key] %}
-                                    + '<option value="{{ repo }}">{{ repo }}</option>'
+                                    {% if user == key %}
+                                        + '<option value="{{ repo }}">{{ repo }}</option>'
+                                    {% else %}
+                                        + '<option value="{{ repo }}" disabled="disabled">{{ repo }}</option>'
+                                    {% endif %}
                                 {% endfor %}
                                 + '</optgroup>'
                             {% endfor %}
