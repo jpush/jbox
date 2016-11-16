@@ -24,54 +24,59 @@
             <img src="/static/images/postToChannelImg.png">
         </div>
     </div>
-
-    <div id="form" class="col-lg-8 col-lg-offset-2">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-4">
-                    <p id="title" class="jbox-font" style="text-align: left;">推送到频道</p>
-                    {% if github %}
-                        <p id="description" class="jbox-font">从选择一个频道开始, 来自 GitHub 的消息将会推送到这个频道。</p>
-                    {% elif discourse %}
-                        <p id="description" class="jbox-font">从选择一个频道开始, 来自 Discourse 的消息将会推送到这个频道。</p>
-                    {% else %}
-                        <p id="description" class="jbox-font">从选择一个频道开始, 接下来集成的应用的消息将会推送到这个频道。</p>
-                    {% endif %}
-                </div>
-                <div class="col-md-8">
-                    <div id="input_div" class="column">
-                        <div class="input-group">
-                            <input id="selected_channel" type="text" class="form-control" aria-label="..."
-                                   placeholder="选择一个 channel 或者输入一个新的 channel">
-                            <div class="input-group-btn">
-                                <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-haspopup="true" aria-expanded="false"><span class="caret"></span>
-                                </button>
-                                <ul id="content" class="dropdown-menu dropdown-menu-right">
-                                  {% for channel in channels %}
-                                    <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
-                                  {% endfor %}
-                                </ul>
+    <div class="row">
+        <div id="form" class="col-lg-8 col-lg-offset-2">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p id="title" class="jbox-font" style="text-align: left;">推送到频道</p>
+                        {% if github %}
+                            <p id="description" class="jbox-font">从选择一个频道开始, 来自 GitHub 的消息将会推送到这个频道。</p>
+                        {% elif discourse %}
+                            <p id="description" class="jbox-font">从选择一个频道开始, 来自 Discourse 的消息将会推送到这个频道。</p>
+                        {% else %}
+                            <p id="description" class="jbox-font">从选择一个频道开始, 接下来集成的应用的消息将会推送到这个频道。</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div id="input_div" class="column">
+                            <div class="input-group">
+                                <input id="selected_channel" type="text" class="form-control" aria-label="..."
+                                       placeholder="选择一个 channel 或者输入一个新的 channel">
+                                <div class="input-group-btn">
+                                    <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false"><span class="caret"></span>
+                                    </button>
+                                    <ul id="content" class="dropdown-menu dropdown-menu-right">
+                                        {% for channel in channels %}
+                                            <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div style="margin-top: 40px; text-align: center;">
-                        <button class="create_btn" id="create_integration_btn" type="button">
-                            {% if github %}
-                                添加 GitHub 集成
-                            {% elif discourse %}
-                                添加 Discourse 集成
-                            {% else %}
-                                添加自定义集成
-                            {% endif %}
-                        </button>
+                        <div style="margin-top: 40px; text-align: center;">
+                            <button class="create_btn" id="create_integration_btn" type="button">
+                                {% if github %}
+                                    添加 GitHub 集成
+                                {% elif discourse %}
+                                    添加 Discourse 集成
+                                {% else %}
+                                    添加自定义集成
+                                {% endif %}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {{ super() }}
+    <div class="row">
+        <div class="container" style="text-align: center">
+            {{ super() }}
+        </div>
+    </div>
     <script type="text/javascript">
         toastr.options = {
             "closeButton": false,
