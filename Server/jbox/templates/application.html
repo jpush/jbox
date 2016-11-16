@@ -68,11 +68,8 @@
             var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
             var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
             if (bIsIphoneOs || bIsIpad) {
-                // window.location.href = "itms-services://?action=download-manifest&url=https://dn-jmsgweb.qbox.me/jchat-ios-1.1.0b1611/jchat.plist";
-                window.location.href = "itms-services://?action=download-manifest&url=https://www.jchat.io/downloads/jchat.plist";
-                // window.location.href = "https://www.jchat.io/downloads/JChat.ipa"
+                window.location.href = "itms-services://?action=download-manifest&url=https://jbox.jiguang.cn/static/app/jbox.plist";
             } else {
-                // window.location.href = "https://dn-jmsgweb.qbox.me/jchat-ios-1.1.0b1611/jchat.ipa";
                 window.location.href = "/static/app/jbox.ipa"
             }
         })
