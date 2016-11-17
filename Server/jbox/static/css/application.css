@@ -92,6 +92,7 @@ body {
 }
 
 .icon-background:hover {
+    margin-top: 20px;
     background: rgba(0, 0, 0, 0.80);
 
 }
