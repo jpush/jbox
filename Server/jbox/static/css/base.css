@@ -1,28 +1,25 @@
-/*.navigator {*/
-    /*display: flex;*/
-    /*flex-flow: row nowrap;*/
-    /*justify-content: space-between;*/
-    /*align-items: center;*/
-    /*width: 100%;*/
-/*}*/
 ul,li{margin:0;padding:0;}
 
 .navigator-item {
     margin-right: 0px;
 }
 
-#navigationbar {
-
-}
 .base-navigator {
     position: absolute;
     top: 23px;
     height: 59px;
 }
 
-.left-navigator {
-    margin-left: 21px;
-    text-align: left;
+#navbar-collapse-btn {
+    border-color: #dddddd;
+}
+
+#navbar-collapse-btn:hover {
+    background: #626262;
+}
+
+.jbox-bar {
+    background: #c8c8c8
 }
 
 #logo {
@@ -186,15 +183,13 @@ body {
 /* Custom page header */
 .header {
   padding-bottom: 20px;
-    padding-top: 20px;
-  border-bottom: 1px solid #e5e5e5;
+    padding-top: 30px;
     opacity: 1;
 }
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
   margin-top: 0;
   margin-bottom: 0;
-  line-height: 40px;
 }
 
 /* Custom page footer */
@@ -245,7 +240,7 @@ body {
   .header {
     /*margin-bottom: 30px;*/
       /*z-index: 800;*/
-      border-width: 0px;
+      border-width: 0;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
