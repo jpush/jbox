@@ -21,6 +21,12 @@ body {
     align-items: center;
 }
 
+@media (max-width: 650px) {
+  .row-img {
+    display: none !important;
+  }
+}
+
 .row-img {
     margin-right: 0;
     margin-left: 0;
@@ -40,9 +46,6 @@ body {
     max-width: 1072px;
 }
 .column-layer {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
     align-items: center;
 }
 
@@ -74,12 +77,17 @@ body {
     margin-bottom: -132px;
 }
 
+@media (max-width: 650px) {
+  #download-title {
+    font-size: 30px !important;
+  }
+}
 #download-title {
     font-size: 48px;
     color: #FFFFFF;
     align-self: center;
-    margin-left: 60px;
     margin-top: 96px;
+    text-align: center;
 }
 
 .icon-background {

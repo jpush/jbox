@@ -25,6 +25,7 @@ body {
     height: 1000px;
     margin-bottom: 158px;
     padding-bottom: 100px;
+    min-width: 350px;
 }
 
 #content {
