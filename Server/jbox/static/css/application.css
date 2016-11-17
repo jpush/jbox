@@ -89,10 +89,10 @@ body {
     text-align: center;
     padding: 30px;
     border-width: 0px;
+    margin-top: 20px;
 }
 
 .icon-background:hover {
-    margin-top: 20px;
     background: rgba(0, 0, 0, 0.80);
 
 }
