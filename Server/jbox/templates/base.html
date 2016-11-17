@@ -30,15 +30,15 @@
                             <li class="navigator-item"><a class="jbox-font nav-font"
                                                           href="{{ url_for('auth.manage') }}">管理</a></li>
                         {% endif %}
-                        <li>
+                        <li id="nav-divider-li">
                             <div id="nav-divider"></div>
                         </li>
                         {% if 'qq_token' in session %}
                             {% if developer %}
                                 {% if  developer.avatar %}
-                                    <li><img id="avatar" src="/static/images/{{ developer.avatar }}"></li>
+                                    <li id="nav-avatar-li"><img id="avatar" src="/static/images/{{ developer.avatar }}"></li>
                                 {% else %}
-                                    <li><img id="avatar" src="/static/images/DefaultHead.png"></li>
+                                    <li id="nav-avatar-li"><img id="avatar" src="/static/images/DefaultHead.png"></li>
                                 {% endif %}
                                 <li>
                                     <a class="jbox-font nav-font" href="{{ url_for('auth.profile') }}">
@@ -47,7 +47,7 @@
                                 </li>
                                 <li><a class="jbox-font nav-font" href="{{ url_for('main.logout') }}">登出</a></li>
                             {% else %}
-                                <li><img id="avatar" src="/static/images/bear.png"></li>
+                                <li id="nav-avatar-li"><img id="avatar" src="/static/images/bear.png"></li>
                                 <li><a class="jbox-font nav-font"
                                        href="{{ url_for('auth.profile') }}">Devname</a>
                                 </li>
@@ -61,6 +61,18 @@
             </div>
         </nav>
     </div>
+    <script type="text/javascript">
+
+        $(window).resize(function () {
+            if ($(window).width() < 768) {
+                $('#nav-divider-li').hide();
+                $('#nav-avatar-li').hide();
+            } else {
+                $('#nav-divider-li').show();
+                $('#nav-avatar-li').show();
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block content %}
