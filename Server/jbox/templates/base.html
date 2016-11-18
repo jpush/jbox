@@ -29,6 +29,7 @@
                         {% if 'qq_token' in session %}
                             <li class="navigator-item"><a class="jbox-font nav-font"
                                                           href="{{ url_for('auth.manage') }}">控制台</a></li>
+                            <li><a class="jbox-font nav-font" href="{{ url_for('auth.send_message') }}">发消息</a> </li>
                         {% endif %}
                         <li id="nav-divider-li">
                             <div id="nav-divider"></div>
