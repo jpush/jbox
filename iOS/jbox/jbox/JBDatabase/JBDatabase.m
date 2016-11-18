@@ -170,6 +170,16 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
         }
         [JBSharedDatabase close];
     }
+
+    NSArray *channels = [JBDatabase getAllChannels];
+    NSMutableArray *unread = [NSMutableArray array];
+    for (JBChannel *channel in channels) {
+        NSArray *temp = [JBDatabase getUnreadMessagesFromChannel:channel];
+        [unread addObjectsFromArray:temp];
+    }
+    if (unread.count == 0) {
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    }
 }
 
 +(NSMutableArray*)getUnreadMessagesFromChannel:(JBChannel*)channel{
