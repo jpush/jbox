@@ -84,12 +84,8 @@
                     channel.name          = name;
                     if (self.isScaned) {
                         channel.isSubscribed  = @"1";
-                        [JBDatabase updateChannel:channel];
-
-                    }else{
-                        channel.isSubscribed  = @"0";
+                        [JBDatabase insertChannel:channel];
                     }
-                    [JBDatabase insertChannel:channel];
                 }
                 weakSelf.channels = [JBDatabase getChannelsFromDevkey:realDevkey];
             }];
