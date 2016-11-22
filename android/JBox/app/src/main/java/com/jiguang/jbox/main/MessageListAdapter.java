@@ -1,4 +1,4 @@
-package com.jiguang.jbox.main.adapter;
+package com.jiguang.jbox.main;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -74,6 +74,9 @@ public class MessageListAdapter extends BaseAdapter {
 
         TextView tvIcon = ViewHolder.get(convertView, R.id.tv_icon);
         ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
+        TextView tvTitle = ViewHolder.get(convertView, R.id.tv_title);
+        TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
+        TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
 
         if (TextUtils.isEmpty(msg.iconUrl)) {
             if (ivIcon.getVisibility() == View.VISIBLE) {
@@ -96,16 +99,20 @@ public class MessageListAdapter extends BaseAdapter {
                     .into(ivIcon);
         }
 
-        TextView tvTitle = ViewHolder.get(convertView, R.id.tv_title);
-        tvTitle.setText(msg.title);
+        if (TextUtils.isEmpty(msg.title)) {
+            tvTitle.setVisibility(View.GONE);
+        } else {
+            if (tvTime.getVisibility() == View.GONE) {
+                tvTitle.setVisibility(View.VISIBLE);
+            }
+            tvTitle.setText(msg.title);
+        }
 
-        TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
         tvContent.setText(msg.content);
 
         String formatTime = DateUtils.formatDateTime(parent.getContext(),
                 msg.time * 1000, DateUtils.FORMAT_SHOW_TIME);
 
-        TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
         tvTime.setText(formatTime);
 
         return convertView;

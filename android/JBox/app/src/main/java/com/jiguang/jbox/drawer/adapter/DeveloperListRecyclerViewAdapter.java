@@ -10,14 +10,12 @@ import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Developer;
-import com.jiguang.jbox.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.content.ContentValues.TAG;
 import static com.jiguang.jbox.drawer.DeveloperListFragment.OnListFragmentInteractionListener;
 
 
@@ -63,7 +61,6 @@ public class DeveloperListRecyclerViewAdapter extends
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogUtil.LOGI(TAG, holder.item.isSelected + "");
                 AppApplication.currentDevKey = holder.item.key;
 
                 if (!holder.item.isSelected) {
@@ -72,7 +69,6 @@ public class DeveloperListRecyclerViewAdapter extends
                             d.isSelected = false;
                             d.save();
                             break;
-
                         }
                     }
                     holder.item.isSelected = true;
@@ -105,6 +101,5 @@ public class DeveloperListRecyclerViewAdapter extends
             avatar = (CircleImageView) view.findViewById(R.id.iv_avatar);
             name = (TextView) view.findViewById(R.id.tv_name);
         }
-
     }
 }

@@ -27,15 +27,15 @@ import static com.jiguang.jbox.R.id.viewPager;
  */
 public class NavigationDrawerFragment extends Fragment
         implements DeveloperListFragment.OnListFragmentInteractionListener {
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
 
     private ViewPager mViewPager;
 
     private ImageView mIvCircleFirst;
     private ImageView mIvCircleSecond;
 
-    public DeveloperListFragment mDevListFragment;
-    public ChannelListFragment mChannelListFragment;
+    public DeveloperListFragment devListFragment;
+    public ChannelListFragment channelListFragment;
 
     public NavigationDrawerFragment() {
         // Required empty public constructor
@@ -57,12 +57,12 @@ public class NavigationDrawerFragment extends Fragment
 
         List<android.support.v4.app.Fragment> fragmentList = new ArrayList<>();
 
-        mDevListFragment = new DeveloperListFragment();
-        mDevListFragment.setListener(this);
-        fragmentList.add(mDevListFragment);
+        devListFragment = new DeveloperListFragment();
+        devListFragment.setListener(this);
+        fragmentList.add(devListFragment);
 
-        mChannelListFragment = new ChannelListFragment();
-        fragmentList.add(mChannelListFragment);
+        channelListFragment = new ChannelListFragment();
+        fragmentList.add(channelListFragment);
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
@@ -77,11 +77,11 @@ public class NavigationDrawerFragment extends Fragment
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
                     mIvCircleFirst.setSelected(true);
                     mIvCircleSecond.setSelected(false);
                 } else {
-                    mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     mIvCircleFirst.setSelected(false);
                     mIvCircleSecond.setSelected(true);
                 }
@@ -92,7 +92,6 @@ public class NavigationDrawerFragment extends Fragment
 
             }
         });
-
         return v;
     }
 
@@ -103,17 +102,17 @@ public class NavigationDrawerFragment extends Fragment
 
     @Override
     public void onDevListItemClick(String devKey) {
-        mChannelListFragment.updateData(devKey);
+        channelListFragment.updateData(devKey);
         mViewPager.setCurrentItem(1);
     }
 
     public void setDrawerLayout(DrawerLayout drawerLayout) {
-        mDrawerLayout = drawerLayout;
+        this.drawerLayout = drawerLayout;
     }
 
     public void updateData() {
-        mDevListFragment.updateData();
-        mChannelListFragment.updateData(AppApplication.currentDevKey);
+        devListFragment.updateData();
+        channelListFragment.updateData(AppApplication.currentDevKey);
     }
 
 }

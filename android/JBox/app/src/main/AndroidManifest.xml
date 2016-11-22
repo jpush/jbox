@@ -96,6 +96,20 @@
 
         <receiver android:name="cn.jpush.android.service.AlarmReceiver"/>
 
+        <receiver
+            android:name=".main.MessageReceiver"
+            android:enabled="true">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED"/>
+                <!--Required 用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED"/>
+                <!--Required 用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED"/>
+
+                <category android:name="com.jiguang.jbox"/>
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default"/>
@@ -123,5 +137,4 @@
             android:screenOrientation="portrait">
         </activity>
     </application>
-
 </manifest>

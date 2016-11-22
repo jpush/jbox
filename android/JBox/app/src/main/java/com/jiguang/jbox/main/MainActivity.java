@@ -1,7 +1,6 @@
 package com.jiguang.jbox.main;
 
 import android.Manifest;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -13,13 +12,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.drawer.ChannelListFragment;
 import com.jiguang.jbox.drawer.NavigationDrawerFragment;
-import com.jiguang.jbox.main.adapter.MessageListAdapter;
+import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.view.TopBar;
 
@@ -32,13 +33,12 @@ public class MainActivity extends FragmentActivity
     public static final int MSG_WHAT_RECEIVE_MSG_CURRENT = 0;
     public static final int MSG_WHAT_RECEIVE_MSG = 1;
     public static final int MSG_WHAT_UPDATE_DEV = 2;
+    public static final int MSG_WHAT_OPEN_MSG = 3;
 
     private final int QUERY_MESSAGE_COUNT = 10;
 
     private TopBar mTopBar;
-
     private ListView mMsgListView;
-
     private MessageListAdapter mAdapter;
 
     private List<Message> mMessages;
@@ -47,13 +47,9 @@ public class MainActivity extends FragmentActivity
 
     private DrawerLayout mDrawerLayout;
 
-    private MessageReceiver mReceiver;
-    private IntentFilter mIntentFilter;
-
     private int mCurrentOffset = 0; // 当前加载的消息数。
 
     public static Handler handler;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,27 +116,46 @@ public class MainActivity extends FragmentActivity
             @Override
             public boolean handleMessage(android.os.Message message) {
                 Bundle data = message.getData();
+
                 if (message.what == MSG_WHAT_RECEIVE_MSG_CURRENT) {
                     // 收到的是当前 Channel 的消息，更新界面。
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
                     mAdapter.notifyDataSetChanged();
+
                 } else if (message.what == MSG_WHAT_RECEIVE_MSG) {
                     String devKey = data.getString("DevKey");
-                    mDrawerFragment.mChannelListFragment.updateData(devKey);
+                    mDrawerFragment.channelListFragment.updateData(devKey);
+
                 } else if (message.what == MSG_WHAT_UPDATE_DEV) {
                     String devKey = data.getString("DevKey");
-                    mDrawerFragment.mDevListFragment.updateData();
-                    mDrawerFragment.mChannelListFragment.updateData(devKey);
+                    mDrawerFragment.devListFragment.updateData();
+                    mDrawerFragment.channelListFragment.updateData(devKey);
+
+                } else if (message.what == MSG_WHAT_OPEN_MSG) {             // 点击通知后界面跳转。
+                    AppApplication.currentDevKey = data.getString("DevKey");
+                    AppApplication.currentChannelName = data.getString("ChannelName");
+
+                    LogUtil.LOGI("MainActivity", AppApplication.currentDevKey + ": "
+                            + AppApplication.currentChannelName);
+
+                    new Update(Developer.class)
+                            .set("IsSelected=?", false)
+                            .where("IsSelected=?", true)
+                            .execute();
+                    new Update(Developer.class)
+                            .set("IsSelected=?", true)
+                            .where("Key=?", AppApplication.currentDevKey)
+                            .execute();
+
+                    mDrawerFragment.devListFragment.updateData();
+                    mDrawerFragment.channelListFragment.updateData(AppApplication.currentDevKey);
+
+                    setMessages(AppApplication.currentDevKey, AppApplication.currentChannelName);
                 }
                 return false;
             }
         });
-
-        mReceiver = new MessageReceiver(handler);
-        mIntentFilter = new IntentFilter("cn.jpush.android.intent.MESSAGE_RECEIVED");
-        mIntentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");
-        mIntentFilter.addCategory("com.jiguang.jbox");
 
         mMsgListView = (ListView) findViewById(R.id.lv_msg);
         mMsgListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -183,14 +198,10 @@ public class MainActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
-        registerReceiver(mReceiver, mIntentFilter);
+//        registerReceiver(mReceiver, mIntentFilter);
 
         if (AppApplication.shouldUpdateData) {
-            mMessages = queryMessages(AppApplication.currentDevKey, AppApplication
-                    .currentChannelName, 0, mCurrentOffset + QUERY_MESSAGE_COUNT);
-            mAdapter.replaceData(mMessages);
-            mTopBar.setTitle(AppApplication.currentChannelName);
-
+            setMessages(AppApplication.currentDevKey, AppApplication.currentChannelName);
             mDrawerFragment.updateData();
             AppApplication.shouldUpdateData = false;
         }
@@ -200,7 +211,7 @@ public class MainActivity extends FragmentActivity
     protected void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
-        unregisterReceiver(mReceiver);
+//        unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -220,7 +231,7 @@ public class MainActivity extends FragmentActivity
 
         channel.unreadCount = 0;
         channel.save();
-        mDrawerFragment.mChannelListFragment.updateData(channel.devKey);
+        mDrawerFragment.channelListFragment.updateData(channel.devKey);
 
         List<Message> messages = queryMessages(channel.devKey, channel.name, 0,
                 mCurrentOffset + QUERY_MESSAGE_COUNT);
@@ -232,6 +243,12 @@ public class MainActivity extends FragmentActivity
         }
     }
 
+    private void setMessages(String devKey, String channelName) {
+        mMessages = queryMessages(devKey, channelName, 0, mCurrentOffset + QUERY_MESSAGE_COUNT);
+        mAdapter.replaceData(mMessages);
+        mTopBar.setTitle(channelName);
+    }
+
     private List<Message> queryMessages(String devKey, String channelName, int offSet, int limit) {
         return new Select().from(Message.class)
                 .where("DevKey=? AND Channel=?", devKey, channelName)
@@ -240,5 +257,4 @@ public class MainActivity extends FragmentActivity
                 .orderBy("time DESC")
                 .execute();
     }
-
 }

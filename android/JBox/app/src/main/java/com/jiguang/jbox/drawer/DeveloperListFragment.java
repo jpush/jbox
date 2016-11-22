@@ -24,7 +24,6 @@ import java.util.List;
  * 侧边栏 Developer List Fragment.
  */
 public class DeveloperListFragment extends Fragment {
-
     private OnListFragmentInteractionListener mListener;
 
     private List<Developer> mDevs;
@@ -39,8 +38,12 @@ public class DeveloperListFragment extends Fragment {
      */
     public DeveloperListFragment() {
         mDevs = new Select().from(Developer.class).execute();
-        if (mDevs != null && !mDevs.isEmpty()) {
-            AppApplication.currentDevKey = mDevs.get(0).key;
+
+        Developer curDev = new Select().from(Developer.class)
+                .where("IsSelected=?", true)
+                .executeSingle();
+        if (curDev != null) {
+            AppApplication.currentDevKey = curDev.key;
         }
     }
 
@@ -104,5 +107,4 @@ public class DeveloperListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onDevListItemClick(String devKey);
     }
-
 }

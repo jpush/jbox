@@ -17,6 +17,6 @@ public class ViewHolder {
             childView = view.findViewById(id);
             viewHolder.put(id, childView);
         }
-        return (T)childView;
+        return (T) childView;
     }
 }
