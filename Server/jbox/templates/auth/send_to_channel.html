@@ -29,8 +29,7 @@
             <div class="row">
                 <div class="input-group">
                     <input id="selected_channel" type="text" class="form-control" aria-label="..."
-                           placeholder="{{ channel }}">
-                    <input id="input_hidding" type="hidden" value="{{ channel }}">
+                           value="{{ channel }}">
                     <div class="input-group-btn">
                         <button id="show_channels" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
@@ -54,7 +53,7 @@
                     <div class="row">
                         <textarea id="message-input" placeholder="message"></textarea>
                     </div>
-                    <button id="send-btn">发送</button>
+                    <button class="btn btn-info jbox-font" id="send-btn">发送</button>
                 </div>
             </div>
         </div>
@@ -80,6 +79,7 @@
         $('#send-btn').click(function () {
             var channel = $('#selected_channel').val();
             if (channel != "") {
+                $('#send-btn').attr("disabled", true);
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -89,6 +89,7 @@
                         message: $('#message-input').val()
                     }),
                     success: function (data) {
+                        $('#send-btn').attr("disabled", false);
                         if (data != undefined) {
                             if (data["created"]) {
                                 toastr.success("发送成功");
@@ -98,11 +99,23 @@
                         }
                     },
                     error: function (error) {
+                        $('#send-btn').attr("disabled", false);
                         console.log(error);
-                        toastr.error("发送失败");
+                        if (error != undefined) {
+                            var msg = error["responseText"]["error"];
+                            if (msg != undefined) {
+                                toastr.error(msg + "");
+                            } else {
+                                toastr.error("发送失败");
+                            }
+                        } else {
+                            toastr.error("发送失败");
+                        }
                     },
                     dataType: "json"
                 });
+            } else {
+                toastr.warning("频道为空，请选择一个频道");
             }
         })
     </script>

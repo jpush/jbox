@@ -80,19 +80,19 @@ body {
 }
 
 #send-btn {
-    background: #25A8ED;
-    border-radius: 5px;
-    text-align: center;
+    /*background: #25A8ED;*/
+    /*border-radius: 5px;*/
+    /*text-align: center;*/
     font-size: 20px;
     color: #FFFFFF;
-    border: 0 hidden;
-    box-shadow:none;
-    width: 66px;
-    height: 37px;
+    /*border: 0 hidden;*/
+    /*box-shadow:none;*/
+    /*width: 66px;*/
+    /*height: 37px;*/
     margin-bottom: 13px;
     margin-left: 22px;
 }
 
-.send-btn:hover {
-    background: #20A0E0;
-}
+/*.send-btn:hover {*/
+    /*background: #20A0E0;*/
+/*}*/
