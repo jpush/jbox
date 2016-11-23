@@ -25,10 +25,9 @@ body {
 }
 
 #description {
-    display: table;
     font-size: 36px;
     color: #FFFFFF;
-    text-align: left;
+    text-align: center;
 }
 
 #jbox-bear {
