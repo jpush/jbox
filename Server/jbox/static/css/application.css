@@ -13,18 +13,16 @@ body {
     padding-bottom: 349px;
 }
 
-.row-layer {
-    display: flex;
-
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-}
-
 @media (max-width: 650px) {
   .row-img {
     display: none !important;
   }
+}
+
+@media screen and (max-device-width: 450px){
+    #download-content {
+
+    }
 }
 
 .row-img {
@@ -96,7 +94,7 @@ body {
     height: 188px;
     text-align: center;
     padding: 30px;
-    border-width: 0px;
+    border-width: 0;
     margin-top: 20px;
 }
 

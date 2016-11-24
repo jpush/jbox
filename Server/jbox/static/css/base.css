@@ -63,12 +63,6 @@ ul, li {
     margin-right: 23px;
 }
 
-.row {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-}
-
 .column {
     /*display: -webkit-box; !* Chrome 4+, Safari 3.1, iOS Safari 3.2+ *!*/
     /*display: -moz-box; !* Firefox 17- *!*/

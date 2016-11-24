@@ -28,10 +28,7 @@
 
     <div class="container-fluid">
         <div class="row">
-{#            <div class="col-md-1">#}
-{##}
-{#            </div>#}
-            <div class="col-md-2 col-md-offset-1" style="margin-top: 0;">
+            <div class="col-md-2 col-md-offset-1">
                 <div id="github-icon-area" style="text-align: center">
                     <img id="github-icon" src="/static/images/github1x.png">
                     <p class="jbox-font" id="github-icon-title">GitHub</p>
@@ -44,7 +41,7 @@
                     <button id="add-github-integration">添加 GitHub 集成</button>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-offset-1">
                 <div id="description">
                     <p class="jbox-font" id="desc-title">GitHub</p>
                     <p class="jbox-font desc-content">GitHub is home to all kinds of software projects, from simple programs
@@ -57,17 +54,17 @@
                     <div id="table-area">
                         {% if github_integrations %}
                             {% for integration in github_integrations %}
-                                <div class="row" id="github-integration-content">
-                                    <div class="col-md-1">
+                                <div class="row center-block" id="github-integration-content">
+                                    <div class="col-md-2">
                                         <img src="/static/images/github-icon.png">
                                     </div>
-                                    <div class="col-md-10">
+                                    <div class="col-md-9" style="padding-top: 15px">
                                         {% if integration.repositories %}
-                                            <p>来自 <strong>{{ integration.repositories }}</strong> 的 commits, issue 以及 pull
+                                            <p class="text-justify">来自 <strong>{{ integration.repositories }}</strong> 的 commits, issue 以及 pull
                                                 request 等活动将会作为 <strong>{{ integration.name }}</strong>
                                                 推送到 <strong>{{ integration.channel }}</strong> 频道</p>
                                         {% else %}
-                                            <p>当前没有监听任何仓库</p>
+                                            <p class="text-justify">当前没有监听任何仓库</p>
                                         {% endif %}
                                     </div>
                                     <div class="col-md-1">

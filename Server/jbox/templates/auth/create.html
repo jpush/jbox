@@ -40,15 +40,15 @@
 
 
         <div id="edit_form" class="col-lg-10 col-lg-offset-1">
-            <div class="row" style="margin-top: 38px;">
-                <div class="col-md-3">
-                    <div class="left-description">
+            <div class="row wrap">
+                <div class="col-md-3" style="padding-top: 80px">
+                    <div class="left-description column">
                         <p class="jbox-font span-title">绑定频道</p>
                         <p class="jbox-font span-desc">将消息发送到指定的频道</p>
                     </div>
                 </div>
 
-                <div class="col-md-6" style="margin-top: 30px;">
+                <div class="col-md-6" style="padding-top: 100px">
                     <div class="input-group">
                         <input id="selected_channel" type="text" class="form-control" aria-label="..."
                                placeholder="{{ channel }}">
@@ -66,10 +66,10 @@
                     </div>
                 </div>
 
-            <div class="col-md-2">
-                <div id="qrcode-content" class="column" style="margin-top: 0px;">
+            <div class="col-md-3 wrap-content" style="padding-top: 20px">
+                <div id="qrcode-content" class="column">
                     <div id="qrcode"></div>
-                    <p id="qrcode-desc" class="jbox-font">手机扫一扫订阅该频道</p>
+                    <p id="qrcode-desc" class="text-center">手机扫一扫订阅该频道</p>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
                     <div class="col-md-1"></div>
                 </div>
             {% else %}
-                <div class="j-column">
+                <div class="column">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="left-description">

@@ -27,8 +27,6 @@
     padding-bottom: 142px;
 }
 
-.row {
-}
 
 .left-description {
     width: 300px;
@@ -44,7 +42,6 @@
 }
 
 #qrcode-content {
-    margin-top: 47px;
     text-align: center;
 }
 
@@ -58,10 +55,12 @@
     font-size: 20px;
     color: #595959;
     margin-top: 13px;
-    margin-left: 25px;
 }
 
-.j-column {
+@media screen and (max-device-width: 450px) {
+    #qrcode-content {
+        text-align: left;
+    }
 }
 
 .description {
@@ -91,6 +90,7 @@
     margin-left: 0;
     margin-right: 0;;
     margin-top: 20px;
+    max-height: 400px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
