@@ -1,11 +1,10 @@
+import os
 from flask import render_template, session, redirect, url_for, flash, request, Flask, jsonify, Markup
 from flask_oauthlib.client import OAuth
 from . import main
 from ..models import Developer, Integration, generate_dev_key
 
 # QQ Oauth2
-QQ_APP_ID = "101348155"
-QQ_APP_KEY = "59a307794c8955a6abfaa30c9c87c737"
 
 app = Flask(__name__)
 app.debug = True
@@ -14,8 +13,8 @@ oauth = OAuth(app)
 
 qq = oauth.remote_app(
     'qq',
-    consumer_key=QQ_APP_ID,
-    consumer_secret=QQ_APP_KEY,
+    consumer_key=os.environ.get("QQ_APP_ID"),  #从环境变量获取
+    consumer_secret=os.environ.get("QQ_APP_KEY"),
     base_url='https://graph.qq.com',
     request_token_url=None,
     request_token_params={'scope': 'get_user_info'},
@@ -46,7 +45,7 @@ def update_qq_api_request_data(data={}):
     defaults = {
         'openid': session.get('qq_openid'),
         'access_token': session.get('qq_token')[0],
-        'oauth_consumer_key': QQ_APP_ID,
+        'oauth_consumer_key': os.environ.get("QQ_APP_ID"),
     }
     defaults.update(data)
     return defaults
@@ -90,7 +89,7 @@ def authorized():
 
     resp = qq.get('/user/get_user_info', {'access_token': session['qq_token'][0],
                                                  'openid': openid,
-                                                 'oauth_consumer_key': QQ_APP_ID})
+                                                 'oauth_consumer_key': os.environ.get("QQ_APP_ID")})
 
     resp = eval(resp.data.decode())
     developer = None

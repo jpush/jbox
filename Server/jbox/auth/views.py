@@ -16,8 +16,8 @@ oauth = OAuth(app)
 
 UPLOAD_FOLDER = basedir + '/jbox/static/images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-GITHUB_CLIENT_ID = "c293cc8df7ff97e14237"
-GITHUB_CLIENT_SECRET = "b9eb46397fa59c4415a7a741d6f5490896ab710f"
+GITHUB_CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET")
 
 github = oauth.remote_app(
     'github',
