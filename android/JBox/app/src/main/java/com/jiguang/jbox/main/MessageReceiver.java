@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.activeandroid.query.Select;
 import com.activeandroid.query.Update;
@@ -19,14 +18,8 @@ import cn.jpush.android.api.JPushInterface;
 
 
 public class MessageReceiver extends BroadcastReceiver {
-    private Handler mHandler;
-
     public MessageReceiver() {
 
-    }
-
-    public void setHandler(Handler handler) {
-        mHandler = handler;
     }
 
     @Override
@@ -78,7 +71,7 @@ public class MessageReceiver extends BroadcastReceiver {
                 handlerMsg.what = MainActivity.MSG_WHAT_RECEIVE_MSG_CURRENT;
                 data.putSerializable("message", msg);
                 handlerMsg.setData(data);
-                mHandler.sendMessage(handlerMsg);
+                MainActivity.handler.sendMessage(handlerMsg);
             } else {
                 Channel c = new Select().from(Channel.class)
                         .where("DevKey = ? AND Name = ?", devKey, channelName)

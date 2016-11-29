@@ -235,5 +235,4 @@ public class ChannelActivity extends Activity {
         }
         finish();
     }
-
 }
