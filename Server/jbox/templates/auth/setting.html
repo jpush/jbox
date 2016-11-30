@@ -102,7 +102,12 @@
         </div>
 
     </div>
-    {{ super() }}
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
 
     <script type="text/javascript">
         $(document).ready(function () {

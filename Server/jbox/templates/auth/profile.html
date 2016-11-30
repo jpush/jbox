@@ -66,7 +66,12 @@
             </table>
         </div>
     </div>
-    {{ super() }}
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
 
     <script type="text/javascript">
         var qrcode = new QRCode(document.getElementById("dev-qrcode"), {

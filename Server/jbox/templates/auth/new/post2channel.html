@@ -71,11 +71,13 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="container" style="text-align: center">
+
+    {% block footer %}
+        <div id="footer">
             {{ super() }}
         </div>
-    </div>
+    {% endblock %}
+
     <script type="text/javascript">
         toastr.options = {
             "closeButton": false,

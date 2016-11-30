@@ -16,31 +16,34 @@
     <div class="container-fluid">
         <div class="row-fluid">
             <div id="contentBody">
-                <h1 id="mainTitle">欢迎来到 JBox API<h1><br>
+                <h1 id="mainTitle">欢迎来到 JBox API</h1><br>
                 <div id="content">
                     <div class="subTitle">Base url:</div>
                     <div class="codeBody" style="color:#70B1E7; font-size: 15px;">
-                            https://jbox.jiguang.cn
+                        https://jbox.jiguang.cn
                     </div>
                     <div class="subTitle">
-                        1、发送消息 (自定义集成)<br>message 向 webhook url <span style="color: red">（在集成编辑页面中获取）</span> 发送 JSON payloads
+                        1、发送消息 (自定义集成)<br>message 向 webhook url <span style="color: red">（在集成编辑页面中获取）</span> 发送 JSON
+                        payloads
                     </div>
                     <div class="apiTitle">POST  v1/message/{integration_id}/{token}</div>
                     <div class="codeBody">
                         Request Header:<br>
                         &nbsp&nbsp&nbsp&nbspPOST /v1/message/{integration_id}/{token}<br>
-                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAccept: application/json</div><br>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAccept: application/json
+                    </div>
+                    <br>
                     <div class="requiredText">Request Body:</div>
                     <div class="codeBody">
                         {<br>
-                            &nbsp&nbsp&nbsp&nbsp"title": "今日头条",<br>
-                            &nbsp&nbsp&nbsp&nbsp"message": "英国脱欧"<br>
+                        &nbsp&nbsp&nbsp&nbsp"title": "今日头条",<br>
+                        &nbsp&nbsp&nbsp&nbsp"message": "英国脱欧"<br>
                         }<br>
                     </div>
                     <div class="requiredText">Request Parameters:</div>
                     <div class="codeBody">
-                        •	title：消息的标题，不能为空<br>
-	                    •	message：消息内容，不能为空<br>
+                        • title：消息的标题，不能为空<br>
+                        • message：消息内容，不能为空<br>
                     </div>
                     <div class="exampletitle">Example Response:</div>
                     <div class="requiredText">Response Header</div>
@@ -49,10 +52,18 @@
                         Content-Type: application/json; charset=utf-8 <br>
                     </div>
                     <div class="requiredText">Response Data:</div>
-                    <div class="codeBody">	•	None</div>
+                    <div class="codeBody"> • None</div>
                 </div>
+
+                {% block footer %}
+                    <div id="footer">
+                        {{ super() }}
+                    </div>
+                {% endblock %}
             </div>
         </div>
     </div>
-    {{ super() }}
+
+
 {% endblock %}
+

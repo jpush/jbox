@@ -41,9 +41,12 @@
             </div>
         </div>
     </div>
-    <div class="row-layer">
-        {{ super() }}
-    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
 
     <script>
 

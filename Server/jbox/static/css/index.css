@@ -104,12 +104,7 @@ body {
     padding-top: 10px;
 }
 
-/*
- * Footer
- */
-
-.mastfoot {
-    color: #999; /* IE8 proofing */
-    color: rgba(255, 255, 255, .5);
+#footer {
+    background: #50abd1;
+    padding-top: 20px
 }
-

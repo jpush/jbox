@@ -29,7 +29,7 @@
                         {% if 'qq_token' in session %}
                             <li class="navigator-item"><a class="jbox-font nav-font"
                                                           href="{{ url_for('auth.manage') }}">控制台</a></li>
-                            <li><a class="jbox-font nav-font" href="{{ url_for('auth.send_message') }}">发消息</a> </li>
+                            <li><a class="jbox-font nav-font" href="{{ url_for('auth.send_message') }}">发消息</a></li>
                         {% endif %}
                         <li id="nav-divider-li">
                             <div id="nav-divider"></div>
@@ -37,7 +37,8 @@
                         {% if 'qq_token' in session %}
                             {% if developer %}
                                 {% if  developer.avatar %}
-                                    <li id="nav-avatar-li"><img id="avatar" src="/static/images/{{ developer.avatar }}"></li>
+                                    <li id="nav-avatar-li"><img id="avatar" src="/static/images/{{ developer.avatar }}">
+                                    </li>
                                 {% else %}
                                     <li id="nav-avatar-li"><img id="avatar" src="/static/images/DefaultHead.png"></li>
                                 {% endif %}
@@ -76,14 +77,9 @@
     </script>
 {% endblock %}
 
-{% block content %}
-    {#    <div class="container">#}
-    {#        {% block page_content %}{% endblock %}#}
-    {#    </div>#}
-    <div class="row" style="text-align: center; background: #50abd1">
+{% block footer %}
+    <div class="row" style="text-align: center;">
         <footer>
-            <hr/>
-
             <div role="contentinfo">
                 <!-- Copyright etc -->
                 <p>Copyright 2011-2016, jiguang.cn, All Rights Reserved. <br/>粤ICP备12056275号-13 深圳市和讯华谷信息技术有限公司</p>

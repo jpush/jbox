@@ -58,9 +58,13 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        {{ super() }}
-    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
     <script type="text/javascript">
 
         $('ul li').each(function () {

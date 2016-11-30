@@ -315,7 +315,13 @@
         </div>
     </div>
     </div>
-    {{ super() }}
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
     <script type="text/javascript">
         toastr.options = {
             "closeButton": false,

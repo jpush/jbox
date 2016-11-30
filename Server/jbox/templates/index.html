@@ -147,11 +147,16 @@
             按需订阅，接收不同消息来源</p>
     </div>
 
-    <div style="color:#FFFFFF">
-        {{ super() }}
-    </div>
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
     <script type="text/javascript">
         console.log(window.location.hash);
         console.log(window.location.hash);
     </script>
 {% endblock %}
+
+

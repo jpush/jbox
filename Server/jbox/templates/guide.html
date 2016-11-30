@@ -65,7 +65,12 @@
             <p style="text-align: center"><img src="/static/images/jboxAppkeyPadge.png"></p>
 
         </div>
-        {{ super() }}
+
+        {% block footer %}
+            <div id="footer">
+                {{ super() }}
+            </div>
+        {% endblock %}
     </div>
 
     <script type="text/javascript">

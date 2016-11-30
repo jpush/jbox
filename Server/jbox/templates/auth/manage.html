@@ -133,7 +133,12 @@
         {% endif %}
 
     </div>
-    {{ super() }}
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
     <script type="text/javascript">
         {% for integration in integrations %}
             $('#{{ integration.id }}').click(function () {

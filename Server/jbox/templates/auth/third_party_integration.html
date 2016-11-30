@@ -47,6 +47,11 @@
             </tbody>
         </table>
     </div>
-    {{ super() }}
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
 
 {% endblock %}
