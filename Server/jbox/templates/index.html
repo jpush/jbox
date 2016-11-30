@@ -5,7 +5,7 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
-{#    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>#}
+    {#    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>#}
 {% endblock %}
 
 {% block title %}Index{% endblock %}
@@ -27,25 +27,126 @@
 
 {% block content %}
 
-    <div class="site-wrapper">
-        <div class="site-wrapper-inner">
-            <div class="cover-container">
-                <div class="inner cover">
-                    <div class="" style="padding-top: 100px;">
-                    <p id="description" class="jbox-font"><b>
-                        纯粹的通知解决方案<br><br>
-                        简单配置 | 消息聚合 | 即刻送达<br>
-                        </br>
-                    </p>
-                    </div>
-                    </div>
-                    <div class="lead">
-                        <img id="jbox-bear" src="/static/images/jbox-bear.png">
-                    </div>
+    <div class="first-layer">
+        <p id="description" class="jbox-font">
+            纯粹的通知解决方案<br><br>
+            简单配置 | 消息聚合 | 即刻送达<br>
+        </p>
+        <div class="lead">
+            <img id="jbox-bear" src="/static/images/phone.png">
+        </div>
+    </div>
+
+    <div class="second-layer">
+        <p class="jbox-font section-title">什么是极光宝盒？</p>
+        <div class="row">
+            <div class="column col-md-6">
+                <img src="/static/images/notification2.png">
+                <p class="jbox-font section-subtitle" style="margin-top: 61px">纯粹的通知</p>
+                <p class="jbox-font section-desc">极光宝盒是一个纯粹的通知推送方案，<br>
+                    远离社交信息的干扰，回归通知最本质。<br>
+                    把消息单向传递给他人而无需反馈，<br>
+                    这就是此方案之意义。</p>
+            </div>
+            <div class="column col-md-6">
+                <img src="/static/images/converge.png">
+                <p class="jbox-font section-subtitle">消息聚合</p>
+                <p class="jbox-font section-desc">可方便地与不同的消息源做集成，<br>
+                    每个消息源定义推送到指定的频道。</p>
             </div>
         </div>
-
     </div>
+
+    <div class="third-layer">
+        <p class="jbox-font section-title">为什么使用极光宝盒？</p>
+        <div class="row">
+            <div class="col-md-8">
+                <img src="/static/images/finger.png">
+            </div>
+            <div class="col-md-4">
+                <ul class="ul-desc">
+                    <li>专业通知工具</li>
+                    <li>使用快捷方便</li>
+                    <li>极简配置方式</li>
+                    <li>无需注册用户</li>
+                    <li>不需团队管理</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="second-layer">
+        <div class="row">
+            <div class="column col-md-6">
+                <div class="col-md-offset-3">
+                    <p class="jbox-font section-subtitle" style="text-align: left">相较与其他产品，<br>
+                        极光宝盒更适用于公告通知</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-2 icon" style="padding-top: 30px">
+                        <img src="/static/images/wechat.png">
+                    </div>
+                    <div class="col-md-7 desc">
+                        <p class="jbox-font section-desc-spec">使用公众号会受到其他订阅的<br>
+                            吸引从而浪费大量的时间，而<br>
+                            且每日限制 24000 条消息。</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-2 icon">
+                        <img src="/static/images/message.png">
+                    </div>
+                    <div class="col-md-7 desc">
+                        <p class="jbox-font section-desc-spec">使用短信需要收费，还要<br>
+                            应对各种短信广告</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-2 icon">
+                        <img src="/static/images/groupNotification.png">
+                    </div>
+                    <div class="col-md-7 desc">
+                        <p class="jbox-font section-desc-spec">使用群需要面对海量的消息记<br>
+                            录，重要通知不好保存</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="column col-md-6" style="padding-top: 150px">
+                <img src="/static/images/bearInBox.png">
+                <p class="jbox-font section-subtitle">极光宝盒让你远离社交的干扰，<br>
+                    让你省心省力</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="third-layer">
+        <p class="jbox-font section-title">使用场景</p>
+        <img src="/static/images/homework.png">
+        <p class="jbox-font section-subtitle">用于作业通知</p>
+        <p class="jbox-font section-desc">学生每天要不胜其烦地记各科老师的作业，<br>
+            有了极光宝盒，老师只需编写作业内容并发布，<br>
+            学生只需扫描各科老师的二维码订阅，<br>
+            就能每天知道各科老师今天留了什么。</p>
+    </div>
+
+    <div class="second-layer">
+        <img src="/static/images/server.png">
+        <p class="jbox-font section-subtitle">用于服务器监控</p>
+        <p class="jbox-font section-desc">极光宝盒可以自定义报警信息，<br>
+            当服务器出现异常而触发报警，<br>
+            运维人员第一时间即可获悉，<br>
+            迅速响应，及时修复。</p>
+    </div>
+
+    <div class="third-layer">
+        <img src="/static/images/appAndroidIos.png"/>
+        <p class="jbox-font section-subtitle">主流手机平台的支持</p>
+        <p class="jbox-font section-desc">
+            无需注册，扫码即可接收通知<br>
+            按需订阅，接收不同消息来源</p>
+    </div>
+
     <div style="color:#FFFFFF">
         {{ super() }}
     </div>

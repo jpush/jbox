@@ -14,7 +14,7 @@ app.debug = True
 app.secret_key = 'development'
 oauth = OAuth(app)
 
-UPLOAD_FOLDER = basedir + '/jbox/static/images/'
+UPLOAD_FOLDER = basedir + '/jbox/static/user/images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 GITHUB_CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET")
