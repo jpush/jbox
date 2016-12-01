@@ -19,7 +19,7 @@ def send_message(integration_id, token):
     message_url = ""
     if 'url' in request.json:
        message_url = request.json['url']
-
+    print("the message url "+ message_url)
     # channel dev_ID
     developer = Developer.query.filter_by(id=integration.developer_id).first()
     if developer is None:
