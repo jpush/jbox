@@ -42,7 +42,6 @@
 }
 
 #qrcode-content {
-    text-align: center;
 }
 
 #qrcode {
@@ -53,6 +52,8 @@
     font-size: 20px;
     color: #595959;
     margin-top: 13px;
+    margin-left: 28px;
+    text-align: left;
 }
 
 @media screen and (max-device-width: 450px) {
