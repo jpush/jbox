@@ -38,7 +38,7 @@
     margin-top: 20px;
 }
 
-#add-discourse-integration {
+.btn-custom {
     margin-top: 36px;
     padding: 10px 15px 10px 15px;
     background:#64B868;
@@ -53,7 +53,7 @@
     box-shadow:none;
 }
 
-#add-discourse-integration:hover {
+.btn-custom:hover {
     background: #3f7d3f;
 }
 

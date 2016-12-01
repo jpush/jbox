@@ -26,23 +26,27 @@
                 <div id="discourse-icon-area">
                     <img id="discourse-icon" src="/static/images/discourse1x.png">
                     <p class="jbox-font" id="discourse-icon-title">Discourse</p>
-                    <button id="add-discourse-integration"
+                    <button id="add-discourse-integration" class="btn-custom"
                             onclick=window.location.href="{{ url_for('auth.post_to_channel_discourse') }}">
                         添加 Discourse 集成
                     </button>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-offset-1">
                 <div id="description">
                     <p class="jbox-font" id="desc-title">Discourse</p>
-                    <p class="jbox-font desc-content">Discourse is the 100% open source discussion platform built for the next decade of the Internet.
+                    <p class="jbox-font desc-content">Discourse is the 100% open source discussion platform built for
+                        the next decade of the Internet.
                     </p>
                     <p class="jbox-font desc-content"> It works as:</p>
-                    <ul class="jbox-font desc-content">
-                        <li>a mailing list </li>
+                    <ul class="jbox-font desc-content" style="margin-left: 20px">
+                        <li>a mailing list</li>
                         <li>a discussion forum</li>
                         <li>a long-form chat room</li>
                     </ul>
+                    <button class="btn btn-info" style="margin-top: 30px"
+                            onclick=window.location.href="https://github.com/jpush/discourse-newpost-jbox-plugin">插件安装
+                    </button>
                     <div id="table-area">
                         {% if discourse_integrations %}
                             {% for integration in discourse_integrations %}
@@ -56,7 +60,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}"
-                                            type="button">编辑
+                                                type="button">编辑
                                         </button>
                                     </div>
 
