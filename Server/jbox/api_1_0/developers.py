@@ -1,5 +1,6 @@
 import os, operator
 from flask import abort, Flask, json, jsonify, request, make_response, session, redirect, url_for
+from sqlite3 import DatabaseError
 from . import api
 from ..models import Developer, db, Channel, Integration, GitHub, generate_dev_key, generate_integration_id, generate_auth_token
 from .authentication import auth
@@ -421,6 +422,7 @@ def delete_integration(dev_key, integration_id):
                             print("githubs is no none")
                             url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
                                   + str(entity.hook_id)
+                            print(url)
                             response = github.delete(url, data=None)
                             print("get response")
                             if response.status == 204:
@@ -430,7 +432,7 @@ def delete_integration(dev_key, integration_id):
                 db.session.delete(integration)
                 db.session.commit()
                 return jsonify({'deleted': True}), 200
-            except:
+            except DatabaseError:
                 db.session.rollback()
                 abort(500)
         else:
