@@ -393,9 +393,12 @@ def save_github_integration(integration_id):
 # @login_required
 def delete_integration(dev_key, integration_id):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
+    print("delete integration is calling")
     if developer is not None:
+        print("developer is not none")
         integration = Integration.query.filter_by(integration_id=integration_id).first()
         if integration is not None:
+            print("integration is not none")
             channel = Channel.query.filter_by(id=integration.channel_id).first()
             integrations = channel.integrations
             # 如果这个 channel 只绑定了要删除的 integration, 删除这个 channel
