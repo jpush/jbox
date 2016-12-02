@@ -44,9 +44,15 @@
                         <li>a discussion forum</li>
                         <li>a long-form chat room</li>
                     </ul>
-                    <button class="btn btn-info" style="margin-top: 30px"
-                            onclick=window.location.href="https://github.com/jpush/discourse-newpost-jbox-plugin">插件安装
-                    </button>
+                    <div class="row">
+                        <button class="btn btn-info" style="margin-top: 30px"
+                                onclick=window.location.href="https://github.com/jpush/discourse-newpost-jbox-plugin">插件安装
+                        </button>
+                        <div class="desc-content">
+                            需要要在自己的 discourse ，安装 JBox 插件。插件安装成功后把 discouse 集成的 Webhook 复制到 discouse-JBox 插件上
+                        </div>
+                    </div>
+
                     <div id="table-area">
                         {% if discourse_integrations %}
                             {% for integration in discourse_integrations %}
