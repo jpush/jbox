@@ -20,18 +20,18 @@ import com.jiguang.jbox.util.ViewHolder;
 import java.util.List;
 
 
-public class MessageListAdapter extends BaseAdapter {
+class MessageListAdapter extends BaseAdapter {
     private List<Message> mMessages;
 
-    public MessageListAdapter(List<Message> list) {
+    MessageListAdapter(List<Message> list) {
         mMessages = list;
     }
 
-    public void replaceData(List<Message> list) {
+    void replaceData(List<Message> list) {
         mMessages = list;
     }
 
-    public void addMessage(Message msg) {
+    void addMessage(Message msg) {
         if (mMessages != null) {
             mMessages.add(0, msg);
         }
@@ -112,7 +112,6 @@ public class MessageListAdapter extends BaseAdapter {
 
         String formatTime = DateUtils.formatDateTime(parent.getContext(),
                 msg.time * 1000, DateUtils.FORMAT_SHOW_TIME);
-
         tvTime.setText(formatTime);
 
         return convertView;

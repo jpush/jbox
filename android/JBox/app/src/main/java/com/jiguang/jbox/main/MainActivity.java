@@ -198,8 +198,6 @@ public class MainActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
-//        registerReceiver(mReceiver, mIntentFilter);
-
         if (AppApplication.shouldUpdateData) {
             setMessages(AppApplication.currentDevKey, AppApplication.currentChannelName);
             mDrawerFragment.updateData();
@@ -211,7 +209,6 @@ public class MainActivity extends FragmentActivity
     protected void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
-//        unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -241,6 +238,7 @@ public class MainActivity extends FragmentActivity
         if (mDrawerFragment.getView() != null) {
             mDrawerLayout.closeDrawer(mDrawerFragment.getView());
         }
+        JPushInterface.clearAllNotifications(getApplicationContext());
     }
 
     private void setMessages(String devKey, String channelName) {
