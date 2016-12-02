@@ -330,7 +330,7 @@ def save_github_integration(integration_id):
                          "content_type": "json"
                      }}
         if len(repos) == 0 and len(githubs) == 0:
-            return jsonify({}), 200
+            pass
         elif len(repos) == 0 and len(githubs) != 0:
             for entity in githubs:
                 url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' + str(
@@ -373,7 +373,6 @@ def save_github_integration(integration_id):
                         old_github = GitHub.query.filter_by(repository=rest2[i], hook_id=hook_dict[rest2[i]]).first()
                         db.session.delete(old_github)
                         db.session.commit()
-        return jsonify({}), 200
     integration.channel.channel = request.json['channel']
     if 'name' in request.json:
         integration.name = request.json['name']
@@ -403,13 +402,16 @@ def delete_integration(dev_key, integration_id):
             if len(integrations) == 1:
                 db.session.delete(channel)
             try:
+                print("will delete icon")
                 if integration.icon is not None:
+                    print("deleting icon !")
                     path = basedir + '/jbox/static/images/' + integration.icon
                     if os.path.exists(path) and os.path.isfile(path):
                         os.remove(path)
                 # 如果是 github 集成，删除所有的 webhook
                 if integration.type == 'github':
                     githubs = integration.githubs
+                    print("delete github integration")
                     if githubs:
                         user = session['user']
                         for entity in githubs:

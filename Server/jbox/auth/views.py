@@ -217,7 +217,7 @@ def edit_github_integration(integration_id):
         dev_key = developer.dev_key
         response = github.get('https://api.github.com/user/repos?per_page=400')
         list = response.data
-        result_key = []
+        result_key = {}
         result = {}
         if len(list) > 0:
             for i in range(len(list)):
@@ -225,9 +225,11 @@ def edit_github_integration(integration_id):
                 if repo_owner['login'] in result:
                     result[repo_owner['login']].append(list[i]['name'])
                 else:
-                    result_key.append(repo_owner['login'])
+                    result_key[repo_owner['login']] = list[i]["permissions"]["admin"]
                     result[repo_owner['login']] = [list[i]['name']]
-        return render_template('auth/create.html', **locals())
+        return render_template('auth/create.html', developer=developer, dev_key=dev_key, channel=channel,
+                               channels=channels, length=length, confirmed=confirmed,result=result, user=user,
+                               owner=owner,store_repos=store_repos,result_key=result_key, integration=integration)
 
 
 @auth.route('/new/post_to_channel', methods=['GET'])

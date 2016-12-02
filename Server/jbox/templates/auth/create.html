@@ -92,13 +92,13 @@
                                         <select id="repos_selector{{ loop.index0 }}" class="repo-select"
                                                 onchange="selectClick({{ loop.index0 }})">
                                             <option id="choose" value>选择一个仓库...</option>
-                                            {% for key in result_key %}
-                                                <optgroup label="{{ key }}">
-                                                    {% for repo in result[key] %}
+                                            {% for k in result_key %}
+                                                <optgroup label="{{ k }}">
+                                                    {% for repo in result[k] %}
                                                         {% if repo == store_repo %}
                                                             <option selected="selected"
                                                                     value="{{ repo }}">{{ repo }}</option>
-                                                        {% elif user == key %}
+                                                        {% elif result_key[k] %}
                                                             <option value="{{ repo }}">{{ repo }}</option>
                                                         {% else %}
                                                             <option value="{{ repo }}"
@@ -114,10 +114,10 @@
                                     <select id="repos_selector{{ length }}" class="repo-select"
                                             onchange="selectClick({{ length }})">
                                         <option id="choose" value>选择一个仓库...</option>
-                                        {% for key in result_key %}
-                                            <optgroup label="{{ key }}">
-                                                {% for repo in result[key] %}
-                                                    {% if user == key %}
+                                        {% for k in result_key %}
+                                            <optgroup label="{{ k }}">
+                                                {% for repo in result[k] %}
+                                                    {% if result_key[k] %}
                                                         <option value="{{ repo }}">{{ repo }}</option>
                                                     {% else %}
                                                         <option value="{{ repo }}"
@@ -132,10 +132,10 @@
                                 <label id="label0">
                                     <select id="repos_selector0" class="repo-select" onchange="selectClick(0)">
                                         <option id="choose" value>选择一个仓库...</option>
-                                        {% for key in result_key %}
-                                            <optgroup label="{{ key }}">
-                                                {% for repo in result[key] %}
-                                                    {% if user == key %}
+                                        {% for k in result_key %}
+                                            <optgroup label="{{ k }}">
+                                                {% for repo in result[k] %}
+                                                    {% if result_key[k] %}
                                                         <option value="{{ repo }}">{{ repo }}</option>
                                                     {% else %}
                                                         <option value="{{ repo }}"
@@ -428,10 +428,10 @@
                     var next = i + 1;
                     $('<label id="label' + next + '"><select id="repos_selector' + next + '" class="repo-select" onchange="selectClick(' + next + ')">' +
                             '<option id="choose" value>选择一个仓库...</option>'
-                            {% for key in result_key %}
-                                + '<optgroup label="{{ key }}">'
-                                {% for repo in result[key] %}
-                                    {% if user == key %}
+                            {% for k in result_key %}
+                                + '<optgroup label="{{ k }}">'
+                                {% for repo in result[k] %}
+                                    {% if result_key[k] %}
                                         + '<option value="{{ repo }}">{{ repo }}</option>'
                                     {% else %}
                                         + '<option value="{{ repo }}" disabled="disabled">{{ repo }}</option>'
@@ -586,37 +586,35 @@
                 {% if confirmed %}
                     var list = [];
                     var selIndex = $('#repos_selector0').prop('selectedIndex');
-                    if (selIndex == 0) {
-                        window.location.href = '/auth/github_integration'
-                    } else {
+                    if (selIndex != 0) {
                         $('select option:selected').each(function () {
                             var choose = $(this).text();
                             list.push(choose);
                         });
                         list.pop();
                         console.log(list);
-                        $.ajax({
-                            type: 'POST',
-                            contentType: 'application/json; charset=utf-8',
-                            url: '/v1/github/{{ integration.integration_id }}',
-                            data: JSON.stringify({
-                                repos: list,
-                                name: name,
-                                description: desc,
-                                icon: path,
-                                channel: channel
-                            }),
-                            success: function (data) {
-                                toastr.success("保存成功");
-                                window.location.href = '/auth/github_integration'
-                            },
-                            error: function (error) {
-                                console.log(error);
-                                toastr.error("保存失败");
-                            },
-                            dataType: "json"
-                        });
                     }
+                    $.ajax({
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        url: '/v1/github/{{ integration.integration_id }}',
+                        data: JSON.stringify({
+                            repos: list,
+                            name: name,
+                            description: desc,
+                            icon: path,
+                            channel: channel
+                        }),
+                        success: function (data) {
+                            toastr.success("保存成功");
+                            window.location.href = '/auth/github_integration'
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            toastr.error("保存失败");
+                        },
+                        dataType: "json"
+                    });
                 {% else %}
                     window.location.href = '/auth/github_integration';
                 {% endif %}
