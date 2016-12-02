@@ -407,8 +407,6 @@ def delete_integration(dev_key, integration_id):
                     path = basedir + '/jbox/static/images/' + integration.icon
                     if os.path.exists(path) and os.path.isfile(path):
                         os.remove(path)
-                db.session.delete(integration)
-                db.session.commit()
                 # 如果是 github 集成，删除所有的 webhook
                 if integration.type == 'github':
                     githubs = integration.githubs
@@ -421,6 +419,8 @@ def delete_integration(dev_key, integration_id):
                             if response.status == 204:
                                 db.session.delete(entity)
                                 db.session.commit()
+                db.session.delete(integration)
+                db.session.commit()
                 return jsonify({'deleted': True}), 200
             except:
                 db.session.rollback()
