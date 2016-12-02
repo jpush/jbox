@@ -424,7 +424,7 @@ def delete_integration(dev_key, integration_id):
                             url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
                                   + str(entity.hook_id)
                             print(url)
-                            data = urllib.parse.urlencode({"":""}).encode("utf-8")
+                            data = urllib.parse.urlencode([]).encode("utf-8")
                             response = github.delete(url, data=data)
                             print("get response")
                             if response.status == 204:
