@@ -416,12 +416,15 @@ def delete_integration(dev_key, integration_id):
                     githubs = integration.githubs
                     print("delete github integration")
                     if githubs:
+                        print("githubs is no none")
                         user = session['user']
                         for entity in githubs:
                             url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
                                   + str(entity.hook_id)
                             response = github.delete(url, data=None)
+                            print("get response")
                             if response.status == 204:
+                                print("response status is 204")
                                 db.session.delete(entity)
                                 db.session.commit()
                 db.session.delete(integration)
