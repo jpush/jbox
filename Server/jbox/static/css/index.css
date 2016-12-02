@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-#jbox-bear {
+#main-backgroup-image {
     margin-top: 69px;
     align-self: center;
 }
@@ -21,6 +21,42 @@
     width: 100%;
     margin-top: -20px;
     background-color: #50abd1;
+}
+
+#notification-icon {
+    width: 155px;
+    height: 140px;
+}
+
+#stream-icon {
+    width: 165px;
+    height: 138px;
+}
+
+#finger-image {
+    width: 102px;
+    height: 167px;
+    margin-top: 22px;
+}
+
+#bear-icon {
+    width: 265px;
+    height: 159px;
+}
+
+#server-icon {
+    width: 463px;
+    height:371px;
+}
+
+#homework-icon {
+    width: 415px;
+    width: 415px;
+}
+
+#phone-icon {
+    width: 495px;
+    height:268px;
 }
 
 /* Custom default button */
