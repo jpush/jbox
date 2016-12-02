@@ -395,42 +395,35 @@ def save_github_integration(integration_id):
 # @login_required
 def delete_integration(dev_key, integration_id):
     developer = Developer.query.filter_by(dev_key=dev_key).first()
-    print("delete integration is calling")
     if developer is not None:
-        print("developer is not none")
         integration = Integration.query.filter_by(integration_id=integration_id).first()
         if integration is not None:
-            print("integration is not none")
             channel = Channel.query.filter_by(id=integration.channel_id).first()
             integrations = channel.integrations
             # 如果这个 channel 只绑定了要删除的 integration, 删除这个 channel
             if len(integrations) == 1:
                 db.session.delete(channel)
             try:
-                print("will delete icon")
                 if integration.icon is not None:
-                    print("deleting icon !")
                     path = basedir + '/jbox/static/images/' + integration.icon
                     if os.path.exists(path) and os.path.isfile(path):
                         os.remove(path)
                 # 如果是 github 集成，删除所有的 webhook
                 if integration.type == 'github':
                     githubs = integration.githubs
-                    print("delete github integration")
                     if githubs:
                         user = session['user']
                         for entity in githubs:
-                            print("githubs is no none")
-                            url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
-                                  + str(entity.hook_id)
-                            print(url)
-                            data = urllib.parse.urlencode([]).encode("utf-8")
-                            response = github.delete(url, data=data)
-                            print("get response")
-                            if response.status == 204:
-                                print("response status is 204")
-                                db.session.delete(entity)
-                                db.session.commit()
+                            try:
+                                url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
+                                    + str(entity.hook_id)
+                                response = github.delete(url, data=None)
+                                if response.status == 204:
+                                    print("response status is 204")
+                                    db.session.delete(entity)
+                                    db.session.commit()
+                            except:
+                                print("delete webhook failed")
                 db.session.delete(integration)
                 db.session.commit()
                 return jsonify({'deleted': True}), 200
