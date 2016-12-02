@@ -88,9 +88,9 @@ body {
 }
 
 .icon {
-    padding-bottom: 40px;
     padding-top: 10px;
     padding-left: 0;
+    padding-bottom: 20px;
 }
 
 .desc {
