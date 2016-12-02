@@ -1,6 +1,7 @@
 import os, operator
 from flask import abort, Flask, json, jsonify, request, make_response, session, redirect, url_for
 from sqlite3 import DatabaseError
+import urllib
 from . import api
 from ..models import Developer, db, Channel, Integration, GitHub, generate_dev_key, generate_integration_id, generate_auth_token
 from .authentication import auth
@@ -423,7 +424,8 @@ def delete_integration(dev_key, integration_id):
                             url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
                                   + str(entity.hook_id)
                             print(url)
-                            response = github.delete(url, data={})
+                            data = urllib.parse.urlencode({}).encode("utf-8")
+                            response = github.delete(url, data=data)
                             print("get response")
                             if response.status == 204:
                                 print("response status is 204")
