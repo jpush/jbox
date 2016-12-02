@@ -423,7 +423,7 @@ def delete_integration(dev_key, integration_id):
                             url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' \
                                   + str(entity.hook_id)
                             print(url)
-                            response = github.delete(url, data=None)
+                            response = github.delete(url, data={})
                             print("get response")
                             if response.status == 204:
                                 print("response status is 204")
