@@ -16,6 +16,10 @@ def send_message(integration_id, token):
     if integration is None:
         abort(400)
 
+    message_url = ""
+    if 'url' in request.json:
+       message_url = request.json['url']
+    print("the message url "+ message_url)
     # channel dev_ID
     developer = Developer.query.filter_by(id=integration.developer_id).first()
     if developer is None:
@@ -44,6 +48,7 @@ def send_message(integration_id, token):
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
                                          'datetime': int(time.time()),
                                          'icon': url,
+                                         'url': message_url,
                                          'integation_name': integration.name})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": True}
@@ -77,7 +82,9 @@ def send_direct_to_channel(channel):
     print(channel_to_post)
     if channel_to_post is None:
         return jsonify({}), 404
-
+    message_url = ""
+    if 'url' in request.json:
+       message_url = request.json['url']
     _jpush = jpush.JPush(u'1c29cb5814072b5b1f8ef829', u'600805207f9743a472b79108')
     push = _jpush.create_push()
     _jpush.set_logging("DEBUG")
@@ -94,6 +101,7 @@ def send_direct_to_channel(channel):
                                  extras={'dev_key': developer.dev_key, 'channel': channel,
                                          'datetime': int(time.time()),
                                          'icon': "",
+                                         'url': message_url,
                                          'integation_name': ""})
 
     # push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
