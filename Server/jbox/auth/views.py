@@ -26,7 +26,7 @@ github = oauth.remote_app(
     base_url='https://api.github.com/',
     request_token_url=None,
     access_token_url='https://github.com/login/oauth/access_token',
-    request_token_params={'scope': 'admin:repo_hook,repo'},
+    request_token_params={'scope': 'admin:repo_hook,admin:org_hook,repo'},
     authorize_url='https://github.com/login/oauth/authorize'
 )
 

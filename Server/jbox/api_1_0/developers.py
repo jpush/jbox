@@ -335,8 +335,7 @@ def save_github_integration(integration_id):
             pass
         elif len(repos) == 0 and len(githubs) != 0:
             for entity in githubs:
-                url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' + str(
-                    entity.hook_id)
+                url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' + str(entity.hook_id)
                 response = github.delete(url, data=None)
                 if response.status == 204:
                     db.session.delete(entity)
