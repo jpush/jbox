@@ -20,7 +20,6 @@ import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.Message;
 import com.jiguang.jbox.drawer.ChannelListFragment;
 import com.jiguang.jbox.drawer.NavigationDrawerFragment;
-import com.jiguang.jbox.util.LogUtil;
 import com.jiguang.jbox.util.PermissionUtil;
 import com.jiguang.jbox.view.TopBar;
 
@@ -121,10 +120,10 @@ public class MainActivity extends FragmentActivity
                     // 收到的是当前 Channel 的消息，更新界面。
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
-                    mAdapter.notifyDataSetChanged();
 
                 } else if (message.what == MSG_WHAT_RECEIVE_MSG) {
                     String devKey = data.getString("DevKey");
+                    mDrawerFragment.devListFragment.updateData();
                     mDrawerFragment.channelListFragment.updateData(devKey);
 
                 } else if (message.what == MSG_WHAT_UPDATE_DEV) {
@@ -135,9 +134,6 @@ public class MainActivity extends FragmentActivity
                 } else if (message.what == MSG_WHAT_OPEN_MSG) {             // 点击通知后界面跳转。
                     AppApplication.currentDevKey = data.getString("DevKey");
                     AppApplication.currentChannelName = data.getString("ChannelName");
-
-                    LogUtil.LOGI("MainActivity", AppApplication.currentDevKey + ": "
-                            + AppApplication.currentChannelName);
 
                     new Update(Developer.class)
                             .set("IsSelected=?", false)
@@ -225,6 +221,20 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onChannelListItemClick(Channel channel) {
         mTopBar.setTitle(channel.name);
+
+        // Team 栏对应图标上减去未读消息数。
+        if (channel.unreadCount != 0) {
+            Developer dev = new Select().from(Developer.class)
+                    .where("Key=?", channel.devKey)
+                    .executeSingle();
+            if (dev.unreadCount - channel.unreadCount >= 0) {
+                dev.unreadCount -= channel.unreadCount;
+            } else {
+                dev.unreadCount = 0;
+            }
+            dev.save();
+            mDrawerFragment.devListFragment.updateData();
+        }
 
         channel.unreadCount = 0;
         channel.save();

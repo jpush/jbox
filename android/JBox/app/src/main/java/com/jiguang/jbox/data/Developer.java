@@ -25,6 +25,9 @@ public class Developer extends Model {
     @Column(name = "IsSelected")
     public boolean isSelected = false;  // 是否被选中。
 
+    @Column(name = "UnreadCount")
+    public int unreadCount = 0;     // 未读消息数
+
     public Developer() {
         super();
     }

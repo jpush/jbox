@@ -21,7 +21,6 @@ import static com.jiguang.jbox.drawer.DeveloperListFragment.OnListFragmentIntera
 
 public class DeveloperListRecyclerViewAdapter extends
         RecyclerView.Adapter<DeveloperListRecyclerViewAdapter.ViewHolder> {
-
     private List<Developer> mValues = new ArrayList<>();
     private final OnListFragmentInteractionListener mListener;
 
@@ -45,20 +44,26 @@ public class DeveloperListRecyclerViewAdapter extends
         holder.item = mValues.get(position);
 
         if (holder.item.isSelected) {
-            holder.view.setAlpha(1);
+            holder.mView.setAlpha(1);
         } else {
-            holder.view.setAlpha((float) 0.5);
+            holder.mView.setAlpha((float) 0.5);
         }
 
         Glide.with(AppApplication.getAppContext())
                 .load(holder.item.avatarUrl)
                 .placeholder(R.drawable.ic_avatar_default)
                 .dontAnimate()
-                .into(holder.avatar);
+                .into(holder.mIvAvatar);
 
-        holder.name.setText(holder.item.name);
+        if (holder.item.unreadCount == 0) {
+            holder.mTvUnreadCount.setVisibility(View.INVISIBLE);
+        } else {
+            holder.mTvUnreadCount.setVisibility(View.VISIBLE);
+            holder.mTvUnreadCount.setText(String.valueOf(holder.item.unreadCount));
+        }
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
+        holder.mTvName.setText(holder.item.name);
+        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppApplication.currentDevKey = holder.item.key;
@@ -73,7 +78,6 @@ public class DeveloperListRecyclerViewAdapter extends
                     }
                     holder.item.isSelected = true;
                     holder.item.save();
-
                     notifyDataSetChanged();
                 }
 
@@ -90,16 +94,18 @@ public class DeveloperListRecyclerViewAdapter extends
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final View view;
-        final CircleImageView avatar;
-        final TextView name;
+        final View mView;
+        final CircleImageView mIvAvatar;
+        final TextView mTvUnreadCount;
+        final TextView mTvName;
         Developer item;
 
         ViewHolder(View view) {
             super(view);
-            this.view = view;
-            avatar = (CircleImageView) view.findViewById(R.id.iv_avatar);
-            name = (TextView) view.findViewById(R.id.tv_name);
+            mView = view;
+            mIvAvatar = (CircleImageView) view.findViewById(R.id.iv_avatar);
+            mTvUnreadCount = (TextView) view.findViewById(R.id.tv_unread_count);
+            mTvName = (TextView) view.findViewById(R.id.tv_name);
         }
     }
 }

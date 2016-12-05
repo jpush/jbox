@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Message;
-import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.List;
 
@@ -54,9 +53,19 @@ class MessageListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
+        ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(R.layout.item_msg, parent, false);
+            holder = new ViewHolder();
+            holder.tvIcon = (TextView) convertView.findViewById(R.id.tv_icon);
+            holder.ivIcon = (ImageView) convertView.findViewById(R.id.iv_icon);
+            holder.tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
+            holder.tvContent = (TextView) convertView.findViewById(R.id.tv_content);
+            holder.tvTime = (TextView) convertView.findViewById(R.id.tv_time);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final Message msg = mMessages.get(position);
@@ -72,48 +81,54 @@ class MessageListAdapter extends BaseAdapter {
             }
         });
 
-        TextView tvIcon = ViewHolder.get(convertView, R.id.tv_icon);
-        ImageView ivIcon = ViewHolder.get(convertView, R.id.iv_icon);
-        TextView tvTitle = ViewHolder.get(convertView, R.id.tv_title);
-        TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
-        TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
-
         if (TextUtils.isEmpty(msg.iconUrl)) {
-            if (ivIcon.getVisibility() == View.VISIBLE) {
-                ivIcon.setVisibility(View.INVISIBLE);
-                tvIcon.setVisibility(View.VISIBLE);
+            if (holder.ivIcon.getVisibility() == View.VISIBLE) {
+                holder.ivIcon.setVisibility(View.INVISIBLE);
+                holder.tvIcon.setVisibility(View.VISIBLE);
             }
 
-            String firstChar = msg.channelName.substring(0, 1).toUpperCase();
-            tvIcon.setText(firstChar);
+            String firstChar;
+            if (TextUtils.isEmpty(msg.integrationName)) {
+                firstChar = msg.channelName.substring(0, 1).toUpperCase();
+            } else {
+                firstChar = msg.integrationName.substring(0, 1).toLowerCase();
+            }
+            holder.tvIcon.setText(firstChar);
         } else {
-            if (ivIcon.getVisibility() == View.INVISIBLE) {
-                ivIcon.setVisibility(View.VISIBLE);
-                tvIcon.setVisibility(View.GONE);
+            if (holder.ivIcon.getVisibility() == View.INVISIBLE) {
+                holder.ivIcon.setVisibility(View.VISIBLE);
+                holder.tvIcon.setVisibility(View.GONE);
             }
-
             Glide.with(AppApplication.getAppContext())
                     .load("http://" + msg.iconUrl)
                     .centerCrop()
                     .placeholder(R.drawable.default_avatar)
-                    .into(ivIcon);
+                    .into(holder.ivIcon);
         }
 
         if (TextUtils.isEmpty(msg.title)) {
-            tvTitle.setVisibility(View.GONE);
+            holder.tvTitle.setVisibility(View.GONE);
         } else {
-            if (tvTime.getVisibility() == View.GONE) {
-                tvTitle.setVisibility(View.VISIBLE);
+            if (holder.tvTime.getVisibility() == View.GONE) {
+                holder.tvTitle.setVisibility(View.VISIBLE);
             }
-            tvTitle.setText(msg.title);
+            holder.tvTitle.setText(msg.title);
         }
 
-        tvContent.setText(msg.content);
+        holder.tvContent.setText(msg.content);
 
         String formatTime = DateUtils.formatDateTime(parent.getContext(),
                 msg.time * 1000, DateUtils.FORMAT_SHOW_TIME);
-        tvTime.setText(formatTime);
+        holder.tvTime.setText(formatTime);
 
         return convertView;
+    }
+
+    private static class ViewHolder {
+        TextView tvIcon;
+        ImageView ivIcon;
+        TextView tvTitle;
+        TextView tvContent;
+        TextView tvTime;
     }
 }

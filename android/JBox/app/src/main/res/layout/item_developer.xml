@@ -10,24 +10,38 @@
     android:paddingTop="8dp"
     app:layoutManager="LinearLayoutManager">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_avatar"
+    <FrameLayout
+        android:id="@+id/fl_avatar"
         android:layout_width="106dp"
         android:layout_height="106dp"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_avatar_default"
-        />
+        android:layout_gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_avatar_default"
+            />
+
+        <TextView
+            android:id="@+id/tv_unread_count"
+            style="@style/Badge"
+            android:layout_gravity="end"
+            android:visibility="invisible"
+            tools:text="10"
+            />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_avatar"
+        android:layout_below="@id/fl_avatar"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:textColor="@android:color/white"
-        tools:text="Hevin"/>
-
+        tools:text="Hevin"
+        />
 </RelativeLayout>

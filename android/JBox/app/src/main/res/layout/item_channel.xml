@@ -35,5 +35,4 @@
         android:visibility="invisible"
         tools:text="10"
         />
-
 </RelativeLayout>

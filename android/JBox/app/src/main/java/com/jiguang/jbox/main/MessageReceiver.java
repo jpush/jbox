@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.activeandroid.query.Select;
-import com.activeandroid.query.Update;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.data.Developer;
 import com.jiguang.jbox.data.Message;
+import com.jiguang.jbox.util.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,8 +27,9 @@ public class MessageReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
             Bundle bundle = intent.getExtras();
-
             String extraJson = bundle.getString(JPushInterface.EXTRA_EXTRA);
+
+            LogUtil.LOGI("MessageReceiver", extraJson);
 
             JSONObject jsonObject;
             String title;
@@ -37,6 +39,7 @@ public class MessageReceiver extends BroadcastReceiver {
             String iconUrl;
             long timeMillis;
             String url;
+            String integrationName;
 
             try {
                 jsonObject = new JSONObject(extraJson);
@@ -46,6 +49,7 @@ public class MessageReceiver extends BroadcastReceiver {
                 channelName = jsonObject.getString("channel");
                 iconUrl = jsonObject.getString("icon");         // 集成的图标 url。
                 timeMillis = Long.parseLong(jsonObject.getString("datetime"));
+                integrationName = jsonObject.getString("integration_name");
                 url = jsonObject.isNull("url") ? null : jsonObject.getString("url");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -59,12 +63,13 @@ public class MessageReceiver extends BroadcastReceiver {
             msg.channelName = channelName;
             msg.iconUrl = iconUrl;
             msg.time = timeMillis;
+            msg.integrationName = integrationName;
             msg.url = url;
             msg.save();
 
             Bundle data = new Bundle();
-
             android.os.Message handlerMsg = new android.os.Message();
+
             // 如果收到的是当前 Channel 的消息就更新界面，否则保存到数据库并更新界面。
             if (AppApplication.currentDevKey.equals(devKey) &&
                     AppApplication.currentChannelName.equals(channelName)) {
@@ -76,12 +81,15 @@ public class MessageReceiver extends BroadcastReceiver {
                 Channel c = new Select().from(Channel.class)
                         .where("DevKey = ? AND Name = ?", devKey, channelName)
                         .executeSingle();
-
                 if (c != null) {
-                    new Update(Channel.class)
-                            .set("UnreadCount = ?", c.unreadCount + 1)
-                            .where("DevKey = ? AND Name = ?", devKey, channelName)
-                            .execute();
+                    c.unreadCount++;
+                    c.save();
+
+                    Developer dev = new Select().from(Developer.class)
+                            .where("Key=?", devKey)
+                            .executeSingle();
+                    dev.unreadCount++;
+                    dev.save();
 
                     handlerMsg.what = MainActivity.MSG_WHAT_RECEIVE_MSG;
                     data.putString("DevKey", msg.devKey);

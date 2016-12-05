@@ -29,7 +29,6 @@ public class DeveloperListFragment extends Fragment {
     private List<Developer> mDevs;
 
     private RecyclerView mRecyclerView;
-
     private DeveloperListRecyclerViewAdapter mAdapter;
 
     /**
