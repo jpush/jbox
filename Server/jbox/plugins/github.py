@@ -115,7 +115,7 @@ def send_github_msg(integration_id):
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
                                          'datetime': int(time.time()),
                                          'icon': icon_url,
-                                         'integation_name': integration.name,
+                                         'integration_name': integration.name,
                                          'url': url})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": True}

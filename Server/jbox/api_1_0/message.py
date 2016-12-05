@@ -49,7 +49,7 @@ def send_message(integration_id, token):
                                          'datetime': int(time.time()),
                                          'icon': url,
                                          'url': message_url,
-                                         'integation_name': integration.name})
+                                         'integration_name': integration.name})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": True}
     push.platform = jpush.all_
@@ -102,7 +102,7 @@ def send_direct_to_channel(channel):
                                          'datetime': int(time.time()),
                                          'icon': "",
                                          'url': message_url,
-                                         'integation_name': ""})
+                                         'integration_name': ""})
 
     # push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": False}
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": True}
