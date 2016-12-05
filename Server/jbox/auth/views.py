@@ -82,7 +82,10 @@ def github_integration():
                     if githubs:
                         repo_list = []
                         for entity in githubs:
-                            repo_list.append(entity.repository)
+                            display = entity.repository
+                            index = display.index('/')
+                            if index > 0:
+                                repo_list.append(display[index + 1:len(display)])
                         new_github = GitHub(integration_id=integration.integration_id, name=integration.name, icon=integration.icon,
                                             channel=integration.channel.channel, repositories=repo_list)
                         github_integrations.append(new_github)
@@ -134,7 +137,10 @@ def github_re_authorize():
                 if githubs:
                     repo_list = []
                     for entity in githubs:
-                        repo_list.append(entity.repository)
+                        display = entity.repository
+                        index = display.index('/')
+                        if index > 0:
+                            repo_list.append(display[index + 1:len(display)])
                     new_github = GitHub(integration_id=integration.integration_id, name=integration.name, icon=integration.icon,
                                         channel=integration.channel.channel, repositories=repo_list)
                     github_integrations.append(new_github)
@@ -210,7 +216,10 @@ def edit_github_integration(integration_id):
         store_repos = []
         if githubs:
             for entity in githubs:
-                store_repos.append(entity.repository)
+                display = entity.repository
+                index = display.index('/')
+                if index > 0:
+                    store_repos.append(display[index + 1:len(display)])
         length = len(store_repos)
         channel = integration.channel.channel
         channels = get_channel_list()

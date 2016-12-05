@@ -335,15 +335,14 @@ def save_github_integration(integration_id):
             pass
         elif len(repos) == 0 and len(githubs) != 0:
             for entity in githubs:
-                url = 'https://api.github.com/repos/' + user + '/' + entity.repository + '/hooks/' + str(entity.hook_id)
+                url = 'https://api.github.com/repos/' + entity.repository + '/hooks/' + str(entity.hook_id)
                 response = github.delete(url, data=None)
                 if response.status == 204:
                     db.session.delete(entity)
                     db.session.commit()
         elif len(repos) != 0 and len(githubs) == 0:
             for repo in repos:
-                response = github.post('https://api.github.com/repos/' + user + "/" + repo + "/hooks", data=data_dict,
-                                       format='json')
+                response = github.post('https://api.github.com/repos/' + repo + "/hooks", data=data_dict, format='json')
                 print(response.data)
                 if response.status == 201:
                     new_github = GitHub(integration=integration,
@@ -356,7 +355,7 @@ def save_github_integration(integration_id):
             rest1 = list(set(repos).difference(set(hook_dict.keys())))
             if len(rest1) > 0:
                 for repository in rest1:
-                    response = github.post('https://api.github.com/repos/' + user + "/" + repository + "/hooks",
+                    response = github.post('https://api.github.com/repos/' + repository + "/hooks",
                                            data=data_dict, format='json')
                     if response.status == 201:
                         new_github = GitHub(integration=integration,
@@ -368,7 +367,7 @@ def save_github_integration(integration_id):
             rest2 = list(set(hook_dict.keys()).difference(set(repos)))
             if len(rest2) > 0:
                 for i in range(len(rest2)):
-                    url = 'https://api.github.com/repos/' + user + '/' + rest2[i] + '/hooks/' + str(hook_dict[rest2[i]])
+                    url = 'https://api.github.com/repos/' + rest2[i] + '/hooks/' + str(hook_dict[rest2[i]])
                     response = github.delete(url, data=None)
                     if response.status == 204:
                         old_github = GitHub.query.filter_by(repository=rest2[i], hook_id=hook_dict[rest2[i]]).first()

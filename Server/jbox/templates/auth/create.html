@@ -588,7 +588,7 @@
                     var selIndex = $('#repos_selector0').prop('selectedIndex');
                     if (selIndex != 0) {
                         $('select option:selected').each(function () {
-                            var choose = $(this).text();
+                            var choose = $(this).parent().attr("label") + "/" + $(this).text();
                             list.push(choose);
                         });
                         list.pop();
