@@ -12,7 +12,7 @@
 
 {% block navbar %}
     <div id="navigationbar">{{ super() }}</div>
-{#    {{ super() }}#}
+    {#    {{ super() }}#}
 {% endblock %}
 
 {% block content %}
@@ -74,6 +74,7 @@
     </div>
 
     <script type="text/javascript">
+        var currentPage = 0;
         $(document).ready(function () {
             $("#appContent").fadeOut();
             $("#webContent").fadeIn();
@@ -81,16 +82,25 @@
             $("#leftItem").click(function () {
                 $("#webContent").fadeIn();
                 $("#appContent").fadeOut();
-                $("#rightItem").toggleClass('active');
-                $("#leftItem").toggleClass('active');
-            });
 
+                if(currentPage == 1) {
+                    $("#rightItem").toggleClass('active');
+                    $("#leftItem").toggleClass('active');
+                }
+                currentPage = 0;
+            });
             $("#rightItem").click(function () {
                 $("#appContent").fadeIn();
                 $("#webContent").fadeOut();
-                $("#rightItem").toggleClass('active');
-                $("#leftItem").toggleClass('active');
+
+                if (currentPage == 0) {
+                    $("#rightItem").toggleClass('active');
+                    $("#leftItem").toggleClass('active');
+                }
+                currentPage = 1;
+
             });
+
         });
     </script>
 {% endblock %}
