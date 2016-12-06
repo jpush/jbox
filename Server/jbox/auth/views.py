@@ -295,6 +295,9 @@ def upload_avatar(dev_key):
                 file_type = file.filename.rsplit('.', 1)[1]
                 filename = generate_file_name(file_type)
                 file.save(os.path.join(UPLOAD_FOLDER, filename))
+                developer.avatar = filename
+                db.session.add(developer)
+                db.session.commit()
                 return jsonify(name=filename)
 
 
@@ -311,6 +314,9 @@ def upload_icon(integration_id):
                 file_type = file.filename.rsplit('.', 1)[1]
                 filename = generate_file_name(file_type)
                 file.save(os.path.join(UPLOAD_FOLDER, filename))
+                integration.icon = filename
+                db.session.add(integration)
+                db.session.commit()
                 return jsonify(name=filename)
 
 
