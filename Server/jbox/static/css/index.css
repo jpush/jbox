@@ -13,6 +13,8 @@
 #main-backgroup-image {
     margin-top: 69px;
     align-self: center;
+    width: 633px;
+    height: 600px;
 }
 
 #navigationbar {
@@ -44,6 +46,16 @@
     height: 159px;
 }
 
+#wechat-icon {
+    width: 60px;
+    height: 49px;
+}
+
+#imessage-icon {
+    width: 59px;
+    height: 59px;
+}
+
 #server-icon {
     width: 463px;
     height:371px;
@@ -51,7 +63,12 @@
 
 #homework-icon {
     width: 415px;
-    width: 415px;
+    height: 327px;
+}
+
+#group-icon {
+    width: 64px;
+    height: 45px;
 }
 
 #phone-icon {
