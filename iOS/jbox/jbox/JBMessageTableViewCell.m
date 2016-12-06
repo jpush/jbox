@@ -36,7 +36,7 @@
 
 -(void)setMessage:(JBMessage *)message{
     _message = message;
-    self.content_label.text = [NSString stringWithFormat:@"%@：%@",message.integation_name,message.content];
+    self.content_label.text = [NSString stringWithFormat:@"%@：%@",message.integration_name,message.content];
     self.title_label.text   = message.title;
     CGSize size = [self.content_label caculatedSize];
     self.suitableHeight = 60 + size.height - 16;
@@ -48,8 +48,8 @@
     self.time_label.text    = time;
     if ([message.icon isEqualToString:@""] || !message.icon) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 45, 45)];
-        if (message.integation_name.length > 1) {
-            label.text = [message.integation_name substringToIndex:1].uppercaseString;
+        if (message.integration_name.length > 1) {
+            label.text = [message.integration_name substringToIndex:1].uppercaseString;
         }else{
             label.text = [self.message.channel substringToIndex:1].uppercaseString;
         }

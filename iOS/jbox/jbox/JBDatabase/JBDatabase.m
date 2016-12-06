@@ -110,7 +110,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 
 +(void)createChannel:(JBChannel*)channel{
     if ([JBSharedDatabase open]) {
-        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (id integer PRIMARY KEY AUTOINCREMENT,title text ,message text ,devkey text ,channel text, time text, read text, icon text, integation_name text, url text)", JBTableName(channel.dev_key, channel.name)];
+        NSString *sqlCreateTable = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (id integer PRIMARY KEY AUTOINCREMENT,title text ,message text ,devkey text ,channel text, time text, read text, icon text, integration_name text, url text)", JBTableName(channel.dev_key, channel.name)];
         BOOL result = [JBSharedDatabase executeUpdate:sqlCreateTable];
         if (result) {
 
@@ -128,7 +128,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
 +(void)insertMessages:(NSArray*)mArray{
     if ([JBSharedDatabase open]) {
         for (JBMessage *message in mArray) {
-            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (title,message,devkey,channel,time,read,icon,integation_name,url) values ('%@','%@','%@','%@','%@', '%@', '%@', '%@', '%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.channel, message.time, message.read, message.icon, message.integation_name, message.url];
+            NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (title,message,devkey,channel,time,read,icon,integration_name,url) values ('%@','%@','%@','%@','%@', '%@', '%@', '%@', '%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.channel, message.time, message.read, message.icon, message.integration_name, message.url];
             BOOL result = [JBSharedDatabase executeUpdate:sqlInsertTable];
             if (result) {
             }
@@ -152,7 +152,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
             message.read    = [set stringForColumn:@"read"];
             message.icon    = [set stringForColumn:@"icon"];
             message.url     = [set stringForColumn:@"url"];
-            message.integation_name = [set stringForColumn:@"integation_name"];
+            message.integration_name = [set stringForColumn:@"integration_name"];
             [modelArray addObject:message];
         }
         [JBSharedDatabase close];

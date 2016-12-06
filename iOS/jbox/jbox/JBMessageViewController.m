@@ -74,7 +74,7 @@
     message.icon       = dict[@"extras"][@"icon"];
     message.read       = @"0";
     message.url        = dict[@"extras"][@"url"];
-    message.integation_name = dict[@"extras"][@"integation_name"];
+    message.integration_name = dict[@"extras"][@"integration_name"];
     [JBDatabase insertMessages:@[message]];
     [self.message_tableView reloadData];
     [self updateData];

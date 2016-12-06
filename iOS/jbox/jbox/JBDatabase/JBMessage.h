@@ -16,6 +16,6 @@
 @property(nonatomic, retain)NSString *time;
 @property(nonatomic, retain)NSString *read;
 @property(nonatomic, retain)NSString *icon;
-@property(nonatomic, retain)NSString *integation_name;
+@property(nonatomic, retain)NSString *integration_name;
 @property(nonatomic, retain)NSString *url;
 @end
