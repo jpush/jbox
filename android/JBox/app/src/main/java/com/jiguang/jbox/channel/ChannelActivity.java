@@ -232,7 +232,8 @@ public class ChannelActivity extends Activity {
             });
 
             AppApplication.shouldUpdateData = true;
+        } else {
+            finish();
         }
-        finish();
     }
 }

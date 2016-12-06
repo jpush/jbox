@@ -1,5 +1,6 @@
 package com.jiguang.jbox.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -21,18 +22,26 @@ import java.util.List;
 
 class MessageListAdapter extends BaseAdapter {
     private List<Message> mMessages;
+    private Context mContext;
 
-    MessageListAdapter(List<Message> list) {
+    MessageListAdapter(Context context, List<Message> list) {
         mMessages = list;
+        mContext = context;
     }
 
     void replaceData(List<Message> list) {
-        mMessages = list;
+        if (list == null) {
+            mMessages.clear();
+        } else {
+            mMessages = list;
+        }
+        notifyDataSetChanged();
     }
 
     void addMessage(Message msg) {
         if (mMessages != null) {
             mMessages.add(0, msg);
+            notifyDataSetChanged();
         }
     }
 
@@ -52,10 +61,10 @@ class MessageListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, final ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            LayoutInflater inflater = LayoutInflater.from(mContext);
             convertView = inflater.inflate(R.layout.item_msg, parent, false);
             holder = new ViewHolder();
             holder.tvIcon = (TextView) convertView.findViewById(R.id.tv_icon);
@@ -68,15 +77,16 @@ class MessageListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final Message msg = mMessages.get(position);
+        Message msg = (Message) getItem(position);
+        final String url = msg.url;
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(msg.url)) {
+                if (!TextUtils.isEmpty(url)) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(msg.url));
-                    parent.getContext().startActivity(intent);
+                    intent.setData(Uri.parse(url));
+                    mContext.startActivity(intent);
                 }
             }
         });

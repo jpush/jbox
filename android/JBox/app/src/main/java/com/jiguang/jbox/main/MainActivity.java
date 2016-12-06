@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.activeandroid.query.Select;
-import com.activeandroid.query.Update;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.data.Channel;
@@ -120,6 +119,8 @@ public class MainActivity extends FragmentActivity
                     // 收到的是当前 Channel 的消息，更新界面。
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
+                    mCurrentOffset++;
+//                    mMessages.add(0, msg);
 
                 } else if (message.what == MSG_WHAT_RECEIVE_MSG) {
                     String devKey = data.getString("DevKey");
@@ -132,22 +133,22 @@ public class MainActivity extends FragmentActivity
                     mDrawerFragment.channelListFragment.updateData(devKey);
 
                 } else if (message.what == MSG_WHAT_OPEN_MSG) {             // 点击通知后界面跳转。
-                    AppApplication.currentDevKey = data.getString("DevKey");
-                    AppApplication.currentChannelName = data.getString("ChannelName");
-
-                    new Update(Developer.class)
-                            .set("IsSelected=?", false)
-                            .where("IsSelected=?", true)
-                            .execute();
-                    new Update(Developer.class)
-                            .set("IsSelected=?", true)
-                            .where("Key=?", AppApplication.currentDevKey)
-                            .execute();
-
-                    mDrawerFragment.devListFragment.updateData();
-                    mDrawerFragment.channelListFragment.updateData(AppApplication.currentDevKey);
-
-                    setMessages(AppApplication.currentDevKey, AppApplication.currentChannelName);
+//                    AppApplication.currentDevKey = data.getString("DevKey");
+//                    AppApplication.currentChannelName = data.getString("ChannelName");
+//
+//                    new Update(Developer.class)
+//                            .set("IsSelected=?", false)
+//                            .where("IsSelected=?", true)
+//                            .execute();
+//                    new Update(Developer.class)
+//                            .set("IsSelected=?", true)
+//                            .where("Key=?", AppApplication.currentDevKey)
+//                            .execute();
+//
+//                    mDrawerFragment.devListFragment.updateData();
+//                    mDrawerFragment.channelListFragment.updateData(AppApplication.currentDevKey);
+//
+//                    setMessages(AppApplication.currentDevKey, AppApplication.currentChannelName);
                 }
                 return false;
             }
@@ -165,16 +166,16 @@ public class MainActivity extends FragmentActivity
                                  int visibleItemCount, int totalItemCount) {
                 // 如果滑动到了最后，加载更多数据。
                 if (mMsgListView.getLastVisiblePosition() + 1 == totalItemCount) {
-                    if (mMessages != null) {
-                        List<Message> newMessageList = queryMessages(AppApplication.currentDevKey,
-                                AppApplication.currentChannelName, mCurrentOffset,
-                                QUERY_MESSAGE_COUNT);
-                        if (newMessageList != null && !newMessageList.isEmpty()) {
-                            mMessages.addAll(newMessageList);
-                            mCurrentOffset += newMessageList.size();
-                            mAdapter.replaceData(mMessages);
-                            mAdapter.notifyDataSetChanged();
-                        }
+                    if (mMessages == null) {
+                        return;
+                    }
+                    List<Message> newMessageList = queryMessages(AppApplication.currentDevKey,
+                            AppApplication.currentChannelName, mMessages.size(),
+                            QUERY_MESSAGE_COUNT);
+                    if (newMessageList != null && !newMessageList.isEmpty()) {
+                        mMessages.addAll(newMessageList);
+                        mCurrentOffset += newMessageList.size();
+                        mAdapter.replaceData(mMessages);
                     }
                 }
             }
@@ -185,8 +186,8 @@ public class MainActivity extends FragmentActivity
 
         mMessages = queryMessages(AppApplication.currentDevKey, AppApplication.currentChannelName,
                 0, QUERY_MESSAGE_COUNT);
-        mCurrentOffset += mMessages.size();
-        mAdapter = new MessageListAdapter(mMessages);
+        mCurrentOffset = mMessages.size();
+        mAdapter = new MessageListAdapter(this, mMessages);
         mMsgListView.setAdapter(mAdapter);
     }
 
