@@ -78,8 +78,6 @@
     [JBDatabase insertMessages:@[message]];
     [self.message_tableView reloadData];
     [self updateData];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:JBSlideTableViewCellShouldUpdate object:nil];
 }
 
 -(void)slide:(UIGestureRecognizer*)gesture{

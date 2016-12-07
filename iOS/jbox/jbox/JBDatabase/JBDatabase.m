@@ -131,6 +131,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
             NSString *sqlInsertTable = [NSString stringWithFormat:@"insert into '%@' (title,message,devkey,channel,time,read,icon,integration_name,url) values ('%@','%@','%@','%@','%@', '%@', '%@', '%@', '%@')",JBTableName(message.devkey, message.channel), message.title, message.content, message.devkey, message.channel, message.time, message.read, message.icon, message.integration_name, message.url];
             BOOL result = [JBSharedDatabase executeUpdate:sqlInsertTable];
             if (result) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:JBChannelMessageInserted object:nil];
             }
         }
         [JBSharedDatabase close];
@@ -166,7 +167,7 @@ static NSString *const JBUserDefaultsDevkey = @"JBUserDefaultsDevkey";
         NSString *sqlInsertTable = [NSString stringWithFormat:@"UPDATE '%@' SET read = '%@' WHERE devkey = '%@'",JBTableName(channel.dev_key, channel.name), read, channel.dev_key];
         BOOL result = [JBSharedDatabase executeUpdate:sqlInsertTable];
         if (result) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:JBChannelMessagesReaded object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:JBChannelMessageReaded object:nil];
         }
         [JBSharedDatabase close];
     }

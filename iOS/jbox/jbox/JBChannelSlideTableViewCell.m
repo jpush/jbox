@@ -30,8 +30,8 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messagesReaded) name:JBChannelMessagesReaded object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCount) name:JBSlideTableViewCellShouldUpdate object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCount) name:JBChannelMessageReaded object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCount) name:JBChannelMessageInserted object:nil];
 }
 
 -(void)updateCount{
@@ -41,11 +41,6 @@
     }else{
         self.count_label.hidden = YES;
     }
-}
-
--(void)messagesReaded{
-    self.count_label.hidden = YES;
-    self.count_label.text   = @"";
 }
 
 -(void)setSelected:(BOOL)selected animated:(BOOL)animated{

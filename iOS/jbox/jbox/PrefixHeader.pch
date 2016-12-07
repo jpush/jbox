@@ -20,11 +20,10 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static NSString *CellReuseIdentifier     = @"cell";
+static NSString *CellReuseIdentifier       = @"cell";
 
-static NSString *JBChannelMessagesReaded = @"JBChannelMessagesReaded";
-
-static NSString *JBSlideTableViewCellShouldUpdate = @"JBSlideTableViewCellShouldUpdate";
+static NSString *JBChannelMessageReaded   = @"JBChannelMessageReaded";
+static NSString *JBChannelMessageInserted = @"JBChannelMessageInserted";
 
 static NSString *JBDevkeyInserted = @"JBDevkeyInserted";
 static NSString *JBChannelUpdated = @"JBChannelUpdated";

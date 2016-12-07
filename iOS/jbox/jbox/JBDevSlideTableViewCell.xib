@@ -37,21 +37,41 @@
                         <color key="textColor" red="0.82745098039215681" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pPG-1a-1vP">
+                        <rect key="frame" x="181" y="18" width="30" height="20"/>
+                        <color key="backgroundColor" red="0.98431372549019602" green="0.22745098039215686" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="4PY-kR-thj"/>
+                            <constraint firstAttribute="width" constant="30" id="fLO-aK-cNg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="TrI-sU-QBw" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="86l-ab-JqM"/>
                     <constraint firstAttribute="bottom" secondItem="TrI-sU-QBw" secondAttribute="bottom" id="8uT-NM-4WM"/>
+                    <constraint firstItem="pPG-1a-1vP" firstAttribute="top" secondItem="hkP-fu-AwT" secondAttribute="top" constant="-2" id="HvZ-wU-Rj4"/>
                     <constraint firstItem="hkP-fu-AwT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="Un9-iU-tP1"/>
                     <constraint firstItem="hkP-fu-AwT" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="fdu-A0-YHa"/>
+                    <constraint firstItem="pPG-1a-1vP" firstAttribute="trailing" secondItem="hkP-fu-AwT" secondAttribute="trailing" constant="10" id="vCz-iH-aMu"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="avatar_imageView" destination="hkP-fu-AwT" id="VQk-gC-QSP"/>
+                <outlet property="badge_label" destination="pPG-1a-1vP" id="K3M-Qf-MTG"/>
                 <outlet property="teamName_label" destination="TrI-sU-QBw" id="piq-Gc-pZf"/>
             </connections>
-            <point key="canvasLocation" x="-804" y="-343"/>
+            <point key="canvasLocation" x="-970" y="-358"/>
         </tableViewCell>
     </objects>
     <resources>
