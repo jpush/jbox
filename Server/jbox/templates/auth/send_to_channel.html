@@ -110,10 +110,10 @@
                             if (msg != undefined) {
                                 toastr.error(msg + "");
                             } else {
-                                toastr.error("发送失败");
+                                toastr.error("发送失败，可能还有有设备订阅该频道");
                             }
                         } else {
-                            toastr.error("发送失败");
+                            toastr.error("发送失败，可能还有有设备订阅该频道");
                         }
                     },
                     dataType: "json"
