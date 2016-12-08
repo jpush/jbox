@@ -49,6 +49,7 @@
 #wechat-icon {
     width: 60px;
     height: 49px;
+    text-align: right;
 }
 
 #imessage-icon {
@@ -57,13 +58,13 @@
 }
 
 #server-icon {
-    width: 463px;
-    height:371px;
+    width: 287px;
+    height:230px;
 }
 
 #homework-icon {
-    width: 415px;
-    height: 327px;
+    width: 297px;
+    height: 242px;
 }
 
 #group-icon {
@@ -72,10 +73,15 @@
 }
 
 #phone-icon {
-    width: 495px;
+    width: 355px;
     height:268px;
 }
 
+#phone-scan-icon {
+    width: 168px;
+    height: 164px;
+    margin-top: -12px;
+}
 /* Custom default button */
 .btn-default,
 .btn-default:hover,
@@ -91,8 +97,26 @@ body {
     height: 100%;
 }
 
+@media (min-width: 1400px) {
+    .what-is-jbox {
+        width: 1300px!important;
+    }
+
+    .usage-content {
+        width: 760px!important;
+    }
+
+    .better-to-other-content {
+        width: 1300px!important;
+    }
+}
 .container-fluid {
     width: 100%;
+}
+
+.symbol {
+    font-size: 80px;
+    color: #8B8B8B;
 }
 
 .first-layer {
@@ -109,7 +133,7 @@ body {
 
 .section-title {
     font-weight: bold;
-    font-size: 36px;
+    font-size: 48px;
     color: #444444;
     margin-bottom: 100px;
 }
@@ -155,9 +179,22 @@ body {
     color: #444444;
     text-align: left;
     padding-top: 10px;
+    margin-left: -20px;
+}
+
+.usage-content {
+
+}
+
+.server-content {
+
+}
+
+.homework-content {
+    margin-top: -7px;
 }
 
 #footer {
-    background: #F9F9F9;
+    background: #ecfcff;
     padding-top: 20px
 }

@@ -37,7 +37,7 @@ ul, li {
 }
 
 .jbox-font {
-    font-family: "PingFang SC-Semibold";
+    /*font-family: "PingFang SC-Semibold";*/
     letter-spacing: 0;
     color: #FFFFFF;
     text-align: center;
@@ -158,6 +158,7 @@ ul, li {
 
 body {
     padding-top: 20px;
+    font-family:"Helvetica Neue", "PingFang SC","Microsoft Yahei",Arial,Verdana,sans-serif;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
