@@ -126,13 +126,12 @@ body {
 }
 
 .second-layer {
-    padding-top: 100px;
+    padding-top: 60px;
     padding-bottom: 100px;
     background: #f9f9f9;
 }
 
 .section-title {
-    font-weight: bold;
     font-size: 48px;
     color: #444444;
     margin-bottom: 100px;
@@ -144,11 +143,10 @@ body {
 }
 
 .section-subtitle {
-    font-weight: bold;
     font-size: 30px;
     color: #444444;
-    margin-top: 50px;
     margin-bottom: 20px;
+    margin-top: 50px;
 }
 
 .third-layer {
@@ -160,7 +158,7 @@ body {
 .ul-desc {
     padding-top: 10px;
     text-align: left;
-    font-weight: bold;
+    /*font-weight: bold;*/
     font-size: 30px;
 }
 
@@ -187,11 +185,13 @@ body {
 }
 
 .server-content {
+    text-align: center;
 
 }
 
 .homework-content {
     margin-top: -7px;
+    text-align: center;
 }
 
 #footer {
