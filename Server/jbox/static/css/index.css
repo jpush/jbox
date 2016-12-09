@@ -84,11 +84,6 @@
     height: 45px;
 }
 
-#phone-icon {
-    width: 355px;
-    height:268px;
-}
-
 #phone-scan-icon {
     width: 168px;
     height: 164px;
@@ -213,6 +208,21 @@ body {
     text-align: center;
 }
 
+.icon-background {
+    background: rgba(0, 0, 0, 0.50);
+    width: 250px;
+    height: 188px;
+    text-align: center;
+    padding: 30px;
+    border-width: 0;
+    margin-top: 20px;
+}
+
+.icon-background:hover {
+    background: rgba(0, 0, 0, 0.80);
+
+}
+
 #footer {
     background: #ecfcff;
     padding-top: 20px
@@ -264,10 +274,5 @@ body {
     #bear-container {
         padding-top: 50px;
         padding-right: 0;
-    }
-
-    #phone-icon {
-        width: 159px;
-        height: 127px;
     }
 }

@@ -8,7 +8,7 @@
     {#    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>#}
 {% endblock %}
 
-{% block title %}Index{% endblock %}
+{% block title %}JBox{% endblock %}
 
 
 {% block navbar %}
@@ -56,8 +56,8 @@
                     <img id="phone-scan-icon" src="/static/images/phoneScan.png">
                     <p class="jbox-font section-subtitle">手机接收</p>
                     <p class="jbox-font section-desc">无需注册，扫码即可接收通知。<br>
-                按需订阅，接收不同消息来源。
-                </p>
+                        按需订阅，接收不同消息来源。
+                    </p>
                 </div>
                 <div class="column col-md-1">
                     <p class="symbol">=</p>
@@ -155,7 +155,22 @@
 
     <div class="second-layer">
         <p class="jbox-font section-title">主流手机平台的支持</p>
-        <img id="phone-icon" src="/static/images/appAndroidIos.png"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="ios" class="icon-background">
+                        <img src="/static/images/ios.png">
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <a href="/static/app/app-release.apk">
+                        <button id="android" class="icon-background">
+                            <img src="/static/images/android.png">
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% block footer %}
@@ -167,6 +182,22 @@
     <script type="text/javascript">
         console.log(window.location.hash);
         console.log(window.location.hash);
+        $('#ios').click(function () {
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+            var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+            var bIsAndroid = sUserAgent.match(/android/i) == "android";
+            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+            if (bIsIphoneOs || bIsIpad) {
+                window.location.href = "itms-services://?action=download-manifest&url=https://jbox.jiguang.cn/static/app/jbox.plist";
+            } else {
+                window.location.href = "/static/app/jbox.ipa"
+            }
+        })
     </script>
 {% endblock %}
 
