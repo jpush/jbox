@@ -10,6 +10,13 @@
     text-align: center;
 }
 
+#description-subtitle {
+    font-size: 36px;
+    color: #ffffff;
+    margin-top: 30px;
+    text-align: center;
+}
+
 #main-backgroup-image {
     margin-top: 69px;
     align-self: center;
@@ -39,6 +46,11 @@
     width: 102px;
     height: 167px;
     margin-top: 22px;
+}
+
+#bear-container {
+    padding-top: 150px;
+    padding-right: 80px
 }
 
 #bear-icon {
@@ -135,6 +147,7 @@ body {
     font-size: 48px;
     color: #444444;
     margin-bottom: 100px;
+    text-align: center;
 }
 
 .section-desc {
@@ -147,6 +160,12 @@ body {
     color: #444444;
     margin-bottom: 20px;
     margin-top: 50px;
+}
+
+#reason-subtitle {
+    text-align: left;
+    margin-bottom: 30px;
+    margin-left: 14px;
 }
 
 .third-layer {
@@ -197,4 +216,58 @@ body {
 #footer {
     background: #ecfcff;
     padding-top: 20px
+}
+
+@media screen and (max-width: 800px) {
+
+    #description {
+        font-size: 24px;
+    }
+
+    #description-subtitle {
+        font-size: 20px;
+    }
+
+    #main-backgroup-image {
+        width: 300px;
+        height: 284px;
+    }
+
+    .section-title {
+        font-size: 30px;
+    }
+
+    .ul-desc {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .section-desc {
+        font-size: 16px;
+    }
+
+    #reason-subtitle {
+        text-align: center;
+    }
+
+    .section-desc-spec {
+        font-size: 18px;
+        text-align: center;
+        margin-left: 15px;
+    }
+
+    #bear-container {
+        padding-top: 50px;
+        padding-right: 0;
+    }
+
+    #phone-icon {
+        width: 159px;
+        height: 127px;
+    }
 }
