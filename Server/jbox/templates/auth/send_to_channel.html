@@ -84,12 +84,16 @@
             var channel = $('#selected_channel').val();
             if (channel != "") {
                 $('#send-btn').attr("disabled", true);
+                var title = $('#title-input').val();
+                if (title == undefined || title == "") {
+                    title = "收到通知";
+                }
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "/v1/message/" + channel,
                     data: JSON.stringify({
-                        title: $('#title-input').val(),
+                        title: title,
                         message: $('#message-input').val()
                     }),
                     success: function (data) {
