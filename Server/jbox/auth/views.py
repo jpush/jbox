@@ -138,9 +138,10 @@ def github_re_authorize():
                     repo_list = []
                     for entity in githubs:
                         display = entity.repository
-                        index = display.index('/')
-                        if index > 0:
-                            repo_list.append(display[index + 1:len(display)])
+                        if '/' in display:
+                            index = display.index('/')
+                            if index > 0:
+                                repo_list.append(display[index + 1:len(display)])
                     new_github = GitHub(integration_id=integration.integration_id, name=integration.name, icon=integration.icon,
                                         channel=integration.channel.channel, repositories=repo_list)
                     github_integrations.append(new_github)
