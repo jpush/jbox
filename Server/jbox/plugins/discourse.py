@@ -26,7 +26,13 @@ def send_discourse_msg(integration_id, token):
     )
     # push.audience = jpush.all_
     # push.notification = jpush.notification(alert=request.json['title'],extras={'title': request.json['title'],
-    #                                                                              'message': request.json['message']})
+    #
+
+    message_url = ""
+    if 'url' in request.json:
+        message_url = request.json['url']
+    print("the message url " + message_url)
+
     android_msg = jpush.android(alert=request.json['title'], extras={'title': request.json['title'],
                                                                      'message': request.json['message']})
     ios_msg = jpush.ios(alert=request.json['title'], extras={'title': request.json['title'],
@@ -42,7 +48,7 @@ def send_discourse_msg(integration_id, token):
                                  extras={'dev_key': developer.dev_key, 'channel': integration.channel.channel,
                                          'datetime': int(time.time()),
                                          'icon': url,
-                                         'url': request.json['url'],
+                                         'url': message_url,
                                          'integration_name': integration.name})
 
     push.options = {"time_to_live": 864000, "sendno": 12345, "apns_production": True}
