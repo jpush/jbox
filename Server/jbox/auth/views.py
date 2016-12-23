@@ -112,25 +112,20 @@ def github_re_authorize():
     session['github_token'] = (resp['access_token'], '')
     token = session['github_token'][0]
     authorization = Authorization.query.filter_by(developer_id=developer.id, type='github').first()
-    print("huangmin1")
     if authorization is None:
-        print("huangmin2")
         authorization = Authorization(developer=developer, oauth_token=token, type='github')
         db.session.add(authorization)
         db.session.commit()
     else:
         try:
-            print("huangmin3")
             print(token)
             authorization.oauth_token = token
             db.session.add(authorization)
             db.session.commit()
         except:
-            print("huangmin4")
             db.session.rollback()
             abort(500)
     if 'user' not in session:
-        print("huangmin5")
         me = github.get('user')
         user = me.data['login']
         session['user'] = user
@@ -152,9 +147,7 @@ def github_re_authorize():
                     new_github = GitHub(integration_id=integration.integration_id, name=integration.name, icon=integration.icon,
                                         channel=integration.channel.channel, repositories=repo_list)
                     github_integrations.append(new_github)
-                    print("huangmin6")
                 else:
-                    print("huangmin7")
                     github_integrations.append(integration)
     return render_template('auth/github_integration.html', **locals())
 
