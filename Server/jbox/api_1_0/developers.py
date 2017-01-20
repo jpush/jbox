@@ -30,6 +30,7 @@ def create_developer():
                               platform=request.json['platform'],
                               platform_id=request.json['platform_id'],
                               username=request.json['dev_name'],
+                              email=request.json['email'],
                               description=desc)
         developer.insert_to_db()
         return jsonify({'dev_key': developer.dev_key}), 201
@@ -103,6 +104,8 @@ def modify_developer(dev_key):
         developer.description = request.json['desc']
     if 'avatar' in request.json:
         developer.avatar = request.json['avatar']
+    if 'email' in request.json:
+        developer.email = request.json['email']
     db.session.add(developer)
     try:
         db.session.commit()

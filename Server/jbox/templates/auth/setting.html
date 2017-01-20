@@ -84,6 +84,24 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="row-left-content">
+                            <p class="jbox-font span-title table-title">填写邮箱</p>
+                            <p class="span-desc">填写个人邮箱可以获取 JBox 最新更新，可以第一时间获悉 JBox 服务状态（选填）</p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <input id="email-input" class="description" title="邮箱地址" type="text"
+                               value="{{ developer.email }}"/>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row-left-content">
                             <p class="jbox-font span-title table-title">开发者描述</p>
                             <p class="span-desc">给你的开发者账号添加描述（选填）</p>
                         </div>
@@ -199,6 +217,14 @@
             var name = $('#name-input').val();
             var desc = $('#desc-input').val();
             var path = $('#resultFilename').val();
+            var email = $('#email-input').val();
+            if (email != "") {
+                var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                if (!reg.test(email)) {
+                    toastr.warning("您填写的邮箱格式不正确,请重新填写!");
+                    return false;
+                }
+            }
             if (name == undefined || name == '') {
                 toastr.warning("必须填写开发者名称并保存，否则不能进行其他操作！");
             } else {
@@ -214,7 +240,7 @@
                     type: "PUT",
                     contentType: "application/json; charset=utf-8",
                     url: "/v1/developers/{{ developer.dev_key }}",
-                    data: JSON.stringify({name: name, desc: desc, avatar: path}),
+                    data: JSON.stringify({name: name, email: email, desc: desc, avatar: path}),
                     success: function (data) {
                         toastr.success("保存成功");
                         window.location.href = '/auth/profile'
