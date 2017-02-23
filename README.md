@@ -2,7 +2,7 @@
 
 [![downloads-Android-brightgreen](https://img.shields.io/badge/downloads-Android-brightgreen.svg)]()
 [![downloads-iOS-blue](https://img.shields.io/badge/downloads-iOS-blue.svg)]()
-
+[![QQ Group](https://img.shields.io/badge/QQ%20Group-453471823-red.svg)]()
 <p align="center">
     <a href="http://jbox.jiguang.cn/" target="_blank">
         <img src="https://github.com/jpush/jbox/blob/dev/ReadmeResource/Boxinbear%401x.png" alt="JBox" width=300/>
