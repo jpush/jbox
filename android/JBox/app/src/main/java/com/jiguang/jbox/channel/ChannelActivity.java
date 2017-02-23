@@ -127,14 +127,18 @@ public class ChannelActivity extends Activity {
                 msg.setData(bundle);
                 msg.setTarget(mHandler);
                 msg.sendToTarget();
-
                 dev.save();
             }
 
             @Override
             public void onDataNotAvailable() {
-                Toast.makeText(getApplicationContext(), R.string.channel_error_dev,
-                        Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AppApplication.getAppContext(), R.string.channel_error_dev,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
                 finish();
             }
         });
@@ -156,12 +160,10 @@ public class ChannelActivity extends Activity {
                             if (channels == null) {
                                 return;
                             }
-
                             if (mLocalChannels == null) {
                                 mListAdapter.replaceData(mChannels);
                                 return;
                             }
-
                             mChannels = channels;
 
                             // 将本地数据和服务器数据做对比，同步订阅状态。
@@ -203,7 +205,6 @@ public class ChannelActivity extends Activity {
             new Delete().from(Channel.class).where("DevKey = ?", mDevKey).execute();
 
             boolean firstSubscribe = true;
-
             AppApplication.currentChannelName = "";
 
             for (Channel c : mChannels) {

@@ -40,8 +40,10 @@ import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
  * 二维码扫描界面。
  */
 public class ScanActivity extends Activity implements QRCodeView.Delegate {
+
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+
     private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 2;
 
     private QRCodeView mScanView;
@@ -138,7 +140,7 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             AppApplication.shouldUpdateData = true;
         } else {
             // 扫描二维码返回 devKey，再请求 developer 信息。
-            Intent intent = new Intent(this, ChannelActivity.class);
+            Intent intent = new Intent(ScanActivity.this, ChannelActivity.class);
             intent.putExtra(ChannelActivity.EXTRA_DEV_KEY, result);
             startActivity(intent);
         }
@@ -153,14 +155,12 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         mScanView.showScanRect();
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
             final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
 
             new AsyncTask<Void, Void, String>() {
-
                 @Override
                 protected String doInBackground(Void... params) {
                     return QRCodeDecoder.syncDecodeQRCode(picturePath);
@@ -184,15 +184,13 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CAMERA:
-                if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mScanView.startCamera();
                     mScanView.startSpot();
                 }
                 return;
             case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (!TextUtils.isEmpty(mDevKey) && !TextUtils.isEmpty(mChannel)) {
                         saveData(mDevKey, mChannel);
                     }
@@ -203,7 +201,7 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
     }
 
     /**
-     * 请求拍照权限和写外部存储的权限。
+     * 请求拍照权限和写外部存储权限。
      */
     private void requestPermission() {
         if (!PermissionUtil.hasPermission(this, Manifest.permission.CAMERA)) {
@@ -239,7 +237,6 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
                     }
                 }
             });
-
         } else if (!c.isSubscribe) {
             c.isSubscribe = true;
             c.save();
@@ -259,5 +256,4 @@ public class ScanActivity extends Activity implements QRCodeView.Delegate {
             });
         }
     }
-
 }

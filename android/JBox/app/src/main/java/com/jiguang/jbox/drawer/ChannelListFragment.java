@@ -25,7 +25,8 @@ import java.util.List;
  * 侧边栏 Channel list.
  */
 public class ChannelListFragment extends Fragment {
-    private static final String TAG = "ChannelListFragment";
+
+    private static final String TAG = ChannelListFragment.class.getSimpleName();
 
     private OnListFragmentInteractionListener mListener;
     private List<Channel> mChannels;
@@ -113,5 +114,4 @@ public class ChannelListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onChannelListItemClick(Channel channel);
     }
-
 }
