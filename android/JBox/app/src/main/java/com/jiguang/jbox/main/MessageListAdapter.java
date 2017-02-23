@@ -21,6 +21,7 @@ import java.util.List;
 
 
 class MessageListAdapter extends BaseAdapter {
+
     private List<Message> mMessages;
     private Context mContext;
 
