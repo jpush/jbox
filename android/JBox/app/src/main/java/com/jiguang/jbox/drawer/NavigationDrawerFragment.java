@@ -27,6 +27,7 @@ import static com.jiguang.jbox.R.id.viewPager;
  */
 public class NavigationDrawerFragment extends Fragment
         implements DeveloperListFragment.OnListFragmentInteractionListener {
+
     private DrawerLayout drawerLayout;
 
     private ViewPager mViewPager;
@@ -38,7 +39,7 @@ public class NavigationDrawerFragment extends Fragment
     public ChannelListFragment channelListFragment;
 
     public NavigationDrawerFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -55,7 +56,7 @@ public class NavigationDrawerFragment extends Fragment
         mIvCircleFirst.setSelected(true);
         mIvCircleSecond = (ImageView) v.findViewById(R.id.iv_circle_second);
 
-        List<android.support.v4.app.Fragment> fragmentList = new ArrayList<>();
+        List<android.support.v4.app.Fragment> fragmentList = new ArrayList<>(2);
 
         devListFragment = new DeveloperListFragment();
         devListFragment.setListener(this);
@@ -114,5 +115,4 @@ public class NavigationDrawerFragment extends Fragment
         devListFragment.updateData();
         channelListFragment.updateData(AppApplication.currentDevKey);
     }
-
 }

@@ -28,6 +28,7 @@ import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends FragmentActivity
         implements ChannelListFragment.OnListFragmentInteractionListener {
+
     public static final int MSG_WHAT_RECEIVE_MSG_CURRENT = 0;
     public static final int MSG_WHAT_RECEIVE_MSG = 1;
     public static final int MSG_WHAT_UPDATE_DEV = 2;
@@ -120,7 +121,6 @@ public class MainActivity extends FragmentActivity
                     Message msg = (Message) data.getSerializable("message");
                     mAdapter.addMessage(msg);
                     mCurrentOffset++;
-//                    mMessages.add(0, msg);
 
                 } else if (message.what == MSG_WHAT_RECEIVE_MSG) {
                     String devKey = data.getString("DevKey");

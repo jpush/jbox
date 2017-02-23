@@ -19,8 +19,10 @@ import cn.jpush.android.api.JPushInterface;
 
 
 public class MessageReceiver extends BroadcastReceiver {
-    public MessageReceiver() {
 
+    private static final String TAG = MessageReceiver.class.getSimpleName();
+
+    public MessageReceiver() {
     }
 
     @Override
@@ -29,7 +31,7 @@ public class MessageReceiver extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();
             String extraJson = bundle.getString(JPushInterface.EXTRA_EXTRA);
 
-            LogUtil.LOGI("MessageReceiver", extraJson);
+            LogUtil.LOGI(TAG, extraJson);
 
             JSONObject jsonObject;
             String title;
