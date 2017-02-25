@@ -35,7 +35,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 订阅 channel 界面。
  */
 public class ChannelActivity extends Activity {
-    private final String TAG = "ChannelActivity";
+
+    private static final String TAG = ChannelActivity.class.getSimpleName();
 
     public static final String EXTRA_DEV_KEY = "dev_key";
 

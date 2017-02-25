@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
 import com.jiguang.jbox.drawer.adapter.DrawerViewPagerAdapter;
+import com.jiguang.jbox.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,6 @@ import static com.jiguang.jbox.R.id.viewPager;
 public class NavigationDrawerFragment extends Fragment
         implements DeveloperListFragment.OnListFragmentInteractionListener {
 
-    private DrawerLayout drawerLayout;
-
     private ViewPager mViewPager;
 
     private ImageView mIvCircleFirst;
@@ -39,7 +37,6 @@ public class NavigationDrawerFragment extends Fragment
     public ChannelListFragment channelListFragment;
 
     public NavigationDrawerFragment() {
-
     }
 
     @Override
@@ -53,10 +50,10 @@ public class NavigationDrawerFragment extends Fragment
         View v = inflater.inflate(R.layout.drawer_main, container, false);
 
         mIvCircleFirst = (ImageView) v.findViewById(R.id.iv_circle_first);
-        mIvCircleFirst.setSelected(true);
         mIvCircleSecond = (ImageView) v.findViewById(R.id.iv_circle_second);
+        mIvCircleFirst.setSelected(true);
 
-        List<android.support.v4.app.Fragment> fragmentList = new ArrayList<>(2);
+        List<Fragment> fragmentList = new ArrayList<>(2);
 
         devListFragment = new DeveloperListFragment();
         devListFragment.setListener(this);
@@ -64,6 +61,8 @@ public class NavigationDrawerFragment extends Fragment
 
         channelListFragment = new ChannelListFragment();
         fragmentList.add(channelListFragment);
+
+        final OnDrawerPageChangeListener drawerPageChangeListener = (MainActivity) getActivity();
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
 
@@ -77,12 +76,12 @@ public class NavigationDrawerFragment extends Fragment
 
             @Override
             public void onPageSelected(int position) {
+                drawerPageChangeListener.onPageSelected(position);
+
                 if (position == 0) {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
                     mIvCircleFirst.setSelected(true);
                     mIvCircleSecond.setSelected(false);
                 } else {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     mIvCircleFirst.setSelected(false);
                     mIvCircleSecond.setSelected(true);
                 }
@@ -107,12 +106,19 @@ public class NavigationDrawerFragment extends Fragment
         mViewPager.setCurrentItem(1);
     }
 
-    public void setDrawerLayout(DrawerLayout drawerLayout) {
-        this.drawerLayout = drawerLayout;
-    }
-
     public void updateData() {
         devListFragment.updateData();
         channelListFragment.updateData(AppApplication.currentDevKey);
+    }
+
+    /**
+     * 监听侧边栏的页面选择
+     */
+    public interface OnDrawerPageChangeListener {
+
+        /**
+         * @param position  Position index of the new selected page.
+         */
+        void onPageSelected(int position);
     }
 }
