@@ -14,17 +14,17 @@ import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.List;
 
-public class SubChannelListAdapter extends BaseAdapter {
+class SubChannelListAdapter extends BaseAdapter {
     private List<Channel> mChannels;
 
     private OnChannelCheckedListener mChannelCheckedListener;
 
-    public SubChannelListAdapter(List<Channel> channels, OnChannelCheckedListener listener) {
+    SubChannelListAdapter(List<Channel> channels, OnChannelCheckedListener listener) {
         mChannels = channels;
         mChannelCheckedListener = listener;
     }
 
-    public void replaceData(List<Channel> channels) {
+    void replaceData(List<Channel> channels) {
         mChannels = channels;
     }
 

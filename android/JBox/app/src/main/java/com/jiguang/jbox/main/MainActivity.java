@@ -27,7 +27,8 @@ import java.util.List;
 import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends FragmentActivity
-        implements ChannelListFragment.OnListFragmentInteractionListener {
+        implements ChannelListFragment.OnListFragmentInteractionListener,
+        NavigationDrawerFragment.OnDrawerPageChangeListener {
 
     public static final int MSG_WHAT_RECEIVE_MSG_CURRENT = 0;
     public static final int MSG_WHAT_RECEIVE_MSG = 1;
@@ -78,6 +79,7 @@ public class MainActivity extends FragmentActivity
             }
         });
 
+        // 点击除开侧边栏的区域会收起侧边栏。
         mDrawerLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -92,7 +94,6 @@ public class MainActivity extends FragmentActivity
 
         mDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        mDrawerFragment.setDrawerLayout(mDrawerLayout);
 
         mTopBar = (TopBar) findViewById(R.id.topBar);
         mTopBar.setTitle(AppApplication.currentChannelName);
@@ -131,24 +132,6 @@ public class MainActivity extends FragmentActivity
                     String devKey = data.getString("DevKey");
                     mDrawerFragment.devListFragment.updateData();
                     mDrawerFragment.channelListFragment.updateData(devKey);
-
-                } else if (message.what == MSG_WHAT_OPEN_MSG) {             // 点击通知后界面跳转。
-//                    AppApplication.currentDevKey = data.getString("DevKey");
-//                    AppApplication.currentChannelName = data.getString("ChannelName");
-//
-//                    new Update(Developer.class)
-//                            .set("IsSelected=?", false)
-//                            .where("IsSelected=?", true)
-//                            .execute();
-//                    new Update(Developer.class)
-//                            .set("IsSelected=?", true)
-//                            .where("Key=?", AppApplication.currentDevKey)
-//                            .execute();
-//
-//                    mDrawerFragment.devListFragment.updateData();
-//                    mDrawerFragment.channelListFragment.updateData(AppApplication.currentDevKey);
-//
-//                    setMessages(AppApplication.currentDevKey, AppApplication.currentChannelName);
                 }
                 return false;
             }
@@ -250,6 +233,15 @@ public class MainActivity extends FragmentActivity
             mDrawerLayout.closeDrawer(mDrawerFragment.getView());
         }
         JPushInterface.clearAllNotifications(getApplicationContext());
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (position == 0) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        } else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
     }
 
     private void setMessages(String devKey, String channelName) {

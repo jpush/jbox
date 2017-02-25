@@ -8,7 +8,7 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.jiguang.jbox"
@@ -36,8 +36,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/jpush-android-2.1.9.jar')
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.google.guava:guava:19.0'
