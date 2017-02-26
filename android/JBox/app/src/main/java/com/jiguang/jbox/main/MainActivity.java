@@ -4,7 +4,9 @@ import android.Manifest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -29,6 +31,8 @@ import cn.jpush.android.api.JPushInterface;
 public class MainActivity extends FragmentActivity
         implements ChannelListFragment.OnListFragmentInteractionListener,
         NavigationDrawerFragment.OnDrawerPageChangeListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     public static final int MSG_WHAT_RECEIVE_MSG_CURRENT = 0;
     public static final int MSG_WHAT_RECEIVE_MSG = 1;
@@ -85,6 +89,7 @@ public class MainActivity extends FragmentActivity
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        Log.i(TAG, "mDrawerLayout touch down");
                         mDrawerLayout.closeDrawers();
                         break;
                 }
@@ -236,11 +241,11 @@ public class MainActivity extends FragmentActivity
     }
 
     @Override
-    public void onPageSelected(int position) {
-        if (position == 0) {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-        } else {
+    public void onPageSelected(boolean isLast) {
+        if (isLast) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        } else if (mDrawerLayout.getDrawerLockMode(GravityCompat.START) == DrawerLayout.LOCK_MODE_UNLOCKED){
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         }
     }
 
