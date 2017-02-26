@@ -53,7 +53,7 @@ public class NavigationDrawerFragment extends Fragment
         mIvCircleSecond = (ImageView) v.findViewById(R.id.iv_circle_second);
         mIvCircleFirst.setSelected(true);
 
-        List<Fragment> fragmentList = new ArrayList<>(2);
+        final List<Fragment> fragmentList = new ArrayList<>(2);
 
         devListFragment = new DeveloperListFragment();
         devListFragment.setListener(this);
@@ -76,9 +76,13 @@ public class NavigationDrawerFragment extends Fragment
 
             @Override
             public void onPageSelected(int position) {
-                drawerPageChangeListener.onPageSelected(position);
+                if (position == fragmentList.size() - 1) {
+                    drawerPageChangeListener.onPageSelected(true);
+                } else {
+                    drawerPageChangeListener.onPageSelected(false);
+                }
 
-                if (position == 0) {
+                if (0 == position) {
                     mIvCircleFirst.setSelected(true);
                     mIvCircleSecond.setSelected(false);
                 } else {
@@ -116,9 +120,6 @@ public class NavigationDrawerFragment extends Fragment
      */
     public interface OnDrawerPageChangeListener {
 
-        /**
-         * @param position  Position index of the new selected page.
-         */
-        void onPageSelected(int position);
+        void onPageSelected(boolean isLast);
     }
 }
