@@ -4,7 +4,9 @@ import android.Manifest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -27,7 +29,10 @@ import java.util.List;
 import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends FragmentActivity
-        implements ChannelListFragment.OnListFragmentInteractionListener {
+        implements ChannelListFragment.OnListFragmentInteractionListener,
+        NavigationDrawerFragment.OnDrawerPageChangeListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     public static final int MSG_WHAT_RECEIVE_MSG_CURRENT = 0;
     public static final int MSG_WHAT_RECEIVE_MSG = 1;
@@ -78,11 +83,13 @@ public class MainActivity extends FragmentActivity
             }
         });
 
+        // 点击除开侧边栏的区域会收起侧边栏。
         mDrawerLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        Log.i(TAG, "mDrawerLayout touch down");
                         mDrawerLayout.closeDrawers();
                         break;
                 }
@@ -92,7 +99,6 @@ public class MainActivity extends FragmentActivity
 
         mDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        mDrawerFragment.setDrawerLayout(mDrawerLayout);
 
         mTopBar = (TopBar) findViewById(R.id.topBar);
         mTopBar.setTitle(AppApplication.currentChannelName);
@@ -131,24 +137,6 @@ public class MainActivity extends FragmentActivity
                     String devKey = data.getString("DevKey");
                     mDrawerFragment.devListFragment.updateData();
                     mDrawerFragment.channelListFragment.updateData(devKey);
-
-                } else if (message.what == MSG_WHAT_OPEN_MSG) {             // 点击通知后界面跳转。
-//                    AppApplication.currentDevKey = data.getString("DevKey");
-//                    AppApplication.currentChannelName = data.getString("ChannelName");
-//
-//                    new Update(Developer.class)
-//                            .set("IsSelected=?", false)
-//                            .where("IsSelected=?", true)
-//                            .execute();
-//                    new Update(Developer.class)
-//                            .set("IsSelected=?", true)
-//                            .where("Key=?", AppApplication.currentDevKey)
-//                            .execute();
-//
-//                    mDrawerFragment.devListFragment.updateData();
-//                    mDrawerFragment.channelListFragment.updateData(AppApplication.currentDevKey);
-//
-//                    setMessages(AppApplication.currentDevKey, AppApplication.currentChannelName);
                 }
                 return false;
             }
@@ -250,6 +238,15 @@ public class MainActivity extends FragmentActivity
             mDrawerLayout.closeDrawer(mDrawerFragment.getView());
         }
         JPushInterface.clearAllNotifications(getApplicationContext());
+    }
+
+    @Override
+    public void onPageSelected(boolean isLast) {
+        if (isLast) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        } else if (mDrawerLayout.getDrawerLockMode(GravityCompat.START) == DrawerLayout.LOCK_MODE_UNLOCKED){
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        }
     }
 
     private void setMessages(String devKey, String channelName) {
