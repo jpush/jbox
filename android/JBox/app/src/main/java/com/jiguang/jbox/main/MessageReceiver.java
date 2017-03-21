@@ -25,7 +25,9 @@ public class MessageReceiver extends BroadcastReceiver {
   }
 
   @Override public void onReceive(Context context, Intent intent) {
-    if (intent.getAction().equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
+    if (intent.getAction().equals(JPushInterface.ACTION_REGISTRATION_ID)) {
+      LogUtil.LOGI(TAG, intent.getStringExtra(JPushInterface.EXTRA_REGISTRATION_ID));
+    } else if (intent.getAction().equals(JPushInterface.ACTION_MESSAGE_RECEIVED)) {
       Bundle bundle = intent.getExtras();
       String extraJson = bundle.getString(JPushInterface.EXTRA_EXTRA);
 
