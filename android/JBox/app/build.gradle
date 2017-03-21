@@ -22,14 +22,16 @@ android {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'),
           "$project.rootDir/tools/proguard-rules.pro"
-      manifestPlaceholders = [JPUSH_APPKEY_VALUE: "1c29cb5814072b5b1f8ef829"]
+      manifestPlaceholders = [JPUSH_APPKEY_VALUE: "1c29cb5814072b5b1f8ef829",
+                              PACKAGE_NAME      : "com.jiguang.jbox"]
     }
     debug {
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'),
           "$project.rootDir/tools/proguard-rules-debug.pro"
       applicationIdSuffix ".debug"
-      manifestPlaceholders = [JPUSH_APPKEY_VALUE: "6541b6aafbfb42ea397dde30"]
+      manifestPlaceholders = [JPUSH_APPKEY_VALUE: "6541b6aafbfb42ea397dde30",
+                              PACKAGE_NAME      : "com.jiguang.jbox.debug"]
     }
   }
   compileOptions {
