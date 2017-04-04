@@ -1,4 +1,4 @@
-package com.jiguang.jbox.drawer.adapter;
+package com.jiguang.jbox.ui.drawer.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

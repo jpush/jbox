@@ -1,4 +1,4 @@
-package com.jiguang.jbox.main;
+package com.jiguang.jbox.ui.main;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.os.Bundle;
 
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
-import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.data.Developer;
-import com.jiguang.jbox.data.Message;
+import com.jiguang.jbox.data.model.Channel;
+import com.jiguang.jbox.data.model.Developer;
+import com.jiguang.jbox.data.model.Message;
 import com.jiguang.jbox.util.LogUtil;
 
 import org.json.JSONException;

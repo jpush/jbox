@@ -1,6 +1,6 @@
 package com.jiguang.jbox.data.source;
 
-import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.model.Developer;
 
 public interface DeveloperDataSource {
 

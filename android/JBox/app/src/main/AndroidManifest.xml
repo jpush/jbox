@@ -28,7 +28,7 @@
       android:label="@string/app_name"
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".main.MainActivity">
+    <activity android:name=".ui.main.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -120,7 +120,7 @@
 
     <!-- User defined. 用户自定义的广播接收器-->
     <receiver
-        android:name=".main.MessageReceiver"
+        android:name=".ui.main.MessageReceiver"
         android:enabled="true">
       <intent-filter>
         <!--Required 用户注册SDK的intent-->
@@ -156,11 +156,11 @@
 
     <!-- database end -->
 
-    <activity android:name=".channel.ChannelActivity">
+    <activity android:name=".ui.channel.ChannelActivity">
     </activity>
 
     <activity
-        android:name=".scan.ScanActivity"
+        android:name=".ui.scan.ScanActivity"
         android:screenOrientation="portrait">
     </activity>
   </application>

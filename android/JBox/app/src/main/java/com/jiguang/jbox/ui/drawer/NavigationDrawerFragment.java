@@ -1,4 +1,4 @@
-package com.jiguang.jbox.drawer;
+package com.jiguang.jbox.ui.drawer;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.drawer.adapter.DrawerViewPagerAdapter;
+import com.jiguang.jbox.ui.drawer.adapter.DrawerViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

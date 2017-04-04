@@ -1,4 +1,4 @@
-package com.jiguang.jbox.drawer;
+package com.jiguang.jbox.ui.drawer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.channel.ChannelActivity;
-import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.drawer.adapter.ChannelDrawerRecyclerViewAdapter;
+import com.jiguang.jbox.ui.channel.ChannelActivity;
+import com.jiguang.jbox.data.model.Channel;
+import com.jiguang.jbox.ui.drawer.adapter.ChannelDrawerRecyclerViewAdapter;
 
 import java.util.List;
 

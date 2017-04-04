@@ -10,8 +10,8 @@ import android.util.Log;
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.model.Channel;
+import com.jiguang.jbox.data.model.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
 
@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Credentials;
@@ -32,6 +34,7 @@ import okhttp3.Response;
 
 import static android.content.ContentValues.TAG;
 
+@Singleton
 public class HttpUtil {
 
     private static HttpUtil INSTANCE;
