@@ -1,4 +1,4 @@
-package com.jiguang.jbox.channel;
+package com.jiguang.jbox.ui.channel;
 
 
 public interface OnChannelCheckedListener {

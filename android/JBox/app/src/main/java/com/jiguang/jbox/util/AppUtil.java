@@ -3,8 +3,8 @@ package com.jiguang.jbox.util;
 
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
-import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.model.Channel;
+import com.jiguang.jbox.data.model.Developer;
 
 import java.util.HashSet;
 import java.util.List;

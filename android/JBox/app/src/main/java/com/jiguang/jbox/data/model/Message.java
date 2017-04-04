@@ -1,4 +1,4 @@
-package com.jiguang.jbox.data;
+package com.jiguang.jbox.data.model;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -45,5 +45,4 @@ public class Message extends Model implements Serializable {
         this.content = content;
         this.time = time;
     }
-
 }

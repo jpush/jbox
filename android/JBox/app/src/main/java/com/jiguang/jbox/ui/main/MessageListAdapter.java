@@ -1,4 +1,4 @@
-package com.jiguang.jbox.main;
+package com.jiguang.jbox.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.data.Message;
+import com.jiguang.jbox.data.model.Message;
 
 import java.util.List;
 

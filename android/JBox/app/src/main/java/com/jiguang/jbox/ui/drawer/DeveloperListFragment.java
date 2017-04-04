@@ -1,4 +1,4 @@
-package com.jiguang.jbox.drawer;
+package com.jiguang.jbox.ui.drawer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +14,9 @@ import android.widget.RelativeLayout;
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.data.Developer;
-import com.jiguang.jbox.drawer.adapter.DeveloperListRecyclerViewAdapter;
-import com.jiguang.jbox.scan.ScanActivity;
+import com.jiguang.jbox.data.model.Developer;
+import com.jiguang.jbox.ui.drawer.adapter.DeveloperListRecyclerViewAdapter;
+import com.jiguang.jbox.ui.scan.ScanActivity;
 
 import java.util.List;
 
