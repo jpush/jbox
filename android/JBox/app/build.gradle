@@ -2,78 +2,86 @@ apply plugin: 'com.android.application'
 apply from: "$project.rootDir/tools/script-git-version.gradle"
 
 repositories {
-  mavenCentral()
-  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion '25.0.2'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
 
-  defaultConfig {
-    applicationId "com.jiguang.jbox"
-    minSdkVersion 21
-    targetSdkVersion 23
-    versionCode 1
-    versionName "1.0.0"
-  }
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'),
-          "$project.rootDir/tools/proguard-rules.pro"
-      manifestPlaceholders = [JPUSH_APPKEY_VALUE: "1c29cb5814072b5b1f8ef829",
-                              PACKAGE_NAME      : "com.jiguang.jbox"]
+    defaultConfig {
+        applicationId "com.jiguang.jbox"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0.0"
     }
-    debug {
-      minifyEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'),
-          "$project.rootDir/tools/proguard-rules-debug.pro"
-      applicationIdSuffix ".debug"
-      manifestPlaceholders = [JPUSH_APPKEY_VALUE: "6541b6aafbfb42ea397dde30",
-                              PACKAGE_NAME      : "com.jiguang.jbox.debug"]
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    "$project.rootDir/tools/proguard-rules.pro"
+            manifestPlaceholders = [JPUSH_APPKEY_VALUE: "1c29cb5814072b5b1f8ef829",
+                                    PACKAGE_NAME      : "com.jiguang.jbox"]
+        }
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    "$project.rootDir/tools/proguard-rules-debug.pro"
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [JPUSH_APPKEY_VALUE: "6541b6aafbfb42ea397dde30",
+                                    PACKAGE_NAME      : "com.jiguang.jbox.debug"]
+        }
     }
-  }
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_7
-    targetCompatibility JavaVersion.VERSION_1_7
-  }
-  productFlavors {
-    dev {
-      versionCode gitVersionCodeTime
-      versionName gitVersionName
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
-    prod {
-      versionCode gitVersionCode
-      versionName gitVersionName
+    productFlavors {
+        dev {
+            versionCode gitVersionCodeTime
+            versionName gitVersionName
+        }
+        prod {
+            versionCode gitVersionCode
+            versionName gitVersionName
+        }
     }
-  }
 
-  sourceSets {
-    main {
-      jniLibs.srcDirs = ['libs']
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
-  }
 }
 
 dependencies {
-  compile fileTree(include: ['*.jar'], dir: 'libs')
-  compile files('libs/jpush-android-2.1.9.jar')
-  compile 'com.android.support:support-v4:23.4.0'
-  compile 'com.google.guava:guava:19.0'
-  compile 'com.squareup.okhttp3:okhttp:3.4.1'
-  compile 'com.google.zxing:core:3.2.1'
-  compile 'cn.bingoogolapple:bga-qrcodecore:1.1.3@aar'
-  compile 'cn.bingoogolapple:bga-zxing:1.1.3@aar'
-  compile 'pub.devrel:easypermissions:0.1.9'
-  compile 'com.android.support:appcompat-v7:23.4.0'
-  compile 'de.hdodenhof:circleimageview:2.1.0'
-  compile 'com.android.support:recyclerview-v7:23.4.0'
-  compile 'cn.bingoogolapple:bga-adapter:1.1.0@aar'
-  compile 'cn.bingoogolapple:bga-photopicker:1.1.3@aar'
-  compile 'com.github.bumptech.glide:glide:3.7.0'
-  compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-  compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
-  compile 'com.github.bumptech.glide:glide:3.7.0'
-  testCompile 'junit:junit:4.12'
+    final DAGGER_VERSION = '2.5'
+
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/jpush-android-2.1.9.jar')
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.google.guava:guava:20.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'cn.bingoogolapple:bga-qrcodecore:1.1.3@aar'
+    compile 'cn.bingoogolapple:bga-zxing:1.1.3@aar'
+    compile 'pub.devrel:easypermissions:0.1.9'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'cn.bingoogolapple:bga-adapter:1.1.0@aar'
+    compile 'cn.bingoogolapple:bga-photopicker:1.1.3@aar'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile "com.google.dagger:dagger:$DAGGER_VERSION"
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    testCompile 'junit:junit:4.12'
 }

@@ -1,4 +1,4 @@
-package com.jiguang.jbox.scan;
+package com.jiguang.jbox.ui.scan;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,11 +15,11 @@ import android.widget.Toast;
 import com.activeandroid.query.Select;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.channel.ChannelActivity;
-import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.ui.channel.ChannelActivity;
+import com.jiguang.jbox.data.model.Channel;
+import com.jiguang.jbox.data.model.Developer;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
-import com.jiguang.jbox.main.MainActivity;
+import com.jiguang.jbox.ui.main.MainActivity;
 import com.jiguang.jbox.util.AppUtil;
 import com.jiguang.jbox.util.HttpUtil;
 import com.jiguang.jbox.util.LogUtil;
@@ -33,13 +33,13 @@ import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.QRCodeDecoder;
 import cn.jpush.android.api.TagAliasCallback;
 
-import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
-
 
 /**
  * 二维码扫描界面。
  */
 public class ScanActivity extends Activity implements QRCodeView.Delegate {
+    
+    private final String TAG = LogUtil.makeLogTag(ScanActivity.class);
 
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;

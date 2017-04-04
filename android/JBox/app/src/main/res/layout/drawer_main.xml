@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_slide"
-                tools:context="com.jiguang.jbox.drawer.NavigationDrawerFragment">
+                tools:context=".ui.drawer.NavigationDrawerFragment">
 
     <LinearLayout
         android:id="@+id/layout_circle"

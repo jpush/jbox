@@ -1,4 +1,4 @@
-package com.jiguang.jbox.channel;
+package com.jiguang.jbox.ui.channel;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import com.activeandroid.query.Select;
 import com.bumptech.glide.Glide;
 import com.jiguang.jbox.AppApplication;
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.data.Channel;
-import com.jiguang.jbox.data.Developer;
+import com.jiguang.jbox.data.model.Channel;
+import com.jiguang.jbox.data.model.Developer;
 import com.jiguang.jbox.data.source.ChannelDataSource;
 import com.jiguang.jbox.data.source.DeveloperDataSource;
 import com.jiguang.jbox.util.HttpUtil;
@@ -45,7 +45,6 @@ public class ChannelActivity extends Activity {
     private SubChannelListAdapter mListAdapter;
 
     private List<Channel> mChannels = new ArrayList<>();
-
     private List<Channel> mLocalChannels;
 
     private Set<String> mTags = new HashSet<>();  // 订阅 Channel 的 tag

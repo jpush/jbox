@@ -1,4 +1,4 @@
-package com.jiguang.jbox.channel;
+package com.jiguang.jbox.ui.channel;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.jiguang.jbox.R;
-import com.jiguang.jbox.data.Channel;
+import com.jiguang.jbox.data.model.Channel;
 import com.jiguang.jbox.util.ViewHolder;
 
 import java.util.List;
