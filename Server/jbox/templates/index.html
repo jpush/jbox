@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    {#    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>#}
+{% endblock %}
+
+{% block title %}JBox{% endblock %}
+
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="first-layer">
+        <p id="description" class="jbox-font">
+            纯粹的通知解决方案
+        </p>
+        <p id="description-subtitle" class="jbox-font">
+            简单配置 | 消息聚合 | App订阅
+        </p>
+        <div class="lead">
+            <img id="main-backgroup-image" src="/static/images/phone.png">
+        </div>
+    </div>
+
+    <div class="second-layer">
+        <p class="jbox-font section-title">什么是极光宝盒？</p>
+        <div class="container-fluid">
+            <div class="row col-md-11 col-md-offset-1">
+                <div class="column col-md-3">
+                    <img id="stream-icon" src="/static/images/converge.png">
+                    <p class="jbox-font section-subtitle" style="margin-top: 63px;">消息聚合</p>
+                    <p class="jbox-font section-desc">方便地与不同的消息源做集成，<br>
+                        每个消息源推送到指定的频道。</p>
+                </div>
+                <div class="column col-md-1">
+                    <p class="symbol">+</p>
+                </div>
+                <div class="column col-md-3">
+                    <img id="phone-scan-icon" src="/static/images/phoneScan.png">
+                    <p class="jbox-font section-subtitle">手机接收</p>
+                    <p class="jbox-font section-desc">无需注册，扫码即可接收通知。<br>
+                        按需订阅，接收不同消息来源。
+                    </p>
+                </div>
+                <div class="column col-md-1">
+                    <p class="symbol">=</p>
+                </div>
+                <div class="column col-md-3">
+                    <img id="notification-icon" src="/static/images/notification2.png">
+                    <p class="jbox-font section-subtitle" style="margin-top: 61px">纯粹的通知</p>
+                    <p class="jbox-font section-desc">回归通知本质，再无社交干扰。<br>
+                        信息单向流通，无需他人反馈。<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="third-layer">
+        <p class="jbox-font section-title">为什么使用极光宝盒？</p>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+                <img id="finger-image" src="/static/images/finger.png">
+            </div>
+            <div class="col-md-5" style="">
+                <ul class="ul-desc">
+                    <li>专业通知工具</li>
+                    <li>极简配置方式</li>
+                    <li>无须注册用户</li>
+                    <li>无须团队管理</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="second-layer">
+        <div class="container-fluid better-to-other-content">
+            <div class="row">
+                <div class="column col-md-6">
+                    <div class="col-md-offset-4">
+                        <p id="reason-subtitle" class="jbox-font section-subtitle">相较于其他方式，<br>
+                            极光宝盒更适用于公告通知。</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-2 icon">
+                            <img id="wechat-icon" src="/static/images/wechat.png">
+                        </div>
+                        <div class="col-md-6 desc">
+                            <p class="jbox-font section-desc-spec" style="padding-top: 20px">微信公众号有太多信息干扰。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-2 icon">
+                            <img id="imessage-icon" src="/static/images/message.png">
+                        </div>
+                        <div class="col-md-6 desc">
+                            <p class="jbox-font section-desc-spec" style="padding-top: 23px">短信需要收费且发送操作繁琐，接收体验差。<br>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-2 icon">
+                            <img id="group-icon" src="/static/images/groupNotification.png">
+                        </div>
+                        <div class="col-md-6 desc">
+                            <p class="jbox-font section-desc-spec">微信、QQ 群组内的重要通知很容易被大量的消息所淹没。<br>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="column col-md-6" id="bear-container">
+                    <img id="bear-icon" src="/static/images/bearInBox.png">
+                    <p class="jbox-font section-subtitle">极光宝盒让你不会错过任何一条通知<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="third-layer">
+        <p class="jbox-font section-title">使用场景</p>
+        <div class="container-fluid usage-content">
+            <div class="row">
+                <div class="server-content column col-md-5">
+                    <img id="server-icon" src="/static/images/server.png">
+                    <p class="jbox-font section-subtitle" style="margin-left: 10px">用于服务器监控</p>
+                </div>
+                <div class="column col-md-2"></div>
+                <div class="homework-content column col-md-5">
+                    <img id="homework-icon" src="/static/images/homework.png">
+                    <p class="jbox-font section-subtitle">用于作业通知</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="second-layer">
+        <p class="jbox-font section-title" id="download-title">主流手机平台的支持</p>
+        <p class="jbox-font section-subtitle" style="margin-top: -50px;">点击下载安装 App</p>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="ios" class="icon-background">
+                        <img src="/static/images/ios.png">
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <a href="/static/app/app-release.apk">
+                        <button id="android" class="icon-background">
+                            <img src="/static/images/android.png">
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
+    <script type="text/javascript">
+        console.log(window.location.hash);
+        console.log(window.location.hash);
+        $('#ios').click(function () {
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+            var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+            var bIsAndroid = sUserAgent.match(/android/i) == "android";
+            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+            if (bIsIphoneOs || bIsIpad) {
+                window.location.href = "itms-services://?action=download-manifest&url=https://jbox.jiguang.cn/static/app/jbox.plist";
+            } else {
+                window.location.href = "/static/app/jbox.ipa"
+            }
+        })
+    </script>
+{% endblock %}
+
+

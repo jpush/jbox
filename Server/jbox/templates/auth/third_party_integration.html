@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tp_integration.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}极光宝盒-添加第三方集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="tp-background">
+        <div class="container">
+            <img id="background-img" src="/static/images/home.png">
+        </div>
+    </div>
+    <div class="container">
+        <h2 class="jbox-font" id="add-tp-title">选择要支持的第三方集成</h2>
+    </div>
+    <div class="container" style="margin-top: 60px;">
+        <table id="tp-table" align="center">
+            <tbody>
+            <tr>
+                <td id="github-td">
+                    <button class="tp-content" onclick=window.location.href="{{ url_for('auth.github_integration') }}">
+                            <img class="tp-content-icon" src="/static/images/github1x.png">
+                            <div style="width: 200px">GitHub</div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="tp-content" onclick=window.location.href="{{ url_for('auth.discourse_integration') }}">
+                            <img class="tp-content-icon" src="/static/images/discourse.png">
+                            <div style="width: 200px">Discourse</div>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
+{% endblock %}

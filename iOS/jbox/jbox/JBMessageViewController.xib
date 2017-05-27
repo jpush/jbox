@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JBMessageViewController">
+            <connections>
+                <outlet property="message_tableView" destination="3zW-qA-IY1" id="8xy-re-H6Y"/>
+                <outlet property="placeholder_label" destination="OXT-go-yj9" id="dd8-KL-83g"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3zW-qA-IY1">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="603" id="Lsk-5M-49Q"/>
+                        <constraint firstAttribute="width" constant="375" id="Srw-zk-v62"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Lsk-5M-49Q"/>
+                            <exclude reference="Srw-zk-v62"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="kYs-8k-yvB"/>
+                        <outlet property="delegate" destination="-1" id="Izv-4f-mAy"/>
+                    </connections>
+                </tableView>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXT-go-yj9">
+                    <rect key="frame" x="76" y="231" width="224" height="21"/>
+                    <string key="text">当前还没有订阅任何 Channel
+</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.52156862745098043" green="0.52156862745098043" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="3zW-qA-IY1" secondAttribute="bottom" id="26n-vy-tb3"/>
+                <constraint firstAttribute="trailing" secondItem="3zW-qA-IY1" secondAttribute="trailing" id="2Gw-tN-6EN"/>
+                <constraint firstAttribute="trailing" secondItem="3zW-qA-IY1" secondAttribute="trailing" id="4X1-gc-bn7"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5Zg-bA-aPE"/>
+                <constraint firstAttribute="bottom" secondItem="3zW-qA-IY1" secondAttribute="bottom" id="9DM-ex-qiQ"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Djl-7i-qrM"/>
+                <constraint firstItem="OXT-go-yj9" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="THn-pT-TYC"/>
+                <constraint firstItem="OXT-go-yj9" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.8" id="XV6-yL-IUs"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="e4r-oQ-Vrg"/>
+                <constraint firstItem="3zW-qA-IY1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="jKM-cO-CBm"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="26n-vy-tb3"/>
+                    <exclude reference="4X1-gc-bn7"/>
+                    <exclude reference="5Zg-bA-aPE"/>
+                    <exclude reference="Djl-7i-qrM"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="558" y="356"/>
+        </view>
+    </objects>
+</document>

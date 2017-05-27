@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/document.css') }}">
+{% endblock %}
+
+{% block title %}API 文档{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div id="contentBody">
+                <h1 id="mainTitle">欢迎来到 JBox API</h1><br>
+                <div id="content">
+                    <div class="subTitle">Base url:</div>
+                    <div class="codeBody" style="color:#70B1E7; font-size: 15px;">
+                        https://jbox.jiguang.cn
+                    </div>
+                    <div class="subTitle">
+                        1、发送消息 (自定义集成)<br>message 向 webhook url <span style="color: red">（在集成编辑页面中获取）</span> 发送 JSON
+                        payloads。
+                    </div>
+                    <div class="apiTitle">POST  v1/message/{integration_id}/{token}</div>
+                    <div class="codeBody">
+                        Request Header:<br>
+                        &nbsp&nbsp&nbsp&nbspPOST /v1/message/{integration_id}/{token}<br>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAccept: application/json
+                    </div>
+                    <br>
+                    <div class="requiredText">Request Body:</div>
+                    <div class="codeBody">
+                        {<br>
+                        &nbsp&nbsp&nbsp&nbsp"title": "今日头条",<br>
+                        &nbsp&nbsp&nbsp&nbsp"message": "英国脱欧",<br>
+                        &nbsp&nbsp&nbsp&nbsp"url": "https://jbox.jiguang.cn"<br>
+                        }<br>
+                    </div>
+                    <div class="requiredText">Request Parameters:</div>
+                    <div class="codeBody">
+                        • title：消息的标题，可以为空。<br>
+                        • message：消息内容，不能为空。<br>
+                        • url：跳转 url ,手机端点击消息跳转的链接，为空不跳转(注意这个地方要加 http 前缀)。<br>
+                    </div>
+                    <div class="exampletitle">Example Response:</div>
+                    <div class="requiredText">Response Header</div>
+                    <div class="codeBody">
+                        HTTP/1.1 200 OK    <br>
+                        Content-Type: application/json; charset=utf-8 <br>
+                    </div>
+                    <div class="requiredText">Response Data:</div>
+                    <div class="codeBody"> • None</div>
+                </div>
+
+                {% block footer %}
+                    <div id="footer">
+                        {{ super() }}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

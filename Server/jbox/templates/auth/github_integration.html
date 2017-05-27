@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/github_integration.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}极光宝盒-GitHub 集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+
+{% endblock %}
+
+{% block content %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-1">
+                <div id="github-icon-area" style="text-align: center">
+                    <img id="github-icon" src="/static/images/github1x.png">
+                    <p class="jbox-font" id="github-icon-title">GitHub</p>
+                    {% if user %}
+                        <p class="jbox-font" id="github-user">Authorized: {{ user }}</p>
+                        <button id="cancel_btn" class="btn btn-warning">取消授权</button>
+                    {% else %}
+                        <button id="authorize_btn" class="btn btn-info" onclick="authorize()">GitHub 授权</button>
+                    {% endif %}
+                    <button id="add-github-integration">添加 GitHub 集成</button>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-offset-1">
+                <div id="description">
+                    <p class="jbox-font" id="desc-title">GitHub</p>
+                    <p class="jbox-font desc-content">GitHub is home to all kinds of software projects, from simple programs
+                        to today’s
+                        most popular apps.
+                    </p>
+                    <p class="jbox-font desc-content">This integration will post commits, pull requests, and activity on
+                        GitHub Issues to a channel in
+                        JBox.</p>
+                    <div id="table-area">
+                        {% if github_integrations %}
+                            {% for integration in github_integrations %}
+                                <div class="row center-block" id="github-integration-content">
+                                    <div class="col-md-2">
+                                        <img src="/static/images/github-icon.png">
+                                    </div>
+                                    <div class="col-md-9" style="padding-top: 10px">
+                                        {% if integration.repositories %}
+                                            <p class="text-justify">来自 <strong>{{ integration.repositories }}</strong> 的 commits, issue 以及 pull
+                                                request 等活动将会作为 <strong>{{ integration.name }}</strong>
+                                                推送到 <strong>{{ integration.channel }}</strong> 频道</p>
+                                        {% else %}
+                                            <p class="text-justify">当前没有监听任何仓库</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}"
+                                            type="button">编辑
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr id="divider">
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
+    <script type="text/javascript">
+        {% if github_integrations %}
+            {% for integration in github_integrations %}
+                $('#{{ integration.integration_id }}').click(function () {
+                    {% if user %}
+                        window.location.href = '/auth/manage/edit_github_integration/{{ integration.integration_id }}';
+                    {% else %}
+                        toastr.warning("当前还没有添加 GitHub 授权，请点击左侧 GitHub 授权按钮进行授权。");
+                    {% endif %}
+                });
+            {% endfor %}
+        {% endif %}
+
+        $('#cancel_btn').click(function () {
+            $(this).attr("disabled", true);
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: '/plugins/github/{{ dev_key }}/cancel_authorization',
+                success: function (data) {
+                    toastr.success("已取消 GitHub 授权");
+                    $('#cancel_btn').attr("disabled", false);
+                    $('#cancel_btn').hide();
+                    $('#github-user').toggle();
+                    if ($('#authorize_btn').length <= 0) {
+                        $('<button id="authorize_btn" class="btn btn-info" onclick="authorize()">GitHub 授权</button>').insertAfter('#cancel_btn');
+                    } else {
+                        $('#authorize_btn').show();
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("取消授权失败")
+                }
+            })
+        });
+
+        function authorize() {
+            $('#authorize_btn').attr("disabled", true);
+            window.location.href = '/auth/github/authorize';
+        }
+
+        $('#add-github-integration').click(function () {
+            {% if user %}
+                window.location.href = '{{ url_for('auth.post_to_channel_github') }}';
+            {% else %}
+                $('#authorize_btn').attr("disabled", true);
+                window.location.href = '/auth/github/authorize';
+            {% endif %}
+        })
+    </script>
+{% endblock %}
+

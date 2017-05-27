@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/send_to_channel.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}消息{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <p class="main-title">消息控制台</p>
+    </div>
+    <div class="container" style="border-width: 1px;">
+        <div class="content-body">
+            <div class="row">
+                <p class="sub-title">选择要发送到的频道</p>
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <input id="selected_channel" type="text" class="form-control" aria-label="..."
+                           value="{{ channel }}">
+                    <div class="input-group-btn">
+                        <button id="show_channels" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% for channel in channels %}
+                                <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 40px">
+                <p class="sub-title">输入要发送的消息</p>
+            </div>
+            <div class="row">
+                <input id="title-input" placeholder="Your title (Optional)">
+            </div>
+            <div class="row">
+                <div class="message-content">
+                    <div class="row">
+                        <textarea id="message-input" placeholder="message"></textarea>
+                    </div>
+                    <button class="btn btn-info jbox-font" id="send-btn">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
+    <script type="text/javascript">
+
+        $('ul li').each(function () {
+            $(this).bind('click', function () {
+                console.log(this.id);
+                $('#selected_channel').val(this.id);
+            })
+        });
+
+        $('#show_channels').click(function () {
+            {% if channels.length == 0 %}
+                toastr.warning("当前没有创建频道");
+            {% endif %}
+        });
+
+        $('#send-btn').click(function () {
+            var channel = $('#selected_channel').val();
+            if (channel != "") {
+                $('#send-btn').attr("disabled", true);
+                var title = $('#title-input').val();
+                if (title == undefined || title == "") {
+                    title = "收到通知";
+                }
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/v1/message/" + channel,
+                    data: JSON.stringify({
+                        title: title,
+                        message: $('#message-input').val()
+                    }),
+                    success: function (data) {
+                        $('#send-btn').attr("disabled", false);
+                        if (data != undefined) {
+                            if (data["created"]) {
+                                toastr.success("发送成功");
+                            }
+                        } else {
+                            toastr.success("已存在 channel");
+                        }
+                    },
+                    error: function (error) {
+                        $('#send-btn').attr("disabled", false);
+                        console.log(error);
+                        if (error != undefined) {
+                            var msg = error["responseText"]["error"];
+                            if (msg != undefined) {
+                                toastr.error(msg + "");
+                            } else {
+                                toastr.error("发送失败，可能还有有设备订阅该频道");
+                            }
+                        } else {
+                            toastr.error("发送失败，可能还有有设备订阅该频道");
+                        }
+                    },
+                    dataType: "json"
+                });
+            } else {
+                toastr.warning("频道为空，请选择一个频道");
+            }
+        })
+    </script>
+{% endblock %}

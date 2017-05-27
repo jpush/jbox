@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Guide
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/guide.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+    {#    {{ super() }}#}
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-2">
+
+    </div>
+    <div id="contentBody">
+        <div class="row-layer segment">
+            <input id="leftItem" class="segmentItem" type="button" value="JBox Web"/>
+            <input id="rightItem" class="segmentItem" type="button" value="JBox APP"/>
+        </div>
+        <div id="webContent" class="content">
+            <div class="mainTitle">极光宝盒 Ｗeb 使用指导</div>
+            <img style="margin-top: 50px" src="/static/images/jboxMainDescription.png">
+            <div style="margin-top: 50px" class="subTitle">新建自定义集成</div>
+            <img src="/static/images/manageImg.png">
+            <div class="description">自定义集成用于接收自定义消息。</div>
+            <hr class="divider">
+            <div class="description">新建集成后会获得二维码和 webhook url。</div>
+            <img src="/static/images/channelPageImage.png">
+            <div class="description">需要提供该二维码给客户扫码</div>
+            <img src="/static/images/webhookImg.png">
+            <div class="description">使用 webhook api调用 send message api 给客户发送消息。</div>
+            <hr class="divider">
+            <div class="subTitle">消息控制台消息</div>
+            <div class="description">可以直接给 Channel 发送消息，点击进入开发者详情页面，进入发消息界面。</div>
+            <img src="/static/images/sendtoChannel_guide.png">
+            <div class="description">进入消息控制台后，直接发送消息。</div>
+            <div class="description">也可以进入开发者详情页面，可以看到所有的 Channel 列表，选择要发送到的 Channel 进入发消息界面。</div>
+            <img src="/static/images/profile_guide.png">
+        </div>
+
+        <div id="appContent" class="content">
+            <div class="mainTitle">极光宝盒 App 使用指导</div>
+            <div class="subTitle">用手机进入 <a href="{{ url_for('main.index') }}#download-title">极光宝盒 App</a> 页面，点击下载并安装极光宝盒 App。</div>
+            <img src="/static/images/appPageImg.png">
+            <div class="subTitle">如果是 iphone 用户需要对新安装的应用添加信任，设置 -> 通用 -> 描述文件与设备管理 -> HeXunHuaGu information -> 信任。如下图所示。</div>
+            <img src="/static/images/iOSSetting.png">
+            <div class="subTitle">添加 channel</div>
+            <p style="text-align: center"><img src="/static/images/jboxAppAdd.png"></p>
+
+            <div class="subTitle">可以扫描极光宝盒网页上的频道、开发者二维码。</div>
+            <p style="text-align: center"><img src="/static/images/jboxAppscan.png"></p>
+
+            <div class="subTitle">如果扫描的是 channel 二维码，则会直接订阅该 channel，
+                如果扫描的是开发者二维码，则可以订阅开发者帐号下所有的
+                channal，可以订阅你感兴趣的 channel。
+                下图是扫描二维码后跳转的界面（开发者详情页面。
+            </div>
+            <p style="text-align: center"><img src="/static/images/jboxAppkeyPadge.png"></p>
+
+            <div class="subTitle">可以点击编辑按钮，跳转到编辑页面，添加、删除 channel。</div>
+            <p style="text-align: center"><img src="/static/images/jboxAppToEdit.png"></p>
+            <p style="text-align: center"><img src="/static/images/jboxAppkeyPadge.png"></p>
+
+        </div>
+
+        {% block footer %}
+            <div id="footer">
+                {{ super() }}
+            </div>
+        {% endblock %}
+    </div>
+
+    <script type="text/javascript">
+        var currentPage = 0;
+        $(document).ready(function () {
+            $("#appContent").fadeOut();
+            $("#webContent").fadeIn();
+            $("#leftItem").toggleClass('active');
+            $("#leftItem").click(function () {
+                $("#webContent").fadeIn();
+                $("#appContent").fadeOut();
+
+                if(currentPage == 1) {
+                    $("#rightItem").toggleClass('active');
+                    $("#leftItem").toggleClass('active');
+                }
+                currentPage = 0;
+            });
+            $("#rightItem").click(function () {
+                $("#appContent").fadeIn();
+                $("#webContent").fadeOut();
+
+                if (currentPage == 0) {
+                    $("#rightItem").toggleClass('active');
+                    $("#leftItem").toggleClass('active');
+                }
+                currentPage = 1;
+
+            });
+
+        });
+    </script>
+{% endblock %}

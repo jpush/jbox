@@ -1,0 +1,6 @@
+target 'jbox' do
+    pod 'AFNetworking'
+    pod 'MJRefresh'
+    pod 'FMDB'
+    pod 'SDWebImage'
+end

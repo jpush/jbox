@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discourse_integration.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imgareaselect-default.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery.imgareaselect.pack.js') }}"></script>
+{% endblock %}
+
+{% block title %}极光宝盒-Discourse 集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+                <div id="discourse-icon-area">
+                    <img id="discourse-icon" src="/static/images/discourse1x.png">
+                    <p class="jbox-font" id="discourse-icon-title">Discourse</p>
+                    <button id="add-discourse-integration" class="btn-custom"
+                            onclick=window.location.href="{{ url_for('auth.post_to_channel_discourse') }}">
+                        添加 Discourse 集成
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-8 col-md-offset-1">
+                <div id="description">
+                    <p class="jbox-font" id="desc-title">Discourse</p>
+                    <p class="jbox-font desc-content">Discourse is the 100% open source discussion platform built for
+                        the next decade of the Internet.
+                    </p>
+                    <p class="jbox-font desc-content"> It works as:</p>
+                    <ul class="jbox-font desc-content" style="margin-left: 20px">
+                        <li>a mailing list</li>
+                        <li>a discussion forum</li>
+                        <li>a long-form chat room</li>
+                    </ul>
+                    <div class="row">
+                        <button class="btn btn-info" style="margin-top: 30px"
+                                onclick=window.location.href="https://github.com/jpush/discourse-newpost-jbox-plugin">插件安装
+                        </button>
+                        <div class="desc-content">
+                            需要要在自己的 discourse ，安装 JBox 插件。插件安装成功后把 discouse 集成的 Webhook 复制到 discouse-JBox 插件上
+                        </div>
+                    </div>
+
+                    <div id="table-area">
+                        {% if discourse_integrations %}
+                            {% for integration in discourse_integrations %}
+                                <div class="row" id="discourse-integration-content">
+                                    <div class="col-md-1">
+                                        <img src="/static/images/discourse-icon.png">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <p>来自 Discourse 的通知将会作为 <strong>{{ integration.name }}</strong>
+                                            推送到 <strong>{{ integration.channel.channel }}</strong> 频道</p>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-info btn-middle" id="{{ integration.integration_id }}"
+                                                type="button">编辑
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <hr id="divider">
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
+    <script type="text/javascript">
+        {% if discourse_integrations %}
+            {% for integration in discourse_integrations %}
+                $('#{{ integration.integration_id }}').click(function () {
+                    window.location.href = '/auth/manage/edit_integration/{{ integration.integration_id }}'
+                });
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endblock %}
+

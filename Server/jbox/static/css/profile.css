@@ -1,0 +1,126 @@
+#navbar {
+    background: #356081;
+}
+
+body {
+}
+
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -20px;
+    background-color: #3D617F;
+    color: #000000;
+    z-index: 1000;
+}
+
+#first-layer {
+    background: #7cc4ff;
+    height: 259px;
+    position: relative;
+}
+
+#second-layer {
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    background: #0277bd;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#profile-bg {
+    margin-top: 30px;
+}
+
+#edit {
+    background: rgba(100, 184, 103, 0.00);
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-top: 146px;
+    margin-right: 61px;
+    width: 133px;
+    align-self: flex-end;
+    z-index: 1000;
+}
+
+#edit:hover {
+    background: #83caff;
+}
+
+#dev-avatar {
+    width: 164px;
+    height: 164px;
+    border-radius: 82px;
+    z-index: 1000;
+}
+
+#display-name {
+    font-size: 36px;
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+
+#dev-desc {
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-top: 27px;
+}
+
+#dev-qrcode {
+    margin-top: 35px;
+    background: #FFFFFF;
+    width: 201px;
+    height: 201px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#qrcode-desc {
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-top: 24px;
+    margin-bottom: 79px;
+}
+
+#channel-title {
+    margin-top: 64px;
+    font-size: 36px;
+    color: #595959;
+    align-self: center;
+}
+
+#desc {
+    margin-top: 37px;
+    font-size: 24px;
+    color: #595959;
+    align-self: center;
+}
+
+#channel-table {
+    /*margin: 62px 242px 191px 242px;*/
+    /*display: flex;*/
+    /*flex-flow: column;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+}
+
+.channel-td {
+    padding: 24px 48px 58px 48px;
+    box-shadow:0 0 2px 0 rgba(0,0,0,0.50);
+    text-align:center;
+    vertical-align:middle;
+    margin-right: 31px;
+    background-color: #FFFFFF;
+}
+
+.channel-td:hover {
+    background-color: #1F9CE2;
+}
+.channel-title {
+    margin-top: 24px;
+    font-size: 24px;
+    color: #595959;
+}

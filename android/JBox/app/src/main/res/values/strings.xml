@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">极光宝盒</string>
+
+    <!-- message start -->
+    <string name="main_hint">暂无消息</string>
+    <!-- message end -->
+
+    <!-- topBar start -->
+    <string name="top_back">返回</string>
+    <!-- topBar end -->
+
+    <!-- drawer channel start -->
+    <string name="drawer_channel_title">Channel</string>
+    <string name="drawer_channel_edit_desc">Subscribe channels</string>
+    <!-- drawer channel end -->
+
+    <!-- drawer dev start -->
+    <string name="drawer_dev_title">Team</string>
+    <string name="drawer_dev_add_desc">Add developer</string>
+    <!-- drawer dev end -->
+
+    <!-- scan start -->
+    <string name="scan_title">二维码</string>
+    <string name="scan_photo">相册</string>
+    <string name="scan_hint">扫一扫添加 Channel</string>
+    <string name="scan_permission">该功能必须要有相应的权限</string>
+    <string name="scan_qrcode_not_found">未发现二维码</string>
+    <string name="scan_qrcode_invalid">"二维码失效，订阅失败"</string>
+    <string name="scan_subscribe_success">订阅成功</string>
+    <string name="scan_subscribe_fail">订阅失败，请检查网络</string>
+    <string name="scan_open_camer_fail">打开相机失败</string>
+    <!-- scan end -->
+
+    <!-- subscribe channel start -->
+    <string name="channel_title">频道订阅</string>
+    <string name="channel_dev_description">这个人很懒，什么都没留下</string>
+    <string name="channel_error_dev">获取开发者信息错误</string>
+    <string name="channel_error_http">网络请求错误</string>
+    <string name="channel_success">操作成功</string>
+    <string name="channel_fail">操作失败</string>
+    <!-- subscribe channel end -->
+
+    <!-- http url start -->
+    <string name="url_get_developers">https://jbox.jiguang.cn/v1/developers/%s</string>
+    <string name="url_get_channels">https://jbox.jiguang.cn/v1/developers/%s/channels</string>
+    <string name="channel_no_hint">没有可订阅 Channel</string>
+    <!-- http url end -->
+
+</resources>

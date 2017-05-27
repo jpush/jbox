@@ -1,0 +1,42 @@
+//
+//  PrefixHeader.pch
+//  极光宝盒
+//
+//  Created by wuxingchen on 16/7/19.
+//  Copyright © 2016年 57380422@qq.com. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
+
+
+#import "UIColor+Hex.h"
+#import "UILabel+ContentSize.h"
+
+#import <SDWebImage/UIImageView+WebCache.h>
+
+static NSString *CellReuseIdentifier       = @"cell";
+
+static NSString *JBChannelMessageReaded   = @"JBChannelMessageReaded";
+static NSString *JBChannelMessageInserted = @"JBChannelMessageInserted";
+
+static NSString *JBDevkeyInserted = @"JBDevkeyInserted";
+static NSString *JBChannelUpdated = @"JBChannelUpdated";
+
+
+#define JBSharedNavigationController ((UINavigationController*)[[UIApplication sharedApplication] keyWindow].rootViewController)
+
+#define UIScreenWidth  [UIScreen mainScreen].bounds.size.width
+#define UIScreenHeight [UIScreen mainScreen].bounds.size.height
+#define SlideViewWidth 0.8*UIScreenWidth
+
+#define WEAK_SELF(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
+
+
+

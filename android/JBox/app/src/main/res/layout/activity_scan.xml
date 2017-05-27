@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.jiguang.jbox.scan.ScanActivity">
+
+    <com.jiguang.jbox.view.TopBar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_height"
+        app:topbar_title="@string/scan_title"
+        app:right="@string/scan_photo"
+        app:show_left="true"
+        app:show_right="true"
+        />
+
+    <cn.bingoogolapple.qrcode.zxing.ZXingView
+        android:id="@+id/scanView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qrcv_cornerColor="@color/colorPrimary"
+        app:qrcv_qrCodeTipText="@string/scan_hint"
+        app:qrcv_isTipTextBelowRect="true"
+        app:qrcv_isShowDefaultScanLineDrawable="false"
+        />
+
+
+</LinearLayout>

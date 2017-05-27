@@ -1,0 +1,330 @@
+ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+.navigator-item {
+    margin-right: 0;
+}
+
+.base-navigator {
+    position: absolute;
+    top: 23px;
+    height: 59px;
+}
+
+#navbar-collapse-btn {
+    border-color: #dddddd;
+}
+
+#navbar-collapse-btn:hover {
+    background: #626262;
+}
+
+.jbox-bar {
+    background: #c8c8c8
+}
+
+#logo {
+    width: 163px;
+    height: 44px;
+    z-index: 2;
+}
+
+#jbox {
+    font-size: 45px;
+    color: #FFFFFF;
+}
+
+.jbox-font {
+    /*font-family: "PingFang SC-Semibold";*/
+    letter-spacing: 0;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.right-navigator {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    margin-right: 123px;
+}
+
+.nav-font {
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+#nav-divider {
+    width: 2px;
+    height: 40px;
+    background: #ffffff;
+    margin-top: 8px;
+    margin-right: 23px;
+}
+
+.column {
+    /*display: -webkit-box; !* Chrome 4+, Safari 3.1, iOS Safari 3.2+ *!*/
+    /*display: -moz-box; !* Firefox 17- *!*/
+    /*display: -webkit-flex; !* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 *!*/
+    /*display: -moz-flex; !* Firefox 18+ *!*/
+    /*display: -ms-flexbox; !* IE 10 *!*/
+    /*display: flex;*/
+
+    /*flex-flow: column;*/
+}
+
+.span-title {
+    font-size: 24px;
+    color: #464646;
+    text-align: left;
+    margin-left: 30px;
+}
+
+.span-desc {
+    font-size: 20px;
+    color: #595959;
+    box-shadow: none;
+    font-family: "PingFang SC-Semibold";
+    text-align: left;
+    margin-left: 30px;
+}
+
+.divider {
+    margin: 42px 50px 64px 50px;
+}
+
+.upload {
+    float: left;
+    background: #FFFFFF;
+    border: 1px solid #979797;
+    border-radius: 5px;
+    width: 122px;
+    height: 45px;
+    position: relative;
+    margin-left: 41px;
+    margin-right: 108px;
+}
+
+.upload:hover {
+    background: #83caff;
+    border: 1px solid #ffec4f;
+}
+
+.upload-content {
+    color: #595959;
+    font-size: 20px;
+    padding-top: 10px;
+    font-weight: 800;
+    border-width: 0px;
+}
+
+.upload-btn {
+    margin-left: 15px;
+}
+
+.inputstyle {
+    width: 122px;
+    height: 45px;
+    cursor: pointer;
+    font-size: 30px;
+    outline: medium none;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#dev_name {
+    margin-right: 0px;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+#avatar {
+    width: 43px;
+    height: 43px;
+}
+
+.manage-navigator-right {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 50px;
+}
+
+body {
+    padding-top: 20px;
+    font-family:"Helvetica Neue", "PingFang SC","Microsoft Yahei",Arial,Verdana,sans-serif;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* Custom page header */
+.header {
+    padding-bottom: 10px;
+    padding-top: 25px;
+    opacity: 1;
+}
+
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/*
+ * Header
+ */
+.masthead-brand {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.masthead-nav > li {
+    display: inline-block;
+}
+
+.masthead-nav > li + li {
+    margin-left: 20px;
+}
+
+.masthead-nav > li > a {
+    padding-right: 0;
+    padding-left: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff; /* IE8 proofing */
+    color: rgba(255, 255, 255, .75);
+    border-bottom: 2px solid transparent;
+}
+
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+    background-color: transparent;
+    border-bottom-color: #a9a9a9;
+    border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+/* Custom page footer */
+.footer {
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
+
+    #nav-divider-li {
+        visibility: visible;
+    }
+
+    #nav-avatar-li {
+        visibility: visible;
+    }
+}
+
+.container-narrow > hr {
+    margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.jumbotron .btn {
+    padding: 14px 24px;
+    font-size: 21px;
+}
+
+/* Supporting marketing content */
+.marketing {
+    margin: 40px 0;
+}
+
+.marketing p + h4 {
+    margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .masthead-brand {
+        float: left;
+    }
+
+    .masthead-nav {
+        float: right;
+    }
+
+    /* Pull out the header and footer */
+    .masthead {
+        position: fixed;
+        top: 0;
+    }
+
+    .mastfoot {
+        position: fixed;
+        bottom: 0;
+    }
+
+    /* Start the vertical centering */
+    .site-wrapper-inner {
+        vertical-align: middle;
+    }
+
+    /* Handle the widths */
+    .masthead,
+    .mastfoot,
+    .cover-container {
+        width: 100%; /* Must be percentage or pixels for horizontal alignment */
+    }
+
+    .header {
+        /*margin-bottom: 30px;*/
+        /*z-index: 800;*/
+        border-width: 0;
+    }
+
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+        border-bottom: 0;
+    }
+}
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 992px) {
+    .masthead,
+    .mastfoot,
+    .cover-container {
+        width: 700px;
+    }
+}
+
+#footer {
+    padding-top: 100px
+}

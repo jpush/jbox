@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+{% endblock %}
+
+{% block title %}极光宝盒-创建集成{% endblock %}
+
+{% block content %}
+    <div class="col-lg-6 col-lg-offset-2">
+        <h2>创建 Channel</h2>
+        <div>
+            <input id="new_channel" title="应用描述" class="input-lg" style="width: 100%;" type="text"
+                   name="integration_desc"
+                   placeholder="e.g. events_github"/>
+        </div>
+        <div style="margin-top: 20px">
+            <button id="cancel" title="取消" class="btn-lg btn-info" type="button"
+                    onclick=window.location.href="{{ url_for('auth.post_to_channel') }}";>返回
+            </button>
+            <button id="create_channel" title="新建 Channel" class="btn-lg btn-info" type="button"
+            >新建 channel
+            </button>
+        </div>
+    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        $('#create_channel').on('click', function () {
+            var new_channel = $('#new_channel').val();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "../../v1/developers/{{ dev_key }}/channels",
+                data: JSON.stringify({channel: new_channel}),
+                success: function (data) {
+                    if (data != undefined) {
+                        if (data["created"]) {
+                            toastr.success("创建成功");
+                        }
+                    } else {
+                        toastr.success("已存在 channel");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error("创建失败");
+                },
+                dataType: "json"
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" id="NHF-JG-4km" customClass="JBEditChannelTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NHF-JG-4km" id="Ejk-Cw-1is">
+                <frame key="frameInset" width="320" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="H" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kfo-Sq-amW">
+                        <color key="backgroundColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="45" id="SiM-PA-Cev"/>
+                            <constraint firstAttribute="height" constant="45" id="lfA-Ik-CLM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="channel name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0e-EH-Qub">
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5RY-dT-hib">
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="k6j-hq-aji"/>
+                            <constraint firstAttribute="width" constant="45" id="nGU-5A-drF"/>
+                        </constraints>
+                        <state key="normal" image="channel_subscribe">
+                            <color key="titleColor" red="0.054901960784313725" green="0.63921568627450975" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="subscribeBtnPressed:" destination="NHF-JG-4km" eventType="touchUpInside" id="ZfO-qj-eb7"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="I0e-EH-Qub" firstAttribute="top" secondItem="kfo-Sq-amW" secondAttribute="top" id="2bJ-sN-fsD"/>
+                    <constraint firstItem="I0e-EH-Qub" firstAttribute="centerY" secondItem="Ejk-Cw-1is" secondAttribute="centerY" id="I7N-nb-N4u"/>
+                    <constraint firstItem="kfo-Sq-amW" firstAttribute="centerY" secondItem="Ejk-Cw-1is" secondAttribute="centerY" id="Klx-sv-0YD"/>
+                    <constraint firstItem="5RY-dT-hib" firstAttribute="centerY" secondItem="Ejk-Cw-1is" secondAttribute="centerY" id="STa-sw-Wk1"/>
+                    <constraint firstItem="kfo-Sq-amW" firstAttribute="leading" secondItem="Ejk-Cw-1is" secondAttribute="leading" constant="11" id="T1d-i9-Zee"/>
+                    <constraint firstItem="I0e-EH-Qub" firstAttribute="leading" secondItem="kfo-Sq-amW" secondAttribute="trailing" constant="18" id="lys-rg-bEc"/>
+                    <constraint firstAttribute="trailing" secondItem="5RY-dT-hib" secondAttribute="trailing" constant="15" id="yUg-u4-SfS"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="2bJ-sN-fsD"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="icon_label" destination="kfo-Sq-amW" id="jHH-4A-Kol"/>
+                <outlet property="name_label" destination="I0e-EH-Qub" id="AT7-Jn-TFP"/>
+                <outlet property="subscribe_button" destination="5RY-dT-hib" id="0vv-3Y-fA8"/>
+            </connections>
+            <point key="canvasLocation" x="156" y="195"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="channel_subscribe" width="30" height="30"/>
+    </resources>
+</document>

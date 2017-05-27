@@ -1,0 +1,121 @@
+body {
+    background: #f9f9f9;
+}
+
+.manage-background {
+    display: flex;
+    flex-flow: row;
+    background: #a6d595;
+    height: 366px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.mainImage {
+}
+
+.content {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    height: 100%;
+}
+
+#integration-title {
+    color: #5F5F5F;
+    font-size: 36px;
+    align-self: center;
+    margin-top: 31px;
+}
+
+.create-integration {
+    margin-top: 31px;
+    margin-bottom: 39px;
+    background:#64B868;
+    border-radius:5px;
+    width:186px;
+    height:48px;
+    font-family: "PingFang SC-Semibold";
+    font-size: 20px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    border: 0 hidden;
+    box-shadow:none;
+}
+
+.create-integration:hover {
+    background: #3f7d3f;
+}
+
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -20px;
+    background-color: #526A4A;
+    color: #000000;
+    z-index: 1000;
+}
+
+#table {
+    align-self: center;
+    width: 80%;
+    margin-top: 0px;
+}
+
+.table-header {
+    background:#c5e1a5;
+}
+
+.table-header-font {
+    font-size: 15px;
+    color: #464646;
+}
+
+.first-column {
+    padding-left: 75px;
+}
+
+.table-font {
+    table-layout: fixed;
+    width: 200px;
+    word-wrap: break-word;
+    word-break: normal;
+    font-size: 14px;
+    color: #595959;
+}
+
+.tip-font {
+    font-size: 18px;
+    color: #595959;
+}
+
+.tp-table {
+    mso-cellspacing: 60px;
+}
+
+.tp-content {
+    background: #FFFFFF;
+    width: 232px;
+    height: 247px;
+    line-height: 60px;
+    color: #595959;
+    font-size: 18px;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.50);
+    border: 0 hidden;
+    text-align: center;
+    margin: 30px;
+    margin-bottom: 0px;
+}
+
+.tp-content:hover {
+    background: #1f9ce2;
+    box-shadow:0 0 10px 0 rgba(0, 0, 0, 0.50);
+    color: #FFFFFF;
+}
+
+.tp-content-icon {
+    width: 147px;
+    height: 147px;
+}

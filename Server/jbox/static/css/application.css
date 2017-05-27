@@ -1,0 +1,109 @@
+body {
+    background: url("../images/application-background.png") no-repeat;
+    -webkit-background-size: 100%;
+    background-color: #00C4CC;
+}
+
+.content {
+    display: flex;
+
+    flex-flow: column nowrap;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-bottom: 349px;
+}
+
+@media (max-width: 650px) {
+  .row-img {
+    display: none !important;
+  }
+}
+
+@media screen and (max-device-width: 450px){
+    #download-content {
+
+    }
+}
+
+.row-img {
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
+    height: 258px;
+    background: rgba(0, 0, 0, 0.50);
+}
+
+.mainImage-Container {
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.mainImage {
+    margin-top: 0px;
+    width: 100%;
+    max-width: 1072px;
+}
+.column-layer {
+    align-items: center;
+}
+
+#layer1 {
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 402px;
+    background-color: #002840;
+}
+
+#cloud1x {
+    align-self: flex-end;
+    margin-top: 42px;
+    margin-right: 51px;
+}
+
+#cloud-big {
+    margin-bottom: -232px;
+    margin-right: 100px;
+
+}
+
+#iceberg {
+    margin-bottom: -132px;
+}
+
+#cloud1_5x {
+    margin-bottom: -132px;
+}
+
+@media (max-width: 650px) {
+  #download-title {
+    font-size: 30px !important;
+  }
+}
+#download-title {
+    font-size: 48px;
+    color: #FFFFFF;
+    align-self: center;
+    margin-top: 96px;
+    text-align: center;
+}
+
+
+#ios {
+    /*margin-top: 90px;*/
+    /*margin-left: 60px;*/
+    /*text-align: center;*/
+    /*align-content: center;*/
+}
+
+#android {
+    /*margin-left: 126px;*/
+    /*margin-top: 90px*/
+}
+
+#navigationbar {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -20px;
+    background: rgba(0, 0, 0, 0.50);
+}

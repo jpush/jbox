@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JBDevManageViewController">
+            <connections>
+                <outlet property="avatar_imageView" destination="E65-dD-BVV" id="QYP-Rm-nAr"/>
+                <outlet property="channel_tableView" destination="du7-Yl-NkS" id="Evf-A0-T9e"/>
+                <outlet property="desc_label" destination="xWg-Iq-MQG" id="4ai-u3-nsf"/>
+                <outlet property="devnameBg_constraint" destination="FbY-W0-Wrc" id="roK-iJ-3LZ"/>
+                <outlet property="devname_label" destination="9lO-fp-4Jy" id="2ug-b6-L4j"/>
+                <outlet property="view" destination="giW-ge-DWG" id="EBM-pn-6ks"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="giW-ge-DWG">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="du7-Yl-NkS">
+                    <rect key="frame" x="0.0" y="200" width="375" height="467"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Ks0-tW-0AJ"/>
+                        <outlet property="delegate" destination="-1" id="Thn-Ye-ns0"/>
+                    </connections>
+                </tableView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="devname_bg" translatesAutoresizingMaskIntoConstraints="NO" id="8zN-M2-fbD">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="FbY-W0-Wrc"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="devname_defaultAvatar" translatesAutoresizingMaskIntoConstraints="NO" id="E65-dD-BVV">
+                    <rect key="frame" x="149" y="30" width="77" height="77"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="77" id="4Vl-Ax-CSh"/>
+                        <constraint firstAttribute="width" constant="77" id="z1A-S6-qFn"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <real key="value" value="38.5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="devName" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lO-fp-4Jy">
+                    <rect key="frame" x="149" y="117" width="77.5" height="21.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="这个人很懒什么都没有留下" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xWg-Iq-MQG">
+                    <rect key="frame" x="10" y="153.5" width="355" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="8zN-M2-fbD" firstAttribute="top" secondItem="giW-ge-DWG" secondAttribute="top" id="1Dl-VJ-AyX"/>
+                <constraint firstAttribute="trailing" secondItem="8zN-M2-fbD" secondAttribute="trailing" id="86R-Od-0Gk"/>
+                <constraint firstItem="xWg-Iq-MQG" firstAttribute="leading" secondItem="giW-ge-DWG" secondAttribute="leading" constant="10" id="9jB-Lo-RDP"/>
+                <constraint firstItem="du7-Yl-NkS" firstAttribute="top" secondItem="8zN-M2-fbD" secondAttribute="bottom" id="Fck-OV-kzJ"/>
+                <constraint firstAttribute="bottom" secondItem="du7-Yl-NkS" secondAttribute="bottom" id="Hfq-3X-ONP"/>
+                <constraint firstItem="9lO-fp-4Jy" firstAttribute="top" secondItem="E65-dD-BVV" secondAttribute="bottom" constant="10" id="Q8m-T2-G9i"/>
+                <constraint firstAttribute="trailing" secondItem="xWg-Iq-MQG" secondAttribute="trailing" constant="10" id="VRj-Fr-A0R"/>
+                <constraint firstItem="9lO-fp-4Jy" firstAttribute="centerX" secondItem="giW-ge-DWG" secondAttribute="centerX" id="XSW-v4-4lG"/>
+                <constraint firstItem="xWg-Iq-MQG" firstAttribute="top" secondItem="9lO-fp-4Jy" secondAttribute="bottom" constant="15" id="ctG-jz-9Em"/>
+                <constraint firstAttribute="trailing" secondItem="du7-Yl-NkS" secondAttribute="trailing" id="dyu-D3-jO1"/>
+                <constraint firstItem="8zN-M2-fbD" firstAttribute="leading" secondItem="giW-ge-DWG" secondAttribute="leading" id="gs9-bg-7S0"/>
+                <constraint firstItem="E65-dD-BVV" firstAttribute="centerX" secondItem="giW-ge-DWG" secondAttribute="centerX" id="ohl-ab-dGp"/>
+                <constraint firstItem="E65-dD-BVV" firstAttribute="top" secondItem="giW-ge-DWG" secondAttribute="top" constant="30" id="q3P-7F-s6R"/>
+                <constraint firstItem="du7-Yl-NkS" firstAttribute="leading" secondItem="giW-ge-DWG" secondAttribute="leading" id="tXt-h1-SV8"/>
+            </constraints>
+            <point key="canvasLocation" x="-81" y="31"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="devname_bg" width="375" height="201"/>
+        <image name="devname_defaultAvatar" width="77" height="76"/>
+    </resources>
+</document>

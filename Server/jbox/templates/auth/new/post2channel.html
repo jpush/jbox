@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post2channel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toastr.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for ('static', filename='js/jquery-ui.js') }}"></script>
+{% endblock %}
+
+{% block title %}极光宝盒-创建集成{% endblock %}
+
+{% block navbar %}
+    <div id="navigationbar">{{ super() }}</div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="post2channel-bg">
+        <div class="container-fluid" style="text-align: center">
+            <img src="/static/images/postToChannelImg.png">
+        </div>
+    </div>
+    <div class="row">
+        <div id="form" class="col-lg-8 col-lg-offset-2">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p id="title" class="jbox-font" style="text-align: left;">推送到频道</p>
+                        {% if github %}
+                            <p id="description" class="jbox-font">从选择一个频道开始, 来自 GitHub 的消息将会推送到这个频道。</p>
+                        {% elif discourse %}
+                            <p id="description" class="jbox-font">从选择一个频道开始, 来自 Discourse 的消息将会推送到这个频道。</p>
+                        {% else %}
+                            <p id="description" class="jbox-font">从选择一个频道开始, 接下来集成的应用的消息将会推送到这个频道。</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div id="input_div" class="column">
+                            <div class="input-group">
+                                <input id="selected_channel" type="text" class="form-control" aria-label="..."
+                                       placeholder="选择一个 channel 或者输入一个新的 channel">
+                                <div class="input-group-btn">
+                                    <button id="show_channels" type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span>
+                                    </button>
+                                    <ul id="content" class="dropdown-menu dropdown-menu-right">
+                                        {% for channel in channels %}
+                                            <li id="{{ channel }}" class="channel_class"><a>{{ channel }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 40px; text-align: center;">
+                            <button class="create_btn" id="create_integration_btn" type="button">
+                                {% if github %}
+                                    添加 GitHub 集成
+                                {% elif discourse %}
+                                    添加 Discourse 集成
+                                {% else %}
+                                    添加自定义集成
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block footer %}
+        <div id="footer">
+            {{ super() }}
+        </div>
+    {% endblock %}
+
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        var list = [];
+        {% if channels.__len__ == 0 %}
+            list.push("event_github");
+        {% else %}
+            {% for channel in channels %}
+                list.push({{ channel }});
+            {% endfor %}
+        {% endif %}
+
+        $(function () {
+            $('#selected_channel').autocomplete({
+                maxHeight: 400,
+                source: list,
+                onSelect: function (suggestion) {
+                    $(this).val(suggestion.value);
+                }
+            });
+        });
+
+        $('ul li').each(function () {
+            $(this).bind('click', function () {
+                console.log(this.id);
+                $('#selected_channel').val(this.id);
+            })
+        });
+
+        $(document).ready(function () {
+            $('#create_integration_btn').prop('disabled', true);
+            $('#selected_channel').keyup(function () {
+                if ($(this).val() != '') {
+                    $('#create_integration_btn').prop('disabled', false);
+                }
+            });
+        });
+
+        $('#create_integration_btn').click(function () {
+            var channel = $('#selected_channel').val();
+            console.log('create integration, channel: ' + channel);
+            if (channel != '') {
+                {% if github %}
+                    window.location.href = '/auth/github/create/' + channel;
+                {% else %}
+                    var data;
+                    {% if discourse %}
+                        data = JSON.stringify({channel: channel, discourse: true});
+                    {% else %}
+                        data = JSON.stringify({channel: channel});
+                    {% endif %}
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "/v1/developers/{{ dev_key }}/integrations",
+                        data: data,
+                        success: function (data) {
+                            if (data != undefined) {
+                                if (data["token"]) {
+                                    window.location.href = '/auth/manage/create_integration/' + data["integration_id"] + '/' + data["token"] + '/' + channel
+                                }
+                            } else {
+                                toastr.error("服务器异常");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            toastr.error("创建失败");
+                        },
+                        dataType: "json"
+                    });
+                {% endif %}
+            }
+        })
+    </script>
+{% endblock %}

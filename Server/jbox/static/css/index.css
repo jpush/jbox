@@ -1,0 +1,277 @@
+.content-text {
+    /*display: flex;*/
+    align-self: center;
+    margin-top: 127px;
+}
+
+#description {
+    font-size: 36px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+#description-subtitle {
+    font-size: 36px;
+    color: #ffffff;
+    margin-top: 30px;
+    text-align: center;
+}
+
+#main-backgroup-image {
+    margin-top: 69px;
+    align-self: center;
+    width: 633px;
+    height: 600px;
+}
+
+#navigationbar {
+    /*margin-left: 0;*/
+    /*margin-right: 0;*/
+    width: 100%;
+    margin-top: -20px;
+    background-color: #50abd1;
+}
+
+#notification-icon {
+    width: 155px;
+    height: 140px;
+}
+
+#stream-icon {
+    width: 165px;
+    height: 138px;
+}
+
+#finger-image {
+    width: 102px;
+    height: 167px;
+    margin-top: 22px;
+}
+
+#bear-container {
+    padding-top: 150px;
+    padding-right: 80px
+}
+
+#bear-icon {
+    width: 265px;
+    height: 159px;
+}
+
+#wechat-icon {
+    width: 60px;
+    height: 49px;
+    text-align: right;
+}
+
+#imessage-icon {
+    width: 59px;
+    height: 59px;
+}
+
+#server-icon {
+    width: 287px;
+    height:230px;
+}
+
+#homework-icon {
+    width: 297px;
+    height: 242px;
+}
+
+#group-icon {
+    width: 64px;
+    height: 45px;
+}
+
+#phone-scan-icon {
+    width: 168px;
+    height: 164px;
+    margin-top: -12px;
+}
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+    color: #333;
+    text-shadow: none; /* Prevent inheritance from `body` */
+    background-color: #fff;
+    border: 1px solid #fff;
+}
+
+body {
+    text-align: center;
+    height: 100%;
+}
+
+@media (min-width: 1400px) {
+    .what-is-jbox {
+        width: 1300px!important;
+    }
+
+    .usage-content {
+        width: 760px!important;
+    }
+
+    .better-to-other-content {
+        width: 1300px!important;
+    }
+}
+.container-fluid {
+    width: 100%;
+}
+
+.symbol {
+    font-size: 80px;
+    color: #8B8B8B;
+}
+
+.first-layer {
+    padding-top: 100px;
+    background-color: #50abd1;
+    padding-bottom: 25px;
+}
+
+.second-layer {
+    padding-top: 60px;
+    padding-bottom: 100px;
+    background: #f9f9f9;
+}
+
+.section-title {
+    font-size: 48px;
+    color: #444444;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+.section-desc {
+    font-size: 20px;
+    color: #444444;
+}
+
+.section-subtitle {
+    font-size: 30px;
+    color: #444444;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+#reason-subtitle {
+    text-align: left;
+    margin-bottom: 30px;
+    margin-left: 14px;
+}
+
+.third-layer {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    background: #ecfcff;
+}
+
+.ul-desc {
+    padding-top: 10px;
+    text-align: left;
+    /*font-weight: bold;*/
+    font-size: 30px;
+}
+
+.icon {
+    padding-top: 10px;
+    padding-left: 0;
+    padding-bottom: 20px;
+}
+
+.desc {
+    padding-left: 0;
+}
+
+.section-desc-spec {
+    font-size: 20px;
+    color: #444444;
+    text-align: left;
+    padding-top: 10px;
+    margin-left: -20px;
+}
+
+.usage-content {
+
+}
+
+.server-content {
+    text-align: center;
+
+}
+
+.homework-content {
+    margin-top: -7px;
+    text-align: center;
+}
+
+.icon-background {
+    background: rgba(0, 0, 0, 0.50);
+    width: 250px;
+    height: 188px;
+    text-align: center;
+    padding: 30px;
+    border-width: 0;
+    margin-top: 20px;
+}
+
+.icon-background:hover {
+    background: rgba(0, 0, 0, 0.80);
+}
+
+#footer {
+    background: #ecfcff;
+    padding-top: 20px
+}
+
+@media screen and (max-width: 800px) {
+
+    #description {
+        font-size: 24px;
+    }
+
+    #description-subtitle {
+        font-size: 20px;
+    }
+
+    #main-backgroup-image {
+        width: 300px;
+        height: 284px;
+    }
+
+    .section-title {
+        font-size: 30px;
+    }
+
+    .ul-desc {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .section-desc {
+        font-size: 16px;
+    }
+
+    #reason-subtitle {
+        text-align: center;
+    }
+
+    .section-desc-spec {
+        font-size: 18px;
+        text-align: center;
+        margin-left: 15px;
+    }
+
+    #bear-container {
+        padding-top: 50px;
+        padding-right: 0;
+    }
+}
