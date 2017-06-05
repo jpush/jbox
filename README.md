@@ -42,7 +42,7 @@ JBox 直接使用极光推送服务，能够保证消息快速、稳定的送达
 
 ## Support
 - QQ 群: 453471823
-- [极光社区](http://community.jiguang.cn/)
+<!-- - [极光社区](http://community.jiguang.cn/) -->
 - [Look at the issues](https://github.com/jpush/jbox/issues)
 
 ## License
