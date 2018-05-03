@@ -19,7 +19,7 @@ def send_github_msg(integration_id):
     developer = Developer.query.filter_by(id=integration.developer_id).first()
     if developer is None:
         abort(404)
-    _jpush = '1c29cb5814072b5b1f8ef829', u'b46af6af73ee8f9480d4edad')
+    _jpush = jpush.JPush(u'1c29cb5814072b5b1f8ef829', u'b46af6af73ee8f9480d4edad')
     push = _jpush.create_push()
     _jpush.set_logging("DEBUG")
     push.audience = jpush.audience(
