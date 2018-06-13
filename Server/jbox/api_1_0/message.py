@@ -85,7 +85,7 @@ def send_direct_to_channel(channel):
     message_url = ""
     if 'url' in request.json:
        message_url = request.json['url']
-    _jpush = jpush.JPush(u'1c29cb5814072b5b1f8ef829', u'600805207f9743a472b79108')
+    _jpush = jpush.JPush(u'1c29cb5814072b5b1f8ef829', u'b46af6af73ee8f9480d4edad')
     push = _jpush.create_push()
     _jpush.set_logging("DEBUG")
     push.audience = jpush.audience(
