@@ -1,5 +1,5 @@
 import os, operator
-from flask import abort, Flask, json, jsonify, request, make_response, session, redirect, url_for
+from flask import abort, Flask, json, jsonify, request, make_response, session, redirect, url_for, session
 from sqlite3 import DatabaseError
 import urllib
 from . import api
@@ -393,8 +393,9 @@ def save_github_integration(integration_id):
 
 
 @api.route('/developers/<dev_key>/<integration_id>', methods=['DELETE'])
-# @login_required
+@auth.login_required
 def delete_integration(dev_key, integration_id):
+    print('----------------------------delete_integration')
     developer = Developer.query.filter_by(dev_key=dev_key).first()
     if developer is not None:
         integration = Integration.query.filter_by(integration_id=integration_id).first()
@@ -470,3 +471,12 @@ def regenerate_integration_token(integration_id):
     except:
         db.session.rollback()
         abort(500)
+
+
+def get_developer_from_session():
+    if 'qq_token' in session:
+        respMe = qq.get('/oauth2.0/me', {'access_token': session['qq_token'][0]})
+        openid = json_to_dict(respMe.data)['openid']
+        developer = Developer.query.filter_by(platform_id=openid).first()
+        return developer
+    return None
