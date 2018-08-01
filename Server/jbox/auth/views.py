@@ -192,11 +192,21 @@ def edit_integration(integration_id):
     developer = get_developer()
     if developer is None:
         return redirect(url_for('main.login'))
-    integration = Integration.query.filter_by(integration_id=integration_id).first()
-    channel = integration.channel.channel
-    channels = get_channel_list()
-    dev_key = developer.dev_key
-    return render_template('auth/create.html', **locals())
+
+    integrations = developer.integrations
+    for i in range(len(integrations)):
+                the_id = integrations[i].integration_id
+                if integration_id == the_id:
+                    print('my integration')
+                    integration = Integration.query.filter_by(integration_id=integration_id).first()
+                    channel = integration.channel.channel
+                    channels = get_channel_list()
+                    dev_key = developer.dev_key
+                    return render_template('auth/create.html', **locals())
+                    break
+    else:
+        return '这不是你的集成，你没有权限访问！'
+
 
 
 @auth.route('/manage/edit_github_integration/<string:integration_id>', methods=['GET', 'POST'])
